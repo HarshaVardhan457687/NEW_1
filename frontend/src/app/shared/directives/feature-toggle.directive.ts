@@ -1,5 +1,5 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
-import { FeatureToggleService } from '@frontend/core/services/feature-toggle.service';
+import { FeatureToggleService } from '../../services/feature-toggle.service';
 
 @Directive({
   selector: '[appFeatureToggle]'
