@@ -4,12 +4,12 @@
     
     <div class="nav-buttons">
       <button class="nav-button dashboard" [class.highlighted]="isHighlighted('dashboard')" routerLink="/dashboard">Dashboard</button>
-      <button class="nav-button projects" [class.highlighted]="isHighlighted('projects')" routerLink="/projects">Projects</button>
+      <button class="nav-button projects" [class.highlighted]="isHighlighted('projects')" (click)="navigateToUnderConstruction()">Projects</button>
     </div>
 
     <div class="nav-icons">
-      <img src="assets/bell_icon.png" alt="Notifications" class="notification-icon">
-      <img src="assets/default_profile.png" alt="Profile" class="profile-icon">
+      <img src="assets/bell_icon.png" alt="Notifications" class="notification-icon" (click)="navigateToUnderConstruction()">
+      <img src="assets/default_profile.png" alt="Profile" class="profile-icon" (click)="navigateToUnderConstruction()">
     </div>
   </div>
 </nav>
