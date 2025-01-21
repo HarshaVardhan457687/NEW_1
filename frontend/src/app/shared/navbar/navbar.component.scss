@@ -46,11 +46,10 @@ nav {
     text-transform: none;
     letter-spacing: normal;
     line-height: normal;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
+      background-color: #F8FAFC;
     }
     
     &.highlighted {
@@ -58,8 +57,7 @@ nav {
       color: #2563EB;
       
       &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0px 2px 4px rgba(37, 99, 235, 0.15);
+        background: #DBEAFE;
       }
     }
   }
@@ -72,11 +70,17 @@ nav {
   margin-left: auto;
   margin-right: 1rem;
 
-  .notification-icon {
+  .notification-icon, .profile-icon {
     width: 22px;
     height: 28px;
     object-fit: contain;
     cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      cursor: pointer;
+    }
   }
 
   .profile-icon {
@@ -84,7 +88,6 @@ nav {
     height: 28px;
     border-radius: 50%;
     object-fit: cover;
-    cursor: pointer;
   }
 }
 
