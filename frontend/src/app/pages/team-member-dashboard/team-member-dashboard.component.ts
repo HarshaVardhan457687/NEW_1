@@ -6,7 +6,8 @@ import { NavbarComponent } from '../../shared/navbar/navbar.component';
   standalone: true,
   imports: [NavbarComponent],
   templateUrl: './team-member-dashboard.component.html',
-  styleUrl: './team-member-dashboard.component.scss'
+  styleUrl: './team-member-dashboard.component.scss',
+  host: { 'id': 'team-member-dashboard-component' }
 })
 export class TeamMemberDashboardComponent {
 }

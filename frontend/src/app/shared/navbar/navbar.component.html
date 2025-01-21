@@ -1,9 +1,19 @@
 <nav>
   <div class="nav-content">
-    <span>Welcome back, John Doe</span>
-    <div class="nav-links">
-      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-      <a routerLink="/projects" routerLinkActive="active">Projects</a>
+    <div class="welcome-text">Welcome back, John Doe</div>
+    
+    <div class="nav-buttons">
+      <button class="nav-button dashboard" [class.highlighted]="isHighlighted('dashboard')" routerLink="/dashboard">
+        Dashboard
+      </button>
+      <button class="nav-button projects" [class.highlighted]="isHighlighted('projects')" routerLink="/projects">
+        Projects
+      </button>
+    </div>
+
+    <div class="nav-icons">
+      <img src="assets/bell_icon.png" alt="Notifications" class="notification-icon">
+      <img src="assets/default_profile.png" alt="Profile" class="profile-icon">
     </div>
   </div>
 </nav>
