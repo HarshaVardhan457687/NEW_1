@@ -1,43 +1,83 @@
 .stats-card {
-  background: white;
-  border-radius: 8px;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  border: 1.2px solid #E5E7EB;
+  box-shadow: 0px 1.2px 2.4px rgba(0, 0, 0, 0.05);
+  border-radius: 14px;
   padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  height: 200px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 
   .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 1rem;
     
     .title {
-      font-family: Arial, sans-serif;
-      font-size: 16px;
-      color: #6B7280;
+      font-size: 20.85px;
+      line-height: 25px;
+      font-weight: 600;
+      color: #000000;
+    }
+
+    .card-icon {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
     }
   }
 
   .card-content {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
+    flex: 1;
+    min-height: 0;
+
+    .progress-graph {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      max-height: 120px;
+    }
+
+    app-progress-bar-circular {
+      flex-shrink: 0;
+      width: 84px;
+      height: 84px;
+      display: block;
+    }
 
     .counts {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 1rem;
+      flex-grow: 1;
 
       .active, .total {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
 
         .label {
           font-size: 14px;
           color: #6B7280;
+          order: 1;
         }
 
         .value {
           font-size: 24px;
           font-weight: bold;
           color: #111827;
+          order: 2;
+          text-align: right;
+          margin-left: auto;
         }
       }
     }
