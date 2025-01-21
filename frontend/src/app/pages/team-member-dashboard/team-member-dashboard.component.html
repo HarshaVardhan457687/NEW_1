@@ -1,5 +1,12 @@
 <app-navbar></app-navbar>
 <div class="dashboard-content">
-  <h1>Dashboard</h1>
+  <div class="stats-grid">
+    <app-stats-card *ngFor="let stat of stats"
+      [title]="stat.title"
+      [activeCount]="stat.activeCount"
+      [totalCount]="stat.totalCount"
+      [percentage]="stat.percentage">
+    </app-stats-card>
+  </div>
   <!-- Add your dashboard content here -->
 </div>

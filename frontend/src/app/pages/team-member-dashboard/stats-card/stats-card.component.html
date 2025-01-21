@@ -1,0 +1,18 @@
+<div class="stats-card">
+  <div class="card-header">
+    <span class="title">{{title}}</span>
+  </div>
+  <div class="card-content">
+    <app-progress-bar-circular [percentage]="percentage"></app-progress-bar-circular>
+    <div class="counts">
+      <div class="active">
+        <span class="label">Active</span>
+        <span class="value">{{activeCount}}</span>
+      </div>
+      <div class="total">
+        <span class="label">Total</span>
+        <span class="value">{{totalCount}}</span>
+      </div>
+    </div>
+  </div>
+</div>

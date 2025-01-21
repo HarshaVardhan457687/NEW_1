@@ -1,0 +1,45 @@
+.stats-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+
+  .card-header {
+    margin-bottom: 1rem;
+    
+    .title {
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      color: #6B7280;
+    }
+  }
+
+  .card-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    .counts {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .active, .total {
+        display: flex;
+        flex-direction: column;
+
+        .label {
+          font-size: 14px;
+          color: #6B7280;
+        }
+
+        .value {
+          font-size: 24px;
+          font-weight: bold;
+          color: #111827;
+        }
+      }
+    }
+  }
+}
