@@ -22,36 +22,33 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    overflow-y: auto;
-    padding-right: 0.5rem;  // Space for scrollbar
-    scrollbar-width: none;  // Firefox
-    -ms-overflow-style: none;  // IE and Edge
-    
+    overflow-y: scroll;
+    padding-right: 0.5rem;
+    margin-right: -0.5rem; // Compensate for the padding
+
     &::-webkit-scrollbar {
-      width: 0;  // Hide scrollbar by default
-      transition: width 0.2s;
+      width: 6px;
+      display: none;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #F3F4F6;
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #D1D5DB;
+      border-radius: 3px;
+
+      &:hover {
+        background: #9CA3AF;
+      }
     }
   }
 
   &:hover {
-    .tasks-list {
-      &::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: #F3F4F6;
-        border-radius: 3px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: #D1D5DB;
-        border-radius: 3px;
-      }
-
-      &::-webkit-scrollbar-thumb:hover {
-        background: #9CA3AF;
-      }
+    .tasks-list::-webkit-scrollbar {
+      display: block;
     }
   }
 }
