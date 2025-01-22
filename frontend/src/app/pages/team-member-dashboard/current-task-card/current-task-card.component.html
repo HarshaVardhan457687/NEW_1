@@ -1,0 +1,23 @@
+<div class="task-card">
+  <div class="task-content">
+    <h3>{{title}}</h3>
+    <div class="task-details">
+      <div class="detail-item">
+        <img src="assets/calender_icon.png" alt="Due date">
+        <span>{{dueDate}}</span>
+      </div>
+      <div class="detail-item">
+        <img src="assets/task_description_tag_icon.png" alt="Tag">
+        <span>{{tag}}</span>
+      </div>
+      <div class="detail-item">
+        <img src="assets/project_icon.png" alt="Project">
+        <span>{{project}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="task-priority">
+    <span [class]="priorityClass">{{priority}}</span>
+    <button class="more-options">⋮</button>
+  </div>
+</div>

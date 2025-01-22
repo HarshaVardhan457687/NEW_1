@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../shared/navbar/navbar.component';
 import { StatsCardComponent } from './stats-card/stats-card.component';
 import { ActiveProjectSectionComponent } from './active-project-section/active-project-section.component';
+import { CurrentTasksSectionComponent } from './current-tasks-section/current-tasks-section.component';
 
 
 interface StatCard {
@@ -17,7 +18,13 @@ interface StatCard {
 @Component({
   selector: 'app-team-member-dashboard',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, StatsCardComponent, ActiveProjectSectionComponent],
+  imports: [
+    CommonModule,
+    NavbarComponent,
+    StatsCardComponent,
+    ActiveProjectSectionComponent,
+    CurrentTasksSectionComponent
+  ],
   templateUrl: './team-member-dashboard.component.html',
   styleUrl: './team-member-dashboard.component.scss',
   host: { 'id': 'team-member-dashboard-component' }

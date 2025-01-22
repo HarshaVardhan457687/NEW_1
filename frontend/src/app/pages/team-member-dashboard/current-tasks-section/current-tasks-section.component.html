@@ -1,0 +1,13 @@
+<div class="current-tasks-section">
+  <h2>Current Tasks</h2>
+  <div class="tasks-list">
+    <app-current-task-card
+      *ngFor="let task of tasks"
+      [title]="task.title"
+      [dueDate]="task.dueDate"
+      [tag]="task.tag"
+      [project]="task.project"
+      [priority]="task.priority">
+    </app-current-task-card>
+  </div>
+</div>
