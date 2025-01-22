@@ -1,5 +1,5 @@
 .task-card {
-  background: white;
+  background: #F9FAFB;
   border: 1px solid #E5E7EB;
   border-radius: 10px;
   padding: 1rem;
@@ -25,11 +25,14 @@
     }
 
     .task-details {
-      display: flex;
-      gap: 1.5rem;
+      display: grid;
+      grid-template-columns: 140px 140px 140px;
+      gap: 0.75rem;
+      width: 100%;
 
       .detail-item {
-        display: flex;
+        display: grid;
+        grid-template-columns: 16px 1fr;
         align-items: center;
         gap: 0.5rem;
 
@@ -37,11 +40,15 @@
           width: 16px;
           height: 16px;
           object-fit: contain;
+          justify-self: start;
         }
 
         span {
           color: #6B7280;
           font-size: 14px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
     }
@@ -51,12 +58,14 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+    margin-left: 1.5rem;
 
     span {
       padding: 0.25rem 0.75rem;
       border-radius: 1rem;
       font-size: 12px;
       font-weight: 500;
+      white-space: nowrap;
 
       &.priority-high {
         background: #FEE2E2;
