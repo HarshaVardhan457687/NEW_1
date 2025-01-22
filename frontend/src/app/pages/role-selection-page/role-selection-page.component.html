@@ -1,0 +1,16 @@
+<div class="role-selection-container">
+  <div class="content">
+    <h1>Choose Your Role</h1>
+    <p class="subtitle">Select how you'd like to proceed today</p>
+    <div class="cards-container">
+      <app-role-selection-card
+        *ngFor="let role of roles"
+        [title]="role.title"
+        [description]="role.description"
+        [icon]="role.icon"
+        [route]="role.route">
+      </app-role-selection-card>
+    </div>
+    <p class="note">You can always change your role later in settings</p>
+  </div>
+</div>
