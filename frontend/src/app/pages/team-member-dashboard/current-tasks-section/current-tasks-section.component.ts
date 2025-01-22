@@ -31,7 +31,35 @@ export class CurrentTasksSectionComponent {
       dueDate: 'Mar 20, 2025',
       tag: 'Planning',
       project: 'Project Beta',
+      priority: 'Low Priority'
+    },
+    {
+      title: 'Team Performance Analysis',
+      dueDate: 'Mar 25, 2025',
+      tag: 'Analysis',
+      project: 'Project Gamma',
+      priority: 'High Priority'
+    },
+    {
+      title: 'Update Project Timeline',
+      dueDate: 'Mar 18, 2025',
+      tag: 'Planning',
+      project: 'Project Delta',
       priority: 'Medium Priority'
+    },
+    {
+      title: 'Stakeholder Meeting Prep',
+      dueDate: 'Mar 22, 2025',
+      tag: 'Meeting',
+      project: 'Project Alpha',
+      priority: 'Low Priority'
+    },
+    {
+      title: 'Resource Allocation Review',
+      dueDate: 'Mar 28, 2025',
+      tag: 'Review',
+      project: 'Project Beta',
+      priority: 'Low Priority'
     }
   ];
 }

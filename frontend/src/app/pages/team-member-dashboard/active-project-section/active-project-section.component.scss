@@ -5,17 +5,41 @@
   border-radius: 14px;
   padding: 1.25rem;
   width: 100%;
+  height: calc(100vh - 290px);  // Adjust based on your layout
+  display: flex;
+  flex-direction: column;
 
   h2 {
     font-size: 19px;
     font-weight: 600;
     color: #111827;
     margin-bottom: 1rem;
+    flex-shrink: 0;  // Prevent header from shrinking
   }
 
   .projects-list {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    overflow-y: auto;
+    padding-right: 0.5rem;  // Space for scrollbar
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #F3F4F6;
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #D1D5DB;
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #9CA3AF;
+    }
   }
 }

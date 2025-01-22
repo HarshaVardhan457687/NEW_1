@@ -1,8 +1,8 @@
 .project-card {
   background: white;
   border: 1px solid #E5E7EB;
-  border-radius: 10px;
-  padding: 1rem;
+  border-radius: 8px;
+  padding: 0.75rem;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
 
@@ -16,18 +16,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
 
     h3 {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       color: #111827;
     }
 
     .status-badge {
-      padding: 0.25rem 0.75rem;
+      padding: 0.2rem 0.6rem;
       border-radius: 1rem;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 500;
 
       &.status-green {
@@ -50,34 +50,34 @@
   .objectives {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
 
     img {
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
     }
 
     span {
       color: #6B7280;
-      font-size: 14px;
+      font-size: 12px;
     }
   }
 
   .progress-container {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
 
     app-progress-bar-linear {
       flex: 1;
     }
 
     .progress-text {
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 500;
       color: #111827;
-      min-width: 3rem;
+      min-width: 2.5rem;
       text-align: right;
     }
   }
