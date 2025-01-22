@@ -1,0 +1,11 @@
+<div class="active-projects-section">
+  <h2>Active Projects</h2>
+  <div class="projects-list">
+    <app-active-projects-card
+      *ngFor="let project of projects"
+      [name]="project.name"
+      [objectives]="project.objectives"
+      [progress]="project.progress">
+    </app-active-projects-card>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="project-card">
+  <div class="card-header">
+    <h3>{{name}}</h3>
+    <span class="status-badge" [class]="statusClass">{{status}}</span>
+  </div>
+  <div class="objectives">
+    <img src="assets/objectives_icon.png" alt="objectives">
+    <span>{{objectives}} Objectives</span>
+  </div>
+  <div class="progress-container">
+    <app-progress-bar-linear [progress]="progress" [color]="statusClass"></app-progress-bar-linear>
+    <span class="progress-text">{{progress}}%</span>
+  </div>
+</div>

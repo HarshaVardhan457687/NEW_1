@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../shared/navbar/navbar.component';
 import { StatsCardComponent } from './stats-card/stats-card.component';
-import { CommonModule } from '@angular/common';
+import { ActiveProjectSectionComponent } from './active-project-section/active-project-section.component';
+
 
 interface StatCard {
   title: string;
@@ -15,7 +17,7 @@ interface StatCard {
 @Component({
   selector: 'app-team-member-dashboard',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, StatsCardComponent],
+  imports: [CommonModule, NavbarComponent, StatsCardComponent, ActiveProjectSectionComponent],
   templateUrl: './team-member-dashboard.component.html',
   styleUrl: './team-member-dashboard.component.scss',
   host: { 'id': 'team-member-dashboard-component' }

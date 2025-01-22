@@ -1,0 +1,84 @@
+.project-card {
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 1rem;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 12px;
+      font-weight: 500;
+
+      &.status-green {
+        background: #DCFCE7;
+        color: #15803D;
+      }
+
+      &.status-red {
+        background: #FEE2E2;
+        color: #DC2626;
+      }
+
+      &.status-blue {
+        background: #DBEAFE;
+        color: #2563EB;
+      }
+    }
+  }
+
+  .objectives {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+
+    span {
+      color: #6B7280;
+      font-size: 14px;
+    }
+  }
+
+  .progress-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    app-progress-bar-linear {
+      flex: 1;
+    }
+
+    .progress-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: #111827;
+      min-width: 3rem;
+      text-align: right;
+    }
+  }
+}
