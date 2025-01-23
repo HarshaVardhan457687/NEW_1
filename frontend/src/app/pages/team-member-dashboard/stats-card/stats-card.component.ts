@@ -15,5 +15,4 @@ export class StatsCardComponent {
   @Input() totalCount: number = 0;
   @Input() percentage: number = 0;
   @Input() icon?: string;
-  @Input() showGraph: boolean = false;
 }

@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../shared/navbar/navbar.component';
@@ -12,7 +13,6 @@ interface StatCard {
   totalCount: number;
   percentage: number;
   icon?: string;
-  showGraph: boolean;
 }
 
 @Component({
@@ -36,7 +36,6 @@ export class TeamMemberDashboardComponent {
       activeCount: 52, 
       totalCount: 100, 
       percentage: 52,
-      showGraph: false,
       icon: 'project_icon.png'
     },
     { 
@@ -44,7 +43,6 @@ export class TeamMemberDashboardComponent {
       activeCount: 32, 
       totalCount: 80, 
       percentage: 40,
-      showGraph: false,
       icon: 'objectives_icon.png' 
     },
     { 
@@ -52,7 +50,6 @@ export class TeamMemberDashboardComponent {
       activeCount: 21, 
       totalCount: 35, 
       percentage: 60,
-      showGraph: false,
       icon: 'key_result_icon.png' 
     },
     { 
@@ -60,8 +57,12 @@ export class TeamMemberDashboardComponent {
       activeCount: 18, 
       totalCount: 20, 
       percentage: 90,
-      showGraph: false,
       icon: 'tasks_icon.png' 
     }
   ];
 }
+
+
+
+
+
