@@ -22,7 +22,7 @@ export class NavbarComponent {
   setActiveTab(tab: 'dashboard' | 'projects'): void {
     this.currentTab = tab;
     if (tab === 'projects') {
-      this.navigateToUnderConstruction();
+      this.router.navigate(['/projects']);
     }
   }
 

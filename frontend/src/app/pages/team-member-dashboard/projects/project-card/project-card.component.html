@@ -1,0 +1,34 @@
+<div class="project-card" (click)="navigateToConstruction()">
+  <h3>{{title}}</h3>
+  
+  <div class="project-details">
+    <div class="detail-item">
+      <img src="assets/projects_calender_icon.png" alt="Due date">
+      <span>Due: {{dueDate}}</span>
+    </div>
+    <div class="detail-item">
+      <img src="assets/projects_team_icon.png" alt="Team size">
+      <span>{{teamSize}} Team members</span>
+    </div>
+    <div class="detail-item">
+      <img src="assets/projects_role_icon.png" alt="Role">
+      <span>{{role}}</span>
+    </div>
+  </div>
+
+  <div class="progress-section">
+    <div class="progress-info">
+      <span>Progress</span>
+      <span>{{progress}}%</span>
+    </div>
+    <app-progress-bar-linear [progress]="progress" [color]="statusClass"></app-progress-bar-linear>
+  </div>
+
+  <div class="team-lead">
+    <img src="assets/default_profile.png" alt="Team Lead">
+    <div class="lead-info">
+      <span class="label">Team Lead</span>
+      <span class="name">{{teamLead}}</span>
+    </div>
+  </div>
+</div>

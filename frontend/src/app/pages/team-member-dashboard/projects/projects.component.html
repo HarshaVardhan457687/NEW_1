@@ -1,0 +1,14 @@
+<div class="projects-container">
+  <h1>My Projects</h1>
+  <div class="projects-grid">
+    <app-project-card
+      *ngFor="let project of projects"
+      [title]="project.title"
+      [dueDate]="project.dueDate"
+      [teamSize]="project.teamSize"
+      [role]="project.role"
+      [progress]="project.progress"
+      [teamLead]="project.teamLead">
+    </app-project-card>
+  </div>
+</div>
