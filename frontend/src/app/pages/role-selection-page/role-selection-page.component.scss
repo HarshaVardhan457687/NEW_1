@@ -8,8 +8,9 @@
 
   .content {
     text-align: center;
-    max-width: 1200px;
     width: 100%;
+    max-width: 1280px;
+    padding: 0 2rem;
 
     h1 {
       font-size: 32px;
@@ -25,11 +26,11 @@
     }
 
     .cards-container {
-      display: flex;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(3, 368px);
       gap: 2.5rem;
+      justify-content: center;
       margin-bottom: 3rem;
-      flex-wrap: wrap;
     }
 
     .info-text {
@@ -48,6 +49,29 @@
         font-size: 14px;
         color: #6B7280;
         margin: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 1280px) {
+  .role-selection-container .content .cards-container {
+    grid-template-columns: repeat(auto-fit, 368px);
+    justify-content: center;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .role-selection-container {
+    padding: 1rem;
+    
+    .content {
+      padding: 0 1rem;
+      
+      .cards-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
       }
     }
   }
