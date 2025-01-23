@@ -32,27 +32,28 @@ interface StatCard {
 export class TeamMemberDashboardComponent {
   stats: StatCard[] = [
     { 
-      title: 'Weekly Progress', 
+      title: 'Projects', 
       activeCount: 52, 
       totalCount: 100, 
       percentage: 52,
-      showGraph: true
+      showGraph: false,
+      icon: 'project_icon.png'
     },
     { 
-      title: 'Projects', 
+      title: 'Objectives', 
       activeCount: 32, 
       totalCount: 80, 
       percentage: 40,
       showGraph: false,
-      icon: 'project_icon.png' 
+      icon: 'objectives_icon.png' 
     },
     { 
-      title: 'Objectives', 
+      title: 'Key Results', 
       activeCount: 21, 
       totalCount: 35, 
       percentage: 60,
       showGraph: false,
-      icon: 'objectives_icon.png' 
+      icon: 'key_result_icon.png' 
     },
     { 
       title: 'Tasks', 
