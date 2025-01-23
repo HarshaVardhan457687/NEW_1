@@ -4,10 +4,7 @@
     <img *ngIf="icon" [src]="'assets/' + icon" alt="icon" class="card-icon">
   </div>
   <div class="card-content">
-    <ng-container *ngIf="showGraph">
-      <img src="assets/line_graph.png" alt="Progress Graph" class="progress-graph">
-    </ng-container>
-    <ng-container *ngIf="!showGraph">
+    <ng-container>
       <app-progress-bar-circular [percentage]="percentage"></app-progress-bar-circular>
       <div class="counts">
         <div class="active">
