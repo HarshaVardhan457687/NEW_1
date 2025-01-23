@@ -1,0 +1,88 @@
+.project-card {
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 1.25rem;
+  }
+
+  .project-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      img {
+        width: 16px;
+        height: 16px;
+        object-fit: contain;
+      }
+
+      span {
+        font-size: 14px;
+        color: #6B7280;
+      }
+    }
+  }
+
+  .progress-section {
+    margin-bottom: 1.5rem;
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+
+      span {
+        font-size: 14px;
+        color: #6B7280;
+      }
+    }
+  }
+
+  .team-lead {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .lead-info {
+      display: flex;
+      flex-direction: column;
+
+      .label {
+        font-size: 12px;
+        color: #6B7280;
+      }
+
+      .name {
+        font-size: 14px;
+        color: #111827;
+        font-weight: 500;
+      }
+    }
+  }
+}
