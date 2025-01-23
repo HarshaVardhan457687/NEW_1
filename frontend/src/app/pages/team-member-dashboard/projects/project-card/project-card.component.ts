@@ -17,13 +17,21 @@ export class ProjectCardComponent {
   @Input() role: string = '';
   @Input() progress: number = 0;
   @Input() teamLead: string = '';
+  @Input() status: 'In Progress' | 'Completed' = 'In Progress';
+  @Input() priority: 'High' | 'Medium' | 'Low' = 'Medium';
 
   constructor(private router: Router) {}
 
   get statusClass(): string {
-    if (this.progress >= 70) return 'status-green';
-    if (this.progress < 20) return 'status-blue';
-    return 'status-red';
+    return this.status === 'Completed' ? 'status-green' : 'status-blue';
+  }
+
+  get priorityClass(): string {
+    switch(this.priority) {
+      case 'High': return 'priority-high';
+      case 'Low': return 'priority-low';
+      default: return 'priority-medium';
+    }
   }
 
   navigateToConstruction() {
