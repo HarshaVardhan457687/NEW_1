@@ -36,7 +36,11 @@
     color: #6B7280;
     margin: 0;
     line-height: 1.6;
-    padding: 0 1rem;
+    width: 90%;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   button {
@@ -49,7 +53,7 @@
     font-weight: 500;
     cursor: pointer;
     transition: background 0.2s ease;
-    margin-top: 0.5rem;
+    margin-top: auto;
 
     &:hover {
       background: #1D4ED8;
