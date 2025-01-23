@@ -3,8 +3,8 @@
     <div class="welcome-text">Welcome back, John Doe</div>
     
     <div class="nav-buttons">
-      <button class="nav-button dashboard" [class.highlighted]="isHighlighted('dashboard')" routerLink="/dashboard">Dashboard</button>
-      <button class="nav-button projects" [class.highlighted]="isHighlighted('projects')" (click)="navigateToUnderConstruction()">Projects</button>
+      <button class="nav-button dashboard" [class.highlighted]="isHighlighted('dashboard')" routerLink="/team-member-dashboard">Dashboard</button>
+      <button class="nav-button projects" [class.highlighted]="isHighlighted('projects')" (click)="setActiveTab('projects')">Projects</button>
     </div>
 
     <div class="nav-icons">
