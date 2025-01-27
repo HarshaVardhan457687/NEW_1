@@ -6,7 +6,7 @@
       <span class="priority-badge" [class]="priorityClass">{{priority}}</span>
     </div>
   </div>
-  
+
   <div class="card-content">
     <div class="project-details">
       <div class="detail-item">
@@ -15,7 +15,7 @@
       </div>
       <div class="detail-item">
         <img src="assets/projects_team_icon.png" alt="Team size">
-        <span>{{teamSize}} Team members</span>
+        <span>{{teamSize}} Teams</span>
       </div>
       <div class="detail-item">
         <img src="assets/projects_role_icon.png" alt="Role">
@@ -31,11 +31,11 @@
       <app-progress-bar-linear [progress]="progress" [color]="statusClass"></app-progress-bar-linear>
     </div>
 
-    <div class="team-lead">
+    <div class="project-manager">
       <img src="assets/default_profile.png" alt="Team Lead">
       <div class="lead-info">
-        <span class="label">Team Lead</span>
-        <span class="name">{{teamLead}}</span>
+        <span class="label">Project Manager</span>
+        <span class="name">{{projectManager}}</span>
       </div>
     </div>
   </div>

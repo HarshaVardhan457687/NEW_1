@@ -18,7 +18,7 @@ export class ProjectsComponent {
       teamSize: 8,
       role: 'UI/UX Lead',
       progress: 75,
-      teamLead: 'Sarah Johnson',
+      projectManager: 'Sarah Johnson',
       status: 'In Progress',
       priority: 'High'
     },
@@ -28,7 +28,7 @@ export class ProjectsComponent {
       teamSize: 12,
       role: 'Frontend Developer',
       progress: 45,
-      teamLead: 'Michael Chen',
+      projectManager: 'Michael Chen',
       status: 'In Progress',
       priority: 'Medium'
     },
@@ -38,7 +38,7 @@ export class ProjectsComponent {
       teamSize: 6,
       role: 'Developer',
       progress: 100,
-      teamLead: 'Emily Brown',
+      projectManager: 'Emily Brown',
       status: 'Completed',
       priority: 'Low'
     },
@@ -48,7 +48,7 @@ export class ProjectsComponent {
       teamSize: 10,
       role: 'Frontend Lead',
       progress: 60,
-      teamLead: 'David Wilson',
+      projectManager: 'David Wilson',
       status: 'In Progress',
       priority: 'High'
     },
@@ -58,7 +58,7 @@ export class ProjectsComponent {
       teamSize: 5,
       role: 'UI Developer',
       progress: 30,
-      teamLead: 'Lisa Anderson',
+      projectManager: 'Lisa Anderson',
       status: 'In Progress',
       priority: 'Medium'
     },
@@ -68,7 +68,7 @@ export class ProjectsComponent {
       teamSize: 7,
       role: 'Backend Developer',
       progress: 90,
-      teamLead: 'James Taylor',
+      projectManager: 'James Taylor',
       status: 'Completed',
       priority: 'High'
     },
@@ -78,7 +78,7 @@ export class ProjectsComponent {
       teamSize: 4,
       role: 'Security Analyst',
       progress: 20,
-      teamLead: 'Robert Martin',
+      projectManager: 'Robert Martin',
       status: 'In Progress',
       priority: 'High'
     },
@@ -88,7 +88,7 @@ export class ProjectsComponent {
       teamSize: 6,
       role: 'Full Stack Developer',
       progress: 55,
-      teamLead: 'Emma Davis',
+      projectManager: 'Emma Davis',
       status: 'In Progress',
       priority: 'Medium'
     },
@@ -98,7 +98,7 @@ export class ProjectsComponent {
       teamSize: 9,
       role: 'UI/UX Designer',
       progress: 40,
-      teamLead: 'Sophie Wilson',
+      projectManager: 'Sophie Wilson',
       status: 'In Progress',
       priority: 'Low'
     },
@@ -108,7 +108,7 @@ export class ProjectsComponent {
       teamSize: 11,
       role: 'Cloud Engineer',
       progress: 85,
-      teamLead: 'Alex Thompson',
+      projectManager: 'Alex Thompson',
       status: 'Completed',
       priority: 'High'
     },
@@ -118,7 +118,7 @@ export class ProjectsComponent {
       teamSize: 8,
       role: 'ML Engineer',
       progress: 25,
-      teamLead: 'Ryan Cooper',
+      projectManager: 'Ryan Cooper',
       status: 'In Progress',
       priority: 'Medium'
     },
@@ -128,7 +128,7 @@ export class ProjectsComponent {
       teamSize: 5,
       role: 'Backend Developer',
       progress: 70,
-      teamLead: 'Oliver White',
+      projectManager: 'Oliver White',
       status: 'In Progress',
       priority: 'High'
     },
@@ -138,7 +138,7 @@ export class ProjectsComponent {
       teamSize: 4,
       role: 'Security Engineer',
       progress: 95,
-      teamLead: 'Isabella Gray',
+      projectManager: 'Isabella Gray',
       status: 'Completed',
       priority: 'High'
     },
@@ -148,7 +148,7 @@ export class ProjectsComponent {
       teamSize: 7,
       role: 'Full Stack Developer',
       progress: 35,
-      teamLead: 'William Clark',
+      projectManager: 'William Clark',
       status: 'In Progress',
       priority: 'Medium'
     },
@@ -158,7 +158,7 @@ export class ProjectsComponent {
       teamSize: 6,
       role: 'Backend Lead',
       progress: 50,
-      teamLead: 'Sophia Lee',
+      projectManager: 'Sophia Lee',
       status: 'In Progress',
       priority: 'High'
     },
@@ -168,7 +168,7 @@ export class ProjectsComponent {
       teamSize: 8,
       role: 'Frontend Developer',
       progress: 80,
-      teamLead: 'Daniel Brown',
+      projectManager: 'Daniel Brown',
       status: 'Completed',
       priority: 'Low'
     },
@@ -178,7 +178,7 @@ export class ProjectsComponent {
       teamSize: 5,
       role: 'DevOps Engineer',
       progress: 65,
-      teamLead: 'Lucas Martinez',
+      projectManager: 'Lucas Martinez',
       status: 'In Progress',
       priority: 'High'
     },
@@ -188,7 +188,7 @@ export class ProjectsComponent {
       teamSize: 9,
       role: 'Data Scientist',
       progress: 30,
-      teamLead: 'Ava Wilson',
+      projectManager: 'Ava Wilson',
       status: 'In Progress',
       priority: 'Medium'
     },
@@ -198,7 +198,7 @@ export class ProjectsComponent {
       teamSize: 12,
       role: 'System Architect',
       progress: 40,
-      teamLead: 'Ethan Anderson',
+      projectManager: 'Ethan Anderson',
       status: 'In Progress',
       priority: 'High'
     },
@@ -208,9 +208,10 @@ export class ProjectsComponent {
       teamSize: 6,
       role: 'QA Lead',
       progress: 90,
-      teamLead: 'Mia Taylor',
+      projectManager: 'Mia Taylor',
       status: 'Completed',
       priority: 'Medium'
     }
   ] as const;
+
 }

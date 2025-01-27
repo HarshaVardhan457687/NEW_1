@@ -16,7 +16,7 @@ export class ProjectCardComponent {
   @Input() teamSize: number = 0;
   @Input() role: string = '';
   @Input() progress: number = 0;
-  @Input() teamLead: string = '';
+  @Input() projectManager: string = '';
   @Input() status: 'In Progress' | 'Completed' = 'In Progress';
   @Input() priority: 'High' | 'Medium' | 'Low' = 'Medium';
 
