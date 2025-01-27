@@ -1,0 +1,74 @@
+{
+    "users": [
+      {
+        "id": 1,
+        "name": "Sarah Johnson",
+        "role": "Project Manager"
+      },
+      {
+        "id": 2,
+        "name": "Michael Chen",
+        "role": "Project Manager"
+      }
+    ],
+  
+    "projects": [
+      {
+        "id": 1,
+        "title": "Website Redesign",
+        "dueDate": "Mar 15, 2025",
+        "teamSize": 8,
+        "role": "UI/UX Lead",
+        "progress": 75,
+        "projectManagerId": 1,
+        "status": "In Progress",
+        "priority": "High"
+      },
+      {
+        "id": 2,
+        "title": "Mobile App Development",
+        "dueDate": "Apr 20, 2025",
+        "teamSize": 12,
+        "role": "Frontend Developer",
+        "progress": 45,
+        "projectManagerId": 2,
+        "status": "In Progress",
+        "priority": "Medium"
+      }
+    ],
+  
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Update OKR documentation",
+        "dueDate": "Mar 15, 2025",
+        "tag": "Documentation",
+        "projectId": 1,
+        "priority": "High Priority"
+      },
+      {
+        "id": 2,
+        "title": "Review Q1 Objectives",
+        "dueDate": "Mar 20, 2025",
+        "tag": "Planning",
+        "projectId": 2,
+        "priority": "Low Priority"
+      }
+    ],
+  
+    "activeProjects": [
+      {
+        "id": 1,
+        "name": "Project Alpha",
+        "objectives": 4,
+        "progress": 75
+      },
+      {
+        "id": 2,
+        "name": "Project Beta",
+        "objectives": 6,
+        "progress": 45
+      }
+    ]
+  }
+  
