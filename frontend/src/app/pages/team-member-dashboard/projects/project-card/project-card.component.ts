@@ -36,6 +36,7 @@ export class ProjectCardComponent {
   }
 
   navigateToConstruction() {
+    console.log('Navigating to project:', this.id); // Debug log
     this.router.navigate(['/projects', this.id]);
   }
 }
