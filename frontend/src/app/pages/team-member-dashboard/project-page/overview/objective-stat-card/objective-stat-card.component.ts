@@ -1,11 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+export interface ObjectiveStatus {
+  total: number;
+  completed: number;
+  inProgress: number;
+  notStarted: number;
+}
 
 @Component({
   selector: 'app-objective-stat-card',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './objective-stat-card.component.html',
-  styleUrl: './objective-stat-card.component.scss'
+  styleUrls: ['./objective-stat-card.component.scss']
 })
 export class ObjectiveStatCardComponent {
-
+  @Input() title!: string;
+  @Input() value!: number;
+  @Input() color!: string;
 }

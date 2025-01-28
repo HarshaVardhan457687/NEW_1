@@ -1,0 +1,38 @@
+.stat-card {
+  box-sizing: border-box;
+  background: #FFFFFF;
+  box-shadow: 0px 1.2px 2.4px rgba(0, 0, 0, 0.05);
+  border-radius: 14px;
+  padding: 1.25rem;
+  height: 112.32px;
+  width: 100%;
+  position: relative;
+}
+
+.stat-title {
+  font-size: 14px;
+  line-height: 17px;
+  color: #6B7280;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 24.5071px;
+  line-height: 30px;
+  font-weight: 700;
+  color: #1F2937;
+}
+
+// Container for all cards
+:host-context(.objective-stats-container) {
+  display: flex;
+  width: 100%;
+  padding: 32.68px;
+  gap: 20px;
+}
+
+// Each card wrapper
+:host {
+  flex: 1;
+  min-width: 0;
+}

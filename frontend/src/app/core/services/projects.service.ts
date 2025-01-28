@@ -27,6 +27,7 @@ export interface ProjectWithManager {
   progress: number;
   dueDate: string;
   role: string;
+  objectives: number;
 }
 
 @Injectable({
@@ -70,7 +71,8 @@ export class ProjectService {
               priority: project.priority,
               progress: project.progress,
               dueDate: project.dueDate,
-              role: project.role
+              role: project.role,
+              objectives: project.objectives
             }))
           )
         );
@@ -92,7 +94,8 @@ export class ProjectService {
             priority: project.priority,
             progress: project.progress,
             dueDate: project.dueDate,
-            role: project.role
+            role: project.role,
+            objectives: project.objectives
           }))
         )
       )
@@ -113,7 +116,8 @@ export class ProjectService {
               priority: project.priority,
               progress: project.progress,
               dueDate: project.dueDate,
-              role: project.role
+              role: project.role,
+              objectives: project.objectives
             }))
           )
         );

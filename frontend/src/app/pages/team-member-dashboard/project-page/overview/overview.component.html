@@ -3,5 +3,30 @@
     *ngIf="project"
     [project]="project">
   </app-project-title-card>
-  <!-- Other overview content will go here -->
+
+  <div class="objective-stats-row">
+    <app-objective-stat-card
+      title="Total Objectives"
+      [value]="objectiveStats.total"
+      color="#6B7280">
+    </app-objective-stat-card>
+
+    <app-objective-stat-card
+      title="Completed"
+      [value]="objectiveStats.completed"
+      color="#10B981">
+    </app-objective-stat-card>
+
+    <app-objective-stat-card
+      title="In Progress"
+      [value]="objectiveStats.inProgress"
+      color="#F59E0B">
+    </app-objective-stat-card>
+
+    <app-objective-stat-card
+      title="Not Started"
+      [value]="objectiveStats.notStarted"
+      color="#EF4444">
+    </app-objective-stat-card>
+  </div>
 </div> 
