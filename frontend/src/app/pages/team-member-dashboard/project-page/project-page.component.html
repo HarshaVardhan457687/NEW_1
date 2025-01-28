@@ -1,4 +1,7 @@
 <app-navbar [projectTitle]="projectTitle"></app-navbar>
 <div class="project-page-container">
-  <!-- Project details will go here -->
+  <app-side-bar [selectedTab]="'overview'"></app-side-bar>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
 </div>

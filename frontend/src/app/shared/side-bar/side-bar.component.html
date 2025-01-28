@@ -1,1 +1,9 @@
-<p>side-bar works!</p>
+<div class="sidebar">
+  <app-side-tab
+    *ngFor="let tab of tabs"
+    [icon]="tab.icon"
+    [label]="tab.label"
+    [route]="tab.route"
+    [isSelected]="selectedTab === tab.id">
+  </app-side-tab>
+</div>

@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { NavbarComponent } from '../../../shared/navbar/navbar.component';
+import { SideBarComponent } from '../../../shared/side-bar/side-bar.component';
 import { ProjectService } from '../../../core/services/projects.service';
 
 @Component({
   selector: 'app-project-page',
   standalone: true,
-  imports: [CommonModule, NavbarComponent],
+  imports: [CommonModule, NavbarComponent, SideBarComponent, RouterModule],
   templateUrl: './project-page.component.html',
   styleUrl: './project-page.component.scss'
 })

@@ -1,1 +1,4 @@
-<p>side-tab works!</p>
+<div class="side-tab" [class.selected]="isSelected" [routerLink]="route">
+  <img [src]="'assets/' + icon" [alt]="label">
+  <span>{{label}}</span>
+</div>

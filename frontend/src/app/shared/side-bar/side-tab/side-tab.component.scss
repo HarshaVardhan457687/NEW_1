@@ -1,0 +1,37 @@
+.side-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+
+  img {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0%);
+  }
+
+  span {
+    color: #000000;
+    font-size: 0.875rem;
+  }
+
+  &:hover {
+    background-color: #F3F4F6;
+  }
+
+  &.selected {
+    background-color: #EEF2FF;
+
+    img {
+      filter: invert(32%) sepia(95%) saturate(1946%) hue-rotate(216deg) brightness(97%) contrast(85%);
+    }
+
+    span {
+      color: #2563EB;
+      font-weight: 500;
+    }
+  }
+}
