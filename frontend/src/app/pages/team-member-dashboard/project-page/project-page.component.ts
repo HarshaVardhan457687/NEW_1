@@ -11,13 +11,14 @@ import { ProjectWithManager } from '../../../core/services/projects.service';
   standalone: true,
   imports: [CommonModule, NavbarComponent, SideBarComponent, RouterModule],
   templateUrl: './project-page.component.html',
-  styleUrl: './project-page.component.scss'
+  styleUrls: ['./project-page.component.scss']
 })
 export class ProjectPageComponent implements OnInit {
   projectTitle: string = '';
   project?: ProjectWithManager;
   isLoading: boolean = true;
   error?: string;
+  selectedTab: string = 'overview';
 
   constructor(
     private route: ActivatedRoute,
@@ -56,5 +57,25 @@ export class ProjectPageComponent implements OnInit {
         this.isLoading = false;
       }
     });
+
+    // Update selected tab based on URL
+    this.route.url.subscribe(() => {
+      const segments = this.router.url.split('/');
+      const lastSegment = segments[segments.length - 1];
+      this.selectedTab = lastSegment === 'my-team' ? 'my-team' : lastSegment;
+    });
+  }
+
+  onTabChange(tab: string) {
+    this.selectedTab = tab;
+    // Handle special case for my-team tab
+    const route = tab === 'my-team' ? 'my-team' : tab;
+    this.router.navigate([route], {
+      relativeTo: this.route
+    });
+  }
+
+  isActiveTab(tab: string): boolean {
+    return this.selectedTab === tab;
   }
 }

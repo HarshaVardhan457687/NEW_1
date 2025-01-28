@@ -1,6 +1,9 @@
 <app-navbar [projectTitle]="projectTitle"></app-navbar>
 <div class="project-page-container">
-  <app-side-bar [selectedTab]="'overview'"></app-side-bar>
+  <app-side-bar 
+    [selectedTab]="selectedTab"
+    (tabChange)="onTabChange($event)">
+  </app-side-bar>
   <div class="content">
     <ng-container *ngIf="!isLoading; else loading">
       <div *ngIf="error" class="error-message">

@@ -1,0 +1,153 @@
+.my-team-container {
+  margin: 1.5rem 0;
+  height: calc(100vh - 7rem); // Account for navbar and padding
+  background: #FFFFFF;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  .team-title {
+    padding: 1.5rem;
+    border-bottom: 1px solid #E5E7EB;
+
+    h2 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1.4rem;
+      line-height: 1.2;
+      color: #000000;
+      margin: 0;
+    }
+  }
+
+  .team-content-grid {
+    display: grid;
+    grid-template-columns: minmax(300px, 1.05fr) 1.95fr; // Adjusted ratio
+    gap: 2rem;
+    padding: 1.5rem;
+    height: calc(100% - 4.5rem); // Account for title height
+    min-height: 0; // Important for nested scrolling
+    overflow: hidden;
+
+    .team-info-column {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      min-height: 0; // Important for nested scrolling
+
+      .team-leader-section {
+        h3 {
+          font-size: 1.25rem;
+          font-weight: 500;
+          color: #000000;
+          margin-bottom: 1rem;
+        }
+      }
+
+      .team-progress-section {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        border: 1px solid #E5E7EB;
+
+        h3 {
+          font-size: 1.25rem;
+          font-weight: 500;
+          color: #000000;
+          margin-bottom: 1rem;
+        }
+
+        .progress-info {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 0.5rem;
+          font-size: 0.875rem;
+          color: #6B7280;
+        }
+      }
+
+      .team-overview-section {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        border: 1px solid #E5E7EB;
+      
+
+        h3 {
+          font-size: 1.25rem;
+          font-weight: 500;
+          color: #000000;
+          margin-bottom: 1rem;
+        }
+
+        .overview-stats {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+
+          .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: #F9FAFB;
+            border-radius: 0.375rem;
+
+            .stat-label {
+              color: #6B7280;
+              font-size: 0.875rem;
+            }
+
+            .stat-value {
+              color: #000000;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+
+    .team-members-column {
+      background: white;
+      border-radius: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 0; // Important for nested scrolling
+      overflow: hidden;
+      gap: 1rem;
+
+        h3 {
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: #000000;
+        padding-left: 1rem;
+        margin: 0;
+        }
+
+        app-team-member-section {
+          flex: 1;
+          overflow-y: auto;
+          
+         
+      
+      }
+    }
+  }
+}
+
+.loading-error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  
+  .loading, .error {
+    font-size: 1rem;
+    color: #6B7280;
+  }
+
+  .error {
+    color: #EF4444;
+  }
+}

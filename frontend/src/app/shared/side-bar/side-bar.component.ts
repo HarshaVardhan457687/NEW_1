@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SideTabComponent } from './side-tab/side-tab.component';
 
@@ -11,12 +11,17 @@ import { SideTabComponent } from './side-tab/side-tab.component';
 })
 export class SideBarComponent {
   @Input() selectedTab: string = 'overview';
+  @Output() tabChange = new EventEmitter<string>();
 
   tabs = [
     { icon: 'home_icon.svg', label: 'Overview', route: './overview', id: 'overview' },
-    { icon: 'team_icon.svg', label: 'My Team', route: '/construction', id: 'team' },
-    { icon: 'objectives_icon.svg', label: 'Objectives', route: '/construction', id: 'objectives' },
-    { icon: 'my_tasks_icon.svg', label: 'My Tasks', route: '/construction', id: 'tasks' },
-    { icon: 'calender_icon.svg', label: 'Calendar', route: '/construction', id: 'calendar' }
+    { icon: 'team_icon.svg', label: 'My Team', route: './my-team', id: 'my-team' },
+    { icon: 'objectives_icon.svg', label: 'Objectives', route: './objectives', id: 'objectives' },
+    { icon: 'my_tasks_icon.svg', label: 'My Tasks', route: './tasks', id: 'tasks' },
+    { icon: 'calender_icon.svg', label: 'Calendar', route: './calendar', id: 'calendar' }
   ];
+
+  onTabClick(tab: { id: string; route: string }) {
+    this.tabChange.emit(tab.id);
+  }
 }

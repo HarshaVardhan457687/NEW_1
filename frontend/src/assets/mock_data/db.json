@@ -481,6 +481,57 @@
         "projectId": 4,
         "priority": "Low Priority"
       }
+    ],
+  
+    "teams": [
+      {
+        "id": 1,
+        "name": "Product Development Team",
+        "progress": 75,
+        "teamLeader": {
+          "name": "Sarah Anderson",
+          "role": "Product Development",
+          "image": "pic1.png",
+          "progress": 92
+        },
+        "overview": {
+          "teamMembers": 33,
+          "objectives": "24/30",
+          "tasks": "49/60"
+        },
+        "members": [
+          {
+            "name": "Alex Kim",
+            "role": "Senior Developer",
+            "image": "pic2.png",
+            "progress": 90
+          },
+          {
+            "name": "Zou Jhon",
+            "role": "UX Designer",
+            "image": "pic3.png",
+            "progress": 80
+          },
+          {
+            "name": "Emily Chen",
+            "role": "Frontend Developer",
+            "image": "pic1.png",
+            "progress": 65
+          },
+          {
+            "name": "Michael Ross",
+            "role": "Senior Developer",
+            "image": "pic2.png",
+            "progress": 20
+          },
+          {
+            "name": "Sarah Lee",
+            "role": "QA Engineer",
+            "image": "pic3.png",
+            "progress": 75
+          }
+        ]
+      }
     ]
   }
   

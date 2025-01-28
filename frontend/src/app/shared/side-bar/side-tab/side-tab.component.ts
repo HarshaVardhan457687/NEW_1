@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -14,4 +14,9 @@ export class SideTabComponent {
   @Input() label: string = '';
   @Input() isSelected: boolean = false;
   @Input() route: string = '';
+  @Output() tabClick = new EventEmitter<void>();
+
+  onClick() {
+    this.tabClick.emit();
+  }
 }
