@@ -1,6 +1,6 @@
 .my-team-container {
   margin: 1.5rem 0;
-  height: calc(100vh - 5rem); // Account for navbar and padding
+  height: calc(100vh - 6rem); // Account for navbar and padding
   background: #FFFFFF;
   border-radius: 0.5rem;
   display: flex;
@@ -72,7 +72,7 @@
         padding: 1.5rem;
         border-radius: 0.5rem;
         border: 1px solid #E5E7EB;
-      
+
 
         h3 {
           font-size: 1.25rem;
@@ -128,9 +128,9 @@
         app-team-member-section {
           flex: 1;
           overflow-y: auto;
-          
-         
-      
+
+
+
         }
     }
   }
@@ -141,7 +141,7 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-  
+
   .loading, .error {
     font-size: 1rem;
     color: #6B7280;
