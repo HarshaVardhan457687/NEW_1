@@ -1,6 +1,6 @@
 <nav>
   <div class="nav-content">
-    <div class="welcome-text">Welcome back, John Doe</div>
+    <div class="welcome-text">{{ getWelcomeText() }}</div>
     
     <div class="nav-buttons">
       <button class="nav-button dashboard" [class.highlighted]="isHighlighted('dashboard')" routerLink="/team-member-dashboard">Dashboard</button>

@@ -19,6 +19,7 @@ export class ProjectCardComponent {
   @Input() projectManager: string = '';
   @Input() status: 'In Progress' | 'Completed' = 'In Progress';
   @Input() priority: 'High' | 'Medium' | 'Low' = 'Medium';
+  @Input() id: number = 0;
 
   constructor(private router: Router) {}
 
@@ -35,6 +36,6 @@ export class ProjectCardComponent {
   }
 
   navigateToConstruction() {
-    this.router.navigate(['/construction']);
+    this.router.navigate(['/projects', this.id]);
   }
 }

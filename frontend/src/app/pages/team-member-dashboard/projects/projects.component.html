@@ -3,6 +3,7 @@
   <div class="projects-grid">
     <app-project-card
       *ngFor="let project of projects"
+      [id]="project.id"
       [title]="project.title"
       [dueDate]="project.dueDate"
       [teamSize]="project.teamSize"

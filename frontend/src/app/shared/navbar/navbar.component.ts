@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
   host: { 'id': 'navbar-component' }
 })
 export class NavbarComponent implements OnInit {
+  @Input() projectTitle?: string;
   currentTab: 'dashboard' | 'projects' = 'dashboard';
 
   constructor(private router: Router) {}
@@ -40,5 +41,9 @@ export class NavbarComponent implements OnInit {
 
   navigateToUnderConstruction(): void {
     this.router.navigate(['/construction']);
+  }
+
+  getWelcomeText(): string {
+    return this.projectTitle || 'Welcome back, John Doe';
   }
 }
