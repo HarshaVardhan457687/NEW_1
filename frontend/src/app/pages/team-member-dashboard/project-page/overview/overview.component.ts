@@ -5,11 +5,21 @@ import { ProjectWithManager } from '../../../../core/services/projects.service';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../../../core/services/projects.service';
 import { ObjectiveStatCardComponent, ObjectiveStatus } from './objective-stat-card/objective-stat-card.component';
+import { TasksOverviewCardComponent } from './tasks-overview-card/tasks-overview-card.component';
+import { TimelineCardComponent } from './timeline-card/timeline-card.component';
+import { ProjectTeamCardComponent } from './project-team-card/project-team-card.component';
 
 @Component({
   selector: 'app-overview',
   standalone: true,
-  imports: [CommonModule, ProjectTitleCardComponent, ObjectiveStatCardComponent],
+  imports: [
+    CommonModule, 
+    ProjectTitleCardComponent, 
+    ObjectiveStatCardComponent,
+    TasksOverviewCardComponent,
+    TimelineCardComponent,
+    ProjectTeamCardComponent
+  ],
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
