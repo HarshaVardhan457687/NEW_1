@@ -9,6 +9,11 @@
         "id": 2,
         "name": "Michael Chen",
         "role": "Project Manager"
+      },
+      {
+        "id": 3,
+        "name": "Emily Davis",
+        "role": "Project Manager"
       }
     ],
   
@@ -19,10 +24,12 @@
         "dueDate": "Mar 15, 2025",
         "teamSize": 8,
         "role": "UI/UX Lead",
-        "progress": 75,
+        "progress": 85,
         "projectManagerId": 1,
         "status": "In Progress",
-        "priority": "High"
+        "priority": "High",
+        "active": true,
+        "objectives": 4
       },
       {
         "id": 2,
@@ -30,10 +37,246 @@
         "dueDate": "Apr 20, 2025",
         "teamSize": 12,
         "role": "Frontend Developer",
-        "progress": 45,
+        "progress": 15,
         "projectManagerId": 2,
         "status": "In Progress",
-        "priority": "Medium"
+        "priority": "Medium",
+        "active": true,
+        "objectives": 6
+      },
+      {
+        "id": 3,
+        "title": "Data Analytics Platform",
+        "dueDate": "May 30, 2025",
+        "teamSize": 10,
+        "role": "Backend Developer",
+        "progress": 92,
+        "projectManagerId": 3,
+        "status": "In Progress",
+        "priority": "High",
+        "active": true,
+        "objectives": 5
+      },
+      {
+        "id": 4,
+        "title": "Legacy System Migration",
+        "dueDate": "Feb 28, 2025",
+        "teamSize": 15,
+        "role": "System Architect",
+        "progress": 78,
+        "projectManagerId": 1,
+        "status": "In Progress",
+        "priority": "Medium",
+        "active": true,
+        "objectives": 8
+      },
+      {
+        "id": 5,
+        "title": "Cloud Infrastructure Setup",
+        "dueDate": "Jun 15, 2025",
+        "teamSize": 6,
+        "role": "DevOps Engineer",
+        "progress": 12,
+        "projectManagerId": 2,
+        "status": "In Progress",
+        "priority": "Low",
+        "active": true,
+        "objectives": 3
+      },
+      {
+        "id": 6,
+        "title": "AI Chatbot Implementation",
+        "dueDate": "Jul 30, 2025",
+        "teamSize": 7,
+        "role": "ML Engineer",
+        "progress": 45,
+        "projectManagerId": 3,
+        "status": "In Progress",
+        "priority": "High",
+        "active": true,
+        "objectives": 5
+      },
+      {
+        "id": 7,
+        "title": "E-commerce Platform",
+        "dueDate": "Aug 15, 2025",
+        "teamSize": 14,
+        "role": "Full Stack Developer",
+        "progress": 88,
+        "projectManagerId": 1,
+        "status": "In Progress",
+        "priority": "High",
+        "active": true,
+        "objectives": 7
+      },
+      {
+        "id": 8,
+        "title": "Security Audit System",
+        "dueDate": "Sep 1, 2025",
+        "teamSize": 5,
+        "role": "Security Engineer",
+        "progress": 8,
+        "projectManagerId": 2,
+        "status": "In Progress",
+        "priority": "Medium",
+        "active": true,
+        "objectives": 4
+      },
+      {
+        "id": 9,
+        "title": "CRM Integration",
+        "dueDate": "Oct 10, 2025",
+        "teamSize": 9,
+        "role": "Integration Specialist",
+        "progress": 82,
+        "projectManagerId": 3,
+        "status": "In Progress",
+        "priority": "Medium",
+        "active": true,
+        "objectives": 6
+      },
+      {
+        "id": 10,
+        "title": "Mobile Game Development",
+        "dueDate": "Nov 20, 2025",
+        "teamSize": 11,
+        "role": "Game Developer",
+        "progress": 35,
+        "projectManagerId": 1,
+        "status": "In Progress",
+        "priority": "Low",
+        "active": true,
+        "objectives": 5
+      },
+      {
+        "id": 11,
+        "title": "HR Management System",
+        "dueDate": "Dec 5, 2025",
+        "teamSize": 8,
+        "role": "Backend Developer",
+        "progress": 18,
+        "projectManagerId": 2,
+        "status": "In Progress",
+        "priority": "Medium",
+        "active": true,
+        "objectives": 4
+      },
+      {
+        "id": 12,
+        "title": "Inventory Management",
+        "dueDate": "Jan 15, 2026",
+        "teamSize": 6,
+        "role": "System Analyst",
+        "progress": 95,
+        "projectManagerId": 3,
+        "status": "In Progress",
+        "priority": "High",
+        "active": true,
+        "objectives": 3
+      },
+      {
+        "id": 13,
+        "title": "Payment Gateway Integration",
+        "dueDate": "Feb 28, 2026",
+        "teamSize": 4,
+        "role": "Integration Developer",
+        "progress": 42,
+        "projectManagerId": 1,
+        "status": "In Progress",
+        "priority": "High",
+        "active": true,
+        "objectives": 5
+      },
+      {
+        "id": 14,
+        "title": "Business Intelligence Dashboard",
+        "dueDate": "Mar 15, 2026",
+        "teamSize": 7,
+        "role": "Data Analyst",
+        "progress": 10,
+        "projectManagerId": 2,
+        "status": "In Progress",
+        "priority": "Medium",
+        "active": true,
+        "objectives": 6
+      },
+      {
+        "id": 15,
+        "title": "Customer Support Portal",
+        "dueDate": "Apr 30, 2026",
+        "teamSize": 9,
+        "role": "Frontend Developer",
+        "progress": 55,
+        "projectManagerId": 3,
+        "status": "In Progress",
+        "priority": "Medium",
+        "active": true,
+        "objectives": 4
+      },
+      {
+        "id": 16,
+        "title": "Blockchain Integration",
+        "dueDate": "May 15, 2026",
+        "teamSize": 8,
+        "role": "Blockchain Developer",
+        "progress": 75,
+        "projectManagerId": 1,
+        "status": "In Progress",
+        "priority": "High",
+        "active": true,
+        "objectives": 7
+      },
+      {
+        "id": 17,
+        "title": "IoT Platform Development",
+        "dueDate": "Jun 30, 2026",
+        "teamSize": 12,
+        "role": "IoT Developer",
+        "progress": 48,
+        "projectManagerId": 2,
+        "status": "In Progress",
+        "priority": "High",
+        "active": true,
+        "objectives": 8
+      },
+      {
+        "id": 18,
+        "title": "Content Management System",
+        "dueDate": "Jul 15, 2026",
+        "teamSize": 6,
+        "role": "Full Stack Developer",
+        "progress": 85,
+        "projectManagerId": 3,
+        "status": "In Progress",
+        "priority": "Medium",
+        "active": true,
+        "objectives": 5
+      },
+      {
+        "id": 19,
+        "title": "DevOps Pipeline Automation",
+        "dueDate": "Aug 30, 2026",
+        "teamSize": 5,
+        "role": "DevOps Engineer",
+        "progress": 32,
+        "projectManagerId": 1,
+        "status": "In Progress",
+        "priority": "High",
+        "active": true,
+        "objectives": 4
+      },
+      {
+        "id": 20,
+        "title": "Data Warehouse Migration",
+        "dueDate": "Sep 15, 2026",
+        "teamSize": 10,
+        "role": "Data Engineer",
+        "progress": 5,
+        "projectManagerId": 2,
+        "status": "In Progress",
+        "priority": "Medium",
+        "active": true,
+        "objectives": 6
       }
     ],
   
@@ -53,21 +296,190 @@
         "tag": "Planning",
         "projectId": 2,
         "priority": "Low Priority"
-      }
-    ],
-  
-    "activeProjects": [
-      {
-        "id": 1,
-        "name": "Project Alpha",
-        "objectives": 4,
-        "progress": 75
       },
       {
-        "id": 2,
-        "name": "Project Beta",
-        "objectives": 6,
-        "progress": 45
+        "id": 3,
+        "title": "Database Schema Design",
+        "dueDate": "Apr 5, 2025",
+        "tag": "Development",
+        "projectId": 3,
+        "priority": "High Priority"
+      },
+      {
+        "id": 4,
+        "title": "API Integration Testing",
+        "dueDate": "Apr 10, 2025",
+        "tag": "Testing",
+        "projectId": 2,
+        "priority": "Medium Priority"
+      },
+      {
+        "id": 5,
+        "title": "UI Component Library",
+        "dueDate": "Mar 25, 2025",
+        "tag": "Development",
+        "projectId": 1,
+        "priority": "Medium Priority"
+      },
+      {
+        "id": 6,
+        "title": "Security Audit",
+        "dueDate": "Apr 15, 2025",
+        "tag": "Security",
+        "projectId": 5,
+        "priority": "High Priority"
+      },
+      {
+        "id": 7,
+        "title": "Implement Authentication",
+        "dueDate": "May 1, 2025",
+        "tag": "Development",
+        "projectId": 6,
+        "priority": "High Priority"
+      },
+      {
+        "id": 8,
+        "title": "User Interface Design",
+        "dueDate": "May 15, 2025",
+        "tag": "Design",
+        "projectId": 7,
+        "priority": "Medium Priority"
+      },
+      {
+        "id": 9,
+        "title": "Performance Testing",
+        "dueDate": "Jun 1, 2025",
+        "tag": "Testing",
+        "projectId": 8,
+        "priority": "High Priority"
+      },
+      {
+        "id": 10,
+        "title": "Data Migration",
+        "dueDate": "Jun 15, 2025",
+        "tag": "Development",
+        "projectId": 9,
+        "priority": "High Priority"
+      },
+      {
+        "id": 11,
+        "title": "Code Review",
+        "dueDate": "Jul 1, 2025",
+        "tag": "Development",
+        "projectId": 10,
+        "priority": "Medium Priority"
+      },
+      {
+        "id": 12,
+        "title": "Documentation Update",
+        "dueDate": "Jul 15, 2025",
+        "tag": "Documentation",
+        "projectId": 11,
+        "priority": "Low Priority"
+      },
+      {
+        "id": 13,
+        "title": "Bug Fixing",
+        "dueDate": "Aug 1, 2025",
+        "tag": "Development",
+        "projectId": 12,
+        "priority": "High Priority"
+      },
+      {
+        "id": 14,
+        "title": "User Acceptance Testing",
+        "dueDate": "Aug 15, 2025",
+        "tag": "Testing",
+        "projectId": 13,
+        "priority": "High Priority"
+      },
+      {
+        "id": 15,
+        "title": "Database Optimization",
+        "dueDate": "Sep 1, 2025",
+        "tag": "Development",
+        "projectId": 14,
+        "priority": "Medium Priority"
+      },
+      {
+        "id": 16,
+        "title": "API Documentation",
+        "dueDate": "Sep 15, 2025",
+        "tag": "Documentation",
+        "projectId": 15,
+        "priority": "Low Priority"
+      },
+      {
+        "id": 17,
+        "title": "Security Testing",
+        "dueDate": "Oct 1, 2025",
+        "tag": "Security",
+        "projectId": 16,
+        "priority": "High Priority"
+      },
+      {
+        "id": 18,
+        "title": "UI/UX Review",
+        "dueDate": "Oct 15, 2025",
+        "tag": "Design",
+        "projectId": 17,
+        "priority": "Medium Priority"
+      },
+      {
+        "id": 19,
+        "title": "Code Deployment",
+        "dueDate": "Nov 1, 2025",
+        "tag": "DevOps",
+        "projectId": 18,
+        "priority": "High Priority"
+      },
+      {
+        "id": 20,
+        "title": "Performance Optimization",
+        "dueDate": "Nov 15, 2025",
+        "tag": "Development",
+        "projectId": 19,
+        "priority": "Medium Priority"
+      },
+      {
+        "id": 21,
+        "title": "Integration Testing",
+        "dueDate": "Dec 1, 2025",
+        "tag": "Testing",
+        "projectId": 20,
+        "priority": "High Priority"
+      },
+      {
+        "id": 22,
+        "title": "User Training",
+        "dueDate": "Dec 15, 2025",
+        "tag": "Training",
+        "projectId": 1,
+        "priority": "Medium Priority"
+      },
+      {
+        "id": 23,
+        "title": "System Architecture Review",
+        "dueDate": "Jan 1, 2026",
+        "tag": "Planning",
+        "projectId": 2,
+        "priority": "High Priority"
+      },
+      {
+        "id": 24,
+        "title": "Load Testing",
+        "dueDate": "Jan 15, 2026",
+        "tag": "Testing",
+        "projectId": 3,
+        "priority": "Medium Priority"
+      },
+      {
+        "id": 25,
+        "title": "Final Documentation",
+        "dueDate": "Feb 1, 2026",
+        "tag": "Documentation",
+        "projectId": 4,
+        "priority": "Low Priority"
       }
     ]
   }
