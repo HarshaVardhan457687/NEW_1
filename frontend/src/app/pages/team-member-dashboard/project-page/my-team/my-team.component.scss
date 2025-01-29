@@ -1,11 +1,12 @@
 .my-team-container {
   margin: 1.5rem 0;
-  height: calc(100vh - 6rem); // Account for navbar and padding
-  background: #FFFFFF;
+  height: calc(100vh - 6rem); // Adjust for navbar and padding
+
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden; // Prevent extra scrolling
 
   .team-title {
     padding: 1.5rem;
@@ -27,14 +28,14 @@
     gap: 2rem;
     padding: 1.5rem;
     height: calc(100% - 4.5rem); // Account for title height
-    min-height: 0; // Important for nested scrolling
-    overflow: hidden;
+    min-height: 0;
+    overflow: hidden; // Prevent scrollbars
 
     .team-info-column {
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      min-height: 0; // Important for nested scrolling
+      min-height: 0; // Prevents unnecessary scrolling
 
       .team-leader-section {
         h3 {
@@ -45,11 +46,13 @@
         }
       }
 
-      .team-progress-section {
+      .team-progress-section,
+      .team-overview-section {
         background: white;
         padding: 1.5rem;
         border-radius: 0.5rem;
         border: 1px solid #E5E7EB;
+        overflow: hidden; // Prevent unwanted scrollbars
 
         h3 {
           font-size: 1.25rem;
@@ -64,21 +67,6 @@
           margin-bottom: 0.5rem;
           font-size: 0.875rem;
           color: #6B7280;
-        }
-      }
-
-      .team-overview-section {
-        background: white;
-        padding: 1.5rem;
-        border-radius: 0.5rem;
-        border: 1px solid #E5E7EB;
-
-
-        h3 {
-          font-size: 1.25rem;
-          font-weight: 500;
-          color: #000000;
-          margin-bottom: 1rem;
         }
 
         .overview-stats {
@@ -109,29 +97,28 @@
     }
 
     .team-members-column {
-      background: white;
+
       border-radius: 0.5rem;
       display: flex;
       flex-direction: column;
-      min-height: 0; // Important for nested scrolling
+      min-height: 0;
       overflow: hidden;
       gap: 1rem;
 
-        h3 {
+      h3 {
         font-size: 1.25rem;
         font-weight: 500;
         color: #000000;
         padding-left: 1rem;
         margin: 0;
-        }
+      }
 
-        app-team-member-section {
-          flex: 1;
-          overflow-y: auto;
-
-
-
-        }
+      app-team-member-section {
+        flex: 1;
+        overflow-y: auto; // Allows scrolling only when needed
+        min-height: 0;
+        overflow-y: overlay; // Hides scrollbar when not needed
+      }
     }
   }
 }
