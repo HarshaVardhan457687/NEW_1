@@ -1,10 +1,12 @@
 .my-team-container {
-  padding-top: 1.5rem;
+  margin-top: 1.5rem;
   height: calc(100vh - 40px);
   border-radius: 0.5rem;
+  background-color: white;
   display: flex;
   flex-direction: column;
   overflow: hidden; 
+
 
   .team-title {
     padding: 1.5rem;
