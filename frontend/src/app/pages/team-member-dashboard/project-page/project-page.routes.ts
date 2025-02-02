@@ -3,6 +3,7 @@ import { ProjectPageComponent } from './project-page.component';
 import { OverviewComponent } from './overview/overview.component';
 import { MyTeamComponent } from './my-team/my-team.component';
 import { UnderConstructionComponent } from '../../../pages/under-construction/under-construction.component';
+import { ObjectivesPageComponent } from './objectives-page/objectives-page.component';
 
 export const PROJECT_ROUTES: Routes = [
   {
@@ -20,7 +21,7 @@ export const PROJECT_ROUTES: Routes = [
       },
       {
         path: 'objectives',
-        component: UnderConstructionComponent
+        component: ObjectivesPageComponent
       },
       {
         path: 'tasks',

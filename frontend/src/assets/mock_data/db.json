@@ -532,6 +532,146 @@
           }
         ]
       }
+    ],
+    "objectives": [
+      {
+        "id": 1,
+        "projectId": 1,
+        "title": "Increase User Engagement",
+        "description": "Improve overall user engagement metrics across the platform",
+        "progress": 75,
+        "status": "on_track",
+        "keyResults": [1, 2, 3]
+      },
+      {
+        "id": 2,
+        "projectId": 1,
+        "title": "Enhance Platform Security",
+        "description": "Implement robust security measures and achieve compliance standards",
+        "progress": 40,
+        "status": "at_risk",
+        "keyResults": [4, 5]
+      },
+      {
+        "id": 3,
+        "projectId": 1,
+        "title": "Optimize Performance",
+        "description": "Improve application performance and reduce load times",
+        "progress": 100,
+        "status": "completed",
+        "keyResults": [6, 7, 8]
+      },
+      {
+        "id": 4,
+        "projectId": 1,
+        "title": "Expand Market Reach",
+        "description": "Increase market presence and user acquisition",
+        "progress": 20,
+        "status": "at_risk",
+        "keyResults": [9, 10]
+      }
+    ],
+    "keyResults": [
+      {
+        "id": 1,
+        "objectiveId": 1,
+        "title": "Increase DAU from 10k to 15k",
+        "owner": "Sarah Johnson",
+        "priority": "high",
+        "status": "completed",
+        "progress": 75,
+        "timeline": "2024-03-31"
+      },
+      {
+        "id": 2,
+        "objectiveId": 1,
+        "title": "Increase avg session by 5 min",
+        "owner": "Mike Chen",
+        "priority": "medium",
+        "status": "in_progress",
+        "progress": 50,
+        "timeline": "2024-03-15"
+      },
+      {
+        "id": 3,
+        "objectiveId": 1,
+        "title": "Reduce bounce rate to 35%",
+        "owner": "Emily Brown",
+        "priority": "high",
+        "status": "completed",
+        "progress": 100,
+        "timeline": "2024-02-28"
+      },
+      {
+        "id": 4,
+        "objectiveId": 2,
+        "title": "Deploy 2FA for 100% users",
+        "owner": "John Doe",
+        "priority": "high",
+        "status": "in_progress",
+        "progress": 45,
+        "timeline": "2024-04-15"
+      },
+      {
+        "id": 5,
+        "objectiveId": 2,
+        "title": "Pass 85% SOC 2 controls",
+        "owner": "Lisa Anderson",
+        "priority": "high",
+        "status": "not_started",
+        "progress": 0,
+        "timeline": "2024-06-30"
+      },
+      {
+        "id": 6,
+        "objectiveId": 3,
+        "title": "Load time under 2 seconds",
+        "owner": "David Wilson",
+        "priority": "high",
+        "status": "completed",
+        "progress": 100,
+        "timeline": "2024-01-31"
+      },
+      {
+        "id": 7,
+        "objectiveId": 3,
+        "title": "Cache hit rate to 95%",
+        "owner": "Sarah Johnson",
+        "priority": "medium",
+        "status": "completed",
+        "progress": 100,
+        "timeline": "2024-01-15"
+      },
+      {
+        "id": 8,
+        "objectiveId": 3,
+        "title": "Query time under 100ms",
+        "owner": "Mike Chen",
+        "priority": "high",
+        "status": "completed",
+        "progress": 100,
+        "timeline": "2024-01-31"
+      },
+      {
+        "id": 9,
+        "objectiveId": 4,
+        "title": "Launch in 3 new regions",
+        "owner": "Anna Smith",
+        "priority": "high",
+        "status": "in_progress",
+        "progress": 35,
+        "timeline": "2024-05-31"
+      },
+      {
+        "id": 10,
+        "objectiveId": 4,
+        "title": "Reach 100k signups Q2 2024",
+        "owner": "Emily Brown",
+        "priority": "medium",
+        "status": "not_started",
+        "progress": 0,
+        "timeline": "2024-06-30"
+      }
     ]
   }
   

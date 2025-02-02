@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SideTabComponent } from './side-tab/side-tab.component';
+import { SideTabComponent } from '../../../../shared/side-tab/side-tab.component';
 
 @Component({
   selector: 'app-side-bar',

@@ -4,7 +4,7 @@ import { ProjectTitleCardComponent } from './project-title-card/project-title-ca
 import { ProjectWithManager } from '../../../../core/services/projects.service';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../../../core/services/projects.service';
-import { ObjectiveStatCardComponent, ObjectiveStatus } from './objective-stat-card/objective-stat-card.component';
+import { ObjectiveStatCardComponent, ObjectiveStatus } from '../../../../shared/objective-stat-card/objective-stat-card.component';
 import { TasksOverviewCardComponent } from './tasks-overview-card/tasks-overview-card.component';
 import { TimelineCardComponent } from './timeline-card/timeline-card.component';
 import { ProjectTeamCardComponent } from './project-team-card/project-team-card.component';

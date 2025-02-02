@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NavbarComponent } from '../../../shared/navbar/navbar.component';
-import { SideBarComponent } from '../../../shared/side-bar/side-bar.component';
+import { SideBarComponent } from './side-bar/side-bar.component';
 import { ProjectService } from '../../../core/services/projects.service';
 import { ProjectWithManager } from '../../../core/services/projects.service';
 
@@ -77,5 +77,9 @@ export class ProjectPageComponent implements OnInit {
 
   isActiveTab(tab: string): boolean {
     return this.selectedTab === tab;
+  }
+
+  get isTeamTabActive() {
+    return this.selectedTab === 'my-team';
   }
 }

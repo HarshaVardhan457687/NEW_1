@@ -17,12 +17,23 @@
     align-items: center;
     margin-bottom: 1.25rem;
 
+    // h3 {
+    //   font-size: 18px;
+    //   font-weight: 600;
+    //   color: #111827;
+    //   margin: 0;
+    // }
     h3 {
       font-size: 18px;
       font-weight: 600;
       color: #111827;
       margin: 0;
+      width: 150px; /* Set a fixed width (adjust as needed) */
+      white-space: nowrap; /* Prevents wrapping */
+      overflow: hidden; /* Hides overflow */
+      text-overflow: ellipsis; /* Adds "..." when text is too long */
     }
+    
 
     .status-priority {
       display: flex;

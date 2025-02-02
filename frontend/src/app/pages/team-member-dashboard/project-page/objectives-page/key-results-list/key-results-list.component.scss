@@ -1,0 +1,86 @@
+.key-results-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.column-headers {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  gap: 1rem;
+  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+
+  .header-title {
+    flex: 0 0 39%;
+    text-align: left;
+  }
+
+
+  .header-owner {
+    flex: 0 0 17.5%;
+    text-align: left;
+  }
+
+
+
+  .header-priority {
+    flex: 0 0 6.5%;
+    text-align: left;
+  }
+
+
+  .header-progress {
+    flex: 0 0 17%;
+    text-align: center;
+  }
+
+
+
+  .header-timeline {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+
+.key-results-container {
+  position: relative;
+  height: 160px; // Height for two key results (2 * 80px)
+  overflow: hidden;
+
+  .key-results-scroll {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+
+    /* Custom scrollbar styling */
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f3f4f6;
+      border-radius: 2px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 2px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #9ca3af;
+    }
+
+    /* Firefox scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f3f4f6;
+  }
+}

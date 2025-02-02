@@ -1,7 +1,31 @@
 .projects-container {
-  padding: 2rem;
+  padding: 75px 2rem 2rem;
   background: #F3F4F6;
-  min-height: calc(100vh - 56px);
+  height: 100vh;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    display: none;
+  }
+
+  &:hover::-webkit-scrollbar {
+    display: block;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #F3F4F6;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #D1D5DB;
+    border-radius: 3px;
+
+    &:hover {
+      background: #9CA3AF;
+    }
+  }
 
   h1 {
     font-size: 24px;
@@ -16,6 +40,7 @@
     gap: 1.5rem;
     max-width: 1600px;
     margin: 0 auto;
+    padding-bottom: 2rem;
   }
 }
 

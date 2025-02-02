@@ -7,44 +7,44 @@
 
     <!-- Second Row: Grid Layout -->
     <div class="team-content-grid">
-      <!-- First Column: Team Leader and Progress -->
+      <!-- First Column: Team Info -->
       <div class="team-info-column">
-        <!-- Team Leader Card -->
-        <div class="team-leader-section">
-          <h3>Team Leader</h3>
-          <app-team-leader-card
-            [name]="team.teamLeader.name"
-            [role]="team.teamLeader.role"
-            [image]="team.teamLeader.image"
-            [progress]="team.teamLeader.progress">
-          </app-team-leader-card>
-        </div>
-
-        <!-- Team Progress -->
-        <div class="team-progress-section">
-          <h3>Team Progress</h3>
-          <div class="progress-info">
-            <span>Overall Progress</span>
-            <span>{{ team.progress }}%</span>
+        <h3>Team Info</h3>
+        <div class="team-info-section">
+          <!-- Team Leader Card -->
+          <div class="team-leader-section">
+            <app-team-leader-card
+              [name]="team.teamLeader.name"
+              [image]="team.teamLeader.image">
+            </app-team-leader-card>
           </div>
-          <app-progress-bar-linear [progress]="team.progress" [color]="'status-blue'"></app-progress-bar-linear>
-        </div>
 
-        <!-- Team Overview -->
-        <div class="team-overview-section">
-          <h3>Overview</h3>
-          <div class="overview-stats">
-            <div class="stat-item">
-              <span class="stat-label">Total Members</span>
-              <span class="stat-value">{{ team.overview.teamMembers }}</span>
+          <!-- Team Progress -->
+          <div class="team-progress-section">
+            <h3>Team Progress</h3>
+            <div class="progress-info">
+              <span>Overall Progress</span>
+              <span>{{ team.progress }}%</span>
             </div>
-            <div class="stat-item">
-              <span class="stat-label">Objectives</span>
-              <span class="stat-value">{{ team.overview.objectives }}</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">Tasks</span>
-              <span class="stat-value">{{ team.overview.tasks }}</span>
+            <app-progress-bar-linear [progress]="team.progress" [color]="'status-blue'"></app-progress-bar-linear>
+          </div>
+
+          <!-- Team Overview -->
+          <div class="team-overview-section">
+            <h3>Overview</h3>
+            <div class="overview-stats">
+              <div class="stat-item">
+                <span class="stat-label">Total Members</span>
+                <span class="stat-value">{{ team.overview.teamMembers }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Objectives</span>
+                <span class="stat-value">{{ team.overview.objectives }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Tasks</span>
+                <span class="stat-value">{{ team.overview.tasks }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -52,8 +52,8 @@
 
       <!-- Second Column: Team Members Section -->
       <div class="team-members-column">
-          <h3>Team Members</h3>
-          <app-team-member-section [members]="team.members"></app-team-member-section>
+        <h3>Team Members</h3>
+        <app-team-member-section [members]="team.members"></app-team-member-section>
       </div>
     </div>
   </ng-container>

@@ -26,11 +26,16 @@
     }
 
     .cards-container {
-      display: grid;
-      grid-template-columns: repeat(3, 368px);
+      display: flex;
       gap: 2.5rem;
       justify-content: center;
       margin-bottom: 3rem;
+
+      app-role-selection-card {
+        flex: 1;
+        min-width: 0;
+        max-width: 368px;
+      }
     }
 
     .info-text {
@@ -54,15 +59,17 @@
   }
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1024px) {
   .role-selection-container .content .cards-container {
-    grid-template-columns: repeat(auto-fit, 368px);
-    justify-content: center;
-    gap: 2rem;
+    flex-wrap: wrap;
+    
+    app-role-selection-card {
+      flex: 0 1 calc(50% - 1.25rem);
+    }
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .role-selection-container {
     padding: 1rem;
     
@@ -70,8 +77,14 @@
       padding: 0 1rem;
       
       .cards-container {
-        grid-template-columns: 1fr;
+        flex-direction: column;
         gap: 1.5rem;
+        
+        app-role-selection-card {
+          flex: none;
+          width: 100%;
+          max-width: none;
+        }
       }
     }
   }
