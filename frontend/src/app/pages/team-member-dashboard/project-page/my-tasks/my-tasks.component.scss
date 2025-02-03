@@ -1,0 +1,18 @@
+.my-tasks-container {
+  padding: 1.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  .task-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    padding: 1rem 1rem 0 1rem;
+   
+   
+    border-radius: 0.5rem;
+ 
+  }
+}

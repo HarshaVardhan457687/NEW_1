@@ -1,0 +1,17 @@
+<div class="task-card">
+  <div class="task-content">
+    <div class="task-header">
+      <h3 class="task-title">{{ task.title }}</h3>
+      <button class="more-options">
+        <i class="fas fa-ellipsis-v"></i>
+      </button>
+    </div>
+    <div class="task-details">
+      <span class="project-tag">{{ task.tag }}</span>
+      <div class="task-meta">
+        <span class="due-date">Due: {{ task.dueDate }}</span>
+        <span class="status" [ngClass]="{'pending': true}">Pending</span>
+      </div>
+    </div>
+  </div>
+</div>
