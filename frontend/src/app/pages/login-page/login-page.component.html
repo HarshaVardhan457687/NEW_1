@@ -35,15 +35,15 @@
         </a>
       </div>
       <span>or use your account</span>
-      <input 
-        type="text" 
-        placeholder="Username" 
-        [(ngModel)]="loginEmail" 
+      <input
+        type="text"
+        placeholder="Username"
+        [(ngModel)]="loginEmail"
         name="email" />
-      <input 
-        type="password" 
-        placeholder="Password" 
-        [(ngModel)]="loginPassword" 
+      <input
+        type="password"
+        placeholder="Password"
+        [(ngModel)]="loginPassword"
         name="password" />
       <span class="error-message" *ngIf="errorMessage">{{ errorMessage }}</span>
       <a href="#">Forgot your password?</a>
@@ -58,7 +58,7 @@
         <button class="ghost" (click)="onSignInClick()">Sign In</button>
       </div>
       <div class="overlay-panel overlay-right">
-        <h1>Hello, Friend!</h1>
+        <h1>Welcome to AlignOKR!</h1>
         <p>Enter your personal details and start journey with us</p>
         <button class="ghost" (click)="onSignUpClick()">Sign Up</button>
       </div>
