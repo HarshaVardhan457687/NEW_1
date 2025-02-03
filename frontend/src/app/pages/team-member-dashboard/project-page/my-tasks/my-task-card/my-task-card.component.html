@@ -1,17 +1,24 @@
 <div class="task-card">
-  <div class="task-content">
-    <div class="task-header">
-      <h3 class="task-title">{{ task.title }}</h3>
-      <button class="more-options">
-        <i class="fas fa-ellipsis-v"></i>
-      </button>
-    </div>
-    <div class="task-details">
+  <div class="task-row title-row">
+    <h3 class="task-title">{{ task.title }}</h3>
+    <span class="status" [ngClass]="task.status">{{ task.status | titlecase }}</span>
+  </div>
+
+  <div class="task-row info-row">
+    <div class="left-info">
       <span class="project-tag">{{ task.tag }}</span>
-      <div class="task-meta">
-        <span class="due-date">Due: {{ task.dueDate }}</span>
-        <span class="status" [ngClass]="{'pending': true}">Pending</span>
-      </div>
+      <span class="priority" [class]="task.priority">{{ task.priority }}</span>
     </div>
+  </div>
+
+  <div class="task-row action-row">
+    <span class="due-date">Due: {{ task.dueDate }}</span>
+    <button 
+      class="submit-button" 
+      [class.submitted]="isSubmitted"
+      (click)="onSubmit()"
+      [disabled]="isSubmitted">
+      {{ isSubmitted ? 'Submitted' : 'Submit' }}
+    </button>
   </div>
 </div>
