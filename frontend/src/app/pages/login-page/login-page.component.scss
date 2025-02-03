@@ -1,10 +1,22 @@
+// Color variables
+$primary-color: #2563EB;
+$primary-dark: #1D4ED8;
+$error-color: #dc2626;
+$text-dark: #111827;
+$text-gray: #666;
+$text-light: #FFFFFF;
+$border-light: #DDDDDD;
+$background-gray: #f6f5f7;
+$input-background: #eee;
+$hover-gray: #f3f4f6;
+
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
 :host {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f6f5f7;
+  background: $background-gray;
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -34,9 +46,9 @@ a {
 
 button {
   border-radius: 20px;
-  border: 1px solid #2563EB;
-  background-color: #2563EB;
-  color: #FFFFFF;
+  border: 1px solid $primary-color;
+  background-color: $primary-color;
+  color: $text-light;
   font-size: 12px;
   font-weight: bold;
   padding: 12px 45px;
@@ -54,7 +66,7 @@ button {
 
   &.ghost {
     background-color: transparent;
-    border-color: #FFFFFF;
+    border-color: $text-light;
   }
 }
 
@@ -157,13 +169,13 @@ input {
 }
 
 .overlay {
-  background: #2563EB;
-  background: -webkit-linear-gradient(to right, #2563EB, #1D4ED8);
-  background: linear-gradient(to right, #2563EB, #1D4ED8);
+  background: $primary-color;
+  background: -webkit-linear-gradient(to right, $primary-color, $primary-dark);
+  background: linear-gradient(to right, $primary-color, $primary-dark);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 0 0;
-  color: #FFFFFF;
+  color: $text-light;
   position: relative;
   left: -100%;
   height: 100%;
@@ -200,7 +212,7 @@ input {
   margin: 20px 0;
 
   a {
-    border: 1px solid #DDDDDD;
+    border: 1px solid $border-light;
     border-radius: 50%;
     display: inline-flex;
     justify-content: center;
@@ -211,12 +223,12 @@ input {
     transition: all 0.3s ease;
 
     &:hover {
-      background-color: #f3f4f6;
+      background-color: $hover-gray;
     }
 
     i {
       font-size: 18px;
-      color: #666;
+      color: $text-gray;
     }
   }
 }
@@ -234,6 +246,6 @@ input {
 }
 
 .error-message {
-  color: #dc2626;
+  color: $error-color;
   margin-top: 8px;
 }
