@@ -1,0 +1,18 @@
+<app-navbar [dashboardType]="'team-manager'"></app-navbar>
+<div class="projects-container">
+  <div class="projects-grid">
+    <app-project-card
+      *ngFor="let project of projects"
+      [id]="project.id"
+      [title]="project.title"
+      [dueDate]="project.dueDate"
+      [teamSize]="project.teamSize"
+      [role]="project.role"
+      [progress]="project.progress"
+      [projectManager]="project.projectManager"
+      [status]="project.status"
+      [priority]="project.priority"
+      [dashboardType]="'team-manager'">
+    </app-project-card>
+  </div>
+</div>
