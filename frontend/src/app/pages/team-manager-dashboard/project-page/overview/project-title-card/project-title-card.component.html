@@ -1,0 +1,33 @@
+<div class="project-title-card">
+  <div class="card-content">
+    <div class="main-info">
+      <h1>{{ project.title }}</h1>
+      <div class="meta-container">
+        <div class="left-meta">
+          <span class="label">Project Manager:</span>
+          <span class="value">&nbsp;{{ project.projectManager }}</span>
+          <div class="status-tag" [class]="getStatusColor()">
+            {{ getStatus() }}
+          </div>
+          <div class="priority-tag" [class]="project.priority.toLowerCase()">
+            {{ project.priority }} Priority
+          </div>
+        </div>
+        <div class="right-meta">
+          <span class="due-date-label">Due Date</span>
+          <span class="due-date-value">{{ project.dueDate }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="progress-section">
+      <div class="progress-info">
+        <span class="progress-label">Overall Progress</span>
+        <span class="progress-percentage">{{ project.progress }}%</span>
+      </div>
+      <app-progress-bar-linear 
+        [progress]="project.progress"
+        [color]="getStatusColor()">
+      </app-progress-bar-linear>
+    </div>
+  </div>
+</div>

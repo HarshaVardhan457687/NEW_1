@@ -1,0 +1,24 @@
+<div class="team-member-card">
+  <!-- Row 1: Image and Name -->
+  <div class="card-row name-row">
+    <img [src]="'assets/' + image" [alt]="name" class="member-image">
+    <h3 class="member-name">{{ name }}</h3>
+  </div>
+  
+  <!-- Row 2: Role and Progress Text -->
+  <div class="card-row role-row">
+    <p class="member-role">{{ role }}</p>
+    <span class="progress-text">Progress: {{ progress }}%</span>
+  </div>
+  
+  <!-- Row 3: Progress Bar -->
+  <div class="card-row progress-row">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="progress"></div>
+    </div>
+  </div>
+  <button class="menu-button">
+    <i class="more-icon"></i>
+  </button>
+</div>
+

@@ -1,0 +1,92 @@
+.key-result-card {
+  display: flex;
+  align-items: center;
+  height: 80px;
+  padding: 1rem;
+  background: var(--surface-card);
+  border-radius: 6px;
+  border-bottom: 1px solid #E5E7EB;
+  gap: 1rem;
+  box-sizing: border-box;
+
+  .title {
+    flex: 0 0 39%;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1rem;
+  }
+
+  .owner-section {
+    flex: 0 0 18.2%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .owner-name {
+      color: var(--text-color-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 1rem;
+    }
+  }
+
+  .priority {
+    flex: 0 0 8%;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    text-transform: capitalize;
+    font-size: 0.875rem;
+    text-align: center;
+    white-space: nowrap;
+    align-items: center;
+
+    &.high {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    &.medium {
+      background: #fef3c7;
+      color: #d97706;
+    }
+
+    &.low {
+      background: #e0e7ff;
+      color: #4f46e5;
+    }
+  }
+
+  .progress-section {
+    flex: 0 0 17%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-left: 1rem;
+    app-progress-bar-linear {
+      flex: 1;
+    }
+
+    .progress-text {
+      min-width: 3rem;
+      color: var(--text-color-secondary);
+      font-size: 1rem;
+    }
+  }
+
+  .timeline {
+    flex: 1;
+    color: var(--text-color-secondary);
+    text-align: right;
+    font-size: 1rem;
+  }
+}

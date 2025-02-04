@@ -1,0 +1,71 @@
+<div class="my-team-container">
+  <ng-container *ngIf="!isLoading && !error && team; else loadingOrError">
+    <!-- First Row: Team Title -->
+    <div class="team-title">
+      <h2>{{ team.name }}</h2>
+    </div>
+
+    <!-- Second Row: Grid Layout -->
+    <div class="team-content-grid">
+      <!-- First Column: Team Info -->
+      <div class="team-info-column">
+        <h3>Team Info</h3>
+        <div class="team-info-section">
+          <!-- Team Leader Card -->
+          <div class="team-leader-section">
+            <app-team-leader-card
+              [name]="team.teamLeader.name"
+              [image]="team.teamLeader.image">
+            </app-team-leader-card>
+          </div>
+
+          <!-- Team Progress -->
+          <div class="team-progress-section">
+            <h3>Team Progress</h3>
+            <div class="progress-info">
+              <span>Overall Progress</span>
+              <span>{{ team.progress }}%</span>
+            </div>
+            <app-progress-bar-linear [progress]="team.progress" [color]="'status-blue'"></app-progress-bar-linear>
+          </div>
+
+          <!-- Team Overview -->
+          <div class="team-overview-section">
+            <h3>Overview</h3>
+            <div class="overview-stats">
+              <div class="stat-item">
+                <span class="stat-label">Total Members</span>
+                <span class="stat-value">{{ team.overview.teamMembers }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Objectives</span>
+                <span class="stat-value">{{ team.overview.objectives }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Tasks</span>
+                <span class="stat-value">{{ team.overview.tasks }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Second Column: Team Members Section -->
+      <div class="team-members-column">
+        <h3>Team Members</h3>
+        <app-team-member-section [members]="team.members"></app-team-member-section>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #loadingOrError>
+    <div class="loading-error-container">
+      <ng-container *ngIf="isLoading">
+        <div class="loading">Loading team data...</div>
+      </ng-container>
+      <ng-container *ngIf="error">
+        <div class="error">{{ error }}</div>
+      </ng-container>
+    </div>
+  </ng-template>
+</div>

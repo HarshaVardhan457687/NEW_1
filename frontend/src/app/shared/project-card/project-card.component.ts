@@ -20,7 +20,7 @@ export class ProjectCardComponent {
   @Input() status: 'In Progress' | 'Completed' = 'In Progress';
   @Input() priority: 'High' | 'Medium' | 'Low' = 'Medium';
   @Input() id: number = 0;
-  @Input() dashboardType: 'team-leader' | 'team-member' = 'team-member';
+  @Input() dashboardType: 'team-manager' | 'team-leader' | 'team-member' = 'team-member';
 
   constructor(private router: Router) {}
 
@@ -37,9 +37,17 @@ export class ProjectCardComponent {
   }
 
   navigateToConstruction() {
-    const basePath = this.dashboardType === 'team-leader' 
-      ? '/team-leader-dashboard'
-      : '/team-member-dashboard';
+    let basePath = '';
+    if (this.dashboardType === 'team-manager') {
+      basePath = '/team-manager-dashboard';
+    } else if (this.dashboardType === 'team-leader') {
+      basePath = '/team-leader-dashboard';
+    } else {
+      basePath = '/team-member-dashboard';
+    }
+  
     this.router.navigate([`${basePath}/projects/${this.id}`]);
   }
+  
+
 }

@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class NavbarComponent implements OnInit {
   @Input() projectTitle?: string;
-  @Input() dashboardType: 'team-leader' | 'team-member' = 'team-member';
+  @Input() dashboardType: 'team-leader' | 'team-member' | 'team-manager' = 'team-member';
   currentTab: 'dashboard' | 'projects' = 'dashboard';
 
   constructor(private router: Router) {}
@@ -34,13 +34,18 @@ export class NavbarComponent implements OnInit {
   setActiveTab(tab: 'dashboard' | 'projects'): void {
     this.currentTab = tab;
     if (tab === 'projects') {
-      const projectsPath = this.dashboardType === 'team-leader' 
+      const projectsPath = this.dashboardType === 'team-leader'
         ? '/team-leader-dashboard/projects'
+        : this.dashboardType === 'team-manager'
+        ? '/team-manager-dashboard/projects'
         : '/team-member-dashboard/projects';
       this.router.navigate([projectsPath]);
+
     } else {
       const dashboardPath = this.dashboardType === 'team-leader'
         ? '/team-leader-dashboard'
+        : this.dashboardType === 'team-manager'
+        ? '/team-manager-dashboard'
         : '/team-member-dashboard';
       this.router.navigate([dashboardPath]);
     }

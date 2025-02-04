@@ -1,0 +1,22 @@
+
+
+.project-page-container {
+  padding-top: 1.5rem ;
+  padding-left: 240px;
+  display: flex;
+  height: 100%;
+  background-color: #F9FAFB;
+  width: 100%;
+  overflow: hidden;
+
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    width: 100%;
+    height: 100%;
+    
+  }
+  
+
+}
