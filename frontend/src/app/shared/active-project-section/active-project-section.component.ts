@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActiveProjectsCardComponent } from '../active-projects-card/active-projects-card.component';
-import { ProjectService } from '../../../core/services/projects.service';
+import { ProjectService } from '../../core/services/projects.service';
 
 @Component({
   selector: 'app-active-project-section',

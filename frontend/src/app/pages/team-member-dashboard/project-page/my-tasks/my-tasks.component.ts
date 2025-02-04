@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ObjectiveStatCardComponent } from '../../../../shared/objective-stat-card/objective-stat-card.component';
-import { MyTasksSectionComponent } from './my-tasks-section/my-tasks-section.component';
+import { MyTasksSectionComponent } from '../../../../shared/my-tasks-section/my-tasks-section.component';
 import { TaskService, Task } from '../../../../core/services/tasks.service';
 import { ActivatedRoute } from '@angular/router';
 

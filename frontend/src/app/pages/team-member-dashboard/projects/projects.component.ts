@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProjectCardComponent } from './project-card/project-card.component';
+import { ProjectCardComponent } from '../../../shared/project-card/project-card.component';
 import { NavbarComponent } from '../../../shared/navbar/navbar.component';
 import { ProjectService, ProjectWithManager } from '../../../core/services/projects.service';
 

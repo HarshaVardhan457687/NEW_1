@@ -2,9 +2,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../shared/navbar/navbar.component';
-import { StatsCardComponent } from './stats-card/stats-card.component';
-import { ActiveProjectSectionComponent } from './active-project-section/active-project-section.component';
-import { CurrentTasksSectionComponent } from './current-tasks-section/current-tasks-section.component';
+import { StatsCardComponent } from '../../shared/stats-card/stats-card.component';
+import { ActiveProjectSectionComponent } from '../../shared/active-project-section/active-project-section.component';
+import { CurrentTasksSectionComponent } from '../../shared/current-tasks-section/current-tasks-section.component';
 
 
 interface StatCard {

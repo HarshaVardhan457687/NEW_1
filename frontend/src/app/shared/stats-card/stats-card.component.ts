@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProgressBarCircularComponent } from '../../../shared/progress-bar-circular/progress-bar-circular.component';
+import { ProgressBarCircularComponent } from '../progress-bar-circular/progress-bar-circular.component';
 
 @Component({
   selector: 'app-stats-card',

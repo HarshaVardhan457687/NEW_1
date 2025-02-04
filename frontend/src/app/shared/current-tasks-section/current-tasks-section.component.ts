@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CurrentTaskCardComponent } from '../current-task-card/current-task-card.component';
-import { TaskService, Task } from '../../../core/services/tasks.service';
-import { ProjectService } from '../../../core/services/projects.service';
+import { TaskService, Task } from '../../core/services/tasks.service';
+import { ProjectService } from '../../core/services/projects.service';
 import { map, switchMap } from 'rxjs';
 
 @Component({

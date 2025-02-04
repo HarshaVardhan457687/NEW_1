@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Task } from '../../../../../core/services/tasks.service';
+import { Task } from '../../core/services/tasks.service';
 
 @Component({
   selector: 'app-my-task-card',

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RoleSelectionCardComponent } from './role-selection-card/role-selection-card.component';
+import { RoleSelectionCardComponent } from '../../shared/role-selection-card/role-selection-card.component';
 
 @Component({
   selector: 'app-role-selection-page',

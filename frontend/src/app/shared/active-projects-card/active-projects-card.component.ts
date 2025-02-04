@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProgressBarLinearComponent } from '../../../shared/progress-bar-linear/progress-bar-linear.component';
+import { ProgressBarLinearComponent } from '../progress-bar-linear/progress-bar-linear.component';
 
 @Component({
   selector: 'app-active-projects-card',
