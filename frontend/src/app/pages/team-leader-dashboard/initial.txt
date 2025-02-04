@@ -1,3 +1,2 @@
 this is the folder in which to create the code for team leader's ui interface.
 
-in @team-leader-dashboard create all the files and folders just as in @team-member-dashboard the only difference being the naming and context wherever needed from member to leader. also do routing in  @role-selection-page to route to this dashboard when click continue on team leader card.

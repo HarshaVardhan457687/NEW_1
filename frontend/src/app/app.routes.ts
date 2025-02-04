@@ -6,12 +6,14 @@ import { ProjectsComponent } from './pages/team-member-dashboard/projects/projec
 import { ProjectPageComponent } from './pages/team-member-dashboard/project-page/project-page.component';
 import { PROJECT_ROUTES } from './pages/team-member-dashboard/project-page/project-page.routes';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { TeamLeaderDashboardComponent } from './pages/team-leader-dashboard/team-leader-dashboard.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginPageComponent },
   { path: 'role-selection', component: RoleSelectionPageComponent },
   { path: 'team-member-dashboard', component: TeamMemberDashboardComponent },
+  { path: 'team-leader-dashboard', component: TeamLeaderDashboardComponent },
   {
     path: 'projects',
     children: [

@@ -1,0 +1,14 @@
+<app-navbar></app-navbar>
+<div class="dashboard-content">
+  <div class="dashboard-grid">
+    <app-stats-card *ngFor="let stat of stats"
+      [title]="stat.title"
+      [activeCount]="stat.activeCount"
+      [totalCount]="stat.totalCount"
+      [percentage]="stat.percentage"
+      [icon]="stat.icon">
+    </app-stats-card>
+    <app-active-project-section></app-active-project-section>
+    <app-current-tasks-section></app-current-tasks-section>
+  </div>
+</div>

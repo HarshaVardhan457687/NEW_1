@@ -21,7 +21,7 @@ export class RoleSelectionPageComponent {
       title: 'Team Leader',
       description: 'Lead and oversee your team\'s activities',
       icon: 'team_leader_role.png',
-      route: '/construction'
+      route: '/team-leader-dashboard'
     },
     {
       title: 'Project Member',
