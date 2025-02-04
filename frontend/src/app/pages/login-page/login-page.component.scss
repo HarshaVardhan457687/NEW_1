@@ -1,5 +1,5 @@
 // Color variables
-$primary-color: #346fec;
+$primary-color: black;
 $primary-dark: #2158f0;
 $error-color: #dc2626;
 $text-dark: #111827;
@@ -115,7 +115,7 @@ input {
 }
 
 .sign-in-container {
-  
+
   left: 10rem;
   width: 100%;
   z-index: 2;
@@ -238,7 +238,7 @@ input {
     opacity: 0;
     z-index: 1;
   }
-  
+
   50%, 100% {
     opacity: 1;
     z-index: 5;

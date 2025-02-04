@@ -1,6 +1,7 @@
 .role-selection-container {
   min-height: 100vh;
   background: #F3F4F6;
+  user-select:none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -62,7 +63,7 @@
 @media (max-width: 1024px) {
   .role-selection-container .content .cards-container {
     flex-wrap: wrap;
-    
+
     app-role-selection-card {
       flex: 0 1 calc(50% - 1.25rem);
     }
@@ -72,14 +73,14 @@
 @media (max-width: 768px) {
   .role-selection-container {
     padding: 1rem;
-    
+
     .content {
       padding: 0 1rem;
-      
+
       .cards-container {
         flex-direction: column;
         gap: 1.5rem;
-        
+
         app-role-selection-card {
           flex: none;
           width: 100%;
