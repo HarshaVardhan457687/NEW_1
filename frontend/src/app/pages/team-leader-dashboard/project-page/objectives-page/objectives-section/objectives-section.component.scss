@@ -1,0 +1,28 @@
+.objectives-section {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  height: calc(100vh - 200px); // Account for stats and header
+  overflow-y: auto;
+  padding-right: 1rem;
+  padding-bottom: 1.5rem;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #F3F4F6;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #D1D5DB;
+    border-radius: 3px;
+
+    &:hover {
+      background: #9CA3AF;
+    }
+  }
+}

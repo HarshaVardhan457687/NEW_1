@@ -1,0 +1,7 @@
+<div class="objectives-section">
+  <app-objectives-detail-card
+    *ngFor="let objective of objectives"
+    [objective]="objective"
+    [keyResults]="getKeyResultsForObjective(objective)">
+  </app-objectives-detail-card>
+</div>

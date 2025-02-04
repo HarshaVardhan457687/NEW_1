@@ -1,0 +1,17 @@
+<div class="key-results-wrapper">
+  <div class="column-headers">
+    <div class="header-title">Key Result</div>
+    <div class="header-owner">Owner</div>
+    <div class="header-priority">Priority</div>
+    <div class="header-progress">Progress</div>
+    <div class="header-timeline">Timeline</div>
+  </div>
+  <div class="key-results-container">
+    <div class="key-results-scroll">
+      <app-key-result-detail
+        *ngFor="let keyResult of keyResults"
+        [keyResult]="keyResult">
+      </app-key-result-detail>
+    </div>
+  </div>
+</div>

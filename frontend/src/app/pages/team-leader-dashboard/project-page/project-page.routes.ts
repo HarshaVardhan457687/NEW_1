@@ -6,7 +6,7 @@ import { UnderConstructionComponent } from '../../../pages/under-construction/un
 import { ObjectivesPageComponent } from './objectives-page/objectives-page.component';
 import { MyTasksComponent } from './my-tasks/my-tasks.component';
 
-export const PROJECT_ROUTES: Routes = [
+export const LEADER_PROJECT_ROUTES: Routes = [
   {
     path: '',
     component: ProjectPageComponent,

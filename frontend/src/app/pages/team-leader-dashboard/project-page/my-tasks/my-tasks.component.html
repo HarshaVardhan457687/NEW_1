@@ -1,0 +1,29 @@
+<div class="my-tasks-container">
+  <div class="task-stats">
+    <app-objective-stat-card
+      title="Pending Tasks"
+      [value]="taskStats.pending"
+      color="#FCD34D">
+    </app-objective-stat-card>
+
+    <app-objective-stat-card
+      title="Waiting for Approval"
+      [value]="taskStats.waitingApproval"
+      color="#60A5FA">
+    </app-objective-stat-card>
+
+    <app-objective-stat-card
+      title="Denied Tasks"
+      [value]="taskStats.denied"
+      color="#F87171">
+    </app-objective-stat-card>
+
+    <app-objective-stat-card
+      title="Completed Tasks"
+      [value]="taskStats.completed"
+      color="#34D399">
+    </app-objective-stat-card>
+  </div>
+
+  <app-my-tasks-section [tasks]="tasks"></app-my-tasks-section>
+</div>

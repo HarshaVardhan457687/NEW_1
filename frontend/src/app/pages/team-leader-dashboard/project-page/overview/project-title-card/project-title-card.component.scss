@@ -1,0 +1,149 @@
+.project-title-card {
+    box-sizing: border-box;
+    position: relative; // Changed from absolute to relative for better layout control
+    width: 100%;
+    min-height: 195px; // Allows expansion if needed
+    background: #FFFFFF;
+    border-bottom: 1px solid #E5E7EB;
+    border-radius: 14px;
+    padding-bottom: 25px; // Ensures space for progress section
+  
+    .card-content {
+      position: relative;
+      width: calc(100% - 64px);
+      margin: 32px;
+  
+      .main-info {
+        padding-top: 25px;
+        h1 {
+          font-family: 'Inter', sans-serif;
+          font-weight: 700;
+          font-size: 24px;
+          line-height: 24px;
+          color: #1F2937;
+          margin: 0 0 10px 0;
+        }
+  
+        .meta-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap; // Added for responsiveness
+          gap: 12px;
+          margin-top: 20px;
+          margin-bottom: 24px;
+  
+          .left-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+  
+            .label, .value {
+              font-family: 'Inter', sans-serif;
+              font-size: 14px;
+              line-height: 14px;
+              color: #6B7280;
+            }
+  
+            .label {
+              font-weight: 500;
+            }
+          }
+  
+          .right-meta {
+            text-align: right;
+            min-width: 120px; // Prevents layout shifts
+  
+            .due-date-label {
+              display: block;
+              font-family: 'Inter', sans-serif;
+              font-size: 14px;
+              line-height: 14px;
+              color: #4B5563;
+              margin-bottom: 4px;
+            }
+  
+            .due-date-value {
+              display: block;
+              font-family: 'Inter', sans-serif;
+              font-weight: 600;
+              font-size: 18px;
+              line-height: 18px;
+              color: #000000;
+            }
+          }
+        }
+      }
+  
+      .progress-section {
+        position: relative; // Changed from absolute to relative to prevent overflow
+        width: 100%;
+        margin-top: 20px; // Provides spacing from the above content
+  
+        .progress-info {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 8px;
+  
+          .progress-label, .progress-percentage {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 14px;
+            color: #374151;
+          }
+        }
+      }
+    }
+  
+    .status-tag, .priority-tag {
+      padding: 5px 8px;
+      border-radius: 4px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 17px;
+    }
+  
+    .status-green {
+      background: #DCFCE7;
+      color: #166534;
+    }
+  
+    .status-red {
+      background: #FEE2E2;
+      color: #991B1B;
+    }
+  
+    .status-blue {
+      background: #DBEAFE;
+      color: #2563EB;
+    }
+  
+    .high {
+      background: #FEE2E2;
+      color: #991B1B;
+    }
+  
+    .medium {
+      background: #DBEAFE;
+      color: #2563EB;
+    }
+  
+    .low {
+      background: #DCFCE7;
+      color: #166534;
+    }
+  }
+  
+  // Responsive Fixes
+  @media (max-width: 768px) {
+    .meta-container {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .right-meta {
+      text-align: left; // Aligns to the left on smaller screens
+    }
+  }
+  

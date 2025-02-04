@@ -1,11 +1,9 @@
-
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../shared/navbar/navbar.component';
 import { StatsCardComponent } from '../../shared/stats-card/stats-card.component';
 import { ActiveProjectSectionComponent } from '../../shared/active-project-section/active-project-section.component';
 import { CurrentTasksSectionComponent } from '../../shared/current-tasks-section/current-tasks-section.component';
-
 
 interface StatCard {
   title: string;
@@ -16,7 +14,7 @@ interface StatCard {
 }
 
 @Component({
-  selector: 'app-team-member-dashboard',
+  selector: 'app-team-leader-dashboard',
   standalone: true,
   imports: [
     CommonModule,
@@ -25,11 +23,11 @@ interface StatCard {
     ActiveProjectSectionComponent,
     CurrentTasksSectionComponent
   ],
-  templateUrl: './team-member-dashboard.component.html',
-  styleUrl: './team-member-dashboard.component.scss',
-  host: { 'id': 'team-member-dashboard-component' }
+  templateUrl: './team-leader-dashboard.component.html',
+  styleUrl: './team-leader-dashboard.component.scss',
+  host: { 'id': 'team-leader-dashboard-component' }
 })
-export class TeamMemberDashboardComponent {
+export class TeamLeaderDashboardComponent {
   stats: StatCard[] = [
     { 
       title: 'Projects', 
@@ -43,7 +41,7 @@ export class TeamMemberDashboardComponent {
       activeCount: 32, 
       totalCount: 80, 
       percentage: 40,
-      icon: 'objectives_icon.png' 
+      icon: 'objectives_icon.png'
     },
     { 
       title: 'Key Results', 
@@ -61,7 +59,6 @@ export class TeamMemberDashboardComponent {
     }
   ];
 }
-
 
 
 

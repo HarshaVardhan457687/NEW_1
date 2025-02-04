@@ -1,0 +1,29 @@
+<div class="objectives-container">
+  <div class="objective-stats-row">
+    <app-objective-stat-card
+      title="Total Objectives"
+      [value]="objectiveStats.totalObjectives"
+      color="#6B7280">
+    </app-objective-stat-card>
+
+    <app-objective-stat-card
+      title="In Progress"
+      [value]="objectiveStats.inProgress"
+      color="#F59E0B">
+    </app-objective-stat-card>
+
+    <app-objective-stat-card
+      title="Completed"
+      [value]="objectiveStats.completed"
+      color="#10B981">
+    </app-objective-stat-card>
+
+    <app-objective-stat-card
+      title="Completed Keys"
+      [value]="objectiveStats.completedKeys"
+      color="#2563EB">
+    </app-objective-stat-card>
+    
+  </div>
+  <app-objectives-section [projectId]="projectId"></app-objectives-section>
+</div>

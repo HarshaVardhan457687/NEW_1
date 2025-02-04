@@ -1,0 +1,14 @@
+.sidebar {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  z-index: 1000;
+  width: 240px;
+  background: white;
+  border-right: 1px solid #E5E7EB;
+  padding: 1rem;
+  height: calc(100vh - 56px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

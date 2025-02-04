@@ -1,0 +1,18 @@
+<app-navbar [projectTitle]="projectTitle"></app-navbar>
+<div class="project-page-container" [ngClass]="{ 'team-tab-active': isTeamTabActive }">
+  <app-side-bar 
+    [selectedTab]="selectedTab"
+    (tabChange)="onTabChange($event)">
+  </app-side-bar>
+  <div class="content">
+    <ng-container *ngIf="!isLoading; else loading">
+      <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
+      <router-outlet></router-outlet>
+    </ng-container>
+    <ng-template #loading>
+      <div class="loading">Loading project details...</div>
+    </ng-template>
+  </div>
+</div>
