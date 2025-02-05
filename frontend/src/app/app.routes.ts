@@ -13,42 +13,45 @@ import { TeamManagerDashboardComponent } from './pages/team-manager-dashboard/te
 import { ProjectsComponent as TeamManagerProjectsComponent } from './pages/team-manager-dashboard/projects/projects.component';
 
 
+
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginPageComponent },
   { path: 'role-selection', component: RoleSelectionPageComponent },
-  { 
-    path: 'team-member-dashboard', 
+  {
+    path: 'team-member-dashboard',
     children: [
       { path: '', component: TeamMemberDashboardComponent },
       { path: 'projects', component: TeamMemberProjectsComponent },
-      { 
-        path: 'projects/:id', 
+      {
+        path: 'projects/:id',
         children: PROJECT_ROUTES
       }
     ]
   },
-  { 
-    path: 'team-leader-dashboard', 
+  {
+    path: 'team-leader-dashboard',
     children: [
       { path: '', component: TeamLeaderDashboardComponent },
       { path: 'projects', component: TeamLeaderProjectsComponent },
-      { 
-        path: 'projects/:id', 
+      {
+        path: 'projects/:id',
         children: LEADER_PROJECT_ROUTES
       }
     ]
   },
-  { 
-    path: 'team-manager-dashboard', 
+  {
+    path: 'team-manager-dashboard',
     children: [
       { path: '', component: TeamManagerDashboardComponent },
       { path: 'projects', component: TeamManagerProjectsComponent },
-      { 
+      {
         path: 'projects/:id',
         children: MANAGER_PROJECT_ROUTES
       }
     ]
   },
+  { path: 'profile', component: ProfilePageComponent },
+  { path: 'change-password', component: ChangePasswordComponent },
   { path: 'construction', component: UnderConstructionComponent }
 ];
