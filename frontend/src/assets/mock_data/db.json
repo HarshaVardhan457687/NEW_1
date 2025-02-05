@@ -283,43 +283,53 @@
     "tasks": [
       {
         "id": 1,
-        "title": "Update OKR documentation",
-        "dueDate": "Mar 15, 2025",
-        "tag": "Documentation",
-        "projectId": 1,
-        "priority": "High Priority"
+        "title": "Design User Flow",
+        "tag": "UI/UX",
+        "dueDate": "Mar 15, 2024",
+        "status": "pending",
+        "priority": "High Priority",
+        "description": "Create user flow diagrams for the main app features",
+        "projectId": 1
       },
       {
         "id": 2,
-        "title": "Review Q1 Objectives",
-        "dueDate": "Mar 20, 2025",
-        "tag": "Planning",
-        "projectId": 2,
-        "priority": "Low Priority"
+        "title": "API Integration",
+        "tag": "Backend",
+        "dueDate": "Mar 20, 2024",
+        "status": "waiting_approval",
+        "priority": "Medium Priority",
+        "description": "Integrate payment gateway API with error handling",
+        "projectId": 1
       },
       {
         "id": 3,
-        "title": "Database Schema Design",
-        "dueDate": "Apr 5, 2025",
-        "tag": "Development",
-        "projectId": 3,
-        "priority": "High Priority"
+        "title": "Database Schema",
+        "tag": "Backend",
+        "dueDate": "Mar 25, 2024",
+        "status": "pending",
+        "priority": "High Priority",
+        "description": "Design and implement database schema for users",
+        "projectId": 2
       },
       {
         "id": 4,
-        "title": "API Integration Testing",
-        "dueDate": "Apr 10, 2025",
+        "title": "Unit Tests",
         "tag": "Testing",
-        "projectId": 2,
-        "priority": "Medium Priority"
+        "dueDate": "Mar 30, 2024",
+        "status": "pending",
+        "priority": "Medium Priority",
+        "description": "Write unit tests for authentication module",
+        "projectId": 2
       },
       {
         "id": 5,
-        "title": "UI Component Library",
-        "dueDate": "Mar 25, 2025",
-        "tag": "Development",
-        "projectId": 1,
-        "priority": "Medium Priority"
+        "title": "Mobile Layout",
+        "tag": "Frontend",
+        "dueDate": "Apr 5, 2024",
+        "status": "waiting_approval",
+        "priority": "Low Priority",
+        "description": "Implement responsive design for mobile devices",
+        "projectId": 3
       },
       {
         "id": 6,

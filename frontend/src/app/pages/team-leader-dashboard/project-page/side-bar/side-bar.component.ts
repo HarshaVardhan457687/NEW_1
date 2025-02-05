@@ -18,6 +18,8 @@ export class SideBarComponent {
     { icon: 'team_icon.svg', label: 'My Team', route: './my-team', id: 'my-team' },
     { icon: 'objectives_icon.svg', label: 'Objectives', route: './objectives', id: 'objectives' },
     { icon: 'my_tasks_icon.svg', label: 'My Tasks', route: './tasks', id: 'tasks' },
+    { icon: 'approvals_icon.svg', label: 'Approvals', route: './approvals', id: 'approvals' },
+    { icon: 'analytics_icon.svg', label: 'Analytics', route: './analytics', id: 'analytics' },
     { icon: 'calender_icon.svg', label: 'Calendar', route: './calendar', id: 'calendar' }
   ];
 

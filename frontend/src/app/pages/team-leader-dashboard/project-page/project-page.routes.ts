@@ -16,7 +16,9 @@ export const LEADER_PROJECT_ROUTES: Routes = [
       { path: 'objectives', component: ObjectivesPageComponent },
       { path: 'tasks', component: MyTasksComponent },
       { path: 'calendar', component: UnderConstructionComponent },
-      { path: 'my-team', component: MyTeamComponent }
+      { path: 'my-team', component: MyTeamComponent },
+      { path: 'analytics', component: UnderConstructionComponent },
+      { path: 'approvals', component: UnderConstructionComponent }
     ]
   }
 ]; 

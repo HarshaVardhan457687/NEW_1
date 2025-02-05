@@ -1,18 +1,17 @@
 <div class="task-card">
+  <!-- Row 1: Title and Tag -->
   <div class="task-row title-row">
     <h3 class="task-title">{{ task.title }}</h3>
-    <span class="status" [ngClass]="task.status">{{ task.status | titlecase }}</span>
+    <span class="project-tag">{{ task.tag }}</span>
   </div>
 
+  <!-- Row 2: Due Date, Priority, Status and Submit Button -->
   <div class="task-row info-row">
-    <div class="left-info">
-      <span class="project-tag">{{ task.tag }}</span>
+    <div class="status-group">
+      <span class="due-date">Due: {{ task.dueDate }}</span>
       <span class="priority" [class]="task.priority">{{ task.priority }}</span>
+      <span class="status" [ngClass]="task.status">{{ task.status | titlecase }}</span>
     </div>
-  </div>
-
-  <div class="task-row action-row">
-    <span class="due-date">Due: {{ task.dueDate }}</span>
     <button 
       class="submit-button" 
       [class.submitted]="isSubmitted"
@@ -20,5 +19,10 @@
       [disabled]="isSubmitted">
       {{ isSubmitted ? 'Submitted' : 'Submit' }}
     </button>
+  </div>
+
+  <!-- Row 3: Description -->
+  <div class="task-row description-row">
+    <p class="task-description">{{ task.description || 'No description available' }}</p>
   </div>
 </div>

@@ -17,8 +17,14 @@
       <div class="progress-fill" [style.width.%]="progress"></div>
     </div>
   </div>
-  <button class="menu-button">
+
+  <button class="menu-button" (click)="toggleMenu($event)">
     <i class="more-icon"></i>
   </button>
+
+  <!-- Popup Menu -->
+  <div class="popup-menu" *ngIf="showMenu" (click)="assignTask($event)">
+    <div class="menu-item">Assign Task</div>
+  </div>
 </div>
 

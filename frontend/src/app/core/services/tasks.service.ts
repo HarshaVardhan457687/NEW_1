@@ -11,6 +11,7 @@ export interface Task {
   priority: 'High Priority' | 'Medium Priority' | 'Low Priority';
   project?: string;
   status?: 'pending' | 'waiting_approval' | 'denied' | 'completed';
+  description?: string;
 }
 
 export interface TaskStats {

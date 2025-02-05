@@ -14,9 +14,11 @@ export class MyTaskCardComponent {
   isSubmitted = false;
 
   ngOnInit() {
-    // Set initial status to pending if not set
     if (!this.task.status) {
       this.task.status = 'pending';
+    }
+    if (!this.task.description) {
+      this.task.description = 'No description available';
     }
   }
 
