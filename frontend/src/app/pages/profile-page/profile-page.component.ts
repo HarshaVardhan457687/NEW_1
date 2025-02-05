@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { ModalService } from '../../core/services/modal.service';
 
 interface ProfileData {
   name: string;
@@ -16,11 +17,11 @@ interface ProfileData {
 }
 
 @Component({
-  selector: 'app-profile-page',
+  selector: 'app-profile-modal',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './profile-page.component.html',
-  styleUrl: './profile-page.component.scss'
+  styleUrls: ['./profile-page.component.scss']
 })
 export class ProfilePageComponent {
   profile: ProfileData = {
@@ -38,15 +39,22 @@ export class ProfilePageComponent {
 
   constructor(
     private router: Router,
-    private location: Location
+    private modalService: ModalService
   ) {}
 
   goBack(): void {
-    this.location.back();
+    this.modalService.closeProfileModal();
+  }
+
+  onOverlayClick(event: MouseEvent): void {
+    if (event.target === event.currentTarget) {
+      this.goBack();
+    }
   }
 
   changePassword() : void {
-    this.router.navigate(['/change-password']);
+    this.router.navigate(['/construction']);
+    this.modalService.closeProfileModal();
   }
 
   viewHistory() {

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ModalService } from '../../core/services/modal.service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +16,10 @@ export class NavbarComponent implements OnInit {
   @Input() dashboardType: 'team-leader' | 'team-member' | 'team-manager' = 'team-member';
   currentTab: 'dashboard' | 'projects' = 'dashboard';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private modalService: ModalService
+  ) {}
 
   ngOnInit() {
     // Set initial active tab based on current route
@@ -52,7 +56,7 @@ export class NavbarComponent implements OnInit {
   }
 
   navigateToProfile(): void {
-    this.router.navigate(['/profile']);
+    this.modalService.openProfileModal();
   }
 
 
