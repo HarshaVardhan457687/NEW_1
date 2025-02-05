@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -17,6 +17,15 @@ export class LoginPageComponent {
   errorMessage = '';
 
   constructor(private router: Router) {}
+  @ViewChild('passwordInput') passwordInput!: ElementRef;
+
+
+
+  focusPassword(event: Event) {
+    const keyboardEvent = event as KeyboardEvent;
+    keyboardEvent.preventDefault(); // Prevent form submission
+    this.passwordInput.nativeElement.focus();
+  }
 
   onSignUpClick() {
     this.isRightPanelActive = true;

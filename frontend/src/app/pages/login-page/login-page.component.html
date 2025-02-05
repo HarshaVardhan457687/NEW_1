@@ -39,12 +39,15 @@
         type="text"
         placeholder="Username"
         [(ngModel)]="loginEmail"
-        name="email" />
+        name="email"
+        #usernameInput
+        (keydown.enter)="focusPassword($event)" />
       <input
         type="password"
         placeholder="Password"
         [(ngModel)]="loginPassword"
-        name="password" />
+        name="password"
+        #passwordInput/>
       <span class="error-message" *ngIf="errorMessage">{{ errorMessage }}</span>
       <a href="#">Forgot your password?</a>
       <button type="submit">Sign In</button>
