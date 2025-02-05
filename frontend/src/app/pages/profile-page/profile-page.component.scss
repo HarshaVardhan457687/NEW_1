@@ -4,9 +4,11 @@
 
 body {
   background-color: #FFFFFF;
+
 }
 
 .profile-container {
+  user-select:none;
   width: 588px;
   height: 550px;
   margin: 20px auto;
@@ -179,13 +181,13 @@ body {
         grid-template-columns: repeat(2, 1fr);
         gap: 16px;
         min-height: 0;
-        
+
 
         .info-section {
           background: transparent;
           padding: 0;
           min-width: 0;
-         
+
 
           h2 {
             color: #000000;
