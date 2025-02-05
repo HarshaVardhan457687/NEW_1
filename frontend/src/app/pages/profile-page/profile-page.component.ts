@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
 
 interface ProfileData {
@@ -20,7 +20,7 @@ interface ProfileData {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './profile-page.component.html',
-  styleUrl: './profile-page.component.css'
+  styleUrl: './profile-page.component.scss'
 })
 export class ProfilePageComponent {
   profile: ProfileData = {
@@ -36,9 +36,16 @@ export class ProfilePageComponent {
     imageUrl: '',  // Will be empty by default, showing the default avatar
   };
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private location: Location
+  ) {}
 
-  changePassword() {
+  goBack(): void {
+    this.location.back();
+  }
+
+  changePassword() : void {
     this.router.navigate(['/change-password']);
   }
 
@@ -46,7 +53,7 @@ export class ProfilePageComponent {
     // Add view history logic here
   }
 
-  toggleEmailNotifications() {
+  toggleEmailNotifications() : void {
     this.profile.emailNotifications = !this.profile.emailNotifications;
   }
 }

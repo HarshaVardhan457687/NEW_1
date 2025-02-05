@@ -11,7 +11,8 @@ import { TeamLeaderDashboardComponent } from './pages/team-leader-dashboard/team
 import { ProjectsComponent as TeamLeaderProjectsComponent } from './pages/team-leader-dashboard/projects/projects.component';
 import { TeamManagerDashboardComponent } from './pages/team-manager-dashboard/team-manager-dashboard.component';
 import { ProjectsComponent as TeamManagerProjectsComponent } from './pages/team-manager-dashboard/projects/projects.component';
-
+import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { ChangePasswordComponent } from './shared/change-password/change-password.component';
 
 
 export const routes: Routes = [

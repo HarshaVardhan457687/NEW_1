@@ -51,6 +51,11 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  navigateToProfile(): void {
+    this.router.navigate(['/profile']);
+  }
+
+
   navigateToUnderConstruction(): void {
     this.router.navigate(['/construction']);
   }
