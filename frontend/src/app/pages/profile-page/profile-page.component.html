@@ -1,0 +1,116 @@
+<div class="profile-container">
+  <div class="header-actions">
+    <div class="back-button">
+      <img src="../../assets/back.png" alt="Back" class="back-icon">
+    </div>
+    <button class="edit-profile-btn">
+      <img src="../../assets/edit.png" alt="Edit" class="edit-icon">
+      Edit Profile
+    </button>
+  </div>
+
+  <div class="profile-content">
+    <div class="profile-header">
+      <div class="profile-image-container">
+        <div class="profile-image-wrapper">
+          <img
+            src="../../assets/picture.png"
+            alt="Profile photo"
+            class="profile-image"
+          >
+        </div>
+        <div class="camera-icon">
+          <span>
+            <img src="../../assets/button.png" >
+          </span>
+        </div>
+      </div>
+
+      <h1>{{ profile.name }}</h1>
+      <p class="title">{{ profile.title }}</p>
+    </div>
+
+    <div class="info-sections">
+      <div class="info-row">
+        <section class="info-section">
+          <h2>Personal Information</h2>
+          <div class="info-item">
+            <span class="icon">
+              <img src="../../assets/Email.png" alt="Email" class="info-icon">
+            </span>
+            <span>{{ profile.email }}</span>
+          </div>
+          <div class="info-item">
+            <span class="icon">
+              <img src="../../assets/phone.png" alt="Phone" class="info-icon">
+            </span>
+            <span>{{ profile.phone }}</span>
+          </div>
+          <div class="info-item">
+            <span class="icon">
+              <img src="../../assets/location.png" alt="Location" class="info-icon">
+            </span>
+            <span>{{ profile.location }}</span>
+          </div>
+          <div class="info-item">
+            <span class="icon">
+              <img src="../../assets/tima.png" alt="Time" class="info-icon">
+            </span>
+            <span>{{ profile.timezone }}</span>
+          </div>
+        </section>
+
+        <section class="info-section">
+          <h2>Preferences</h2>
+          <div class="preference-item">
+            <span>Email Notifications</span>
+            <label class="toggle">
+              <input
+                type="checkbox"
+                [checked]="profile.emailNotifications"
+                (change)="toggleEmailNotifications()"
+              >
+              <span class="slider"></span>
+            </label>
+          </div>
+        </section>
+      </div>
+
+      <div class="info-row">
+        <section class="info-section">
+          <h2>Career Information</h2>
+          <div class="info-item">
+            <span class="icon">
+              <img src="../../assets/people.png" alt="Projects" class="info-icon">
+            </span>
+            <span>Involved in {{ profile.projects }} Projects</span>
+          </div>
+          <div class="info-item">
+            <span class="icon">
+              <img src="../../assets/experience.png" alt="Experience" class="info-icon">
+            </span>
+            <span>{{ profile.experience }}</span>
+          </div>
+        </section>
+
+        <section class="info-section">
+          <h2 class="security-title">Security</h2>
+          <div class="security-buttons">
+            <button class="security-btn" (click)="changePassword()">
+              <span>Change Password</span>
+              <span class="icon-container">
+                <img src="../../assets/front.png" alt="arrow" class="security-icon">
+              </span>
+            </button>
+            <button class="security-btn" (click)="viewHistory()">
+              <span>View Documentation</span>
+              <span class="icon-container">
+                <img src="../../assets/front.png" alt="arrow" class="security-icon">
+              </span>
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
