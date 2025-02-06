@@ -1,0 +1,13 @@
+<div class="approvals-section">
+  <div class="approvals-grid">
+    <app-approval-card
+      *ngFor="let approval of approvals"
+      [taskName]="approval.title"
+      [tag]="approval.tag"
+      [priority]="approval.priority"
+      [description]="approval.description"
+      [dueDate]="approval.dueDate"
+      [owner]="approval.owner">
+    </app-approval-card>
+  </div>
+</div>

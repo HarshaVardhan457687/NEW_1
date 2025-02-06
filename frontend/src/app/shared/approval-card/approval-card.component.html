@@ -1,0 +1,39 @@
+<div class="approval-card">
+  <!-- Row 1: Title and Tag -->
+  <div class="row title-row">
+    <h3>{{taskName}}</h3>
+    <div class="tag">{{tag}}</div>
+  </div>
+
+  <!-- Row 2: Priority -->
+  <div class="row priority-row">
+    <div [class]="'priority ' + priorityClass">{{priority}} Priority</div>
+  </div>
+
+  <!-- Row 3: Description -->
+  <div class="row description-row">
+    <p>{{description}}</p>
+  </div>
+
+  <!-- Row 4: Due Date and Owner -->
+  <div class="row details-row">
+    <div class="due-date">
+      <img src="assets/calender_icon.png" alt="calendar">
+      Due: {{dueDate}}
+    </div>
+    <div class="owner">{{owner}}</div>
+  </div>
+
+  <!-- Row 5: Action Buttons or Status -->
+  <div class="row action-row">
+    <ng-container *ngIf="status === 'pending'; else statusBadge">
+      <button class="approve-btn" (click)="onApprove()">Approve</button>
+      <button class="reject-btn" (click)="onReject()">Reject</button>
+    </ng-container>
+    <ng-template #statusBadge>
+      <div [class]="'status-badge ' + status">
+        {{status | titlecase}}
+      </div>
+    </ng-template>
+  </div>
+</div>

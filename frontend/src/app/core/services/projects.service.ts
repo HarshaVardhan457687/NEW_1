@@ -30,6 +30,17 @@ export interface ProjectWithManager {
   objectives: number;
 }
 
+export interface Task {
+  id: number;
+  title: string;
+  description?: string;
+  priority: number;
+  dueDate: string;
+  assignee?: string;
+  tag?: string;
+  status: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -124,5 +135,9 @@ export class ProjectService {
         return combineLatest(projectsWithManagers);
       })
     );
+  }
+
+  getTasks(): Observable<Task[]> {
+    return this.http.get<Task[]>(`${this.apiUrl}/tasks`);
   }
 }

@@ -4,6 +4,7 @@ import { OverviewComponent } from './overview/overview.component';
 import { MyTeamComponent } from './my-team/my-team.component';
 import { UnderConstructionComponent } from '../../../pages/under-construction/under-construction.component';
 import { ObjectivesPageComponent } from './objectives-page/objectives-page.component';
+import { ApprovalsPageComponent } from './approvals-page/approvals-page.component';
 import { MyTasksComponent } from './my-tasks/my-tasks.component';
 
 export const LEADER_PROJECT_ROUTES: Routes = [
@@ -18,7 +19,7 @@ export const LEADER_PROJECT_ROUTES: Routes = [
       { path: 'calendar', component: UnderConstructionComponent },
       { path: 'my-team', component: MyTeamComponent },
       { path: 'analytics', component: UnderConstructionComponent },
-      { path: 'approvals', component: UnderConstructionComponent }
+      { path: 'approvals', component: ApprovalsPageComponent }
     ]
   }
 ]; 

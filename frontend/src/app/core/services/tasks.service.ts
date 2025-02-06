@@ -12,6 +12,7 @@ export interface Task {
   project?: string;
   status?: 'pending' | 'waiting_approval' | 'denied' | 'completed';
   description?: string;
+  assignee?: string;
 }
 
 export interface TaskStats {

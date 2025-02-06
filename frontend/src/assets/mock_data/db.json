@@ -283,213 +283,253 @@
     "tasks": [
       {
         "id": 1,
-        "title": "Design User Flow",
-        "tag": "UI/UX",
-        "dueDate": "Mar 15, 2024",
-        "status": "pending",
+        "title": "Project Review Meeting",
+        "description": "Review project progress and discuss upcoming milestones with the development team.",
         "priority": "High Priority",
-        "description": "Create user flow diagrams for the main app features",
+        "dueDate": "Mar 15, 2025",
+        "tag": "Development",
+        "assignee": "John Doe",
+        "status": "waiting_approval",
         "projectId": 1
       },
       {
         "id": 2,
-        "title": "API Integration",
-        "tag": "Backend",
-        "dueDate": "Mar 20, 2024",
-        "status": "waiting_approval",
+        "title": "UI Design Updates",
+        "description": "Implement new design system changes across the platform",
         "priority": "Medium Priority",
-        "description": "Integrate payment gateway API with error handling",
+        "dueDate": "Mar 20, 2025",
+        "tag": "Design",
+        "assignee": "Sarah Anderson",
+        "status": "waiting_approval",
         "projectId": 1
       },
       {
         "id": 3,
+        "title": "API Integration",
+        "description": "Complete the integration with the new payment gateway API",
+        "priority": "High Priority",
+        "dueDate": "Mar 18, 2025",
+        "tag": "Backend",
+        "assignee": "Mike Johnson",
+        "status": "waiting_approval",
+        "projectId": 2
+      },
+      {
+        "id": 4,
+        "title": "Performance Testing",
+        "description": "Conduct load testing and optimize application performance",
+        "priority": "High Priority",
+        "dueDate": "Mar 25, 2025",
+        "tag": "QA",
+        "assignee": "Emily Chen",
+        "status": "waiting_approval",
+        "projectId": 2
+      },
+      {
+        "id": 5,
+        "title": "Documentation Update",
+        "description": "Update technical documentation for recent feature additions",
+        "priority": "Medium Priority",
+        "dueDate": "Mar 22, 2025",
+        "tag": "Documentation",
+        "assignee": "David Wilson",
+        "status": "waiting_approval",
+        "projectId": 3
+      },
+      {
+        "id": 6,
         "title": "Database Schema",
         "tag": "Backend",
         "dueDate": "Mar 25, 2024",
         "status": "pending",
         "priority": "High Priority",
         "description": "Design and implement database schema for users",
-        "projectId": 2
+        "projectId": 2,
+        "assignee": "Emily Chen"
       },
       {
-        "id": 4,
+        "id": 7,
         "title": "Unit Tests",
         "tag": "Testing",
         "dueDate": "Mar 30, 2024",
         "status": "pending",
         "priority": "Medium Priority",
         "description": "Write unit tests for authentication module",
-        "projectId": 2
+        "projectId": 2,
+        "assignee": "Sarah Anderson"
       },
       {
-        "id": 5,
+        "id": 8,
         "title": "Mobile Layout",
         "tag": "Frontend",
         "dueDate": "Apr 5, 2024",
         "status": "waiting_approval",
         "priority": "Low Priority",
         "description": "Implement responsive design for mobile devices",
-        "projectId": 3
+        "projectId": 3,
+        "assignee": "Alex Kim"
       },
       {
-        "id": 6,
+        "id": 9,
         "title": "Security Audit",
         "dueDate": "Apr 15, 2025",
         "tag": "Security",
         "projectId": 5,
-        "priority": "High Priority"
+        "priority": "High Priority",
+        "assignee": "Lisa Anderson"
       },
       {
-        "id": 7,
+        "id": 10,
         "title": "Implement Authentication",
         "dueDate": "May 1, 2025",
         "tag": "Development",
         "projectId": 6,
-        "priority": "High Priority"
+        "priority": "High Priority",
+        "assignee": "John Doe"
       },
       {
-        "id": 8,
+        "id": 11,
         "title": "User Interface Design",
         "dueDate": "May 15, 2025",
         "tag": "Design",
         "projectId": 7,
-        "priority": "Medium Priority"
+        "priority": "Medium Priority",
+        "assignee": "Zou Jhon"
       },
       {
-        "id": 9,
-        "title": "Performance Testing",
-        "dueDate": "Jun 1, 2025",
-        "tag": "Testing",
-        "projectId": 8,
-        "priority": "High Priority"
-      },
-      {
-        "id": 10,
+        "id": 12,
         "title": "Data Migration",
         "dueDate": "Jun 15, 2025",
         "tag": "Development",
         "projectId": 9,
-        "priority": "High Priority"
+        "priority": "High Priority",
+        "assignee": "Sarah Johnson"
       },
       {
-        "id": 11,
+        "id": 13,
         "title": "Code Review",
         "dueDate": "Jul 1, 2025",
         "tag": "Development",
         "projectId": 10,
-        "priority": "Medium Priority"
+        "priority": "Medium Priority",
+        "assignee": "Michael Ross"
       },
       {
-        "id": 12,
-        "title": "Documentation Update",
-        "dueDate": "Jul 15, 2025",
-        "tag": "Documentation",
-        "projectId": 11,
-        "priority": "Low Priority"
-      },
-      {
-        "id": 13,
+        "id": 14,
         "title": "Bug Fixing",
         "dueDate": "Aug 1, 2025",
         "tag": "Development",
         "projectId": 12,
-        "priority": "High Priority"
+        "priority": "High Priority",
+        "assignee": "Sarah Lee"
       },
       {
-        "id": 14,
+        "id": 15,
         "title": "User Acceptance Testing",
         "dueDate": "Aug 15, 2025",
         "tag": "Testing",
         "projectId": 13,
-        "priority": "High Priority"
+        "priority": "High Priority",
+        "assignee": "Emily Brown"
       },
       {
-        "id": 15,
+        "id": 16,
         "title": "Database Optimization",
         "dueDate": "Sep 1, 2025",
         "tag": "Development",
         "projectId": 14,
-        "priority": "Medium Priority"
+        "priority": "Medium Priority",
+        "assignee": "Sarah Johnson"
       },
       {
-        "id": 16,
+        "id": 17,
         "title": "API Documentation",
         "dueDate": "Sep 15, 2025",
         "tag": "Documentation",
         "projectId": 15,
-        "priority": "Low Priority"
+        "priority": "Low Priority",
+        "assignee": "Zou Jhon"
       },
       {
-        "id": 17,
+        "id": 18,
         "title": "Security Testing",
         "dueDate": "Oct 1, 2025",
         "tag": "Security",
         "projectId": 16,
-        "priority": "High Priority"
+        "priority": "High Priority",
+        "assignee": "Lisa Anderson"
       },
       {
-        "id": 18,
+        "id": 19,
         "title": "UI/UX Review",
         "dueDate": "Oct 15, 2025",
         "tag": "Design",
         "projectId": 17,
-        "priority": "Medium Priority"
+        "priority": "Medium Priority",
+        "assignee": "Zou Jhon"
       },
       {
-        "id": 19,
+        "id": 20,
         "title": "Code Deployment",
         "dueDate": "Nov 1, 2025",
         "tag": "DevOps",
         "projectId": 18,
-        "priority": "High Priority"
+        "priority": "High Priority",
+        "assignee": "Sarah Johnson"
       },
       {
-        "id": 20,
+        "id": 21,
         "title": "Performance Optimization",
         "dueDate": "Nov 15, 2025",
         "tag": "Development",
         "projectId": 19,
-        "priority": "Medium Priority"
+        "priority": "Medium Priority",
+        "assignee": "Emily Chen"
       },
       {
-        "id": 21,
+        "id": 22,
         "title": "Integration Testing",
         "dueDate": "Dec 1, 2025",
         "tag": "Testing",
         "projectId": 20,
-        "priority": "High Priority"
+        "priority": "High Priority",
+        "assignee": "Sarah Lee"
       },
       {
-        "id": 22,
+        "id": 23,
         "title": "User Training",
         "dueDate": "Dec 15, 2025",
         "tag": "Training",
         "projectId": 1,
-        "priority": "Medium Priority"
+        "priority": "Medium Priority",
+        "assignee": "Sarah Anderson"
       },
       {
-        "id": 23,
+        "id": 24,
         "title": "System Architecture Review",
         "dueDate": "Jan 1, 2026",
         "tag": "Planning",
         "projectId": 2,
-        "priority": "High Priority"
+        "priority": "High Priority",
+        "assignee": "Michael Chen"
       },
       {
-        "id": 24,
+        "id": 25,
         "title": "Load Testing",
         "dueDate": "Jan 15, 2026",
         "tag": "Testing",
         "projectId": 3,
-        "priority": "Medium Priority"
+        "priority": "Medium Priority",
+        "assignee": "Emily Chen"
       },
       {
-        "id": 25,
+        "id": 26,
         "title": "Final Documentation",
         "dueDate": "Feb 1, 2026",
         "tag": "Documentation",
         "projectId": 4,
-        "priority": "Low Priority"
+        "priority": "Low Priority",
+        "assignee": "David Wilson"
       }
     ],
   
