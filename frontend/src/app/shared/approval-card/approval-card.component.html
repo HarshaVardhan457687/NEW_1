@@ -1,12 +1,13 @@
 <div class="approval-card">
   <!-- Row 1: Title and Tag -->
   <div class="row title-row">
-    <h3>{{taskName}}</h3>
+    <h3 [title]="taskName">{{taskName}}</h3>
     <div class="tag">{{tag}}</div>
   </div>
 
-  <!-- Row 2: Priority -->
+  <!-- Row 2: Priority and Assignee -->
   <div class="row priority-row">
+    <div class="owner">{{owner}}</div>
     <div [class]="'priority ' + priorityClass">{{priority}} Priority</div>
   </div>
 
@@ -15,13 +16,12 @@
     <p>{{description}}</p>
   </div>
 
-  <!-- Row 4: Due Date and Owner -->
+  <!-- Row 4: Due Date -->
   <div class="row details-row">
     <div class="due-date">
       <img src="assets/calender_icon.png" alt="calendar">
       Due: {{dueDate}}
     </div>
-    <div class="owner">{{owner}}</div>
   </div>
 
   <!-- Row 5: Action Buttons or Status -->
