@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProgressBarLinearComponent } from '../../../../../shared/progress-bar-linear/progress-bar-linear.component';
+import { ModalService } from '../../../../../core/services/modal.service';
 
 @Component({
   selector: 'app-team-member-card',
@@ -10,6 +11,7 @@ import { ProgressBarLinearComponent } from '../../../../../shared/progress-bar-l
   styleUrls: ['./team-member-card.component.scss']
 })
 export class TeamMemberCardComponent implements OnInit, OnDestroy {
+  @Input() id: number = 0;
   @Input() name: string = '';
   @Input() role: string = '';
   @Input() image: string = '';
@@ -17,6 +19,8 @@ export class TeamMemberCardComponent implements OnInit, OnDestroy {
   
   showMenu: boolean = false;
   private clickListener: any;
+
+  constructor(private modalService: ModalService) {}
 
   ngOnInit() {
     this.clickListener = (event: MouseEvent) => {
@@ -38,9 +42,10 @@ export class TeamMemberCardComponent implements OnInit, OnDestroy {
     this.showMenu = !this.showMenu;
   }
 
-  assignTask(event: Event) {
-    event.stopPropagation();
-    // TODO: Implement task assignment logic
-    this.showMenu = false;
+  onAssignTask() {
+    this.modalService.open({
+      type: 'assignTask',
+      data: { memberId: this.id }  // Pass any relevant data
+    });
   }
 }

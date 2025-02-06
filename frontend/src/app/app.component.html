@@ -1,4 +1,6 @@
-
-
-<router-outlet></router-outlet>
-<app-profile-modal *ngIf="isProfileModalOpen$ | async"></app-profile-modal>
+<div class="app-container">
+  <router-outlet></router-outlet>
+  
+  <app-profile-modal *ngIf="isProfileModalOpen$ | async"></app-profile-modal>
+  <app-assign-task-card *ngIf="(modalConfig$ | async)?.type === 'assignTask'"></app-assign-task-card>
+</div>
