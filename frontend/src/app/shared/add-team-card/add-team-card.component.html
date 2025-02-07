@@ -1,0 +1,91 @@
+<div class="modal-overlay" *ngIf="show">
+  <div class="add-team-card">
+    <div class="modal-header">
+      <h2>Add Team</h2>
+      <button class="close-btn" (click)="close()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 18L18 6M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="form-content">
+      <!-- Team Name -->
+      <div class="form-field">
+        <label>Team Name<span class="required">*</span></label>
+        <input type="text" [(ngModel)]="teamName" placeholder="Enter team name">
+      </div>
+
+      <!-- Team Leader Selection -->
+      <div class="form-field">
+        <label>Team Leader<span class="required">*</span></label>
+        <div class="selection-container">
+          <div class="leader-dropdown-container">
+            <div class="search-input" *ngIf="!selectedLeader" (click)="showLeaderDropdown = true">
+              <input type="text" 
+                     [(ngModel)]="searchLeader" 
+                     placeholder="Search team leader"
+                     (focus)="showLeaderDropdown = true">
+            </div>
+
+            <div class="selected-leader" *ngIf="selectedLeader">
+              <div class="leader-info">
+                <img [src]="'assets/' + selectedLeader.avatar" [alt]="selectedLeader.name">
+                <span>{{ selectedLeader.name }}</span>
+              </div>
+              <button class="remove-btn" (click)="removeLeader()">×</button>
+            </div>
+
+            <div class="dropdown-list" *ngIf="showLeaderDropdown">
+              <div class="dropdown-item" 
+                   *ngFor="let leader of filteredLeaders"
+                   (click)="selectLeader(leader)">
+                <img [src]="'assets/' + leader.avatar" [alt]="leader.name">
+                <span>{{ leader.name }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Members Selection -->
+      <div class="form-field">
+        <label>Team Members<span class="required">*</span></label>
+        <div class="selection-container">
+          <div class="member-dropdown-container">
+            <div class="search-input">
+              <input type="text" 
+                     [(ngModel)]="searchMember" 
+                     placeholder="Search team members"
+                     (focus)="showMemberDropdown = true">
+            </div>
+
+            <div class="selected-members" *ngIf="selectedMembers.length > 0">
+              <div class="member-item" *ngFor="let member of selectedMembers">
+                <div class="member-info">
+                  <img [src]="'assets/' + member.avatar" [alt]="member.name">
+                  <span>{{ member.name }}</span>
+                </div>
+                <button class="remove-btn" (click)="removeMember(member)">×</button>
+              </div>
+            </div>
+
+            <div class="dropdown-list" *ngIf="showMemberDropdown">
+              <div class="dropdown-item" 
+                   *ngFor="let member of filteredMembers"
+                   (click)="selectMember(member)">
+                <img [src]="'assets/' + member.avatar" [alt]="member.name">
+                <span>{{ member.name }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button class="cancel-btn" (click)="close()">Cancel</button>
+      <button class="save-btn" (click)="onSave()">Done</button>
+    </div>
+  </div>
+</div>

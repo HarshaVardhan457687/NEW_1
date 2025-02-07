@@ -4,12 +4,35 @@
   display: flex;
   flex-direction: column;
 
-  h2 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #1F2937;
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
-    flex-shrink: 0; // Prevent header from shrinking
+    flex-shrink: 0;
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1F2937;
+      margin: 0;
+    }
+
+    .add-btn {
+      padding: 6px 16px;
+      background: #2563EB;
+      border-radius: 8px;
+      border: none;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background: #1D4ED8;
+      }
+    }
   }
 
   .team-list {

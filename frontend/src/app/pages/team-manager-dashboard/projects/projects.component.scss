@@ -1,51 +1,88 @@
-.projects-container {
+.projects {
   padding: 75px 2rem 2rem;
   background: #F3F4F6;
-  height: 100vh;
-  overflow-y: auto;
 
-  &::-webkit-scrollbar {
-    width: 6px;
-    display: none;
-  }
-
-  &:hover::-webkit-scrollbar {
-    display: block;
-  }
-
-  &::-webkit-scrollbar-track {
+  .projects-container {
+    padding: 1rem ;
     background: #F3F4F6;
-    border-radius: 3px;
-  }
+    height: 100vh;
+    overflow-y: auto;
 
-  &::-webkit-scrollbar-thumb {
-    background: #D1D5DB;
-    border-radius: 3px;
+    &::-webkit-scrollbar {
+      width: 6px;
+      display: none;
+    }
 
-    &:hover {
-      background: #9CA3AF;
+    &:hover::-webkit-scrollbar {
+      display: block;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #F3F4F6;
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #D1D5DB;
+      border-radius: 3px;
+
+      &:hover {
+        background: #9CA3AF;
+      }
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 2rem;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding-bottom: 2rem;
     }
   }
 
-  h1 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #111827;
-    margin-bottom: 2rem;
+  @media (min-width: 1400px) {
+    .projects-grid {
+      grid-template-columns: repeat(3, 1fr) !important;
+    }
   }
 
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    max-width: 1600px;
-    margin: 0 auto;
-    padding-bottom: 2rem;
+  .new-project-btn {
+    display: flex;
+    justify-content: flex-end; // Aligns the button to the right
+    margin-right: 1rem;
+  
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      background: #2563EB;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+      &:hover {
+        background: #1D4ED8;
+      }
+  
+      &:active {
+        background: #1E3A8A;
+        transform: scale(0.98);
+      }
+    }
   }
-}
-
-@media (min-width: 1400px) {
-  .projects-grid {
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
+  
 }

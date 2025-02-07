@@ -2,18 +2,243 @@
     "users": [
       {
         "id": 1,
-        "name": "Sarah Johnson",
-        "role": "Project Manager"
+        "name": "Sarah Anderson",
+        "email": "sarah.anderson@company.com",
+        "role": "manager",
+        "department": "Technology",
+        "avatar": "pic1.png"
       },
       {
         "id": 2,
         "name": "Michael Chen",
-        "role": "Project Manager"
+        "email": "michael.chen@company.com",
+        "role": "manager",
+        "department": "Operations",
+        "avatar": "pic2.png"
       },
       {
         "id": 3,
-        "name": "Emily Davis",
-        "role": "Project Manager"
+        "name": "Emily Rodriguez",
+        "email": "emily.rodriguez@company.com",
+        "role": "manager",
+        "department": "Product",
+        "avatar": "pic3.png"
+      },
+      {
+        "id": 4,
+        "name": "James Wilson",
+        "email": "james.wilson@company.com",
+        "role": "manager",
+        "department": "Sales",
+        "avatar": "pic4.png"
+      },
+      {
+        "id": 5,
+        "name": "Lisa Thompson",
+        "email": "lisa.thompson@company.com",
+        "role": "manager",
+        "department": "Marketing",
+        "avatar": "pic5.png"
+      },
+      {
+        "id": 6,
+        "name": "David Kim",
+        "email": "david.kim@company.com",
+        "role": "team_leader",
+        "department": "Frontend Development",
+        "avatar": "pic1.png"
+      },
+      {
+        "id": 7,
+        "name": "Anna Martinez",
+        "email": "anna.martinez@company.com",
+        "role": "team_leader",
+        "department": "Backend Development",
+        "avatar": "pic2.png"
+      },
+      {
+        "id": 8,
+        "name": "Robert Johnson",
+        "email": "robert.johnson@company.com",
+        "role": "team_leader",
+        "department": "QA",
+        "avatar": "pic1.png"
+      },
+      {
+        "id": 9,
+        "name": "Sophie Lee",
+        "email": "sophie.lee@company.com",
+        "role": "team_leader",
+        "department": "UX Design",
+        "avatar": "pic2.png"
+      },
+      {
+        "id": 10,
+        "name": "Thomas Brown",
+        "email": "thomas.brown@company.com",
+        "role": "team_leader",
+        "department": "DevOps",
+        "avatar": "pic3.png"
+      },
+      {
+        "id": 11,
+        "name": "Maria Garcia",
+        "email": "maria.garcia@company.com",
+        "role": "team_leader",
+        "department": "Data Analytics",
+        "avatar": "pic4.png"
+      },
+      {
+        "id": 12,
+        "name": "Daniel Taylor",
+        "email": "daniel.taylor@company.com",
+        "role": "team_leader",
+        "department": "Mobile Development",
+        "avatar": "pic5.png"
+      },
+      {
+        "id": 13,
+        "name": "Rachel White",
+        "email": "rachel.white@company.com",
+        "role": "team_leader",
+        "department": "Customer Success",
+        "avatar": "pic1.png"
+      },
+      {
+        "id": 14,
+        "name": "Kevin Patel",
+        "email": "kevin.patel@company.com",
+        "role": "team_leader",
+        "department": "Security",
+        "avatar": "pic2.png"
+      },
+      {
+        "id": 15,
+        "name": "Julia Adams",
+        "email": "julia.adams@company.com",
+        "role": "team_leader",
+        "department": "Infrastructure",
+        "avatar": "pic3.png"
+      },
+      {
+        "id": 16,
+        "name": "Alex Turner",
+        "email": "alex.turner@company.com",
+        "role": "team_member",
+        "department": "Frontend Development",
+        "avatar": "pic3.png"
+      },
+      {
+        "id": 17,
+        "name": "Nina Patel",
+        "email": "nina.patel@company.com",
+        "role": "team_member",
+        "department": "Backend Development",
+        "avatar": "pic4.png"
+      },
+      {
+        "id": 18,
+        "name": "Chris Morgan",
+        "email": "chris.morgan@company.com",
+        "role": "team_member",
+        "department": "QA",
+        "avatar": "pic5.png"
+      },
+      {
+        "id": 19,
+        "name": "Emma Wilson",
+        "email": "emma.wilson@company.com",
+        "role": "team_member",
+        "department": "UX Design",
+        "avatar": "pic1.png"
+      },
+      {
+        "id": 20,
+        "name": "Ryan Cooper",
+        "email": "ryan.cooper@company.com",
+        "role": "team_member",
+        "department": "DevOps",
+        "avatar": "pic2.png"
+      },
+      {
+        "id": 21,
+        "name": "Isabella Silva",
+        "email": "isabella.silva@company.com",
+        "role": "team_member",
+        "department": "Data Analytics",
+        "avatar": "pic3.png"
+      },
+      {
+        "id": 22,
+        "name": "Lucas Zhang",
+        "email": "lucas.zhang@company.com",
+        "role": "team_member",
+        "department": "Mobile Development",
+        "avatar": "pic4.png"
+      },
+      {
+        "id": 23,
+        "name": "Sophia Lee",
+        "email": "sophia.lee@company.com",
+        "role": "team_member",
+        "department": "Customer Success",
+        "avatar": "pic5.png"
+      },
+      {
+        "id": 24,
+        "name": "William Davis",
+        "email": "william.davis@company.com",
+        "role": "team_member",
+        "department": "Security",
+        "avatar": "pic1.png"
+      },
+      {
+        "id": 25,
+        "name": "Olivia Brown",
+        "email": "olivia.brown@company.com",
+        "role": "team_member",
+        "department": "Infrastructure",
+        "avatar": "pic2.png"
+      },
+      {
+        "id": 26,
+        "name": "Ethan Murphy",
+        "email": "ethan.murphy@company.com",
+        "role": "team_member",
+        "department": "Frontend Development",
+        "avatar": "pic3.png"
+      },
+      {
+        "id": 27,
+        "name": "Ava Johnson",
+        "email": "ava.johnson@company.com",
+        "role": "team_member",
+        "department": "Backend Development",
+        "avatar": "pic4.png"
+      },
+      {
+        "id": 28,
+        "name": "Mason Williams",
+        "email": "mason.williams@company.com",
+        "role": "team_member",
+        "department": "QA",
+        "avatar": "pic5.png"
+      },
+      {
+        "id": 29,
+        "name": "Zoe Taylor",
+        "email": "zoe.taylor@company.com",
+        "role": "team_member",
+        "department": "UX Design",
+        "avatar": "pic1.png"
+      },
+      {
+        "id": 30,
+        "name": "Liam Anderson",
+        "email": "liam.anderson@company.com",
+        "role": "team_member",
+        "department": "DevOps",
+        "avatar": "pic2.png"
       }
     ],
   

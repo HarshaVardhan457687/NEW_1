@@ -16,7 +16,10 @@ export const MANAGER_PROJECT_ROUTES: Routes = [
       { path: 'objectives', component: ObjectivesPageComponent },
       { path: 'tasks', component: MyTasksComponent },
       { path: 'calendar', component: UnderConstructionComponent },
-      { path: 'my-team', component: MyTeamComponent }
+      { path: 'my-team', component: MyTeamComponent },
+      { path: 'teams', component: UnderConstructionComponent },
+      { path: 'approvals', component: UnderConstructionComponent },
+      { path: 'analytics', component: UnderConstructionComponent }
     ]
   }
 ]; 

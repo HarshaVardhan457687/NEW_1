@@ -1,5 +1,8 @@
 <div class="team-card">
-  <h2>Teams</h2>
+  <div class="header">
+    <h2>Teams</h2>
+    <button class="add-btn" (click)="onAddTeam()">Add Team</button>
+  </div>
   <div class="team-list">
     <div class="team-member">
       <img src="assets/pic1.png" alt="Team member" class="member-avatar">
@@ -52,3 +55,5 @@
     </div>
   </div>
 </div>
+
+<app-add-team-card [(show)]="showAddTeamCard"></app-add-team-card>
