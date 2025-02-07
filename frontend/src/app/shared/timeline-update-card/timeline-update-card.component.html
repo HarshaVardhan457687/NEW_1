@@ -1,0 +1,90 @@
+<div class="modal-overlay" *ngIf="show">
+  <div class="timeline-update-card">
+    <h2>Update Timeline</h2>
+    
+    <!-- Initial Options -->
+    <div class="options-container" *ngIf="!selectedOption">
+      <button class="option-btn" (click)="selectedOption = 'new'">Create New Event</button>
+      <button class="option-btn" (click)="selectedOption = 'update'">Update Existing Event</button>
+    </div>
+
+    <!-- New Event Form -->
+    <div class="new-event-form" *ngIf="selectedOption === 'new'">
+        <h3>New Event</h3>
+      <div class="form-row">
+        <label>Event Name<span class="required">*</span></label>
+        <input type="text" [(ngModel)]="newEvent.phase" placeholder="Enter event name">
+      </div>
+
+      <div class="form-row">
+        <label>Status<span class="required">*</span></label>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input type="radio" [(ngModel)]="newEvent.status" value="upcoming">
+            Upcoming
+          </label>
+          <label class="radio-label">
+            <input type="radio" [(ngModel)]="newEvent.status" value="in-progress">
+            In Progress
+          </label>
+          <label class="radio-label">
+            <input type="radio" [(ngModel)]="newEvent.status" value="completed">
+            Completed
+          </label>
+        </div>
+      </div>
+
+      <div class="button-row">
+        <button class="cancel-btn" (click)="close()">Cancel</button>
+        <button class="save-btn" (click)="saveNewEvent()">Save</button>
+      </div>
+    </div>
+
+    <!-- Update Existing Events List -->
+    <div class="existing-events-container" *ngIf="selectedOption === 'update' && !showStatusUpdate">
+      <h3>Update Status</h3>
+      
+      <div class="events-list">
+        <div class="event-item" *ngFor="let event of events">
+          <span class="event-name">{{ event.phase }}</span>
+          <div class="event-actions">
+            <button class="update-status-btn" (click)="onUpdateStatus(event)">Update Status</button>
+            <button class="delete-btn" (click)="onDeleteEvent(event)">Delete</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-row">
+        <button class="cancel-btn" (click)="close()">Cancel</button>
+        <button class="save-btn" (click)="close()">Done</button>
+      </div>
+    </div>
+
+    <!-- Status Update Form -->
+    <div class="status-update-form" *ngIf="showStatusUpdate">
+      <h3>Update Status for "{{ selectedEvent?.phase }}"</h3>
+      <div class="form-row">
+        <label>Status<span class="required">*</span></label>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input type="radio" [(ngModel)]="selectedEvent!.status" value="upcoming">
+            Upcoming
+          </label>
+          <label class="radio-label">
+            <input type="radio" [(ngModel)]="selectedEvent!.status" value="in-progress">
+            In Progress
+          </label>
+          <label class="radio-label">
+            <input type="radio" [(ngModel)]="selectedEvent!.status" value="completed">
+            Completed
+          </label>
+        </div>
+      </div>
+
+      <div class="button-row">
+        <button class="cancel-btn" (click)="showStatusUpdate = false">Cancel</button>
+        <button class="save-btn" (click)="saveStatusUpdate()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

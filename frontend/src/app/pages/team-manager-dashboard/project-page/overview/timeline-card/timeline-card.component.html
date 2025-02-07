@@ -1,5 +1,8 @@
 <div class="timeline-card">
-  <h2>Timeline</h2>
+  <div class="header">
+    <h2>Timeline</h2>
+    <button class="update-btn" (click)="showUpdateModal = true">Update</button>
+  </div>
   <div class="timeline-list">
     <div class="timeline-item completed">
       <div class="status-dot"></div>
@@ -59,3 +62,8 @@
     </div>
   </div>
 </div>
+
+<app-timeline-update-card 
+  [show]="showUpdateModal" 
+  (showChange)="showUpdateModal = $event">
+</app-timeline-update-card>
