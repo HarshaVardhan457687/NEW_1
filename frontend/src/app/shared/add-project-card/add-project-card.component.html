@@ -1,1 +1,356 @@
-<p>add-project-card works!</p>
+<div class="modal-overlay">
+  <div class="add-project-card">
+    <!-- Header -->
+    <div class="header">
+      <h2>Create New Project</h2>
+      <button class="close-btn" (click)="close()">×</button>
+      
+    </div>
+
+    <!-- Content -->
+    <form class="content" [formGroup]="projectForm">
+      <!-- Project Info Section -->
+      <div class="section" *ngIf="currentSection === 0" formGroupName="projectInfo">
+        <div class="input-row">
+          <label for="projectName">Project Name <span class="required">*</span></label>
+          <input 
+            id="projectName" 
+            type="text" 
+            formControlName="name" 
+            placeholder="Enter project name"
+            [class.error-field]="projectForm.get('projectInfo.name')?.invalid && projectForm.get('projectInfo.name')?.touched">
+          <div class="input-error" *ngIf="projectForm.get('projectInfo.name')?.invalid && projectForm.get('projectInfo.name')?.touched">
+            <i class="fas fa-info-circle"></i>
+            <span>Project name is required</span>
+          </div>
+        </div>
+        
+        <div class="input-row">
+          <label for="projectDescription">Description</label>
+          <textarea id="projectDescription" formControlName="description" placeholder="Enter project description"></textarea>
+        </div>
+        
+        <div class="input-row split">
+          <div class="date-picker">
+            <label for="dueDate">Due Date <span class="required">*</span></label>
+            <input 
+              id="dueDate" 
+              type="date" 
+              formControlName="dueDate"
+              [class.error-field]="projectForm.get('projectInfo.dueDate')?.invalid && projectForm.get('projectInfo.dueDate')?.touched">
+            <div class="input-error" *ngIf="projectForm.get('projectInfo.dueDate')?.invalid && projectForm.get('projectInfo.dueDate')?.touched">
+              <i class="fas fa-info-circle"></i>
+              <span>Due date is required</span>
+            </div>
+          </div>
+          
+          <div class="priority-selector">
+            <label>Priority <span class="required">*</span></label>
+            <div class="radio-group" [class.error-field]="projectForm.get('projectInfo.priority')?.invalid && projectForm.get('projectInfo.priority')?.touched">
+              <label class="radio-label">
+                <input type="radio" formControlName="priority" value="high">
+                High
+              </label>
+              <label class="radio-label">
+                <input type="radio" formControlName="priority" value="medium">
+                Medium
+              </label>
+              <label class="radio-label">
+                <input type="radio" formControlName="priority" value="low">
+                Low
+              </label>
+            </div>
+            <div class="input-error" *ngIf="projectForm.get('projectInfo.priority')?.invalid && projectForm.get('projectInfo.priority')?.touched">
+              <i class="fas fa-info-circle"></i>
+              <span>Priority is required</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Selection Section -->
+      <div class="section" *ngIf="currentSection === 1" formGroupName="team">
+        <div class="team-selection">
+          <div class="input-row">
+            <label>Team Name <span class="required">*</span></label>
+            <input 
+              type="text" 
+              formControlName="teamName" 
+              placeholder="Enter team name"
+              [class.error-field]="projectForm.get('team.teamName')?.invalid && projectForm.get('team.teamName')?.touched">
+            <div class="input-error" *ngIf="projectForm.get('team.teamName')?.invalid && projectForm.get('team.teamName')?.touched">
+              <i class="fas fa-info-circle"></i>
+              <span>Team name is required</span>
+            </div>
+          </div>
+
+          <!-- Team Leader Selection -->
+          <div class="input-row">
+            <label>Team Leader <span class="required">*</span></label>
+            <div class="leader-dropdown-container" [class.error-field]="projectForm.get('team.leader')?.invalid && projectForm.get('team.leader')?.touched">
+              <div class="selected-leader" *ngIf="selectedLeader">
+                <div class="user-info">
+                  <img [src]="'assets/' + selectedLeader.avatar" alt="avatar" class="avatar">
+                  <span>{{ selectedLeader.name }}</span>
+                </div>
+                <button type="button" class="remove-btn" (click)="removeLeader()">×</button>
+              </div>
+              
+              <div class="search-container" *ngIf="!selectedLeader">
+                <input 
+                  type="text" 
+                  [(ngModel)]="searchLeader" 
+                  [ngModelOptions]="{standalone: true}"
+                  placeholder="Search team leader"
+                  (focus)="showLeaderDropdown = true">
+                
+                <div class="dropdown" *ngIf="showLeaderDropdown && filteredLeaders.length > 0">
+                  <div 
+                    class="dropdown-item" 
+                    *ngFor="let leader of filteredLeaders"
+                    (click)="selectLeader(leader)">
+                    <img [src]="'assets/' + leader.avatar" alt="avatar" class="avatar">
+                    <span>{{ leader.name }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="input-error" *ngIf="projectForm.get('team.leader')?.invalid && projectForm.get('team.leader')?.touched">
+            <i class="fas fa-info-circle"></i>
+            <span>Team leader is required</span>
+          </div>
+
+          <!-- Team Members Selection -->
+          <div class="input-row">
+            <label>Team Members</label>
+            <div class="member-dropdown-container">
+              <div class="selected-members" *ngIf="selectedMembers.length > 0">
+                <div class="member-chip" *ngFor="let member of selectedMembers">
+                  <img [src]="'assets/' + member.avatar" alt="avatar" class="avatar">
+                  <span>{{ member.name }}</span>
+                  <button type="button" class="remove-btn" (click)="removeMember(member)">×</button>
+                </div>
+              </div>
+              
+              <div class="search-container">
+                <input 
+                  type="text" 
+                  [(ngModel)]="searchMember" 
+                  [ngModelOptions]="{standalone: true}"
+                  placeholder="Search team members"
+                  (focus)="showMemberDropdown = true">
+                
+                <div class="dropdown" *ngIf="showMemberDropdown && filteredMembers.length > 0">
+                  <div 
+                    class="dropdown-item" 
+                    *ngFor="let member of filteredMembers"
+                    (click)="selectMember(member)">
+                    <img [src]="'assets/' + member.avatar" alt="avatar" class="avatar">
+                    <span>{{ member.name }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Objectives Section -->
+      <div class="section" *ngIf="currentSection === 2" formArrayName="objectives">
+        <!-- Saved Objectives -->
+        <div class="saved-objectives" *ngIf="savedObjectives.length > 0">
+          <div class="objective-item" *ngFor="let objective of savedObjectives; let i = index">
+            <div class="objective-header">
+              <h3>{{ objective.name }}</h3>
+              <div class="objective-meta">
+                <span>Due: {{ objective.dueDate | date }}</span>
+                <span class="priority">{{ objective.priority }}</span>
+              </div>
+            </div>
+            <div class="key-results" *ngIf="objective.keyResults.length > 0">
+              <div class="key-result-item" *ngFor="let kr of objective.keyResults">
+                <span>{{ kr.name }}</span>
+                <span>Target: {{ kr.targetValue }} {{ kr.unit }}</span>
+              </div>
+            </div>
+            <button type="button" class="add-key-result-btn" (click)="openKeyResultModal(i)">
+              + Add Key Result
+            </button>
+          </div>
+        </div>
+
+        <button type="button" class="add-objective-btn" (click)="addObjective()">
+          + Add Objective
+        </button>
+
+        <!-- New Objective Form -->
+        <div class="objective" *ngIf="showObjectiveForm" [formGroupName]="objectives.length - 1">
+          <div class="input-row">
+            <label>Objective Name <span class="required">*</span></label>
+            <input 
+              type="text" 
+              formControlName="name" 
+              placeholder="Enter objective name"
+              [class.error-field]="projectForm.get('objectives.' + (objectives.length - 1) + '.name')?.invalid && projectForm.get('objectives.' + (objectives.length - 1) + '.name')?.touched">
+            <div class="input-error" *ngIf="projectForm.get('objectives.' + (objectives.length - 1) + '.name')?.invalid && projectForm.get('objectives.' + (objectives.length - 1) + '.name')?.touched">
+              <i class="fas fa-info-circle"></i>
+              <span>Objective name is required</span>
+            </div>
+          </div>
+
+          <div class="input-row split">
+            <div class="date-picker">
+              <label>Due Date <span class="required">*</span></label>
+              <input type="date" formControlName="dueDate">
+            </div>
+            
+            <div class="priority-selector">
+              <label>Priority <span class="required">*</span></label>
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" formControlName="priority" value="high">
+                  High
+                </label>
+                <label class="radio-label">
+                  <input type="radio" formControlName="priority" value="medium">
+                  Medium
+                </label>
+                <label class="radio-label">
+                  <input type="radio" formControlName="priority" value="low">
+                  Low
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="done-btn" (click)="saveObjective(objectives.length - 1)">
+            Done
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Key Result Modal -->
+    <div class="key-result-modal" *ngIf="showKeyResultModal">
+      <div class="modal-content">
+        <h3>Add Key Result</h3>
+        <form [formGroup]="projectForm" (ngSubmit)="addKeyResult()">
+          <div class="input-row">
+            <label>Key Result Name <span class="required">*</span></label>
+            <input 
+              type="text" 
+              formControlName="name" 
+              placeholder="Enter key result name"
+              [class.error-field]="projectForm.get('keyResults.' + currentObjectiveIndex + '.name')?.invalid && projectForm.get('keyResults.' + currentObjectiveIndex + '.name')?.touched">
+            <div class="input-error" *ngIf="projectForm.get('keyResults.' + currentObjectiveIndex + '.name')?.invalid && projectForm.get('keyResults.' + currentObjectiveIndex + '.name')?.touched">
+              <i class="fas fa-info-circle"></i>
+              <span>Key result name is required</span>
+            </div>
+          </div>
+
+          <div class="input-row split">
+            <div class="target-value">
+              <label>Target Value <span class="required">*</span></label>
+              <input 
+                type="number" 
+                formControlName="targetValue" 
+                placeholder="Enter target value"
+                [class.error-field]="projectForm.get('keyResults.' + currentObjectiveIndex + '.targetValue')?.invalid && projectForm.get('keyResults.' + currentObjectiveIndex + '.targetValue')?.touched">
+              <div class="input-error" *ngIf="projectForm.get('keyResults.' + currentObjectiveIndex + '.targetValue')?.invalid && projectForm.get('keyResults.' + currentObjectiveIndex + '.targetValue')?.touched">
+                <i class="fas fa-info-circle"></i>
+                <span>Target value is required</span>
+              </div>
+            </div>
+            
+            <div class="unit">
+              <label>Unit of Measurement <span class="required">*</span></label>
+              <input 
+                type="text" 
+                formControlName="unit" 
+                placeholder="Enter unit"
+                [class.error-field]="projectForm.get('keyResults.' + currentObjectiveIndex + '.unit')?.invalid && projectForm.get('keyResults.' + currentObjectiveIndex + '.unit')?.touched">
+              <div class="input-error" *ngIf="projectForm.get('keyResults.' + currentObjectiveIndex + '.unit')?.invalid && projectForm.get('keyResults.' + currentObjectiveIndex + '.unit')?.touched">
+                <i class="fas fa-info-circle"></i>
+                <span>Unit of measurement is required</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-row split">
+            <div class="date-picker">
+              <label>Due Date <span class="required">*</span></label>
+              <input type="date" formControlName="dueDate">
+            </div>
+            
+            <div class="priority-selector">
+              <label>Priority <span class="required">*</span></label>
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" formControlName="priority" value="high">
+                  High
+                </label>
+                <label class="radio-label">
+                  <input type="radio" formControlName="priority" value="medium">
+                  Medium
+                </label>
+                <label class="radio-label">
+                  <input type="radio" formControlName="priority" value="low">
+                  Low
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-row">
+            <label>Assigned Team</label>
+            <select formControlName="assignedTeam">
+              <option value="">Select a team</option>
+              <option *ngFor="let team of teams" [value]="team.id">
+                {{ team.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="modal-buttons">
+            <button type="button" (click)="showKeyResultModal = false">Cancel</button>
+            <button type="submit">Add</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="pagination-dots">
+        <span class="dot" [class.active]="currentSection === 0"></span>
+        <span class="dot" [class.active]="currentSection === 1"></span>
+        <span class="dot" [class.active]="currentSection === 2"></span>
+      </div>
+      
+      <div class="buttons">
+        <button 
+          type="button"
+          class="back-btn" 
+          *ngIf="currentSection > 0" 
+          (click)="previousSection()">
+          Back
+        </button>
+        <button 
+          type="button"
+          class="next-btn" 
+          *ngIf="currentSection < 2" 
+          (click)="nextSection()">
+          Next
+        </button>
+        <button 
+          type="submit"
+          class="submit-btn" 
+          *ngIf="currentSection === 2" 
+          (click)="onSubmit()">
+          Create Project
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

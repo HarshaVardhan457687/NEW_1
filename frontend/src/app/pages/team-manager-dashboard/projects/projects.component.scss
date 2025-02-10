@@ -58,7 +58,7 @@
     display: flex;
     justify-content: flex-end; // Aligns the button to the right
     margin-right: 1rem;
-  
+
     button {
       display: flex;
       align-items: center;
@@ -73,7 +73,7 @@
       cursor: pointer;
       transition: background 0.2s ease, transform 0.1s ease;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  
+
       &:hover {
         background: #1D4ED8;
       }
@@ -81,8 +81,10 @@
       &:active {
         background: #1E3A8A;
         transform: scale(0.98);
-      }
     }
+
   }
-  
+
+}
+
 }

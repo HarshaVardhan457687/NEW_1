@@ -2,7 +2,7 @@
 
 <div class="projects">
   <div class="new-project-btn">
-    <button>+ New Project</button>
+    <button (click)="openAddProjectModal()">+ New Project</button>
   </div>
   <div class="projects-container">
     <div class="projects-grid">
@@ -22,3 +22,8 @@
     </div>
   </div>
 </div>
+
+<app-add-project-card 
+  *ngIf="showAddProjectModal"
+  (closeModal)="closeAddProjectModal()">
+</app-add-project-card>
