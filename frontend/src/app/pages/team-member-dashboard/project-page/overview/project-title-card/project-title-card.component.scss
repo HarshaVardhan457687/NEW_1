@@ -1,149 +1,148 @@
 .project-title-card {
-    box-sizing: border-box;
-    position: relative; // Changed from absolute to relative for better layout control
-    width: 100%;
-    min-height: 195px; // Allows expansion if needed
-    background: #FFFFFF;
-    border-bottom: 1px solid #E5E7EB;
-    border-radius: 14px;
-    padding-bottom: 25px; // Ensures space for progress section
-  
-    .card-content {
-      position: relative;
-      width: calc(100% - 64px);
-      margin: 32px;
-  
-      .main-info {
-        padding-top: 25px;
-        h1 {
-          font-family: 'Inter', sans-serif;
-          font-weight: 700;
-          font-size: 24px;
-          line-height: 24px;
-          color: #1F2937;
-          margin: 0 0 10px 0;
-        }
-  
-        .meta-container {
+  box-sizing: border-box;
+  position: relative; // Changed from absolute to relative for better layout control
+  width: 100%;
+  min-height: 156px; // Reduced from 195px by 20%
+  background: #FFFFFF;
+  border-bottom: 1px solid #E5E7EB;
+  border-radius: 14px;
+  padding-bottom: 20px; // Reduced from 25px by 20%
+
+  .card-content {
+    position: relative;
+    width: calc(100% - 52px); // Reduced from 64px by ~20%
+    margin: 26px; // Reduced from 32px by ~20%
+
+    .main-info {
+      padding-top: 20px; // Reduced from 25px by 20%
+      h1 {
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 20px; // Reduced from 24px by ~20%
+        line-height: 20px; // Reduced from 24px by ~20%
+        color: #1F2937;
+        margin: 0 0 8px 0; // Reduced from 10px by 20%
+      }
+
+      .meta-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap; // Added for responsiveness
+        gap: 10px; // Reduced from 12px by ~20%
+        margin-top: 16px; // Reduced from 20px by 20%
+        margin-bottom: 19px; // Reduced from 24px by 20%
+
+        .left-meta {
           display: flex;
-          justify-content: space-between;
           align-items: center;
-          flex-wrap: wrap; // Added for responsiveness
-          gap: 12px;
-          margin-top: 20px;
-          margin-bottom: 24px;
-  
-          .left-meta {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-  
-            .label, .value {
-              font-family: 'Inter', sans-serif;
-              font-size: 14px;
-              line-height: 14px;
-              color: #6B7280;
-            }
-  
-            .label {
-              font-weight: 500;
-            }
-          }
-  
-          .right-meta {
-            text-align: right;
-            min-width: 120px; // Prevents layout shifts
-  
-            .due-date-label {
-              display: block;
-              font-family: 'Inter', sans-serif;
-              font-size: 14px;
-              line-height: 14px;
-              color: #4B5563;
-              margin-bottom: 4px;
-            }
-  
-            .due-date-value {
-              display: block;
-              font-family: 'Inter', sans-serif;
-              font-weight: 600;
-              font-size: 18px;
-              line-height: 18px;
-              color: #000000;
-            }
-          }
-        }
-      }
-  
-      .progress-section {
-        position: relative; // Changed from absolute to relative to prevent overflow
-        width: 100%;
-        margin-top: 20px; // Provides spacing from the above content
-  
-        .progress-info {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 8px;
-  
-          .progress-label, .progress-percentage {
+          gap: 10px; // Reduced from 12px by ~20%
+
+          .label, .value {
             font-family: 'Inter', sans-serif;
+            font-size: 12px; // Reduced from 14px by ~20%
+            line-height: 12px; // Reduced from 14px by ~20%
+            color: #6B7280;
+          }
+
+          .label {
             font-weight: 500;
-            font-size: 14px;
-            line-height: 14px;
-            color: #374151;
+          }
+        }
+
+        .right-meta {
+          text-align: right;
+          min-width: 96px; // Reduced from 120px by 20%
+
+          .due-date-label {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px; // Reduced from 14px by ~20%
+            line-height: 12px; // Reduced from 14px by ~20%
+            color: #4B5563;
+            margin-bottom: 3px; // Reduced from 4px by ~20%
+          }
+
+          .due-date-value {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 14px; // Reduced from 18px by ~20%
+            line-height: 14px; // Reduced from 18px by ~20%
+            color: #000000;
           }
         }
       }
     }
-  
-    .status-tag, .priority-tag {
-      padding: 5px 8px;
-      border-radius: 4px;
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      line-height: 17px;
-    }
-  
-    .status-green {
-      background: #DCFCE7;
-      color: #166534;
-    }
-  
-    .status-red {
-      background: #FEE2E2;
-      color: #991B1B;
-    }
-  
-    .status-blue {
-      background: #DBEAFE;
-      color: #2563EB;
-    }
-  
-    .high {
-      background: #FEE2E2;
-      color: #991B1B;
-    }
-  
-    .medium {
-      background: #DBEAFE;
-      color: #2563EB;
-    }
-  
-    .low {
-      background: #DCFCE7;
-      color: #166534;
+
+    .progress-section {
+      position: relative; // Changed from absolute to relative to prevent overflow
+      width: 100%;
+      margin-top: 16px; // Reduced from 20px by 20%
+
+      .progress-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 6px; // Reduced from 8px by ~20%
+
+        .progress-label, .progress-percentage {
+          font-family: 'Inter', sans-serif;
+          font-weight: 500;
+          font-size: 12px; // Reduced from 14px by ~20%
+          line-height: 12px; // Reduced from 14px by ~20%
+          color: #374151;
+        }
+      }
     }
   }
-  
-  // Responsive Fixes
-  @media (max-width: 768px) {
-    .meta-container {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .right-meta {
-      text-align: left; // Aligns to the left on smaller screens
-    }
+
+  .status-tag, .priority-tag {
+    padding: 4px 6px; // Reduced from 5px 8px by ~20%
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; // Reduced from 14px by ~20%
+    line-height: 14px; // Reduced from 17px by ~20%
   }
-  
+
+  .status-green {
+    background: #DCFCE7;
+    color: #166534;
+  }
+
+  .status-red {
+    background: #FEE2E2;
+    color: #991B1B;
+  }
+
+  .status-blue {
+    background: #DBEAFE;
+    color: #2563EB;
+  }
+
+  .high {
+    background: #FEE2E2;
+    color: #991B1B;
+  }
+
+  .medium {
+    background: #DBEAFE;
+    color: #2563EB;
+  }
+
+  .low {
+    background: #DCFCE7;
+    color: #166534;
+  }
+}
+
+// Responsive Fixes
+@media (max-width: 768px) {
+  .meta-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .right-meta {
+    text-align: left; // Aligns to the left on smaller screens
+  }
+}

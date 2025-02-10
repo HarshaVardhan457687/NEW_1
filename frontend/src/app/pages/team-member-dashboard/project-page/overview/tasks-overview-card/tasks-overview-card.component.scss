@@ -1,25 +1,25 @@
 .tasks-card {
-  padding: 24px;
-  height: 100%;
+  padding: 19px;
+  height: 80%;
 
   h2 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     color: #1F2937;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 
   .tasks-list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 13px;
   }
 
   .task-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 0;
+    padding: 10px 0;
     border-bottom: 1px solid #E5E7EB;
 
     &:last-child {
@@ -27,12 +27,12 @@
     }
 
     .label {
-      font-size: 14px;
+      font-size: 12px;
       color: #6B7280;
     }
 
     .value {
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       color: #1F2937;
     }

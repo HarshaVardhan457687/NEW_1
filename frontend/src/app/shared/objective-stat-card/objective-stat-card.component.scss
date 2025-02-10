@@ -3,22 +3,15 @@
   background: #FFFFFF;
   box-shadow: 0px 1.2px 2.4px rgba(0, 0, 0, 0.05);
   border-radius: 14px;
-  padding: 1rem;
-  height: 90px;
   width: 100%;
   position: relative;
 }
 
 .stat-title {
-  font-size: 12px;
-  line-height: 14px;
   color: #6B7280;
-  margin-bottom: 6px;
 }
 
 .stat-value {
-  font-size: 20px;
-  line-height: 24px;
   font-weight: 700;
   color: #1F2937;
 }
@@ -27,8 +20,7 @@
 :host-context(.objective-stats-container) {
   display: flex;
   width: 100%;
-  padding: 26px;
-  gap: 16px;
+  gap: 20px;
 }
 
 // Each card wrapper
