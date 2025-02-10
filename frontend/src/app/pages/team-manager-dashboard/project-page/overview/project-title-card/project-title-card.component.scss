@@ -2,26 +2,26 @@
     box-sizing: border-box;
     position: relative; // Changed from absolute to relative for better layout control
     width: 100%;
-    min-height: 195px; // Allows expansion if needed
+    min-height: 156px; // Reduced from 195px by 20%
     background: #FFFFFF;
     border-bottom: 1px solid #E5E7EB;
     border-radius: 14px;
-    padding-bottom: 25px; // Ensures space for progress section
+    padding-bottom: 20px; // Reduced from 25px by 20%
   
     .card-content {
       position: relative;
-      width: calc(100% - 64px);
-      margin: 32px;
+      width: calc(100% - 52px); // Reduced from 64px by ~20%
+      margin: 26px; // Reduced from 32px by ~20%
   
       .main-info {
-        padding-top: 25px;
+        padding-top: 20px; // Reduced from 25px by 20%
         h1 {
           font-family: 'Inter', sans-serif;
           font-weight: 700;
-          font-size: 24px;
-          line-height: 24px;
+          font-size: 20px; // Reduced from 24px by ~20%
+          line-height: 20px; // Reduced from 24px by ~20%
           color: #1F2937;
-          margin: 0 0 10px 0;
+          margin: 0 0 8px 0; // Reduced from 10px by 20%
         }
   
         .meta-container {
@@ -29,19 +29,19 @@
           justify-content: space-between;
           align-items: center;
           flex-wrap: wrap; // Added for responsiveness
-          gap: 12px;
-          margin-top: 20px;
-          margin-bottom: 24px;
+          gap: 10px; // Reduced from 12px by ~20%
+          margin-top: 16px; // Reduced from 20px by 20%
+          margin-bottom: 19px; // Reduced from 24px by 20%
   
           .left-meta {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px; // Reduced from 12px by ~20%
   
             .label, .value {
               font-family: 'Inter', sans-serif;
-              font-size: 14px;
-              line-height: 14px;
+              font-size: 12px; // Reduced from 14px by ~20%
+              line-height: 12px; // Reduced from 14px by ~20%
               color: #6B7280;
             }
   
@@ -52,23 +52,23 @@
   
           .right-meta {
             text-align: right;
-            min-width: 120px; // Prevents layout shifts
+            min-width: 96px; // Reduced from 120px by 20%
   
             .due-date-label {
               display: block;
               font-family: 'Inter', sans-serif;
-              font-size: 14px;
-              line-height: 14px;
+              font-size: 12px; // Reduced from 14px by ~20%
+              line-height: 12px; // Reduced from 14px by ~20%
               color: #4B5563;
-              margin-bottom: 4px;
+              margin-bottom: 3px; // Reduced from 4px by ~20%
             }
   
             .due-date-value {
               display: block;
               font-family: 'Inter', sans-serif;
               font-weight: 600;
-              font-size: 18px;
-              line-height: 18px;
+              font-size: 14px; // Reduced from 18px by ~20%
+              line-height: 14px; // Reduced from 18px by ~20%
               color: #000000;
             }
           }
@@ -78,18 +78,18 @@
       .progress-section {
         position: relative; // Changed from absolute to relative to prevent overflow
         width: 100%;
-        margin-top: 20px; // Provides spacing from the above content
+        margin-top: 16px; // Reduced from 20px by 20%
   
         .progress-info {
           display: flex;
           justify-content: space-between;
-          margin-bottom: 8px;
+          margin-bottom: 6px; // Reduced from 8px by ~20%
   
           .progress-label, .progress-percentage {
             font-family: 'Inter', sans-serif;
             font-weight: 500;
-            font-size: 14px;
-            line-height: 14px;
+            font-size: 12px; // Reduced from 14px by ~20%
+            line-height: 12px; // Reduced from 14px by ~20%
             color: #374151;
           }
         }
@@ -97,11 +97,11 @@
     }
   
     .status-tag, .priority-tag {
-      padding: 5px 8px;
+      padding: 4px 6px; // Reduced from 5px 8px by ~20%
       border-radius: 4px;
       font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      line-height: 17px;
+      font-size: 12px; // Reduced from 14px by ~20%
+      line-height: 14px; // Reduced from 17px by ~20%
     }
   
     .status-green {
