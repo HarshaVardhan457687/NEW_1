@@ -11,8 +11,24 @@ import { UserService, User } from '../../core/services/user.service';
   styleUrl: './add-team-card.component.scss'
 })
 export class AddTeamCardComponent implements OnInit {
-  @Input() show = false;
+  // Make console available to template
+  console = console;
+
+  @Input() set show(value: boolean) {
+    console.log('Show value changed:', value);
+    this._show = value;
+    // Ensure showChange is emitted when show is set
+    if (this.showChange) {
+      this.showChange.emit(value);
+    }
+  }
+  get show(): boolean {
+    return this._show;
+  }
+  private _show = false;
+
   @Output() showChange = new EventEmitter<boolean>();
+  @Output() teamSaved = new EventEmitter<any>();
 
   teamName = '';
   selectedLeader: User | null = null;
@@ -37,6 +53,7 @@ export class AddTeamCardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log('AddTeamCardComponent initialized, show:', this.show);
     this.userService.getUsers().subscribe(users => {
       this.teamLeaders = users.filter(user => user.role === 'team_leader');
       this.teamMembers = users.filter(user => user.role === 'team_member');
@@ -44,6 +61,7 @@ export class AddTeamCardComponent implements OnInit {
   }
 
   close() {
+    console.log('Closing card');
     this.show = false;
     this.showChange.emit(false);
     this.resetForm();
@@ -87,7 +105,12 @@ export class AddTeamCardComponent implements OnInit {
   }
 
   onSave() {
-    // TODO: Implement save logic
+    const team = {
+      name: this.teamName,
+      leader: this.selectedLeader,
+      members: this.selectedMembers
+    };
+    this.teamSaved.emit(team);
     this.close();
   }
 

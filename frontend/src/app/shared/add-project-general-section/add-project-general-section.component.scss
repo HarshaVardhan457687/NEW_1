@@ -1,0 +1,100 @@
+.section {
+  animation: fadeIn 0.3s ease-out;
+
+  .input-row {
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #D1D5DB;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      transition: border-color 0.2s;
+
+      &:focus {
+        outline: none;
+        border-color: #2563EB;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      &.error-field {
+        border-color: #EF4444;
+      }
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    &.split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .priority-selector {
+      .radio-group {
+        display: flex;
+        gap: 1rem;
+
+        &.error-field {
+          .radio-label {
+            color: #EF4444;
+          }
+        }
+
+        .radio-label {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          cursor: pointer;
+          font-size: 0.875rem;
+          color: #374151;
+
+          input[type="radio"] {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
+
+.required {
+  color: #EF4444;
+  margin-left: 2px;
+}
+
+.input-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  color: #EF4444;
+  font-size: 0.75rem;
+
+  i {
+    font-size: 0.875rem;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+} 

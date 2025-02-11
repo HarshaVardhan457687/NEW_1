@@ -1,0 +1,60 @@
+<div class="section" [formGroup]="projectInfo">
+  <div class="input-row">
+    <label for="projectName">Project Name <span class="required">*</span></label>
+    <input 
+      id="projectName" 
+      type="text" 
+      formControlName="name" 
+      placeholder="Enter project name"
+      [class.error-field]="isFieldInvalid('name')">
+    <div class="input-error" *ngIf="isFieldInvalid('name')">
+      <i class="fas fa-info-circle"></i>
+      <span>Project name is required</span>
+    </div>
+  </div>
+  
+  <div class="input-row">
+    <label for="projectDescription">Description</label>
+    <textarea 
+      id="projectDescription" 
+      formControlName="description" 
+      placeholder="Enter project description"></textarea>
+  </div>
+  
+  <div class="input-row split">
+    <div class="date-picker">
+      <label for="dueDate">Due Date <span class="required">*</span></label>
+      <input 
+        id="dueDate" 
+        type="date" 
+        formControlName="dueDate"
+        [class.error-field]="isFieldInvalid('dueDate')">
+      <div class="input-error" *ngIf="isFieldInvalid('dueDate')">
+        <i class="fas fa-info-circle"></i>
+        <span>Due date is required</span>
+      </div>
+    </div>
+    
+    <div class="priority-selector">
+      <label>Priority <span class="required">*</span></label>
+      <div class="radio-group" [class.error-field]="isFieldInvalid('priority')">
+        <label class="radio-label">
+          <input type="radio" formControlName="priority" value="high">
+          High
+        </label>
+        <label class="radio-label">
+          <input type="radio" formControlName="priority" value="medium">
+          Medium
+        </label>
+        <label class="radio-label">
+          <input type="radio" formControlName="priority" value="low">
+          Low
+        </label>
+      </div>
+      <div class="input-error" *ngIf="isFieldInvalid('priority')">
+        <i class="fas fa-info-circle"></i>
+        <span>Priority is required</span>
+      </div>
+    </div>
+  </div>
+</div> 

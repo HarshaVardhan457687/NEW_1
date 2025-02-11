@@ -19,7 +19,7 @@
 }
 
 .add-project-card {
-  user-select:none;
+  user-select: none;
   background: white;
   border-radius: 16px;
   width: 500px;
@@ -299,76 +299,44 @@
     padding: 1rem;
     border-top: 1px solid #E5E7EB;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: flex-end;
     gap: 1rem;
 
-    .pagination-dots {
-      display: flex;
-      gap: 0.5rem;
+    button {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
 
-      .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #D1D5DB;
-        transition: all 0.2s;
+      &.back-btn {
+        background: white;
+        border: 1px solid #D1D5DB;
+        color: #374151;
 
-        &.active {
-          background: #2563EB;
-          transform: scale(1.2);
+        &:hover {
+          background: #F9FAFB;
+          border-color: #9CA3AF;
+        }
+      }
+
+      &.next-btn,
+      &.submit-btn {
+        background: #2563EB;
+        border: none;
+        color: white;
+
+        &:hover {
+          background: #1D4ED8;
+        }
+
+        &:disabled {
+          background: #9CA3AF;
+          cursor: not-allowed;
         }
       }
     }
-
-    .buttons {
-      width: 100%;
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-
-      button {
-        padding: 0.75rem 1.5rem;
-        border-radius: 8px;
-        font-size: 0.875rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-
-        &.back-btn {
-          background: #F3F4F6;
-          border: 1px solid #D1D5DB;
-          color: #374151;
-
-          &:hover {
-            background: #E5E7EB;
-          }
-        }
-
-        &.next-btn,
-        &.submit-btn,
-        &.done-btn {
-          background: #2563EB;
-          border: none;
-          color: white;
-
-          &:hover {
-            background: #1D4ED8;
-          }
-        }
-      }
-    }
-  }
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
   }
 }
 
@@ -378,6 +346,33 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.jiggle {
+  animation: jiggle 0.3s ease-in-out;
+}
+
+@keyframes jiggle {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
   }
 }
 
@@ -704,16 +699,6 @@
       }
     }
   }
-}
-
-@keyframes jiggle {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
-}
-
-.jiggle {
-  animation: jiggle 0.3s ease-in-out;
 }
 
 .input-error {

@@ -1,0 +1,35 @@
+<!-- Saved Teams -->
+<div class="section">
+  <div class="saved-teams" *ngIf="savedTeams.length > 0">
+    <div class="team-item" *ngFor="let team of savedTeams; let i = index">
+      <div class="team-header">
+        <h3>{{ team.name }}</h3>
+        <div class="team-actions">
+          <button type="button" class="edit-btn" (click)="editTeam(i)">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button type="button" class="delete-btn" (click)="deleteTeam(i)">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Team Button -->
+  <button type="button" class="add-team-btn" (click)="addTeam()">
+    + Add Team
+  </button>
+
+  <!-- Team Card Modal -->
+  <app-add-team-card
+    [show]="showTeamCard"
+    (showChange)="onShowTeamCardChange($event)"
+    (teamSaved)="onTeamSaved($event)">
+  </app-add-team-card>
+
+  <!-- Debug info -->
+  <div style="display: none;">
+    Current showTeamCard value: {{ showTeamCard }}
+  </div>
+</div> 

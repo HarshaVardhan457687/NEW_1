@@ -1,0 +1,175 @@
+<div class="section" formArrayName="objectives">
+  <!-- Saved Objectives -->
+  <div class="saved-objectives" *ngIf="savedObjectives.length > 0">
+    <div class="objective-item" *ngFor="let objective of savedObjectives; let i = index">
+      <div class="objective-header">
+        <h3>{{ objective.name }}</h3>
+        <div class="objective-meta">
+          <span>Due: {{ objective.dueDate | date }}</span>
+          <span class="priority">{{ objective.priority }}</span>
+        </div>
+      </div>
+      <div class="key-results" *ngIf="objective.keyResults.length > 0">
+        <div class="key-result-item" *ngFor="let kr of objective.keyResults">
+          <span>{{ kr.name }}</span>
+          <span>Target: {{ kr.targetValue }} {{ kr.unit }}</span>
+        </div>
+      </div>
+      <button type="button" class="add-key-result-btn" (click)="openKeyResultModal(i)">
+        + Add Key Result
+      </button>
+    </div>
+  </div>
+
+  <button type="button" class="add-objective-btn" (click)="addObjective()">
+    + Add Objective
+  </button>
+
+  <!-- New Objective Form -->
+  <div class="objective" *ngIf="showObjectiveForm" [formGroupName]="objectives.length - 1">
+    <div class="input-row">
+      <label>Objective Name <span class="required">*</span></label>
+      <input 
+        type="text" 
+        formControlName="name" 
+        placeholder="Enter objective name"
+        [class.error-field]="objectives.at(objectives.length - 1).get('name')?.invalid && objectives.at(objectives.length - 1).get('name')?.touched">
+      <div class="input-error" *ngIf="objectives.at(objectives.length - 1).get('name')?.invalid && objectives.at(objectives.length - 1).get('name')?.touched">
+        <i class="fas fa-info-circle"></i>
+        <span>Objective name is required</span>
+      </div>
+    </div>
+
+    <div class="input-row split">
+      <div class="date-picker">
+        <label>Due Date <span class="required">*</span></label>
+        <input 
+          type="date" 
+          formControlName="dueDate"
+          [class.error-field]="objectives.at(objectives.length - 1).get('dueDate')?.invalid && objectives.at(objectives.length - 1).get('dueDate')?.touched">
+        <div class="input-error" *ngIf="objectives.at(objectives.length - 1).get('dueDate')?.invalid && objectives.at(objectives.length - 1).get('dueDate')?.touched">
+          <i class="fas fa-info-circle"></i>
+          <span>Due date is required</span>
+        </div>
+      </div>
+      
+      <div class="priority-selector">
+        <label>Priority <span class="required">*</span></label>
+        <div class="radio-group" [class.error-field]="objectives.at(objectives.length - 1).get('priority')?.invalid && objectives.at(objectives.length - 1).get('priority')?.touched">
+          <label class="radio-label">
+            <input type="radio" formControlName="priority" value="high">
+            High
+          </label>
+          <label class="radio-label">
+            <input type="radio" formControlName="priority" value="medium">
+            Medium
+          </label>
+          <label class="radio-label">
+            <input type="radio" formControlName="priority" value="low">
+            Low
+          </label>
+        </div>
+        <div class="input-error" *ngIf="objectives.at(objectives.length - 1).get('priority')?.invalid && objectives.at(objectives.length - 1).get('priority')?.touched">
+          <i class="fas fa-info-circle"></i>
+          <span>Priority is required</span>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="done-btn" (click)="saveObjective(objectives.length - 1)">
+      Done
+    </button>
+  </div>
+</div>
+
+<!-- Key Result Modal -->
+<div class="key-result-modal" *ngIf="showKeyResultModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Add Key Result</h3>
+      <button class="close-btn" (click)="closeKeyResultModal()">×</button>
+    </div>
+    <form [formGroup]="keyResultForm" (ngSubmit)="addKeyResult()">
+      <div class="input-row">
+        <label>Key Result Name <span class="required">*</span></label>
+        <input 
+          type="text" 
+          formControlName="name" 
+          placeholder="Enter key result name"
+          [class.error-field]="keyResultForm.get('name')?.invalid && keyResultForm.get('name')?.touched">
+        <div class="input-error" *ngIf="keyResultForm.get('name')?.invalid && keyResultForm.get('name')?.touched">
+          <i class="fas fa-info-circle"></i>
+          <span>Key result name is required</span>
+        </div>
+      </div>
+
+      <div class="input-row split">
+        <div class="target-value">
+          <label>Target Value <span class="required">*</span></label>
+          <input 
+            type="number" 
+            formControlName="targetValue" 
+            placeholder="Enter target value"
+            [class.error-field]="keyResultForm.get('targetValue')?.invalid && keyResultForm.get('targetValue')?.touched">
+          <div class="input-error" *ngIf="keyResultForm.get('targetValue')?.invalid && keyResultForm.get('targetValue')?.touched">
+            <i class="fas fa-info-circle"></i>
+            <span>Target value is required</span>
+          </div>
+        </div>
+
+        <div class="unit">
+          <label>Unit <span class="required">*</span></label>
+          <input 
+            type="text" 
+            formControlName="unit" 
+            placeholder="e.g., %, hours, tasks"
+            [class.error-field]="keyResultForm.get('unit')?.invalid && keyResultForm.get('unit')?.touched">
+          <div class="input-error" *ngIf="keyResultForm.get('unit')?.invalid && keyResultForm.get('unit')?.touched">
+            <i class="fas fa-info-circle"></i>
+            <span>Unit is required</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-row split">
+        <div class="date-picker">
+          <label>Due Date <span class="required">*</span></label>
+          <input 
+            type="date" 
+            formControlName="dueDate"
+            [class.error-field]="keyResultForm.get('dueDate')?.invalid && keyResultForm.get('dueDate')?.touched">
+          <div class="input-error" *ngIf="keyResultForm.get('dueDate')?.invalid && keyResultForm.get('dueDate')?.touched">
+            <i class="fas fa-info-circle"></i>
+            <span>Due date is required</span>
+          </div>
+        </div>
+
+        <div class="priority-selector">
+          <label>Priority <span class="required">*</span></label>
+          <div class="radio-group" [class.error-field]="keyResultForm.get('priority')?.invalid && keyResultForm.get('priority')?.touched">
+            <label class="radio-label">
+              <input type="radio" formControlName="priority" value="high">
+              High
+            </label>
+            <label class="radio-label">
+              <input type="radio" formControlName="priority" value="medium">
+              Medium
+            </label>
+            <label class="radio-label">
+              <input type="radio" formControlName="priority" value="low">
+              Low
+            </label>
+          </div>
+          <div class="input-error" *ngIf="keyResultForm.get('priority')?.invalid && keyResultForm.get('priority')?.touched">
+            <i class="fas fa-info-circle"></i>
+            <span>Priority is required</span>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="add-btn" [disabled]="!keyResultForm.valid">
+        Add Key Result
+      </button>
+    </form>
+  </div>
+</div> 
