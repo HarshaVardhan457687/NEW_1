@@ -30,6 +30,7 @@ export class AddProjectCardComponent implements OnInit {
   currentObjectiveIndex: number | null = null;
   savedObjectives: any[] = [];
   showTeamCard = false;
+  keyResultForm!: FormGroup;
 
   // Team selection properties
   selectedLeader: User | null = null;
@@ -41,12 +42,19 @@ export class AddProjectCardComponent implements OnInit {
   searchLeader = '';
   searchMember = '';
 
+  // Team management
+  teamForm!: FormGroup;
+  savedTeams: any[] = [];
+  showTeamModal = false;
+  editingTeamIndex: number | null = null;
+
   constructor(
     private fb: FormBuilder,
     private teamService: TeamService,
     private userService: UserService
   ) {
     this.initializeForm();
+    this.initializeKeyResultForm();
   }
 
   ngOnInit() {
@@ -78,11 +86,126 @@ export class AddProjectCardComponent implements OnInit {
     this.objectives = this.projectForm.get('objectives') as FormArray;
   }
 
+  private initializeKeyResultForm() {
+    this.keyResultForm = this.fb.group({
+      name: ['', Validators.required],
+      targetValue: ['', Validators.required],
+      unit: ['', Validators.required],
+      dueDate: ['', Validators.required],
+      priority: ['medium', Validators.required],
+      assignedTeam: ['']
+    });
+  }
+
+  validateSection(section: number): boolean {
+    let isValid = true;
+    const form = this.projectForm;
+
+    if (section === 0) {
+      const projectInfo = form.get('projectInfo');
+      if (projectInfo?.get('name')?.invalid) {
+        projectInfo.get('name')?.markAsTouched();
+        isValid = false;
+      }
+      if (projectInfo?.get('dueDate')?.invalid) {
+        projectInfo.get('dueDate')?.markAsTouched();
+        isValid = false;
+      }
+      if (projectInfo?.get('priority')?.invalid) {
+        projectInfo.get('priority')?.markAsTouched();
+        isValid = false;
+      }
+    } else if (section === 1) {
+      const team = form.get('team');
+      if (team?.get('teamName')?.invalid) {
+        team.get('teamName')?.markAsTouched();
+        isValid = false;
+      }
+      if (!this.selectedLeader) {
+        team?.get('leader')?.markAsTouched();
+        isValid = false;
+      }
+    }
+
+    if (!isValid) {
+      const card = document.querySelector('.add-project-card') as HTMLElement;
+      card?.classList.remove('jiggle');
+      void card?.offsetWidth;
+      card?.classList.add('jiggle');
+    }
+
+    return isValid;
+  }
+
+  validateObjective(index: number): boolean {
+    const objective = this.objectives.at(index);
+    let isValid = true;
+
+    if (objective.get('name')?.invalid) {
+      objective.get('name')?.markAsTouched();
+      isValid = false;
+    }
+    if (objective.get('dueDate')?.invalid) {
+      objective.get('dueDate')?.markAsTouched();
+      isValid = false;
+    }
+    if (objective.get('priority')?.invalid) {
+      objective.get('priority')?.markAsTouched();
+      isValid = false;
+    }
+
+    if (!isValid) {
+      const card = document.querySelector('.objective') as HTMLElement;
+      card?.classList.remove('jiggle');
+      void card?.offsetWidth;
+      card?.classList.add('jiggle');
+    }
+
+    return isValid;
+  }
+
+  validateKeyResult(): boolean {
+    const keyResult = this.projectForm.get('keyResults.' + this.currentObjectiveIndex);
+    let isValid = true;
+
+    if (keyResult?.get('name')?.invalid) {
+      keyResult.get('name')?.markAsTouched();
+      isValid = false;
+    }
+    if (keyResult?.get('targetValue')?.invalid) {
+      keyResult.get('targetValue')?.markAsTouched();
+      isValid = false;
+    }
+    if (keyResult?.get('unit')?.invalid) {
+      keyResult.get('unit')?.markAsTouched();
+      isValid = false;
+    }
+    if (keyResult?.get('dueDate')?.invalid) {
+      keyResult.get('dueDate')?.markAsTouched();
+      isValid = false;
+    }
+    if (keyResult?.get('priority')?.invalid) {
+      keyResult.get('priority')?.markAsTouched();
+      isValid = false;
+    }
+
+    if (!isValid) {
+      const modal = document.querySelector('.modal-content') as HTMLElement;
+      modal?.classList.remove('jiggle');
+      void modal?.offsetWidth;
+      modal?.classList.add('jiggle');
+    }
+
+    return isValid;
+  }
+
   nextSection() {
-    if (this.currentSection < 2) {
-      this.currentSection++;
-      if (this.currentSection === 1) {
-        this.showTeamCard = true;
+    if (this.validateSection(this.currentSection)) {
+      if (this.currentSection < 2) {
+        this.currentSection++;
+        if (this.currentSection === 1) {
+          this.showTeamCard = true;
+        }
       }
     }
   }
@@ -116,40 +239,54 @@ export class AddProjectCardComponent implements OnInit {
   }
 
   saveObjective(index: number) {
-    const objective = this.objectives.at(index);
-    if (objective.valid) {
-      this.savedObjectives.push({
-        ...objective.value,
-        keyResults: []
-      });
-      this.objectives.removeAt(index);
-      this.showObjectiveForm = false;
+    if (this.validateObjective(index)) {
+      const objective = this.objectives.at(index);
+      if (objective.valid) {
+        this.savedObjectives.push({
+          ...objective.value,
+          keyResults: []
+        });
+        this.objectives.removeAt(index);
+        this.showObjectiveForm = false;
+      }
     }
   }
 
   openKeyResultModal(objectiveIndex: number) {
     this.currentObjectiveIndex = objectiveIndex;
     this.showKeyResultModal = true;
+    this.keyResultForm.reset({
+      priority: 'medium'
+    });
+  }
+
+  closeKeyResultModal() {
+    this.showKeyResultModal = false;
+    this.currentObjectiveIndex = null;
+    this.keyResultForm.reset();
   }
 
   addKeyResult() {
-    if (this.currentObjectiveIndex !== null) {
-      const keyResult = this.fb.group({
-        name: ['', Validators.required],
-        targetValue: ['', Validators.required],
-        unit: ['', Validators.required],
-        dueDate: ['', Validators.required],
-        priority: ['medium', Validators.required],
-        assignedTeam: ['', Validators.required]
+    if (this.keyResultForm.valid && this.currentObjectiveIndex !== null) {
+      this.savedObjectives[this.currentObjectiveIndex].keyResults.push(this.keyResultForm.value);
+      this.closeKeyResultModal();
+    } else {
+      // Mark all fields as touched to trigger validation display
+      Object.keys(this.keyResultForm.controls).forEach(key => {
+        const control = this.keyResultForm.get(key);
+        control?.markAsTouched();
       });
-      this.savedObjectives[this.currentObjectiveIndex].keyResults.push(keyResult.value);
-      this.showKeyResultModal = false;
-      this.currentObjectiveIndex = null;
+
+      // Trigger jiggle animation
+      const modal = document.querySelector('.modal-content') as HTMLElement;
+      modal?.classList.remove('jiggle');
+      void modal?.offsetWidth;
+      modal?.classList.add('jiggle');
     }
   }
 
   onSubmit() {
-    if (this.projectForm.valid) {
+    if (this.validateSection(2) && this.projectForm.valid) {
       const formValue = this.projectForm.value;
       formValue.objectives = this.savedObjectives;
       // TODO: Submit form data

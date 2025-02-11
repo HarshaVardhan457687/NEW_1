@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService, User } from '../../core/services/user.service';
@@ -26,7 +26,15 @@ export class AddTeamCardComponent implements OnInit {
   searchLeader = '';
   searchMember = '';
 
-  constructor(private userService: UserService) {}
+  // Add validation properties
+  isTeamNameTouched = false;
+  isLeaderTouched = false;
+  isMembersTouched = false;
+
+  constructor(
+    private userService: UserService,
+    private elementRef: ElementRef
+  ) {}
 
   ngOnInit() {
     this.userService.getUsers().subscribe(users => {
@@ -47,32 +55,73 @@ export class AddTeamCardComponent implements OnInit {
     this.selectedMembers = [];
     this.searchLeader = '';
     this.searchMember = '';
+    // Reset validation states
+    this.isTeamNameTouched = false;
+    this.isLeaderTouched = false;
+    this.isMembersTouched = false;
   }
 
   selectLeader(leader: User) {
     this.selectedLeader = leader;
     this.showLeaderDropdown = false;
     this.searchLeader = '';
+    this.isLeaderTouched = true;
   }
 
   removeLeader() {
     this.selectedLeader = null;
+    this.isLeaderTouched = true;
   }
 
   selectMember(member: User) {
     if (!this.selectedMembers.find(m => m.id === member.id)) {
       this.selectedMembers.push(member);
+      this.isMembersTouched = true;
     }
     this.searchMember = '';
   }
 
   removeMember(member: User) {
     this.selectedMembers = this.selectedMembers.filter(m => m.id !== member.id);
+    this.isMembersTouched = true;
   }
 
   onSave() {
     // TODO: Implement save logic
     this.close();
+  }
+
+  validateAndSave() {
+    // Mark all fields as touched to trigger validation
+    this.isTeamNameTouched = true;
+    this.isLeaderTouched = true;
+    this.isMembersTouched = true;
+
+    if (this.isTeamNameInvalid || this.isLeaderInvalid || this.isMembersInvalid) {
+      // Trigger jiggle animation
+      const card = this.elementRef.nativeElement.querySelector('.add-team-card');
+      if (card) {
+        card.classList.remove('jiggle');
+        void card.offsetWidth; // Force reflow
+        card.classList.add('jiggle');
+      }
+      return;
+    }
+
+    // If validation passes, save the team
+    this.onSave();
+  }
+
+  get isTeamNameInvalid(): boolean {
+    return !this.teamName || this.teamName.trim().length === 0;
+  }
+
+  get isLeaderInvalid(): boolean {
+    return !this.selectedLeader;
+  }
+
+  get isMembersInvalid(): boolean {
+    return this.selectedMembers.length === 0;
   }
 
   get filteredLeaders() {

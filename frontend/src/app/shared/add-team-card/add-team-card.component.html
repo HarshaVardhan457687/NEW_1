@@ -2,25 +2,29 @@
   <div class="add-team-card">
     <div class="modal-header">
       <h2>Add Team</h2>
-      <button class="close-btn" (click)="close()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 18L18 6M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
+      <button class="close-btn" (click)="close()">×</button>
     </div>
 
     <div class="form-content">
       <!-- Team Name -->
       <div class="form-field">
         <label>Team Name<span class="required">*</span></label>
-        <input type="text" [(ngModel)]="teamName" placeholder="Enter team name">
+        <input 
+          type="text" 
+          [(ngModel)]="teamName" 
+          placeholder="Enter team name"
+          [class.error]="isTeamNameInvalid && isTeamNameTouched">
+        <div class="error-message" *ngIf="isTeamNameInvalid && isTeamNameTouched">
+          <i class="fas fa-info-circle"></i>
+          Team name is required
+        </div>
       </div>
 
       <!-- Team Leader Selection -->
       <div class="form-field">
         <label>Team Leader<span class="required">*</span></label>
         <div class="selection-container">
-          <div class="leader-dropdown-container">
+          <div class="leader-dropdown-container" [class.error]="isLeaderInvalid && isLeaderTouched">
             <div class="search-input" *ngIf="!selectedLeader" (click)="showLeaderDropdown = true">
               <input type="text" 
                      [(ngModel)]="searchLeader" 
@@ -45,6 +49,10 @@
               </div>
             </div>
           </div>
+          <div class="error-message" *ngIf="isLeaderInvalid && isLeaderTouched">
+            <i class="fas fa-info-circle"></i>
+            Team leader is required
+          </div>
         </div>
       </div>
 
@@ -52,7 +60,7 @@
       <div class="form-field">
         <label>Team Members<span class="required">*</span></label>
         <div class="selection-container">
-          <div class="member-dropdown-container">
+          <div class="member-dropdown-container" [class.error]="isMembersInvalid && isMembersTouched">
             <div class="search-input">
               <input type="text" 
                      [(ngModel)]="searchMember" 
@@ -79,13 +87,17 @@
               </div>
             </div>
           </div>
+          <div class="error-message" *ngIf="isMembersInvalid && isMembersTouched">
+            <i class="fas fa-info-circle"></i>
+            At least one team member is required
+          </div>
         </div>
       </div>
     </div>
 
     <div class="button-row">
       <button class="cancel-btn" (click)="close()">Cancel</button>
-      <button class="save-btn" (click)="onSave()">Done</button>
+      <button class="save-btn" (click)="validateAndSave()">Done</button>
     </div>
   </div>
 </div>
