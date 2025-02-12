@@ -1,0 +1,37 @@
+<div class="team-card">
+  <!-- Header -->
+  <div class="card-header">
+    <h3 class="team-name">{{ team.name }}</h3>
+    <span class="status-tag" [class.active]="team.active">
+      {{ team.active ? 'Active' : 'Inactive' }}
+    </span>
+  </div>
+
+  <!-- Metrics -->
+  <div class="metrics-row">
+    <div class="metric">
+      <img src="assets/key_result_icon.png" alt="Key Results" class="icon">
+      <span>{{ team.overview.objectives }}</span>
+    </div>
+    <div class="metric">
+      <img src="assets/team_icon.svg" alt="Team Members" class="icon">
+      <span>{{ team.overview.teamMembers }} Members</span>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-row">
+    <span class="progress-label">Team Progress</span>
+    <span class="progress-value">{{ team.progress }}%</span>
+    <app-progress-bar-linear [progress]="team.progress"></app-progress-bar-linear>
+  </div>
+
+  <!-- Team Leader -->
+  <div class="team-leader">
+    <img [src]="'assets/' + team.teamLeader.image" alt="Team Leader" class="leader-avatar">
+    <div class="leader-info">
+      <span class="leader-name">{{ team.teamLeader.name }}</span>
+      <span class="leader-role">Team Leader</span>
+    </div>
+  </div>
+</div>
