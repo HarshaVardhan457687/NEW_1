@@ -24,6 +24,7 @@
   <!-- Team Card Modal -->
   <app-add-team-card
     [show]="showTeamCard"
+    [editingTeam]="editingTeamIndex !== null ? savedTeams[editingTeamIndex] : null"
     (showChange)="onShowTeamCardChange($event)"
     (teamSaved)="onTeamSaved($event)">
   </app-add-team-card>

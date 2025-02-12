@@ -17,15 +17,24 @@ export class AddTeamCardComponent implements OnInit {
   @Input() set show(value: boolean) {
     console.log('Show value changed:', value);
     this._show = value;
-    // Ensure showChange is emitted when show is set
-    if (this.showChange) {
-      this.showChange.emit(value);
+    if (value && this.editingTeam) {
+      this.prefillForm(this.editingTeam);
     }
+    if (!value) {
+      this.resetForm();
+    }
+    this.showChange.emit(value);
   }
   get show(): boolean {
     return this._show;
   }
   private _show = false;
+
+  @Input() set editingTeam(team: any) {
+    if (team && this.show) {
+      this.prefillForm(team);
+    }
+  }
 
   @Output() showChange = new EventEmitter<boolean>();
   @Output() teamSaved = new EventEmitter<any>();
@@ -58,6 +67,15 @@ export class AddTeamCardComponent implements OnInit {
       this.teamLeaders = users.filter(user => user.role === 'team_leader');
       this.teamMembers = users.filter(user => user.role === 'team_member');
     });
+  }
+
+  private prefillForm(team: any) {
+    this.teamName = team.name;
+    this.selectedLeader = team.leader;
+    this.selectedMembers = [...team.members];
+    this.isTeamNameTouched = true;
+    this.isLeaderTouched = true;
+    this.isMembersTouched = true;
   }
 
   close() {

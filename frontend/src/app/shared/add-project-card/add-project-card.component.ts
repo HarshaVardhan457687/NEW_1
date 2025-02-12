@@ -45,8 +45,7 @@ export class AddProjectCardComponent implements OnInit {
         priority: ['medium', Validators.required]
       }),
       team: this.fb.group({
-        teamName: ['', Validators.required],
-        selectedMembers: [[]]
+        teams: [[]]  // Changed to match the actual data structure
       }),
       objectives: this.fb.array([])
     });
@@ -64,7 +63,6 @@ export class AddProjectCardComponent implements OnInit {
       });
 
       if (projectInfo && !projectInfo.valid) {
-        // Mark all fields as touched to show validation errors
         Object.keys((projectInfo as FormGroup).controls).forEach(key => {
           const control = projectInfo.get(key);
           if (control) {
@@ -81,32 +79,18 @@ export class AddProjectCardComponent implements OnInit {
       }
       return true;
     } else if (section === 1) {
-      const team = this.projectForm.get('team');
-      if (team && !team.valid) {
-        Object.keys((team as FormGroup).controls).forEach(key => {
-          const control = team.get(key);
-          if (control) {
-            control.markAsTouched();
-          }
-        });
-        return false;
-      }
+      // For team section, we'll always return true since teams are optional
       return true;
     }
     return true;
   }
 
   nextSection() {
-    console.log('Current Section:', this.currentSection);
-    console.log('Form Valid State:', {
-      projectInfo: this.projectForm.get('projectInfo')?.valid,
-      team: this.projectForm.get('team')?.valid,
-      overall: this.projectForm.valid
-    });
-
+    console.log('Next button clicked. Current Section:', this.currentSection);
     if (this.validateSection(this.currentSection)) {
       if (this.currentSection < 2) {
         this.currentSection++;
+        console.log('Moving to section:', this.currentSection);
       }
     }
   }
@@ -114,12 +98,13 @@ export class AddProjectCardComponent implements OnInit {
   previousSection() {
     if (this.currentSection > 0) {
       this.currentSection--;
+      console.log('Moving back to section:', this.currentSection);
     }
   }
 
   onSubmit() {
     if (this.projectForm.valid) {
-      console.log(this.projectForm.value);
+      console.log('Form submitted:', this.projectForm.value);
       this.close();
     }
   }

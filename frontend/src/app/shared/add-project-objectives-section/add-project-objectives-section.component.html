@@ -1,4 +1,4 @@
-<div class="section" formArrayName="objectives">
+<div class="section" [formGroup]="objectiveForm">
   <!-- Saved Objectives -->
   <div class="saved-objectives" *ngIf="savedObjectives.length > 0">
     <div class="objective-item" *ngFor="let objective of savedObjectives; let i = index">
@@ -26,59 +26,66 @@
   </button>
 
   <!-- New Objective Form -->
-  <div class="objective" *ngIf="showObjectiveForm" [formGroupName]="objectives.length - 1">
-    <div class="input-row">
-      <label>Objective Name <span class="required">*</span></label>
-      <input 
-        type="text" 
-        formControlName="name" 
-        placeholder="Enter objective name"
-        [class.error-field]="objectives.at(objectives.length - 1).get('name')?.invalid && objectives.at(objectives.length - 1).get('name')?.touched">
-      <div class="input-error" *ngIf="objectives.at(objectives.length - 1).get('name')?.invalid && objectives.at(objectives.length - 1).get('name')?.touched">
-        <i class="fas fa-info-circle"></i>
-        <span>Objective name is required</span>
-      </div>
-    </div>
-
-    <div class="input-row split">
-      <div class="date-picker">
-        <label>Due Date <span class="required">*</span></label>
+  <div class="objective" *ngIf="showObjectiveForm" formArrayName="objectives">
+    <div [formGroupName]="objectives.length - 1">
+      <div class="input-row">
+        <label>Objective Name <span class="required">*</span></label>
         <input 
-          type="date" 
-          formControlName="dueDate"
-          [class.error-field]="objectives.at(objectives.length - 1).get('dueDate')?.invalid && objectives.at(objectives.length - 1).get('dueDate')?.touched">
-        <div class="input-error" *ngIf="objectives.at(objectives.length - 1).get('dueDate')?.invalid && objectives.at(objectives.length - 1).get('dueDate')?.touched">
+          type="text" 
+          formControlName="name" 
+          placeholder="Enter objective name"
+          [class.error-field]="isFieldInvalid('name')">
+        <div class="input-error" *ngIf="isFieldInvalid('name')">
           <i class="fas fa-info-circle"></i>
-          <span>Due date is required</span>
+          <span>{{ getFieldError('name') }}</span>
         </div>
       </div>
-      
-      <div class="priority-selector">
-        <label>Priority <span class="required">*</span></label>
-        <div class="radio-group" [class.error-field]="objectives.at(objectives.length - 1).get('priority')?.invalid && objectives.at(objectives.length - 1).get('priority')?.touched">
-          <label class="radio-label">
-            <input type="radio" formControlName="priority" value="high">
-            High
-          </label>
-          <label class="radio-label">
-            <input type="radio" formControlName="priority" value="medium">
-            Medium
-          </label>
-          <label class="radio-label">
-            <input type="radio" formControlName="priority" value="low">
-            Low
-          </label>
+
+      <div class="input-row split">
+        <div class="date-picker">
+          <label>Due Date <span class="required">*</span></label>
+          <input 
+            type="date" 
+            formControlName="dueDate"
+            [class.error-field]="isFieldInvalid('dueDate')">
+          <div class="input-error" *ngIf="isFieldInvalid('dueDate')">
+            <i class="fas fa-info-circle"></i>
+            <span>{{ getFieldError('dueDate') }}</span>
+          </div>
         </div>
-        <div class="input-error" *ngIf="objectives.at(objectives.length - 1).get('priority')?.invalid && objectives.at(objectives.length - 1).get('priority')?.touched">
-          <i class="fas fa-info-circle"></i>
-          <span>Priority is required</span>
+        
+        <div class="priority-selector">
+          <label>Priority <span class="required">*</span></label>
+          <div class="radio-group" [class.error-field]="isFieldInvalid('priority')">
+            <label class="radio-label">
+              <input type="radio" formControlName="priority" value="high">
+              High
+            </label>
+            <label class="radio-label">
+              <input type="radio" formControlName="priority" value="medium">
+              Medium
+            </label>
+            <label class="radio-label">
+              <input type="radio" formControlName="priority" value="low">
+              Low
+            </label>
+          </div>
+          <div class="input-error" *ngIf="isFieldInvalid('priority')">
+            <i class="fas fa-info-circle"></i>
+            <span>{{ getFieldError('priority') }}</span>
+          </div>
         </div>
+      </div>
+
+      <div class="button-row">
+        <button type="button" class="cancel-btn" (click)="cancelObjective()">
+          Cancel
+        </button>
+        <button type="button" class="done-btn" (click)="saveObjective(objectives.length - 1)">
+          Done
+        </button>
       </div>
     </div>
-
-    <button type="button" class="done-btn" (click)="saveObjective(objectives.length - 1)">
-      Done
-    </button>
   </div>
 </div>
 
