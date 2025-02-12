@@ -772,7 +772,39 @@
           "teamMembers": 12,
           "objectives": "8/10",
           "tasks": "49/60"
-        }
+        },
+        "members": [
+          {
+            "name": "Alex Kim",
+            "role": "Senior Developer",
+            "image": "pic2.png",
+            "progress": 90
+          },
+          {
+            "name": "Zou Jhon",
+            "role": "UX Designer",
+            "image": "pic3.png",
+            "progress": 80
+          },
+          {
+            "name": "Emily Chen",
+            "role": "Frontend Developer",
+            "image": "pic1.png",
+            "progress": 65
+          },
+          {
+            "name": "Michael Ross",
+            "role": "Senior Developer",
+            "image": "pic2.png",
+            "progress": 20
+          },
+          {
+            "name": "Sarah Lee",
+            "role": "QA Engineer",
+            "image": "pic3.png",
+            "progress": 75
+          }
+        ]
       },
       {
         "id": 2,
@@ -787,7 +819,27 @@
           "teamMembers": 8,
           "objectives": "6/8",
           "tasks": "35/45"
-        }
+        },
+        "members": [
+          {
+            "name": "Nina Patel",
+            "role": "Senior Frontend Developer",
+            "image": "pic4.png",
+            "progress": 85
+          },
+          {
+            "name": "Chris Morgan",
+            "role": "UI Developer",
+            "image": "pic5.png",
+            "progress": 70
+          },
+          {
+            "name": "Emma Wilson",
+            "role": "Frontend Developer",
+            "image": "pic1.png",
+            "progress": 60
+          }
+        ]
       },
       {
         "id": 3,
@@ -802,7 +854,33 @@
           "teamMembers": 10,
           "objectives": "7/9",
           "tasks": "42/50"
-        }
+        },
+        "members": [
+          {
+            "name": "Ryan Cooper",
+            "role": "Senior Backend Developer",
+            "image": "pic2.png",
+            "progress": 95
+          },
+          {
+            "name": "Isabella Silva",
+            "role": "Backend Developer",
+            "image": "pic3.png",
+            "progress": 75
+          },
+          {
+            "name": "Lucas Zhang",
+            "role": "Database Engineer",
+            "image": "pic4.png",
+            "progress": 85
+          },
+          {
+            "name": "Sophia Lee",
+            "role": "Backend Developer",
+            "image": "pic5.png",
+            "progress": 70
+          }
+        ]
       },
       {
         "id": 4,
@@ -817,7 +895,27 @@
           "teamMembers": 6,
           "objectives": "5/6",
           "tasks": "28/35"
-        }
+        },
+        "members": [
+          {
+            "name": "William Davis",
+            "role": "Senior QA Engineer",
+            "image": "pic1.png",
+            "progress": 88
+          },
+          {
+            "name": "Olivia Brown",
+            "role": "Test Automation Engineer",
+            "image": "pic2.png",
+            "progress": 92
+          },
+          {
+            "name": "Ethan Murphy",
+            "role": "QA Engineer",
+            "image": "pic3.png",
+            "progress": 65
+          }
+        ]
       },
       {
         "id": 5,
@@ -832,7 +930,33 @@
           "teamMembers": 7,
           "objectives": "6/7",
           "tasks": "32/40"
-        }
+        },
+        "members": [
+          {
+            "name": "Ava Johnson",
+            "role": "Senior UX Designer",
+            "image": "pic3.png",
+            "progress": 95
+          },
+          {
+            "name": "Mason Williams",
+            "role": "UI Designer",
+            "image": "pic4.png",
+            "progress": 78
+          },
+          {
+            "name": "Zoe Taylor",
+            "role": "Product Designer",
+            "image": "pic5.png",
+            "progress": 82
+          },
+          {
+            "name": "Liam Anderson",
+            "role": "UX Researcher",
+            "image": "pic2.png",
+            "progress": 70
+          }
+        ]
       },
       {
         "id": 6,
@@ -847,7 +971,27 @@
           "teamMembers": 5,
           "objectives": "4/5",
           "tasks": "25/30"
-        }
+        },
+        "members": [
+          {
+            "name": "Daniel Taylor",
+            "role": "Cloud Engineer",
+            "image": "pic3.png",
+            "progress": 88
+          },
+          {
+            "name": "Rachel White",
+            "role": "DevOps Engineer",
+            "image": "pic4.png",
+            "progress": 92
+          },
+          {
+            "name": "Kevin Patel",
+            "role": "Infrastructure Engineer",
+            "image": "pic5.png",
+            "progress": 85
+          }
+        ]
       },
       {
         "id": 7,
