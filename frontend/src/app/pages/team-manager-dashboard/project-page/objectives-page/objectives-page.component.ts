@@ -43,4 +43,6 @@ export class ObjectivesPageComponent implements OnInit {
       }
     });
   }
+
+  onAddObjective(){}
 }

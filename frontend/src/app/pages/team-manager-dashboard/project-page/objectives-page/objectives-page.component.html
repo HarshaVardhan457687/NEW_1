@@ -23,7 +23,10 @@
       [value]="objectiveStats.completedKeys"
       color="#2563EB">
     </app-objective-stat-card>
-    
+
+  </div>
+  <div class="button">
+    <button class="add-btn" (click)="onAddObjective">Add Objective</button>
   </div>
   <app-objectives-section [projectId]="projectId"></app-objectives-section>
 </div>
