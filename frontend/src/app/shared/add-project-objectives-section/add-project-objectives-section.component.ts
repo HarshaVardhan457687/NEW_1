@@ -1,13 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormBuilder, FormArray, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { AddObjectiveCardComponent } from '../add-objective-card/add-objective-card.component';
+import { AddKeyResultCardComponent } from '../add-key-result-card/add-key-result-card.component';
 
 @Component({
   selector: 'app-add-project-objectives-section',
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AddObjectiveCardComponent,
+    AddKeyResultCardComponent
   ],
   templateUrl: './add-project-objectives-section.component.html',
   styleUrls: ['./add-project-objectives-section.component.scss']
@@ -19,29 +23,27 @@ export class AddProjectObjectivesSectionComponent implements OnInit {
   showKeyResultModal = false;
   currentObjectiveIndex: number | null = null;
   savedObjectives: any[] = [];
-  keyResultForm!: FormGroup;
+  savedTeams: any[] = [];
 
   constructor(private fb: FormBuilder) {
-    this.initializeKeyResultForm();
     this.objectiveForm = this.fb.group({
       objectives: this.fb.array([])
     });
   }
 
   ngOnInit() {
-    // No need to modify projectForm directly
-    console.log('Form initialized');
-  }
-
-  private initializeKeyResultForm() {
-    this.keyResultForm = this.fb.group({
-      name: ['', Validators.required],
-      targetValue: ['', Validators.required],
-      unit: ['', Validators.required],
-      dueDate: ['', Validators.required],
-      priority: ['medium', Validators.required],
-      assignedTeam: ['']
+    // Subscribe to changes in the teams array
+    this.projectForm.get('team')?.valueChanges.subscribe(teamData => {
+      if (teamData && teamData.teams) {
+        this.savedTeams = teamData.teams;
+      }
     });
+
+    // Initialize savedTeams with current value
+    const teamData = this.projectForm.get('team')?.value;
+    if (teamData && teamData.teams) {
+      this.savedTeams = teamData.teams;
+    }
   }
 
   get objectives() {
@@ -53,82 +55,23 @@ export class AddProjectObjectivesSectionComponent implements OnInit {
   }
 
   addObjective() {
-    const objective = this.fb.group({
-      name: ['', Validators.required],
-      dueDate: ['', Validators.required],
-      priority: ['medium', Validators.required],
-      keyResults: this.fb.array([])
-    });
-
-    this.objectives.push(objective);
     this.showObjectiveForm = true;
-
-    // Set default priority after a short delay to ensure form is initialized
-    setTimeout(() => {
-      objective.patchValue({ priority: 'medium' });
-      console.log('Priority set to:', objective.get('priority')?.value);
-    });
   }
 
-  cancelObjective() {
-    if (this.objectives.length > 0) {
-      this.objectives.removeAt(this.objectives.length - 1);
-    }
+  onObjectiveClose() {
     this.showObjectiveForm = false;
   }
 
-  saveObjective(index: number) {
-    const objective = this.objectives.at(index) as FormGroup;
+  onObjectiveSave(objective: any) {
+    this.savedObjectives.push({
+      ...objective,
+      keyResults: []
+    });
     
-    // Log form values
-    console.log('Saving objective with values:', {
-      name: objective.get('name')?.value,
-      dueDate: objective.get('dueDate')?.value,
-      priority: objective.get('priority')?.value
-    });
-
-    // Mark all fields as touched to trigger validation
-    Object.keys(objective.controls).forEach(key => {
-      const control = objective.get(key);
-      if (control) {
-        control.markAsTouched();
-        control.updateValueAndValidity();
-      }
-    });
-
-    // Check individual field validity
-    const nameValid = objective.get('name')?.valid;
-    const dueDateValid = objective.get('dueDate')?.valid;
-    const priorityValid = objective.get('priority')?.valid;
-
-    console.log('Field validation:', {
-      nameValid,
-      dueDateValid,
-      priorityValid,
-      formValid: objective.valid
-    });
-
-    if (nameValid && dueDateValid && priorityValid) {
-      // Update the project form's objectives
-      const objectives = this.projectForm.get('objectives')?.value || [];
-      objectives.push(objective.value);
-      this.projectForm.patchValue({ objectives });
-
-      // Update local saved objectives
-      this.savedObjectives.push({
-        ...objective.value,
-        keyResults: []
-      });
-      
-      this.objectives.removeAt(index);
-      this.showObjectiveForm = false;
-    } else {
-      console.log('Form validation failed:', {
-        nameErrors: objective.get('name')?.errors,
-        dueDateErrors: objective.get('dueDate')?.errors,
-        priorityErrors: objective.get('priority')?.errors
-      });
-    }
+    // Update the project form's objectives
+    const objectives = this.projectForm.get('objectives')?.value || [];
+    objectives.push(objective);
+    this.projectForm.patchValue({ objectives });
   }
 
   openKeyResultModal(objectiveIndex: number) {
@@ -136,24 +79,14 @@ export class AddProjectObjectivesSectionComponent implements OnInit {
     this.showKeyResultModal = true;
   }
 
-  closeKeyResultModal() {
+  onKeyResultClose() {
     this.showKeyResultModal = false;
-    this.keyResultForm.reset({ priority: 'medium' });
   }
 
-  addKeyResult() {
-    if (this.keyResultForm.valid && this.currentObjectiveIndex !== null) {
-      const keyResult = this.keyResultForm.value;
+  onKeyResultSave(keyResult: any) {
+    if (this.currentObjectiveIndex !== null) {
       this.savedObjectives[this.currentObjectiveIndex].keyResults.push(keyResult);
-      this.closeKeyResultModal();
-    } else {
-      Object.keys(this.keyResultForm.controls).forEach(key => {
-        const control = this.keyResultForm.get(key);
-        if (control) {
-          control.markAsTouched();
-          control.updateValueAndValidity();
-        }
-      });
+      this.showKeyResultModal = false;
     }
   }
 

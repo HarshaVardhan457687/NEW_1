@@ -1,0 +1,76 @@
+<div class="modal-overlay" (click)="onOverlayClick($event)">
+  <div class="add-objective-card">
+    <div class="modal-header">
+      <h2>Add New Objective</h2>
+      <button class="close-btn" (click)="closeForm()">×</button>
+    </div>
+    <div class="form-content">
+      <form [formGroup]="objectiveForm" (ngSubmit)="onSubmit()">
+        <div class="input-row">
+          <label>
+            Objective Name
+            <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            formControlName="name"
+            [class.error-field]="isFieldInvalid('name')"
+            placeholder="Enter objective name"
+          />
+          <div class="input-error" *ngIf="isFieldInvalid('name')">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>Objective name is required</span>
+          </div>
+        </div>
+
+        <div class="input-row split">
+          <div>
+            <label>
+              Due Date
+              <span class="required">*</span>
+            </label>
+            <input
+              type="date"
+              formControlName="dueDate"
+              [class.error-field]="isFieldInvalid('dueDate')"
+            />
+            <div class="input-error" *ngIf="isFieldInvalid('dueDate')">
+              <i class="fas fa-exclamation-circle"></i>
+              <span>Due date is required</span>
+            </div>
+          </div>
+
+          <div class="priority-selector">
+            <label>
+              Priority
+              <span class="required">*</span>
+            </label>
+            <div class="radio-group" [class.error-field]="isFieldInvalid('priority')">
+              <label class="radio-label">
+                <input type="radio" formControlName="priority" value="high" />
+                High
+              </label>
+              <label class="radio-label">
+                <input type="radio" formControlName="priority" value="medium" />
+                Medium
+              </label>
+              <label class="radio-label">
+                <input type="radio" formControlName="priority" value="low" />
+                Low
+              </label>
+            </div>
+            <div class="input-error" *ngIf="isFieldInvalid('priority')">
+              <i class="fas fa-exclamation-circle"></i>
+              <span>Priority is required</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button type="button" class="cancel-btn" (click)="closeForm()">Cancel</button>
+          <button type="submit" class="done-btn">Add Objective</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> 
