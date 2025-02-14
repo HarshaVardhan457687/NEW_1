@@ -2,18 +2,19 @@
   <!-- Row 1: Title and Tag -->
   <div class="task-row title-row">
     <h3 class="task-title">{{ task.title }}</h3>
-    <span class="project-tag">{{ task.tag }}</span>
   </div>
 
   <!-- Row 2: Due Date, Priority, Status and Submit Button -->
   <div class="task-row info-row">
     <div class="status-group">
       <span class="due-date">Due: {{ task.dueDate }}</span>
+      <span class="project-tag">{{ task.tag }}</span>
       <span class="priority" [class]="task.priority">{{ task.priority }}</span>
       <span class="status" [ngClass]="task.status">{{ task.status | titlecase }}</span>
+
     </div>
-    <button 
-      class="submit-button" 
+    <button
+      class="submit-button"
       [class.submitted]="isSubmitted"
       (click)="onSubmit()"
       [disabled]="isSubmitted">
