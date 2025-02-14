@@ -1,0 +1,39 @@
+.team-leader-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #E5E7EB;
+  }
+  
+  .leader-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    
+  }
+  
+  .leader-image {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .leader-details {
+    flex: 1;
+  }
+  
+  .leader-name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 0.25rem 0;
+  }
+  
+  .leader-role {
+    font-size: 0.875rem;
+    color: #6B7280;
+    margin: 0;
+  }
+  
+  
