@@ -1,3 +1,7 @@
 <div class="teams-page">
+  <div class="header">
+    <button class="add-btn" (click)="onAddTeam()">Add Team</button>
+  </div>
   <app-teams-section [teams]="teams"></app-teams-section>
 </div>
+<app-add-team-card [(show)]="showAddTeamCard"></app-add-team-card>
