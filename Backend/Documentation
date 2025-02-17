@@ -1,0 +1,636 @@
+Documentaion of OKR
+
+# Objective Management Service Documentation
+
+## Overview
+
+The Objective Management Service is a Spring Boot microservice that manages objectives within a project management system. It provides REST APIs for creating, reading, updating, and deleting objectives, along with specialized endpoints for tracking project progress and managing objective relationships with key results and tasks.
+
+## Architecture
+
+The service follows a typical Spring Boot microservice architecture with three main layers:
+- Controller Layer (REST API endpoints)
+- Service Layer (Business logic)
+- Repository Layer (Data persistence)
+
+The service integrates with two external microservices:
+- KeyResult Service (port 8082)
+- Task Service (port 8083)
+
+## Core Components
+
+### Objective Entity
+
+The `Objective` entity represents a project objective with the following key attributes:
+
+```java
+objectiveId        // Unique identifier
+objectiveName      // Name of the objective
+objectiveDescription // Detailed description
+mappedProject      // Associated project ID
+assignedTo         // List of assigned user IDs
+keyResultIds       // List of associated key result IDs
+objectiveTaskIds   // List of associated task IDs
+objectiveStartDate // Start date
+objectiveDueDate   // Due date
+objectiveStatus    // Current status
+objectiveIsActive  // Active/Inactive flag
+```
+
+### Service Layer (ObjectiveServiceImpl)
+
+The service layer implements the following core functionalities:
+
+#### 1. Objective Management
+- Create new objectives
+- Retrieve single/all objectives
+- Update existing objectives
+- Delete objectives
+- Fetch objectives by project ID
+
+#### 2. Progress Tracking
+- Calculate project progress based on completed tasks
+- Track objective status and activity
+
+#### 3. Integration
+- Fetch associated key results from KeyResult Service
+- Fetch associated tasks from Task Service
+
+### REST API Endpoints
+
+#### Core Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/objective` | Create new objective |
+| GET | `/api/objective` | Get all objectives |
+| GET | `/api/objective/{id}` | Get objective by ID |
+| PUT | `/api/objective/{id}` | Update objective |
+| DELETE | `/api/objective/{id}` | Delete objective |
+
+#### Project-Related Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/objective/project/{projectId}` | Get objectives by project |
+| GET | `/api/objective/project/progress/{projectId}` | Get project progress |
+
+## Usage Examples
+
+### 1. Creating an Objective
+
+```java
+POST /api/objective
+Content-Type: application/json
+
+{
+    "objectiveName": "Improve Customer Satisfaction",
+    "objectiveDescription": "Increase customer satisfaction score by 15%",
+    "mappedProject": 1001,
+    "assignedTo": [101, 102],
+    "objectiveStartDate": "2025-02-15",
+    "objectiveDueDate": "2025-06-15",
+    "objectiveStatus": "IN_PROGRESS",
+    "objectiveIsActive": true
+}
+```
+
+### 2. Updating an Objective
+
+```java
+PUT /api/objective/1
+Content-Type: application/json
+
+{
+    "objectiveName": "Improve Customer Satisfaction",
+    "objectiveDescription": "Updated: Increase customer satisfaction score by 20%",
+    "objectiveStatus": "IN_PROGRESS"
+}
+```
+
+### 3. Fetching Project Progress
+
+```java
+GET /api/objective/project/progress/1001
+```
+
+## Error Handling
+
+The service includes comprehensive error handling for common scenarios:
+
+1. `ObjectiveNotFoundException`: Thrown when an objective isn't found
+2. `RestClientException`: Handled when external service calls fail
+3. HTTP Status codes:
+   - 200: Successful operation
+   - 201: Resource created
+   - 204: Resource deleted
+   - 404: Resource not found
+   - 500: Internal server error
+
+## FAQ
+
+### Q: How is project progress calculated?
+A: Project progress is calculated by averaging the completion percentage of tasks across all objectives in the project. A task is considered complete when its `taskIsActive` flag is false.
+
+### Q: How does the service handle external service failures?
+A: If KeyResult or Task services are unavailable, the service will:
+1. Log the error
+2. Return available objective data
+3. Include empty lists for unreachable related data
+4. Throw RuntimeException for critical operations
+
+### Q: Can I batch update multiple objectives?
+A: Currently, objectives must be updated individually using the PUT endpoint. Batch operations are not supported.
+
+### Q: How are dates handled?
+A: Dates are expected in "yyyy-MM-dd" format and are stored as Date objects in the database.
+
+## Best Practices
+
+1. Always include `objectiveId` in update operations
+2. Use project-specific endpoints for better performance when querying multiple objectives
+3. Implement proper error handling for external service calls
+4. Maintain `objectiveIsActive` flag for soft deletions instead of hard deletes
+5. Regular monitoring of service logs for integration issues
+
+## Dependencies
+
+- Spring Boot 2.x
+- Spring Data JPA
+- Spring Web
+- Lombok
+- Jackson (for JSON processing)
+- SLF4J (for logging)
+
+## Logging
+
+The service uses SLF4J for logging. Key operations are logged at:
+- INFO level for normal operations
+- SEVERE level for errors and exceptions
+
+Monitor logs for messages prefixed with `ObjectiveServiceImpl` and `ObjectiveController` for service-specific events.
+
+
+
+# KeyResult Service Documentation
+
+## Overview
+
+The KeyResult Service is a Spring Boot microservice that manages key results within an OKR (Objectives and Key Results) management system. It provides REST APIs for creating, reading, updating, and deleting key results, along with functionality to associate key results with objectives and tasks.
+
+## Architecture
+
+The service follows a layered architecture pattern:
+- REST Controllers (API Layer)
+- Service Layer (Business Logic)
+- Repository Layer (Data Access)
+- Exception Handling Layer
+
+The service integrates with:
+- Task Service (port 8083) for fetching associated tasks
+
+## Core Components
+
+### KeyResult Entity
+
+The `KeyResult` entity represents a key result with the following attributes:
+
+```java
+keyResultId               // Unique identifier
+keyResultName            // Name of the key result
+keyResultOwnerId         // ID of the owner
+associatedObjectiveId    // ID of the associated objective
+keyResultAssociatedTasksId // List of associated task IDs
+keyResultAssociatedTasks  // Transient list of Task objects
+keyResultDueDate         // Due date for the key result
+```
+
+### Service Layer (KeyResultServiceImpl)
+
+The service layer provides the following core functionalities:
+
+#### 1. CRUD Operations
+- Create new key results
+- Retrieve single/all key results
+- Update existing key results
+- Delete key results
+
+#### 2. Business Logic
+- Manage associations with objectives
+- Handle task relationships
+- Validate operations
+- Integrate with Task Service
+
+#### 3. Error Handling
+- Resource not found scenarios
+- Bad request handling
+- Generic exception management
+
+### REST API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/keyresults` | Create new key result |
+| GET | `/api/keyresults` | Get all key results |
+| GET | `/api/keyresults/{id}` | Get key result by ID |
+| GET | `/api/keyresults/objective/{objectiveId}` | Get key results by objective ID |
+| PUT | `/api/keyresults/{id}` | Update key result |
+| DELETE | `/api/keyresults/{id}` | Delete key result |
+
+## Usage Examples
+
+### 1. Creating a Key Result
+
+```java
+POST /api/keyresults
+Content-Type: application/json
+
+{
+    "keyResultName": "Increase Customer Retention",
+    "keyResultOwnerId": 1001,
+    "associatedObjectiveId": 5001,
+    "keyResultAssociatedTasksId": [101, 102],
+    "keyResultDueDate": "2025-06-30"
+}
+```
+
+### 2. Updating a Key Result
+
+```java
+PUT /api/keyresults/1
+Content-Type: application/json
+
+{
+    "keyResultName": "Updated: Increase Customer Retention by 25%",
+    "keyResultOwnerId": 1001,
+    "keyResultDueDate": "2025-07-15"
+}
+```
+
+### 3. Fetching Key Results by Objective
+
+```java
+GET /api/keyresults/objective/5001
+```
+
+## Exception Handling
+
+The service implements a global exception handling mechanism through `GlobalExceptionHandler`:
+
+1. `ResourceNotFoundException`
+   - Thrown when requested resources don't exist
+   - Returns 404 HTTP status
+
+2. `BadRequestException`
+   - Thrown for invalid request parameters
+   - Returns 400 HTTP status
+
+3. `IllegalArgumentException`
+   - Handles invalid argument scenarios
+   - Returns 400 HTTP status
+
+4. Generic Exceptions
+   - Catches unexpected errors
+   - Returns 500 HTTP status
+
+## Configuration
+
+### RestTemplate Configuration
+
+```java
+@Configuration
+public class MyConfig {
+    @Bean
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
+    }
+}
+```
+
+## Logging
+
+The service uses SLF4J for logging with different levels:
+- INFO: Normal operations
+- ERROR: Exception scenarios
+- WARN: Warning conditions
+
+Example log messages:
+```java
+LOGGER.info("Fetching KeyResult with ID: {}", id);
+LOGGER.error("KeyResult not found with ID: {}", id);
+```
+
+## FAQ
+
+### Q: How are tasks associated with key results?
+A: Tasks are associated through the `keyResultAssociatedTasksId` list and fetched from the Task Service when needed.
+
+### Q: What happens if the Task Service is unavailable?
+A: The service will:
+1. Log the error
+2. Return the key result data without associated tasks
+3. Continue operation with degraded functionality
+
+### Q: How is data consistency maintained across services?
+A: The service:
+1. Uses transactional operations for database updates
+2. Implements proper error handling for external service calls
+3. Maintains ID references for relationships
+
+### Q: Can key results be bulk created or updated?
+A: Currently, the service only supports individual operations. Bulk operations would require custom implementation.
+
+## Best Practices
+
+1. Always provide required fields when creating/updating key results
+2. Use appropriate error handling in clients
+3. Implement retry mechanisms for external service calls
+4. Monitor service logs for integration issues
+5. Validate input data before making requests
+
+## Dependencies
+
+- Spring Boot
+- Spring Data JPA
+- Spring Web
+- Lombok
+- Jackson Date Format
+- SLF4J
+
+## Security Considerations
+
+1. Input Validation
+   - All input parameters are validated
+   - Special characters are handled appropriately
+
+2. Error Handling
+   - No sensitive information in error messages
+   - Proper exception hierarchy
+
+3. Data Access
+   - Repository layer abstracts data access
+   - Proper transaction management
+
+## Performance Considerations
+
+1. Database Operations
+   - Efficient queries through JPA Repository
+   - Proper indexing on frequently queried fields
+
+2. External Service Calls
+   - Asynchronous operations where possible
+   - Connection pooling
+   - Timeout configurations
+
+## Monitoring
+
+Key metrics to monitor:
+1. Response times for API endpoints
+2. Error rates
+3. External service call latency
+4. Database connection pool status
+5. Memory usage
+
+
+# Task Service Documentation
+
+## Overview
+
+The Task Service is a Spring Boot microservice that manages tasks within an OKR (Objectives and Key Results) management system. It provides REST APIs for task management, real-time notifications via WebSocket, and integration with Objectives and Key Results.
+
+## Core Features
+
+- CRUD operations for tasks
+- Real-time task approval notifications via WebSocket
+- Task filtering by objective, key result, and user
+- Active/inactive task management
+- Task priority management through status levels
+
+## Architecture
+
+### Component Layers
+1. Controller Layer (`TaskController`) - REST API endpoints
+2. Service Layer (`TaskServiceImpl`) - Business logic
+3. Repository Layer (`TaskRepository`) - Data access
+4. WebSocket Integration - Real-time notifications
+
+## Data Model
+
+### Task Entity
+```java
+taskId                  // Unique identifier
+taskHeading            // Title of the task
+taskDescription        // Detailed description
+taskOwner              // User ID of task owner
+taskStartDate          // Start date (yyyy-MM-dd)
+taskDueDate            // Due date (yyyy-MM-dd)
+taskTag                // Task category/tag
+taskIsActive          // Task status flag
+taskAssociatedKeyResult // Associated key result ID
+taskAssociatedObjective // Associated objective ID
+taskStatus             // Priority level (LOW/MEDIUM/HIGH)
+```
+
+## API Endpoints
+
+### Core Task Operations
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/tasks` | Create new task |
+| GET | `/api/tasks` | Get all tasks |
+| GET | `/api/tasks/{id}` | Get task by ID |
+| PUT | `/api/tasks/{id}` | Update task |
+| DELETE | `/api/tasks/{id}` | Delete task |
+
+### Specialized Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/tasks/objective/{objectiveId}` | Get tasks by objective |
+| GET | `/api/tasks/keyresult/{keyresultId}` | Get tasks by key result |
+| GET | `/api/tasks/users/{userId}` | Get user's tasks |
+| GET | `/api/tasks/active-task/users/{userId}` | Get user's active tasks |
+| PUT | `/api/tasks/{taskId}/approve` | Approve task |
+
+## Usage Examples
+
+### 1. Creating a Task
+
+```java
+POST /api/tasks
+Content-Type: application/json
+
+{
+    "taskHeading": "Implement User Authentication",
+    "taskDescription": "Add OAuth2 authentication flow",
+    "taskOwner": 1001,
+    "taskStartDate": "2025-02-15",
+    "taskDueDate": "2025-03-15",
+    "taskTag": "security",
+    "taskIsActive": true,
+    "taskAssociatedKeyResult": 501,
+    "taskAssociatedObjective": 201,
+    "taskStatus": "HIGH"
+}
+```
+
+### 2. Updating a Task
+
+```java
+PUT /api/tasks/1
+Content-Type: application/json
+
+{
+    "taskHeading": "Updated: Implement User Authentication",
+    "taskStatus": "MEDIUM",
+    "taskDueDate": "2025-03-30"
+}
+```
+
+### 3. Approving a Task
+
+```java
+PUT /api/tasks/1/approve
+```
+
+## WebSocket Notifications
+
+The service implements real-time notifications using WebSocket for task approvals.
+
+### Notification Format
+```java
+{
+    "message": "Task 'Implementation' has been approved and marked as completed.",
+    "type": "TASK_APPROVED",
+    "userId": "1001",
+    "timestamp": "2025-02-11T14:30:00"
+}
+```
+
+### WebSocket Configuration
+- Topic: `/topic/notifications`
+- Message Format: JSON
+- Connection URL: `ws://host:port/ws`
+
+## Error Handling
+
+### Exception Types
+1. `ResourceNotFoundException`
+   - When requested task doesn't exist
+   - HTTP Status: 404
+
+2. `BadRequestException`
+   - Invalid request parameters
+   - HTTP Status: 400
+
+3. `IllegalArgumentException`
+   - Invalid input data
+   - HTTP Status: 400
+
+### Error Response Format
+```json
+{
+    "statusCode": 404,
+    "message": "Task not found with ID: 123"
+}
+```
+
+## Task Status Management
+
+The service supports three priority levels:
+- `LOW`: Regular priority tasks
+- `MEDIUM`: Moderate priority tasks
+- `HIGH`: Critical priority tasks
+
+## Best Practices
+
+### 1. Task Creation
+- Always provide required fields
+- Use meaningful task headings
+- Set appropriate priority levels
+- Include realistic due dates
+
+### 2. Task Updates
+- Maintain task history
+- Update status appropriately
+- Keep descriptions current
+
+### 3. Task Approval
+- Verify completion criteria
+- Update associated objectives/key results
+- Monitor WebSocket notifications
+
+## Performance Considerations
+
+1. Database Optimization
+   - Indexed queries for frequent lookups
+   - Pagination for large result sets
+   - Efficient JOIN operations
+
+2. WebSocket Management
+   - Connection pooling
+   - Message queuing
+   - Error handling
+
+## Logging
+
+The service uses SLF4J for comprehensive logging:
+
+```java
+// Information logging
+LOGGER.info("Fetching task with ID: {}", taskId);
+
+// Error logging
+LOGGER.error("Failed to process task: {}", ex.getMessage());
+```
+
+## FAQ
+
+### Q: How are task priorities managed?
+A: Tasks use the `TaskStatus` enum (LOW/MEDIUM/HIGH) to indicate priority levels.
+
+### Q: What happens when a task is approved?
+A: The system:
+1. Marks the task as inactive
+2. Sends a WebSocket notification
+3. Updates the task status
+4. Notifies the task owner
+
+### Q: Can tasks be bulk updated?
+A: Currently, tasks must be updated individually through the PUT endpoint.
+
+### Q: How are active tasks filtered?
+A: Active tasks are filtered using the `taskIsActive` boolean flag.
+
+## Security Considerations
+
+1. Authentication/Authorization
+   - API endpoint protection
+   - User role validation
+   - WebSocket connection security
+
+2. Input Validation
+   - Request parameter validation
+   - Date format validation
+   - Status enum validation
+
+## Monitoring
+
+Key metrics to monitor:
+1. Task completion rates
+2. API response times
+3. WebSocket connection status
+4. Error rates
+5. Database performance
+
+## Dependencies
+
+- Spring Boot
+- Spring Data JPA
+- Spring WebSocket
+- SLF4J
+- Jackson (JSON processing)
+- H2/MySQL Database
+
+
