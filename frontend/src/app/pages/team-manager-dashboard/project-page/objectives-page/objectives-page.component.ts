@@ -4,16 +4,19 @@ import { ObjectiveStatCardComponent } from '../../../../shared/objective-stat-ca
 import { ActivatedRoute } from '@angular/router';
 import { ObjectivesService, ObjectiveStats } from '../../../../core/services/objectives.service';
 import { ObjectivesSectionComponent } from './objectives-section/objectives-section.component';
+import { AddObjectiveCardComponent } from '../../../../shared/add-objective-card/add-objective-card.component';
+import { ObjectiveFormData } from '../../../../shared/add-objective-card/add-objective-card.component';
 
 @Component({
   selector: 'app-objectives-page',
   standalone: true,
-  imports: [CommonModule, ObjectiveStatCardComponent, ObjectivesSectionComponent],
+  imports: [CommonModule, ObjectiveStatCardComponent, ObjectivesSectionComponent, AddObjectiveCardComponent],
   templateUrl: './objectives-page.component.html',
   styleUrls: ['./objectives-page.component.scss']
 })
 export class ObjectivesPageComponent implements OnInit {
   projectId!: number;
+  showAddObjective = false;
   objectiveStats: ObjectiveStats = {
     totalObjectives: 0,
     inProgress: 0,
@@ -44,5 +47,19 @@ export class ObjectivesPageComponent implements OnInit {
     });
   }
 
-  onAddObjective(){}
+  onAddObjective(): void {
+    this.showAddObjective = true;
+  }
+
+  onCloseObjective(): void {
+    this.showAddObjective = false;
+  }
+
+  onSaveObjective(data: ObjectiveFormData): void {
+    // TODO: Implement save objective logic
+    console.log('Saving objective:', data);
+    this.showAddObjective = false;
+    // After saving, reload objectives
+    this.loadObjectiveStats();
+  }
 }
