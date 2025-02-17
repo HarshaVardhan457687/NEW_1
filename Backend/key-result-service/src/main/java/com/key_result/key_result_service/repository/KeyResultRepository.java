@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface KeyResultRepository extends JpaRepository<KeyResult, Long> {
-    List<KeyResult> findKeyResultByAssociatedObjectiveId(Long objectiveId);
-    List<KeyResult> findByObjectiveIdIn(List<Long> objectiveIds);
+    List<KeyResult> findKeyResultByAssociatedObjectiveId(Long associatedObjectiveId);
+    List<KeyResult> findByAssociatedObjectiveIdIn(List<Long> associatedObjectiveIds);  // Update here
 }

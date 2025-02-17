@@ -197,7 +197,7 @@ public class KeyResultServiceImpl implements KeyResultService {
     @Override
     public Map<String, List<KeyResult>> getKeyResultsByObjectiveIds(List<Long> objectiveIds) {
         // Fetch all key results
-        List<KeyResult> allKeyResults = keyResultRepository.findByObjectiveIdIn(objectiveIds);
+        List<KeyResult> allKeyResults = keyResultRepository.findByAssociatedObjectiveIdIn(objectiveIds);
 
         // Filter active key results (currVal < 100%)
         List<KeyResult> activeKeyResults = allKeyResults.stream()
