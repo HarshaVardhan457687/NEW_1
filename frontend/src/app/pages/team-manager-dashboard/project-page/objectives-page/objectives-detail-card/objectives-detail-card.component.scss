@@ -4,13 +4,12 @@
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
 
   .header-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom:0.5rem;
 
     .title {
       font-size: 1.25rem;

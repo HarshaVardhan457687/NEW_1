@@ -29,13 +29,4 @@
     <button class="add-btn" (click)="onAddObjective">Add Objective</button>
   </div>
   <app-objectives-section [projectId]="projectId"></app-objectives-section>
-
-
-  <app-add-objective-card
-    *ngIf="showObjectiveForm"
-    (close)="onObjectiveClose()"
-    (save)="onObjectiveSave($event)">
-  </app-add-objective-card>
 </div>
-
-
