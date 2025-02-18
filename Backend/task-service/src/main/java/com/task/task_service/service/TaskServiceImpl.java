@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-    private final SimpMessagingTemplate messagingTemplate; // Inject WebSocket messaging
+//    private final SimpMessagingTemplate messagingTemplate; // Inject WebSocket messaging
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskServiceImpl.class);
 
     /**
@@ -33,9 +33,8 @@ public class TaskServiceImpl implements TaskService {
      * @param taskRepository Repository interface for task-related database operations.
      */
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository, SimpMessagingTemplate messagingTemplate) {
+    public TaskServiceImpl(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
-        this.messagingTemplate = messagingTemplate;
     }
 
     /**
@@ -161,7 +160,7 @@ public class TaskServiceImpl implements TaskService {
                     LocalDateTime.now()
             );
 
-            messagingTemplate.convertAndSend("/topic/notifications", notification);
+//            messagingTemplate.convertAndSend("/topic/notifications", notification);
             return "Task Approved Successfully!";
         } else {
             return "Task not found!";

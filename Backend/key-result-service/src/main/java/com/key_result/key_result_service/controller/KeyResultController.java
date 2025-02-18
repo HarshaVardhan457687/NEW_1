@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -61,8 +62,14 @@ public class KeyResultController {
      * @return a list of Key Results associated with the Objective ID
      */
     @GetMapping("/objective/{objectiveId}")
-    public List<KeyResult> getKeyResultsByObjectiveId(@PathVariable Long objectiveId) {
-        return keyResultService.getKeyResultsByObjectiveId(objectiveId);
+    public ResponseEntity<List<KeyResult>> getKeyResultsByObjectiveId(@PathVariable Long objectiveId) {
+        List<KeyResult> keyResults = keyResultService.getKeyResultsByObjectiveId(objectiveId);
+
+        if (keyResults.isEmpty()) {
+            return ResponseEntity.ok(Collections.emptyList()); // Return 200 OK with an empty list
+        }
+
+        return ResponseEntity.ok(keyResults);
     }
 
     /**

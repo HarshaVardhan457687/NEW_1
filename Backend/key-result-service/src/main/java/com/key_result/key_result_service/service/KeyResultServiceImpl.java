@@ -132,7 +132,6 @@ public class KeyResultServiceImpl implements KeyResultService {
         List<KeyResult> keyResults = keyResultRepository.findKeyResultByAssociatedObjectiveId(objectiveId);
         if (keyResults.isEmpty()) {
             LOGGER.warn("No KeyResults found for Objective ID: {}", objectiveId);
-            throw new ResourceNotFoundException("No KeyResults found for Objective ID: " + objectiveId);
         }
         return keyResults;
     }

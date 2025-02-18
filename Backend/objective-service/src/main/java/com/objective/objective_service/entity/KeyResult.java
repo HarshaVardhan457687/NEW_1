@@ -1,10 +1,12 @@
 package com.objective.objective_service.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.objective.objective_service.constants.KeyResultPriority;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 import java.util.List;
@@ -15,11 +17,30 @@ import java.util.List;
 public class KeyResult {
     private Long keyResultId;
     private String keyResultName;
-    private Long ownerId;
-    private List<Long> associatedTasks;
+    private Long keyResultOwnerId;
+    private Long associatedObjectiveId;
+    private int currentVal = 0;
+    private int TargetVal;
+
+    private KeyResultPriority keyResultPriority = KeyResultPriority.LOW;
+
+    @ElementCollection
+    private List<Long> keyResultAssociatedTasksId;
+
+    @Transient
+    private List<Task> keyResultAssociatedTasks;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.DATE)
+    @Column(updatable = false)
+    private Date keyResultCreatedAt;
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dueDate;
+    private Date keyResultDueDate;
+
+    private Long teamId;
+
 
     public Long getKeyResultId() {
         return keyResultId;
@@ -33,31 +54,87 @@ public class KeyResult {
         return keyResultName;
     }
 
-    public void setKeyResultName(String name) {
-        this.keyResultName = name;
+    public void setKeyResultName(String keyResultName) {
+        this.keyResultName = keyResultName;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public Long getKeyResultOwnerId() {
+        return keyResultOwnerId;
     }
 
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
+    public void setKeyResultOwnerId(Long keyResultOwnerId) {
+        this.keyResultOwnerId = keyResultOwnerId;
     }
 
-    public List<Long> getAssociatedTasks() {
-        return associatedTasks;
+    public Long getAssociatedObjectiveId() {
+        return associatedObjectiveId;
     }
 
-    public void setAssociatedTasks(List<Long> associatedTasks) {
-        this.associatedTasks = associatedTasks;
+    public void setAssociatedObjectiveId(Long associatedObjectiveId) {
+        this.associatedObjectiveId = associatedObjectiveId;
     }
 
-    public Date getDueDate() {
-        return dueDate;
+    public int getCurrentVal() {
+        return currentVal;
     }
 
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
+    public void setCurrentVal(int currentVal) {
+        this.currentVal = currentVal;
+    }
+
+    public int getTargetVal() {
+        return TargetVal;
+    }
+
+    public void setTargetVal(int targetVal) {
+        TargetVal = targetVal;
+    }
+
+    public KeyResultPriority getKeyResultPriority() {
+        return keyResultPriority;
+    }
+
+    public void setKeyResultPriority(KeyResultPriority keyResultPriority) {
+        this.keyResultPriority = keyResultPriority;
+    }
+
+    public List<Long> getKeyResultAssociatedTasksId() {
+        return keyResultAssociatedTasksId;
+    }
+
+    public void setKeyResultAssociatedTasksId(List<Long> keyResultAssociatedTasksId) {
+        this.keyResultAssociatedTasksId = keyResultAssociatedTasksId;
+    }
+
+    public List<Task> getKeyResultAssociatedTasks() {
+        return keyResultAssociatedTasks;
+    }
+
+    public void setKeyResultAssociatedTasks(List<Task> keyResultAssociatedTasks) {
+        this.keyResultAssociatedTasks = keyResultAssociatedTasks;
+    }
+
+    public Date getKeyResultCreatedAt() {
+        return keyResultCreatedAt;
+    }
+
+    public void setKeyResultCreatedAt(Date keyResultCreatedAt) {
+        this.keyResultCreatedAt = keyResultCreatedAt;
+    }
+
+    public Date getKeyResultDueDate() {
+        return keyResultDueDate;
+    }
+
+    public void setKeyResultDueDate(Date keyResultDueDate) {
+        this.keyResultDueDate = keyResultDueDate;
+    }
+
+    public Long getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
     }
 }
