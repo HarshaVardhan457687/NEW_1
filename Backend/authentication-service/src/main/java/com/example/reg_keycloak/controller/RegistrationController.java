@@ -16,7 +16,7 @@ import java.util.List;
 
 import static com.example.reg_keycloak.config.KeycloakConfig.realm;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:8060")
 @RestController
 @RequestMapping(path = "/api/keycloak")
 public class RegistrationController {

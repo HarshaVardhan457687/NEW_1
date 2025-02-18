@@ -6,15 +6,14 @@ public class UserDTO {
     private String userName;
     private String emailId;
     private String password;
-    private String firstname;
-    private String lastName;
+    private String name;
+    
 
-    public UserDTO(String userName, String emailId, String password, String firstname, String lastName) {
+    public UserDTO(String userName, String emailId, String password, String name) {
         this.userName = userName;
         this.emailId = emailId;
         this.password = password;
-        this.firstname = firstname;
-        this.lastName = lastName;
+        this.name = name;
     }
 
     public String getUserName() {
@@ -41,19 +40,12 @@ public class UserDTO {
         this.password = password;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 }
