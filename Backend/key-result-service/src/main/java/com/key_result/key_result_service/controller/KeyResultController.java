@@ -96,7 +96,7 @@ public class KeyResultController {
     }
 
     /**
-     *
+     *Retrive all the all keyResults and active keyResults
      *
      * @param objectiveIds list of the objectives
      * @return list of the keyResults
