@@ -46,7 +46,7 @@ public class LoginController {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         String body = String.format(
-                "grant_type=password&client_secret=SPb4O2Pnikh39yAkAEk8HXIiqy1fMki8&client_id=myapp-api&username=%s&password=%s",
+                "grant_type=password&client_secret=ZuzzOLKark3CzbCGVYNbIUgEUOtgwEF4&client_id=myapp-api&username=%s&password=%s",
                 username,
                 password
         );

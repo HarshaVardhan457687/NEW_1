@@ -11,7 +11,7 @@ public class KeycloakConfig {
     final static String serverUrl = "http://localhost:8080";
     public final static String realm = "myapp";
     final static String clientId = "myapp-api";
-    final static String clientSecret = "SPb4O2Pnikh39yAkAEk8HXIiqy1fMki8";
+    final static String clientSecret = "ZuzzOLKark3CzbCGVYNbIUgEUOtgwEF4";
     final static String userName = "admin";
     final static String password = "admin";
 
