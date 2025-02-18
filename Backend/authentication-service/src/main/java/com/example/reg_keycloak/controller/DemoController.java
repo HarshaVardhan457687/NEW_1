@@ -1,0 +1,28 @@
+package com.example.reg_keycloak.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:8060")
+public class DemoController {
+
+    @GetMapping("/hello")
+    public ResponseEntity<String> sayHello() {
+        return ResponseEntity.ok("Hello");
+    }
+
+    @GetMapping("/admin")
+    public Boolean sayHelloToAdmin() {
+        return true;
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<String> sayHelloToUser() {
+        return ResponseEntity.ok("Hello User");
+    }
+}
