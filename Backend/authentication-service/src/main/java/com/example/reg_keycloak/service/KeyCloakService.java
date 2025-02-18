@@ -7,6 +7,7 @@ import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Service;
+import java.util.Map;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,8 +22,7 @@ public class KeyCloakService {
                 .createPasswordCredentials(userDTO.getPassword());
         UserRepresentation user = new UserRepresentation();
         user.setUsername(userDTO.getUserName());
-        user.setFirstName(userDTO.getFirstname());
-        user.setLastName(userDTO.getLastName());
+        user.setAttributes(Map.of("name", Collections.singletonList(userDTO.getName())));
         user.setEmail(userDTO.getEmailId());
         user.setCredentials(Collections.singletonList(credential));
         user.setEnabled(true);
@@ -45,8 +45,7 @@ public class KeyCloakService {
                 .createPasswordCredentials(userDTO.getPassword());
         UserRepresentation user = new UserRepresentation();
         user.setUsername(userDTO.getUserName());
-        user.setFirstName(userDTO.getFirstname());
-        user.setLastName(userDTO.getLastName());
+        user.setAttributes(Map.of("name", Collections.singletonList(userDTO.getName())));
         user.setEmail(userDTO.getEmailId());
         user.setCredentials(Collections.singletonList(credential));
 

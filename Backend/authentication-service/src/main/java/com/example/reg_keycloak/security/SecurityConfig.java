@@ -28,14 +28,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable());
         http.authorizeHttpRequests((authz) ->
-                authz.requestMatchers(HttpMethod.POST, "/api/auth/roles").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/keycloak/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/keycloak/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/admin/**").hasRole(ADMIN)
-                        .requestMatchers("/api/auth/checkAuthority/admin/**")
-                        .hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/user/**").hasRole(USER)
-                        .requestMatchers(HttpMethod.GET, "/api/admin-and-user/**").hasAnyRole(ADMIN,USER)
+                authz.requestMatchers(HttpMethod.POST, "/api/auth/authenticate").permitAll()
                         .anyRequest().authenticated());
 
         http.sessionManagement(sess -> sess.sessionCreationPolicy(

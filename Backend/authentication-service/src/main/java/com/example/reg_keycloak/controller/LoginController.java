@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "")
+@CrossOrigin(origins = "http://localhost:8060")
 @RequestMapping("/api/auth")
 public class LoginController {
 
@@ -29,7 +29,7 @@ public class LoginController {
         return true;
     }
 
-    @PostMapping("/roles")
+    @PostMapping("/authenticate")
     public Map<String, Object> getRolesAndToken(@RequestBody Map<String, String> request) {
         String username = request.get("username");
         String password = request.get("password");
@@ -72,7 +72,7 @@ public class LoginController {
 
         // Step 3: Return Access Token and Roles
         Map<String, Object> response = new HashMap<>();
-        response.put("access_token", accessToken);
+        response.put("token", accessToken);
         response.put("roles", roles);
 
         return response;
