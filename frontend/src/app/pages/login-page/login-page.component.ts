@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login-page',
@@ -16,14 +17,16 @@ export class LoginPageComponent {
   loginPassword = '';
   errorMessage = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
+  
   @ViewChild('passwordInput') passwordInput!: ElementRef;
-
-
 
   focusPassword(event: Event) {
     const keyboardEvent = event as KeyboardEvent;
-    keyboardEvent.preventDefault(); // Prevent form submission
+    keyboardEvent.preventDefault();
     this.passwordInput.nativeElement.focus();
   }
 
@@ -36,10 +39,15 @@ export class LoginPageComponent {
   }
 
   onLogin() {
-    if (this.loginEmail === 'admin' && this.loginPassword === 'password') {
-      this.router.navigate(['/role-selection']);
-    } else {
-      this.errorMessage = 'Invalid credentials';
-    }
+    this.errorMessage = '';
+    this.authService.login(this.loginEmail, this.loginPassword)
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/role-selection']);
+        },
+        error: () => {
+          this.errorMessage = 'Invalid credentials';
+        }
+      });
   }
 }

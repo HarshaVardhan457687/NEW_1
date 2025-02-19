@@ -13,14 +13,16 @@ import { TeamManagerDashboardComponent } from './pages/team-manager-dashboard/te
 import { ProjectsComponent as TeamManagerProjectsComponent } from './pages/team-manager-dashboard/projects/projects.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { ChangePasswordComponent } from './shared/change-password/change-password.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginPageComponent },
-  { path: 'role-selection', component: RoleSelectionPageComponent },
+  { path: 'role-selection', component: RoleSelectionPageComponent, canActivate: [AuthGuard] },
   {
     path: 'team-member-dashboard',
+    canActivate: [AuthGuard],
     children: [
       { path: '', component: TeamMemberDashboardComponent },
       { path: 'projects', component: TeamMemberProjectsComponent },
@@ -32,6 +34,7 @@ export const routes: Routes = [
   },
   {
     path: 'team-leader-dashboard',
+    canActivate: [AuthGuard],
     children: [
       { path: '', component: TeamLeaderDashboardComponent },
       { path: 'projects', component: TeamLeaderProjectsComponent },
@@ -43,6 +46,7 @@ export const routes: Routes = [
   },
   {
     path: 'team-manager-dashboard',
+    canActivate: [AuthGuard],
     children: [
       { path: '', component: TeamManagerDashboardComponent },
       { path: 'projects', component: TeamManagerProjectsComponent },
