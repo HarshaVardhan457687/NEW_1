@@ -26,14 +26,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable());
-        http.authorizeHttpRequests((authz) ->
-                authz.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-                        .anyRequest().authenticated());
-
-        http.sessionManagement(sess -> sess.sessionCreationPolicy(
-                SessionCreationPolicy.STATELESS));
-        http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter((Converter<Jwt, ? extends AbstractAuthenticationToken>) jwtConverter)));
+        http.csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests((authz) ->
+                authz.requestMatchers("/api/auth/authenticate").permitAll()
+                    .anyRequest().authenticated())
+            .sessionManagement(sess -> sess.sessionCreationPolicy(
+                SessionCreationPolicy.STATELESS))
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> 
+                jwt.jwtAuthenticationConverter((Converter<Jwt, ? extends AbstractAuthenticationToken>) jwtConverter)));
 
         return http.build();
     }
