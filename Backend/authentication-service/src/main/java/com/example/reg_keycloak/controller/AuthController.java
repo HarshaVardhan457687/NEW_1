@@ -33,7 +33,7 @@ import java.util.List;
 import static com.example.reg_keycloak.config.KeycloakConfig.realm;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8060")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/auth")
 public class AuthController {
 
