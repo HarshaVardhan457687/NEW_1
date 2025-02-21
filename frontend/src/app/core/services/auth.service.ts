@@ -45,7 +45,7 @@ export class AuthService {
     const token = this.getToken();
     if (!token) return of(false);
 
-    return this.http.get<{ valid: boolean }>(`${this.AUTH_API}/validate`)
+    return this.http.post<{ valid: boolean }>(`${this.AUTH_API}/validate`, { token })
       .pipe(map(response => response.valid), catchError(() => of(false)));
   }
 

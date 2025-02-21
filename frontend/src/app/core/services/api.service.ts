@@ -41,12 +41,12 @@ export class AuthService {
     return roles ? JSON.parse(roles) : [];
   }
 
-  // ✅ 1. Validate token by making an API request
+  // ✅ 1. Validate token by making a POST request with token in body
   validate(): Observable<boolean> {
     const token = this.getToken();
     if (!token) return of(false);
 
-    return this.http.get<{ valid: boolean }>(`${this.AUTH_API}/validate`)
+    return this.http.post<{ valid: boolean }>(`${this.AUTH_API}/validate`, { token })
       .pipe(
         map(response => response.valid),
         catchError(() => of(false)) // If request fails, assume invalid token
