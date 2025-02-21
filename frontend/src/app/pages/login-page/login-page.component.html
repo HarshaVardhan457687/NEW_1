@@ -1,6 +1,6 @@
 <div class="container" [class.right-panel-active]="isRightPanelActive">
   <div class="form-container sign-up-container">
-    <form action="#">
+    <form (ngSubmit)="onSignUp()">
       <h1>Create Account</h1>
       <!-- <div class="social-container">
         <a href="#" class="social">
@@ -14,14 +14,36 @@
         </a>
       </div> -->
       <!-- <span>or use your email for registration</span> -->
-      <input type="text" placeholder="Name" />
-      <input type="email" placeholder="Email" />
-      <input type="password" placeholder="Password" />
-      <button>Submit</button>
+      <input 
+        type="text" 
+        placeholder="Name" 
+        [(ngModel)]="signupName"
+        name="name"
+        [class.invalid]="invalidFields['name']"/>
+      <input 
+        type="email" 
+        placeholder="Email" 
+        [(ngModel)]="signupEmail"
+        name="email"
+        [class.invalid]="invalidFields['email']"/>
+      <input 
+        type="password" 
+        placeholder="Password" 
+        [(ngModel)]="signupPassword"
+        name="password"
+        [class.invalid]="invalidFields['password']"/>
+      <input 
+        type="password" 
+        placeholder="Confirm Password" 
+        [(ngModel)]="confirmPassword"
+        name="confirmPassword"
+        [class.invalid]="invalidFields['confirmPassword']"/>
+      <span class="error-message" *ngIf="signupErrorMessage">{{ signupErrorMessage }}</span>
+      <button type="submit">Submit</button>
     </form>
   </div>
   <div class="form-container sign-in-container">
-    <form (ngSubmit)="onLogin()">
+    <form (ngSubmit)="onLogin()" [class.shake]="shake">
       <h1>Sign In</h1>
       <!-- <div class="social-container">
         <a href="#" class="social">
@@ -40,6 +62,7 @@
         placeholder="Username"
         [(ngModel)]="loginEmail"
         name="email"
+        [class.invalid]="invalidFields['username']"
         #usernameInput
         (keydown.enter)="focusPassword($event)" />
       <input
@@ -47,6 +70,7 @@
         placeholder="Password"
         [(ngModel)]="loginPassword"
         name="password"
+        [class.invalid]="invalidFields['password']"
         #passwordInput/>
       <span class="error-message" *ngIf="errorMessage">{{ errorMessage }}</span>
       <!-- <a href="#">Forgot your password?</a> -->
