@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { tap, map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,17 @@ export class AuthService {
   getRoles(): string[] {
     const roles = localStorage.getItem(this.ROLES_KEY);
     return roles ? JSON.parse(roles) : [];
+  }
+
+  validate(): Observable<boolean> {
+    const token = this.getToken();
+    if (!token) return of(false);
+
+    return this.http.get<{ valid: boolean }>(`${this.AUTH_API}/validate`)
+      .pipe(map(response => response.valid), catchError(() => of(false)));
+  }
+
+  isValidToken(): Observable<boolean> {
+    return this.validate();
   }
 }
