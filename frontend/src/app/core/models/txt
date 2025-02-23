@@ -1,0 +1,35 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  private readonly AUTH_API = 'http://localhost:8088/api/auth';
+  private readonly TOKEN_KEY = 'auth_token';
+  private isValid = false;  // Store validation result
+
+  constructor(private http: HttpClient) {}
+
+  validate(): void {
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    if (!token) {
+      this.isValid = false;
+      return;
+    }
+
+    this.http.post<{ valid: boolean }>(`${this.AUTH_API}/validate`, { token })
+      .subscribe(
+        response => {
+          this.isValid = response.valid;  // Store the boolean value
+        },
+        () => {
+          this.isValid = false; // Handle errors by setting it to false
+        }
+      );
+  }
+
+  isValidToken(): boolean {
+    return this.isValid;
+  }
+}
