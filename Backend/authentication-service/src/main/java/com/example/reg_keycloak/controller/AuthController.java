@@ -33,7 +33,6 @@ import java.util.List;
 import static com.example.reg_keycloak.config.KeycloakConfig.realm;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8060")
 @RequestMapping("/api/auth")
 public class AuthController {
 
@@ -76,6 +75,9 @@ public class AuthController {
     public Map<String, Object> getRolesAndToken(@RequestBody Map<String, String> request) {
         String username = request.get("username");
         String password = request.get("password");
+
+        System.out.println("username : "+username);
+        System.out.println("password : "+password);
 
         if (username == null || password == null) {
             throw new IllegalArgumentException("Username and password are required.");
