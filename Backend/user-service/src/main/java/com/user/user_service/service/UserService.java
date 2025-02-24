@@ -12,6 +12,7 @@ public interface UserService {
     public User getUserById(Long userId);
     public User updateUserById(Long userId, User user);
     public void deleteUser(Long userId);
+    public User getUserByEmail(String email);
     public List<Task> getAllTasksOfUser(Long userId);
     public List<Long> getAllProjectOfUser(Long userId);
     public List<Team> getAllTeamsOfUser(Long userId);
