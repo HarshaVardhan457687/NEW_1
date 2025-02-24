@@ -3,15 +3,15 @@ package com.task.task_service.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.task.task_service.constants.TaskStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 
 @Entity
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Task {
@@ -39,6 +39,7 @@ public class Task {
     private Long taskAssociatedObjective;
     private TaskStatus taskStatus;
 
+    //GETTERS AND SETTERS
     public Long getTaskId() {
         return taskId;
     }

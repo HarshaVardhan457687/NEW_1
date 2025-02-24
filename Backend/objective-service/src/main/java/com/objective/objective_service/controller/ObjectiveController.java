@@ -119,7 +119,7 @@ public class ObjectiveController {
     }
 
     /**
-     * Endpoint to fetch all projects based on its objectives.
+     * Endpoint to fetch all objectives  based on its projectsIds.
      * @param projectIds - The IDs of the project.
      * @return ResponseEntity containing the all projects of givenId and HTTP status 200 (OK).
      */

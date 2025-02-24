@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -30,8 +31,8 @@ public class UserServiceImpl implements UserService{
     @Autowired RestTemplate restTemplate;
 
     private static final String PROJECT_SERVICE_URL = "http://localhost:8085/api/projects/active/count";
-    private static final String OBJECTIVE_SERVICE_URL = "http://localhost:8081/api/objectives/all/by-projects";
-    private static final String KEYRESULT_SERVICE_URL = "http://localhost:8081/api/objectives/all/by-projects";
+    private static final String OBJECTIVE_SERVICE_URL = "http://localhost:8081/api/objective";
+    private static final String KEYRESULT_SERVICE_URL = "http://localhost:8083/api/keyresult/all/by-projects";
     /**
      * Creates a new user and saves it to the database.
      * @param user User object to be created.
@@ -203,14 +204,19 @@ public class UserServiceImpl implements UserService{
         HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
 
         // Make a POST request to Objective Service
-        ResponseEntity<List<Objective>> response = restTemplate.exchange(
-                OBJECTIVE_SERVICE_URL,
-                HttpMethod.POST,
-                requestEntity,
-                new ParameterizedTypeReference<List<Objective>>() {} // To handle list response
-        );
-
-        return response.getBody(); // Return objectives
+        try {
+            ResponseEntity<List<Objective>> response = restTemplate.exchange(
+                    OBJECTIVE_SERVICE_URL + "/all/by-projects",
+                    HttpMethod.POST,
+                    requestEntity,
+                    new ParameterizedTypeReference<List<Objective>>() {
+                    }
+            );
+            return response.getBody();
+        } catch (HttpServerErrorException e) {
+            LOGGER.info("Error calling Objective Service: "+ e.getMessage());
+            throw new RuntimeException("Objective service failed: " + e.getMessage());
+        }
     }
 
     /**
@@ -236,7 +242,7 @@ public class UserServiceImpl implements UserService{
 
         // Make a POST request to Objective Service
         ResponseEntity<Map<String, List<Objective>>> response = restTemplate.exchange(
-                OBJECTIVE_SERVICE_URL,
+                OBJECTIVE_SERVICE_URL + "/by-projectIds",
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<Map<String, List<Objective>>>() {} // Handling map response

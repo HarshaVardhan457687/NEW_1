@@ -42,7 +42,7 @@ public class Objective {
     @CreationTimestamp
     @Temporal(TemporalType.DATE)
     @Column(updatable = false)
-    private Date projectCreatedAt;
+    private Date objectiveCreatedAt;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
@@ -118,11 +118,11 @@ public class Objective {
     }
 
     public Date getProjectCreatedAt() {
-        return projectCreatedAt;
+        return objectiveCreatedAt;
     }
 
     public void setProjectCreatedAt(Date projectCreatedAt) {
-        this.projectCreatedAt = projectCreatedAt;
+        this.objectiveCreatedAt = projectCreatedAt;
     }
 
     public Date getObjectiveDueDate() {

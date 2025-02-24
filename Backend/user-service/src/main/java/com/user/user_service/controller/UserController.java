@@ -44,7 +44,7 @@ public class UserController {
      * API to fetch all the users
      * */
     @GetMapping("/{userId}")
-    public User getUserById(@RequestParam Long userId){
+    public User getUserById(@PathVariable Long userId){
         return userServiceImpl.getUserById(userId);
     }
 
@@ -52,12 +52,12 @@ public class UserController {
      * API to update the user
      * */
     @PutMapping("/{userId}")
-    public User updateUserById(@RequestParam Long userId, @RequestBody User updatedUser){
+    public User updateUserById(@PathVariable Long userId, @RequestBody User updatedUser){
         return userServiceImpl.updateUserById(userId, updatedUser);
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@RequestParam Long userId){
+    public void deleteUser(@PathVariable Long userId){
         userServiceImpl.deleteUser(userId);
     }
 
@@ -84,7 +84,7 @@ public class UserController {
     /**
      * API to fetch all active objectives and all objective by userIds.
      */
-    @PostMapping("/objectives/by-role")
+    @PostMapping("/objectives/active")
     public ResponseEntity<Map<String, List<Objective>>> getObjectivesByRole(
             @RequestParam Long userId,
             @RequestParam String userRole) {
@@ -96,6 +96,7 @@ public class UserController {
     /**
      * API to fetch all keyresult  and all keyresult by userIds.
      */
+
     @PostMapping("/key-results")
     public ResponseEntity<Map<String, List<KeyResult>>> getKeyResultsForProjects(@RequestBody List<Long> projectIds) {
         Map<String, List<KeyResult>> keyResults = userServiceImpl.getKeyResultsForProjects(projectIds);

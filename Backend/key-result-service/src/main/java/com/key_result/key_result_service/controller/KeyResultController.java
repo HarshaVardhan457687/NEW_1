@@ -56,23 +56,6 @@ public class KeyResultController {
     }
 
     /**
-     * Retrieve all Key Results associated with a specific Objective ID.
-     *
-     * @param objectiveId the Objective ID
-     * @return a list of Key Results associated with the Objective ID
-     */
-    @GetMapping("/objective/{objectiveId}")
-    public ResponseEntity<List<KeyResult>> getKeyResultsByObjectiveId(@PathVariable Long objectiveId) {
-        List<KeyResult> keyResults = keyResultService.getKeyResultsByObjectiveId(objectiveId);
-
-        if (keyResults.isEmpty()) {
-            return ResponseEntity.ok(Collections.emptyList()); // Return 200 OK with an empty list
-        }
-
-        return ResponseEntity.ok(keyResults);
-    }
-
-    /**
      * Update an existing Key Result by its ID.
      *
      * @param id        the ID of the Key Result to update
@@ -94,6 +77,24 @@ public class KeyResultController {
     public void removeKeyResult(@PathVariable Long id) {
         keyResultService.removeKeyResult(id);
     }
+
+    /**
+     * Retrieve all Key Results associated with a specific Objective ID.
+     *
+     * @param objectiveId the Objective ID
+     * @return a list of Key Results associated with the Objective ID
+     */
+    @GetMapping("/objective/{objectiveId}")
+    public ResponseEntity<List<KeyResult>> getKeyResultsByObjectiveId(@PathVariable Long objectiveId) {
+        List<KeyResult> keyResults = keyResultService.getKeyResultsByObjectiveId(objectiveId);
+
+        if (keyResults.isEmpty()) {
+            return ResponseEntity.ok(Collections.emptyList()); // Return 200 OK with an empty list
+        }
+
+        return ResponseEntity.ok(keyResults);
+    }
+
 
     /**
      *Retrive all the all keyResults and active keyResults

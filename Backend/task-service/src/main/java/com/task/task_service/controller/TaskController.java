@@ -139,6 +139,7 @@ public class TaskController {
      * @param taskId ID of the task to approve.
      * @return ResponseEntity with HTTP status indicating success or failure.
      */
+
     @PutMapping("/{taskId}/approve")
     public ResponseEntity<String> approveTask(@PathVariable Long taskId) {
         LOGGER.info("approving the task with taskId "+ taskId);
