@@ -1,6 +1,7 @@
 package com.task.task_service.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.task.task_service.constants.TaskPriority;
 import com.task.task_service.constants.TaskStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,22 +23,19 @@ public class Task {
     private String taskHeading;
     private String taskDescription;
     private Long taskOwner;
-
     @CreationTimestamp
     @Temporal(TemporalType.DATE)
     @Column(updatable = false)
     private Date taskStartDate;
-
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date taskDueDate;
-
     private String taskTag;
-
     private boolean taskIsActive;
-
+    private Long taskAssociatedProject;
     private Long taskAssociatedKeyResult;
-    private Long taskAssociatedObjective;
     private TaskStatus taskStatus;
+    private TaskPriority taskPriority;
+
 
     //GETTERS AND SETTERS
     public Long getTaskId() {
@@ -104,6 +102,14 @@ public class Task {
         this.taskIsActive = taskIsActive;
     }
 
+    public Long getTaskAssociatedProject() {
+        return taskAssociatedProject;
+    }
+
+    public void setTaskAssociatedProject(Long taskAssociatedProject) {
+        this.taskAssociatedProject = taskAssociatedProject;
+    }
+
     public Long getTaskAssociatedKeyResult() {
         return taskAssociatedKeyResult;
     }
@@ -111,19 +117,16 @@ public class Task {
     public void setTaskAssociatedKeyResult(Long taskAssociatedKeyResult) {
         this.taskAssociatedKeyResult = taskAssociatedKeyResult;
     }
-
-    public Long getTaskAssociatedObjective() {
-        return taskAssociatedObjective;
-    }
-
-    public void setTaskAssociatedObjective(Long taskAssociatedObjective) {
-        this.taskAssociatedObjective = taskAssociatedObjective;
-    }
-
     public TaskStatus getTaskStatus() {
         return taskStatus;
     }
 
+    public TaskPriority getTaskPriority() {
+        return taskPriority;
+    }
+    public void setTaskPriority(TaskPriority taskPriority) {
+        this.taskPriority = taskPriority;
+    }
     public void setTaskStatus(TaskStatus taskStatus) {
         this.taskStatus = taskStatus;
     }

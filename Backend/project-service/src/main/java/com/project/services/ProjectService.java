@@ -50,6 +50,7 @@ public class ProjectService {
         project.setActive(projectDetails.getActive());
         project.setTeamsInvolvedId(projectDetails.getTeamsInvolvedId());
         project.setObjectiveId(projectDetails.getObjectiveId());
+        project.setKeyResultIds(projectDetails.getKeyResultIds());
         project.setProjectDueDate(projectDetails.getProjectDueDate());
         project.setProjectManagerId(projectDetails.getProjectManagerId());
 

@@ -25,7 +25,7 @@ public class Project {
     private ProjectPriority projectPriority = ProjectPriority.MEDIUM;
 
     @Enumerated(EnumType.STRING)
-    private ProjectStatus projectStatus = ProjectStatus.NOT_STARTED;
+    private ProjectStatus projectStatus = ProjectStatus.ON_TRACK;
 
     @Column
     private Boolean isActive = true;
@@ -40,6 +40,9 @@ public class Project {
 
     @Transient
     private List<Objective> objectives;
+
+    @ElementCollection
+    private List<Long> keyResultIds;
 
     @CreationTimestamp
     @Temporal(TemporalType.DATE)
@@ -127,6 +130,14 @@ public class Project {
 
     public void setObjectives(List<Objective> objectives) {
         this.objectives = objectives;
+    }
+
+    public List<Long> getKeyResultIds() {
+        return keyResultIds;
+    }
+
+    public void setKeyResultIds(List<Long> keyResultIds) {
+        this.keyResultIds = keyResultIds;
     }
 
     public Date getProjectCreatedAt() {

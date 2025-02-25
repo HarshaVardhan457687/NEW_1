@@ -49,9 +49,6 @@ public class User {
     @ElementCollection
     private List<Long> userInvolvedTeamsId;
 
-    @ElementCollection
-    private List<Long> userProject;
-
     // for role based projectId list
     @ElementCollection
     private List<Long> userManagerProjectId;
@@ -158,14 +155,6 @@ public class User {
         this.usertaskAssigned = usertaskAssigned;
     }
 
-
-    public List<Long> getUserProject() {
-        return userProject;
-    }
-
-    public void setUserProject(List<Long> userProject) {
-        this.userProject = userProject;
-    }
 
     public List<Long> getUserInvolvedTeamsId() {
         return userInvolvedTeamsId;

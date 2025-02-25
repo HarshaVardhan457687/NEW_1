@@ -153,8 +153,9 @@ public class KeyResultServiceImpl implements KeyResultService {
                     existingKeyResult.setKeyResultName(updatedKeyResult.getKeyResultName());
                     existingKeyResult.setKeyResultOwnerId(updatedKeyResult.getKeyResultOwnerId());
                     existingKeyResult.setAssociatedObjectiveId(updatedKeyResult.getAssociatedObjectiveId());
-                    existingKeyResult.setCurrentVal(updatedKeyResult.getCurrentVal());
-                    existingKeyResult.setTargetVal(updatedKeyResult.getTargetVal());
+                    existingKeyResult.setKeyResultcurrentVal(updatedKeyResult.getKeyResultcurrentVal());
+                    existingKeyResult.setKeyResultTargetVal(updatedKeyResult.getKeyResultTargetVal());
+                    existingKeyResult.setKeyResultunit(updatedKeyResult.getKeyResultunit());
                     existingKeyResult.setKeyResultPriority(updatedKeyResult.getKeyResultPriority());
                     existingKeyResult.setKeyResultAssociatedTasksId(updatedKeyResult.getKeyResultAssociatedTasksId());
                     existingKeyResult.setKeyResultAssociatedTasks(updatedKeyResult.getKeyResultAssociatedTasks());
@@ -200,7 +201,7 @@ public class KeyResultServiceImpl implements KeyResultService {
 
         // Filter active key results (currVal < 100%)
         List<KeyResult> activeKeyResults = allKeyResults.stream()
-                .filter(kr -> kr.getCurrentVal() < 100.0)
+                .filter(kr -> kr.getKeyResultcurrentVal() < 100.0)
                 .toList();
 
         // Return both lists in a map

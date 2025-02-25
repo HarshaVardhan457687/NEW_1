@@ -95,9 +95,10 @@ public class TaskServiceImpl implements TaskService {
                     existingTask.setTaskDueDate(taskToUpdate.getTaskDueDate());
                     existingTask.setTaskTag(taskToUpdate.getTaskTag());
                     existingTask.setTaskIsActive(taskToUpdate.isTaskIsActive());
+                    existingTask.setTaskAssociatedProject(taskToUpdate.getTaskAssociatedProject());
                     existingTask.setTaskAssociatedKeyResult(taskToUpdate.getTaskAssociatedKeyResult());
-                    existingTask.setTaskAssociatedObjective(taskToUpdate.getTaskAssociatedObjective());
                     existingTask.setTaskStatus(taskToUpdate.getTaskStatus());
+                    existingTask.setTaskPriority(taskToUpdate.getTaskPriority());
                     LOGGER.info("Task with ID: {} updated successfully.", taskId);
                     return taskRepository.save(existingTask); // Save updated task
                 })

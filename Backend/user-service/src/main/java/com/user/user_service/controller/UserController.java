@@ -10,10 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -76,9 +73,9 @@ public class UserController {
      * API to fetch active project count for a user.
      */
     @GetMapping("/projects/active/count")
-    public Long getActiveProjectsCount(@RequestParam String userEmail, @RequestParam String userRole) {
+    public Map<String, Long> getActiveAndTotalProjectsCount(@RequestParam String userEmail, @RequestParam String userRole) {
         Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
-        return userServiceImpl.getActiveProjectsCount(userId, userRole);
+        return userServiceImpl.getActiveAndTotalProjectsCount(userId, userRole);
     }
 
     /**
@@ -107,6 +104,20 @@ public class UserController {
         return ResponseEntity.ok(objectives);
     }
 
+
+    /**
+     * API to fetch count of all objectives and active objectives.
+     */
+    @GetMapping("objectives/count")
+    public ResponseEntity<Map<String, Long>> getObjectivesCountByRole(
+            @RequestParam String userEmail,
+            @RequestParam String userRole) {
+
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
+        Map<String, Long> countMap = userServiceImpl.getObjectivesCountByRole(userId, userRole);
+        return ResponseEntity.ok(countMap);
+    }
+
     /**
      * API to fetch all keyresult  and all keyresult by userIds.
      */
@@ -118,6 +129,20 @@ public class UserController {
         Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
         Map<String, List<KeyResult>> keyResults = userServiceImpl.getKeyResultsForProjects(userId, userRole);
         return ResponseEntity.ok(keyResults);
+    }
+
+
+    /**
+     * API to fetch count of all keyresult  and active keyresult by userIds.
+     */
+    @GetMapping("/key-results/count")
+    public ResponseEntity<Map<String, Long>> getKeyResultsCountByRole(
+            @RequestParam String userEmail,
+            @RequestParam String userRole) {
+
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
+        Map<String, Long> countMap = userServiceImpl.getKeyResultsCountByRole(userId, userRole);
+        return ResponseEntity.ok(countMap);
     }
 
 

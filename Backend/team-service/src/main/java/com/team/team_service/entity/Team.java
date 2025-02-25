@@ -23,7 +23,8 @@ public class Team {
     private String teamName;
     private Long teamLead;
     private List<Long> teamMembers;
-    private List<Long> assignedProjects;
+    private Long assignedProject;
+    private List<Long> assignedKeyResult;
 
     public Long getTeamId() {
         return teamId;
@@ -57,11 +58,19 @@ public class Team {
         this.teamMembers = teamMembers;
     }
 
-    public List<Long> getAssignedProjects() {
-        return assignedProjects;
+    public Long getAssignedProject() {
+        return assignedProject;
     }
 
-    public void setAssignedProjects(List<Long> assignedProjects) {
-        this.assignedProjects = assignedProjects;
+    public void setAssignedProject(Long assignedProject) {
+        this.assignedProject = assignedProject;
+    }
+
+    public List<Long> getAssignedKeyResult() {
+        return assignedKeyResult;
+    }
+
+    public void setAssignedKeyResult(List<Long> assignedKeyResult) {
+        this.assignedKeyResult = assignedKeyResult;
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -131,21 +132,6 @@ public class UserServiceImpl implements UserService{
         return List.of();
     }
 
-    /**
-     * Fetches all project IDs associated with a user.
-     *
-     * @param userId The ID of the user whose projects are to be fetched.
-     * @return A list of project IDs associated with the user.
-     * @throws ResourceNotFoundException if no user is found with the given ID.
-     */
-    @Override
-    public List<Long> getAllProjectOfUser(Long userId) {
-        LOGGER.info("Fetching all projects for user with ID: {}", userId);
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
-
-        return user.getUserProject();
-    }
 
     @Override
     public List<Team> getAllTeamsOfUser(Long userId) {
@@ -156,7 +142,7 @@ public class UserServiceImpl implements UserService{
     /**
      * Fetch active project count based on user role.
      */
-    public Long getActiveProjectsCount(Long userId, String userRole) {
+    public Map<String, Long> getActiveAndTotalProjectsCount(Long userId, String userRole) {
         // Fetch user from DB
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -169,20 +155,28 @@ public class UserServiceImpl implements UserService{
             default -> throw new RuntimeException("Invalid role: " + userRole);
         };
 
+        // Total project count
+        long totalProjects = projectIds.size();
+
         // Create request entity with headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
 
-        // Make a POST request to Project Service
+        // Make a POST request to Project Service to get active projects count
         ResponseEntity<Long> response = restTemplate.exchange(
                 PROJECT_SERVICE_URL,
                 HttpMethod.POST,
                 requestEntity,
                 Long.class
         );
+        long activeProjects = response.getBody();
 
-        return response.getBody(); // Return project count
+        // Return both active and total project counts
+        Map<String, Long> result = new HashMap<>();
+        result.put("activeProjects", activeProjects);
+        result.put("totalProjects", totalProjects);
+        return result;
     }
 
     /**
@@ -254,6 +248,20 @@ public class UserServiceImpl implements UserService{
         return response.getBody(); // Return the map containing objectives
     }
 
+// get count of the active objective and all objective
+    public Map<String, Long> getObjectivesCountByRole(Long userId, String userRole) {
+        Map<String, List<Objective>> objectives = getObjectivesByRole(userId, userRole);
+
+        long totalObjectives = objectives.getOrDefault("allObjectives", List.of()).size();
+        long activeObjectives = objectives.getOrDefault("activeObjectives", List.of()).size();
+
+        Map<String, Long> countMap = new HashMap<>();
+        countMap.put("totalObjectives", totalObjectives);
+        countMap.put("activeObjectives", activeObjectives);
+
+        return countMap;
+    }
+
     /**
      * Fetch all KeyResult and active KeyResult based on user role.
      */
@@ -298,5 +306,19 @@ public class UserServiceImpl implements UserService{
         );
 
         return keyResultResponse.getBody();
+    }
+
+    // Get count active and all key results
+    public Map<String, Long> getKeyResultsCountByRole(Long userId, String userRole) {
+        Map<String, List<KeyResult>> keyResults = getKeyResultsForProjects(userId, userRole);
+
+        long totalKeyResults = keyResults.getOrDefault("allKeyResults", List.of()).size();
+        long activeKeyResults = keyResults.getOrDefault("activeKeyResults", List.of()).size();
+
+        Map<String, Long> countMap = new HashMap<>();
+        countMap.put("totalKeyResults", totalKeyResults);
+        countMap.put("activeKeyResults", activeKeyResults);
+
+        return countMap;
     }
 }

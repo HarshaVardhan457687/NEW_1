@@ -12,8 +12,6 @@ public interface ObjectiveService {
     public Objective updateObjective(Objective objectiveToUpdate, Long objectiveId);
     public void removeObjective(Long objectiveId);
     public List<Objective> getAllObjectiveByProjectId(Long projectId);
-    public double getProgress(Long projectId);
-    public List<Objective> getActiveObjectivesByTaskIds(List<Long> taskIds);
     public Map<String, List<Objective>> getObjectivesByProjects(List<Long> projectIds);
     public List<Objective> getAllObjectiveByProjectIds(List<Long> projectIds);
 }

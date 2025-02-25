@@ -24,8 +24,6 @@ public class Objective {
     private String objectiveName;
     private Long mappedProject;
 
-    @ElementCollection
-    private List<Long> assignedToTeam;
 
     @ElementCollection
     private List<Long> keyResultIds;
@@ -33,11 +31,6 @@ public class Objective {
     @Transient
     private List<KeyResult> keyResult;
 
-    @ElementCollection
-    private List<Long> objectiveTaskIds;
-
-    @Transient
-    private List<Task> objectiveTaskList;
 
     @CreationTimestamp
     @Temporal(TemporalType.DATE)
@@ -77,13 +70,7 @@ public class Objective {
         this.mappedProject = mappedProject;
     }
 
-    public List<Long> getAssignedToTeam() {
-        return assignedToTeam;
-    }
 
-    public void setAssignedToTeam(List<Long> assignedToTeam) {
-        this.assignedToTeam = assignedToTeam;
-    }
 
     public List<Long> getKeyResultIds() {
         return keyResultIds;
@@ -99,22 +86,6 @@ public class Objective {
 
     public void setKeyResult(List<KeyResult> keyResult) {
         this.keyResult = keyResult;
-    }
-
-    public List<Long> getObjectiveTaskIds() {
-        return objectiveTaskIds;
-    }
-
-    public void setObjectiveTaskIds(List<Long> objectiveTaskIds) {
-        this.objectiveTaskIds = objectiveTaskIds;
-    }
-
-    public List<Task> getObjectiveTaskList() {
-        return objectiveTaskList;
-    }
-
-    public void setObjectiveTaskList(List<Task> objectiveTaskList) {
-        this.objectiveTaskList = objectiveTaskList;
     }
 
     public Date getProjectCreatedAt() {

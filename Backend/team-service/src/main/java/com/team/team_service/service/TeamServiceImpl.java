@@ -94,7 +94,8 @@ public class TeamServiceImpl implements TeamService {
                     existingTeam.setTeamName(toUpdate.getTeamName());
                     existingTeam.setTeamLead(toUpdate.getTeamLead());
                     existingTeam.setTeamMembers(toUpdate.getTeamMembers());
-                    existingTeam.setAssignedProjects(toUpdate.getAssignedProjects());
+                    existingTeam.setAssignedProject(toUpdate.getAssignedProject());
+                    existingTeam.setAssignedKeyResult(toUpdate.getAssignedKeyResult());
 
                     // Logging the successful update
                     LOGGER.info("Team with teamID: {} updated successfully", teamId);

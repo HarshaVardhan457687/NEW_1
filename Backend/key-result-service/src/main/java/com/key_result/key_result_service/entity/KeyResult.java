@@ -22,8 +22,9 @@ public class KeyResult {
     private String keyResultName;
     private Long keyResultOwnerId;
     private Long associatedObjectiveId;
-    private int currentVal = 0;
-    private int TargetVal;
+    private int keyResultcurrentVal = 0;
+    private int keyResultTargetVal;
+    private String keyResultunit;
 
     private KeyResultPriority keyResultPriority = KeyResultPriority.LOW;
 
@@ -79,20 +80,36 @@ public class KeyResult {
         this.associatedObjectiveId = associatedObjectiveId;
     }
 
-    public int getCurrentVal() {
-        return currentVal;
+    public int getKeyResultcurrentVal() {
+        return keyResultcurrentVal;
     }
 
-    public void setCurrentVal(int currentVal) {
-        this.currentVal = currentVal;
+    public void setKeyResultcurrentVal(int keyResultcurrentVal) {
+        this.keyResultcurrentVal = keyResultcurrentVal;
     }
 
-    public int getTargetVal() {
-        return TargetVal;
+    public int getKeyResultTargetVal() {
+        return keyResultTargetVal;
     }
 
-    public void setTargetVal(int targetVal) {
-        TargetVal = targetVal;
+    public void setKeyResultTargetVal(int keyResultTargetVal) {
+        this.keyResultTargetVal = keyResultTargetVal;
+    }
+
+    public String getKeyResultunit() {
+        return keyResultunit;
+    }
+
+    public void setKeyResultunit(String keyResultunit) {
+        this.keyResultunit = keyResultunit;
+    }
+
+    public Date getKeyResultCreatedAt() {
+        return keyResultCreatedAt;
+    }
+
+    public void setKeyResultCreatedAt(Date keyResultCreatedAt) {
+        this.keyResultCreatedAt = keyResultCreatedAt;
     }
 
     public KeyResultPriority getKeyResultPriority() {
