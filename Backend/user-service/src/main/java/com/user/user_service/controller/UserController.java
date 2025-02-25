@@ -2,6 +2,7 @@ package com.user.user_service.controller;
 
 import com.user.user_service.entity.KeyResult;
 import com.user.user_service.entity.Objective;
+import com.user.user_service.entity.Task;
 import com.user.user_service.entity.User;
 import com.user.user_service.repository.UserRepository;
 import com.user.user_service.service.UserServiceImpl;
@@ -143,6 +144,24 @@ public class UserController {
         Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
         Map<String, Long> countMap = userServiceImpl.getKeyResultsCountByRole(userId, userRole);
         return ResponseEntity.ok(countMap);
+    }
+
+    // Get all tasks for the user's projects based on their role
+    @GetMapping("tasks")
+    public ResponseEntity<Map<String, List<Task>>> getTasksForUserProjects(
+            @RequestParam Long userId,
+            @RequestParam String userRole) {
+        Map<String, List<Task>> tasks = userServiceImpl.getTasksForProjects(userId, userRole);
+        return ResponseEntity.ok(tasks);
+    }
+
+    // Get task count for the user's projects based on their role
+    @GetMapping("/tasks/tasks-count")
+    public ResponseEntity<Map<String, Long>> getTaskCountForUserProjects(
+            @RequestParam Long userId,
+            @RequestParam String userRole) {
+        Map<String, Long> taskCount = userServiceImpl.getTasksCountByRole(userId, userRole);
+        return ResponseEntity.ok(taskCount);
     }
 
 

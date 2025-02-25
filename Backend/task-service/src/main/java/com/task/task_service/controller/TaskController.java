@@ -2,6 +2,7 @@ package com.task.task_service.controller;
 
 import com.task.task_service.entity.Task;
 import com.task.task_service.service.TaskService;
+import com.task.task_service.service.TaskServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -140,6 +141,15 @@ public class TaskController {
         LOGGER.info("approving the task with taskId "+ taskId);
         taskService.approveTask(taskId);
         return ResponseEntity.ok("task is approved");
+    }
+
+
+    @PostMapping("/by-projects-and-user")
+    public ResponseEntity<List<Task>> getTasksByProjectIdsAndUserId(
+            @RequestParam List<Long> projectIds,
+            @RequestParam Long userId) {
+        List<Task> tasks = taskService.getTasksByProjectIdsAndUserId(projectIds, userId);
+        return ResponseEntity.ok(tasks);
     }
 
 }

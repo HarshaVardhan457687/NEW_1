@@ -15,8 +15,6 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     // Custom query to count completed projects
-    @Query("SELECT COUNT(p) FROM Project p WHERE p.projectStatus = 'COMPLETED'")
-    long countCompletedProjects();
 
     // Additional query methods can be added here
     long countByProjectStatus(ProjectStatus status);

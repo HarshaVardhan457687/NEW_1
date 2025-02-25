@@ -48,10 +48,7 @@ public class ProjectController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/dashboard/completed")
-    public ResponseEntity<Long> getCompletedProjectsCount() {
-        return ResponseEntity.ok(projectService.getCompletedProjectsCount());
-    }
+
 
     @GetMapping("/dashboard/status/{status}")
     public ResponseEntity<Long> getProjectCountByStatus(@PathVariable ProjectStatus status) {

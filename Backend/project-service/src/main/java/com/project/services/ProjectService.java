@@ -63,9 +63,7 @@ public class ProjectService {
     }
 
     // Dashboard Methods
-    public long getCompletedProjectsCount() {
-        return projectRepository.countCompletedProjects();
-    }
+
 
     // Additional query methods
     public long getProjectCountByStatus(ProjectStatus status) {

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     // Logger instance for logging important events and errors
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -26,13 +26,17 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired RestTemplate restTemplate;
+    @Autowired
+    RestTemplate restTemplate;
 
     private static final String PROJECT_SERVICE_URL = "http://localhost:8085/api/projects/active/count";
     private static final String OBJECTIVE_SERVICE_URL = "http://localhost:8081/api/objective";
     private static final String KEYRESULT_SERVICE_URL = "http://localhost:8082/api/keyresults";
+    private static final String TASK_SERVICE_URL = "http://localhost:8083/api/tasks";
+
     /**
      * Creates a new user and saves it to the database.
+     *
      * @param user User object to be created.
      * @return The saved User.
      */
@@ -211,7 +215,7 @@ public class UserServiceImpl implements UserService{
             );
             return response.getBody();
         } catch (HttpServerErrorException e) {
-            LOGGER.info("Error calling Objective Service: "+ e.getMessage());
+            LOGGER.info("Error calling Objective Service: " + e.getMessage());
             throw new RuntimeException("Objective service failed: " + e.getMessage());
         }
     }
@@ -242,13 +246,14 @@ public class UserServiceImpl implements UserService{
                 OBJECTIVE_SERVICE_URL + "/by-projectIds",
                 HttpMethod.POST,
                 requestEntity,
-                new ParameterizedTypeReference<Map<String, List<Objective>>>() {} // Handling map response
+                new ParameterizedTypeReference<Map<String, List<Objective>>>() {
+                } // Handling map response
         );
 
         return response.getBody(); // Return the map containing objectives
     }
 
-// get count of the active objective and all objective
+    // get count of the active objective and all objective
     public Map<String, Long> getObjectivesCountByRole(Long userId, String userRole) {
         Map<String, List<Objective>> objectives = getObjectivesByRole(userId, userRole);
 
@@ -265,8 +270,8 @@ public class UserServiceImpl implements UserService{
     /**
      * Fetch all KeyResult and active KeyResult based on user role.
      */
-   // Just take all the objective first by projectID then take the for taht objective call the keyResult reservice it will//
-   // give all the key results with active and all the keyResults; and endpoint is commented for this
+    // Just take all the objective first by projectID then take the for taht objective call the keyResult reservice it will//
+    // give all the key results with active and all the keyResults; and endpoint is commented for this
     public Map<String, List<KeyResult>> getKeyResultsForProjects(Long userId, String userRole) {
 
         User user = userRepository.findById(userId)
@@ -284,7 +289,8 @@ public class UserServiceImpl implements UserService{
                 OBJECTIVE_SERVICE_URL + "/all/by-projects",
                 HttpMethod.POST,
                 new HttpEntity<>(projectIds),
-                new ParameterizedTypeReference<>() {}
+                new ParameterizedTypeReference<>() {
+                }
         );
 
         List<Objective> objectives = objectiveResponse.getBody();
@@ -302,7 +308,8 @@ public class UserServiceImpl implements UserService{
                 KEYRESULT_SERVICE_URL + "/by-objectives",
                 HttpMethod.POST,
                 new HttpEntity<>(objectiveIds),
-                new ParameterizedTypeReference<>() {}
+                new ParameterizedTypeReference<>() {
+                }
         );
 
         return keyResultResponse.getBody();
@@ -322,8 +329,54 @@ public class UserServiceImpl implements UserService{
         return countMap;
     }
 
-    /**
-     * Get All Task of the given project
-     */
-    public Map<String, List>
+    public Map<String, List<Task>> getTasksForProjects(Long userId, String userRole) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Long> projectIds = switch (userRole.toUpperCase()) {
+            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
+            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
+            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
+            default -> throw new RuntimeException("Invalid role: " + userRole);
+        };
+
+        // Prepare request body with projectIds and userId
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("projectIds", projectIds);
+        requestBody.put("userId", userId);
+
+        ResponseEntity<List<Task>> taskResponse = restTemplate.exchange(
+                TASK_SERVICE_URL + "/by-projects-and-user",
+                HttpMethod.POST,
+                new HttpEntity<>(requestBody),
+                new ParameterizedTypeReference<>() {
+                }
+        );
+
+        // Grouping tasks into categories
+        List<Task> allTasks = taskResponse.getBody();
+        List<Task> activeTasks = allTasks.stream()
+                .filter(Task::isTaskIsActive)
+                .toList();
+
+        Map<String, List<Task>> tasksMap = new HashMap<>();
+        tasksMap.put("allTasks", allTasks);
+        tasksMap.put("activeTasks", activeTasks);
+
+        return tasksMap;
+    }
+
+    public Map<String, Long> getTasksCountByRole(Long userId, String userRole) {
+        Map<String, List<Task>> tasks = getTasksForProjects(userId, userRole);
+
+        long totalTasks = tasks.getOrDefault("allTasks", List.of()).size();
+        long activeTasks = tasks.getOrDefault("activeTasks", List.of()).size();
+
+        Map<String, Long> countMap = new HashMap<>();
+        countMap.put("totalTasks", totalTasks);
+        countMap.put("activeTasks", activeTasks);
+
+        return countMap;
+    }
+
 }
