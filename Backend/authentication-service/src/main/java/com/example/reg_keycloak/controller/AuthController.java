@@ -33,6 +33,7 @@ import java.util.List;
 import static com.example.reg_keycloak.config.KeycloakConfig.realm;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8060")
 @RequestMapping("/api/auth")
 public class AuthController {
 
@@ -75,9 +76,6 @@ public class AuthController {
     public Map<String, Object> getRolesAndToken(@RequestBody Map<String, String> request) {
         String username = request.get("username");
         String password = request.get("password");
-
-        System.out.println("username : "+username);
-        System.out.println("password : "+password);
 
         if (username == null || password == null) {
             throw new IllegalArgumentException("Username and password are required.");
@@ -126,7 +124,7 @@ public class AuthController {
     @Autowired
     KeyCloakService service;
 
-    @PostMapping("/register")
+    @PostMapping
     public ResponseEntity<List<UserRepresentation>>  addUser(@RequestBody UserDTO userDTO){
         List<UserRepresentation> user1 = service.addUser(userDTO);
         return ResponseEntity.ok(user1);
@@ -144,7 +142,7 @@ public class AuthController {
         return "User Details Updated Successfully.";
     }
 
-    @DeleteMapping("/delete/{userId}")
+    @DeleteMapping(path = "/delete/{userId}")
     public String deleteUser(@PathVariable("userId") String userId){
         service.deleteUser(userId);
         return "User Deleted Successfully.";

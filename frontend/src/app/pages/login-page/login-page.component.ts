@@ -23,7 +23,8 @@ export class LoginPageComponent {
   signupPassword = '';
   confirmPassword = '';
   signupErrorMessage = '';
-  
+  signupSuccessMessage = '';
+
   // Field validation states
   invalidFields: { [key: string]: boolean } = {};
   shake = false;
@@ -54,6 +55,7 @@ export class LoginPageComponent {
   resetErrors() {
     this.errorMessage = '';
     this.signupErrorMessage = '';
+    this.signupSuccessMessage = '';
     this.invalidFields = {};
     this.shake = false;
   }
@@ -147,13 +149,13 @@ export class LoginPageComponent {
 
     this.authService.register(userDTO).subscribe({
       next: () => {
-        // Reset form and show success message
-        this.signupErrorMessage = '';
+        alert('Registration successful!');
+        // Reset form
         this.signupName = '';
         this.signupEmail = '';
         this.signupPassword = '';
         this.confirmPassword = '';
-        // Switch to login panel
+        // Switch to login panel after alert is closed
         this.isRightPanelActive = false;
       },
       error: (error) => {

@@ -39,6 +39,7 @@
         name="confirmPassword"
         [class.invalid]="invalidFields['confirmPassword']"/>
       <span class="error-message" *ngIf="signupErrorMessage">{{ signupErrorMessage }}</span>
+      <span class="success-message" *ngIf="signupSuccessMessage">{{ signupSuccessMessage }}</span>
       <button type="submit">Submit</button>
     </form>
   </div>

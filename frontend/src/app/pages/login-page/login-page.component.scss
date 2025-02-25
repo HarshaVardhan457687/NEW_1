@@ -275,3 +275,12 @@ input.invalid {
     transform: translate3d(4px, 0, 0);
   }
 }
+
+.success-message {
+  color: #166534;
+  background-color: #dcfce7;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-top: 8px;
+  font-size: 14px;
+}
