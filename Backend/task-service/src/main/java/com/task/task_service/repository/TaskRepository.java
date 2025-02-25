@@ -8,7 +8,6 @@ import java.util.List;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    public List<Task> findAllByTaskAssociatedObjective(Long objectiveId);
     public List<Task> findAllByTaskAssociatedKeyResult(Long keyresultId);
     public List<Task> findAllByTaskOwner(Long userId);
 }

@@ -96,11 +96,6 @@ public class TaskController {
         return ResponseEntity.noContent().build(); // 204 No Content
     }
 
-    @GetMapping("/objective/{objectiveId}")
-    public ResponseEntity<List<Task>> getAllTaskByObjective(@PathVariable  Long objectiveId){
-        List<Task> allTasksOfObjective = taskService.getAllTaskWithObjectiveId(objectiveId);
-        return ResponseEntity.ok(allTasksOfObjective);
-    }
 
     @GetMapping("/keyresult/{keyresultId}")
     public ResponseEntity<List<Task>> getAllTaskByKeyresult(@PathVariable  Long keyresultId){

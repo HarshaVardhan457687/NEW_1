@@ -11,7 +11,6 @@ public interface TaskService {
     public List<Task> getAllTask();
     public Task updateTask(Long taskId, Task taskToUpdate);
     public void removeTask(Long taskId);
-    public List<Task> getAllTaskWithObjectiveId(Long objectiveId);
     public List<Task> getAlltaskWithKeyResultId(Long keyresulId);
     public List<Task> getAlltaskWithUserId(Long userId);
     public List<Task> getAllActiveTasksWithUserId(Long userId);

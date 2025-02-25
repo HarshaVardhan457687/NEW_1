@@ -123,12 +123,6 @@ public class TaskServiceImpl implements TaskService {
         LOGGER.info("Task with ID: {} removed successfully.", taskId);
     }
 
-    @Override
-    public List<Task> getAllTaskWithObjectiveId(Long objectiveId) {
-        LOGGER.info("Fetching all the tasks associated with ObjectiveId: {}",objectiveId);
-        List<Task> allByTaskAssociatedObjective = taskRepository.findAllByTaskAssociatedObjective(objectiveId);
-        return allByTaskAssociatedObjective;
-    }
 
     @Override
     public List<Task> getAlltaskWithKeyResultId(Long keyresultId){
