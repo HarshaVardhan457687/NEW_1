@@ -5,15 +5,15 @@
   </div>
   <div class="card-content">
     <ng-container>
-      <app-progress-bar-circular [percentage]="percentage"></app-progress-bar-circular>
+      <app-progress-bar-circular [percentage]="displayedPercentage"></app-progress-bar-circular>
       <div class="counts">
         <div class="active">
           <span class="label">Active</span>
-          <span class="value">{{activeCount}}</span>
+          <span class="value">{{displayedActiveCount}}</span>
         </div>
         <div class="total">
           <span class="label">Total</span>
-          <span class="value">{{totalCount}}</span>
+          <span class="value">{{displayedTotalCount}}</span>
         </div>
       </div>
     </ng-container>
