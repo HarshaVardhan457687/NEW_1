@@ -89,4 +89,10 @@ public class ProjectController {
         long activeCount = projectService.getActiveProjectsCount(projectIds);
         return ResponseEntity.ok(activeCount);
     }
+
+//    @PostMapping("/active/count")
+//    public ResponseEntity<List<Project>> getActiveProjects(@RequestBody List<Long> projectIds) {
+//        List<Project> allProject= projectService.getActiveProjectsCount(projectIds);
+//        return ResponseEntity.ok(activeCount);
+//    }
 }

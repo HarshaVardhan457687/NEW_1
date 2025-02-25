@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     RestTemplate restTemplate;
 
-    private static final String PROJECT_SERVICE_URL = "http://localhost:8085/api/projects/active/count";
+    private static final String PROJECT_SERVICE_URL = "http://localhost:8085/api/projects";
     private static final String OBJECTIVE_SERVICE_URL = "http://localhost:8081/api/objective";
     private static final String KEYRESULT_SERVICE_URL = "http://localhost:8082/api/keyresults";
     private static final String TASK_SERVICE_URL = "http://localhost:8083/api/tasks";
@@ -142,6 +142,37 @@ public class UserServiceImpl implements UserService {
         return List.of();
     }
 
+//    public List<Project> getActiveProjects(Long userId, String userRole) {
+//        // Fetch user from DB
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//
+//        // Select the correct project list based on role
+//        List<Long> projectIds = switch (userRole.toUpperCase()) {
+//            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
+//            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
+//            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
+//            default -> throw new RuntimeException("Invalid role: " + userRole);
+//        };
+//
+//
+//        // Create request entity with headers
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
+//
+//        // Make a POST request to Project Service to get active projects count
+//        ResponseEntity<Long> response = restTemplate.exchange(
+//                PROJECT_SERVICE_URL,
+//                HttpMethod.POST,
+//                requestEntity,
+//                Long.class
+//        );
+//        List<Project> activeProjects = response.getBody();
+//
+//        return activeProjects;
+//    }
+
 
     /**
      * Fetch active project count based on user role.
@@ -169,7 +200,7 @@ public class UserServiceImpl implements UserService {
 
         // Make a POST request to Project Service to get active projects count
         ResponseEntity<Long> response = restTemplate.exchange(
-                PROJECT_SERVICE_URL,
+                PROJECT_SERVICE_URL + "/active/count",
                 HttpMethod.POST,
                 requestEntity,
                 Long.class
@@ -378,5 +409,38 @@ public class UserServiceImpl implements UserService {
 
         return countMap;
     }
+
+    public List<Task> getActiveTasksForUser(Long userId, String userRole) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Long> projectIds = switch (userRole.toUpperCase()) {
+            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
+            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
+            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
+            default -> throw new RuntimeException("Invalid role: " + userRole);
+        };
+
+        // Create HttpEntity with the correct body (only projectIds)
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
+
+        // Call API with userId as a query parameter
+        ResponseEntity<List<Task>> taskResponse = restTemplate.exchange(
+                TASK_SERVICE_URL + "/by-projects-and-user?userId=" + userId,  // Pass userId correctly
+                HttpMethod.POST,
+                requestEntity,  // Send only projectIds in the body
+                new ParameterizedTypeReference<>() {}
+        );
+
+        List<Task> allTasks = taskResponse.getBody();
+        List<Task> activeTasks = allTasks.stream()
+                .filter(Task::isTaskIsActive)
+                .toList();
+
+        return activeTasks;
+    }
+
 
 }

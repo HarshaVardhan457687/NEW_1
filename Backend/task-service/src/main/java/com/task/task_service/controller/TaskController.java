@@ -146,7 +146,7 @@ public class TaskController {
 
     @PostMapping("/by-projects-and-user")
     public ResponseEntity<List<Task>> getTasksByProjectIdsAndUserId(
-            @RequestParam List<Long> projectIds,
+            @RequestBody List<Long> projectIds,
             @RequestParam Long userId) {
         List<Task> tasks = taskService.getTasksByProjectIdsAndUserId(projectIds, userId);
         return ResponseEntity.ok(tasks);

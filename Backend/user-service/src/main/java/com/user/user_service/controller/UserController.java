@@ -164,6 +164,14 @@ public class UserController {
         return ResponseEntity.ok(taskCount);
     }
 
+    @GetMapping("/tasks/active")
+    public ResponseEntity<List<Task>> getActiveTaskForUserProjects(
+            @RequestParam Long userId,
+            @RequestParam String userRole) {
+        List<Task> allActiveTasks = userServiceImpl.getActiveTasksForUser(userId, userRole);
+        return ResponseEntity.ok(allActiveTasks);
+    }
+
 
 }
 
