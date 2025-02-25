@@ -7,14 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +29,7 @@ public class UserServiceImpl implements UserService{
 
     private static final String PROJECT_SERVICE_URL = "http://localhost:8085/api/projects/active/count";
     private static final String OBJECTIVE_SERVICE_URL = "http://localhost:8081/api/objective";
-    private static final String KEYRESULT_SERVICE_URL = "http://localhost:8083/api/keyresult/all/by-projects";
+    private static final String KEYRESULT_SERVICE_URL = "http://localhost:8082/api/keyresults";
     /**
      * Creates a new user and saves it to the database.
      * @param user User object to be created.
@@ -67,6 +64,12 @@ public class UserServiceImpl implements UserService{
         LOGGER.info("Fetching user with ID: {}", userId);
         return userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+    }
+
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByUserEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
     /**
@@ -256,10 +259,21 @@ public class UserServiceImpl implements UserService{
      */
    // Just take all the objective first by projectID then take the for taht objective call the keyResult reservice it will//
    // give all the key results with active and all the keyResults; and endpoint is commented for this
-    public Map<String, List<KeyResult>> getKeyResultsForProjects(List<Long> projectIds) {
+    public Map<String, List<KeyResult>> getKeyResultsForProjects(Long userId, String userRole) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Step 2: Select the correct project list based on role
+        List<Long> projectIds = switch (userRole.toUpperCase()) {
+            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
+            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
+            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
+            default -> throw new RuntimeException("Invalid role: " + userRole);
+        };
         // 1️⃣ Fetch Objectives for given Projects
         ResponseEntity<List<Objective>> objectiveResponse = restTemplate.exchange(
-                OBJECTIVE_SERVICE_URL + "/objectives/by-projects",
+                OBJECTIVE_SERVICE_URL + "/all/by-projects",
                 HttpMethod.POST,
                 new HttpEntity<>(projectIds),
                 new ParameterizedTypeReference<>() {}
@@ -277,7 +291,7 @@ public class UserServiceImpl implements UserService{
 
         // 2️⃣ Fetch KeyResults for the obtained Objectives
         ResponseEntity<Map<String, List<KeyResult>>> keyResultResponse = restTemplate.exchange(
-                KEYRESULT_SERVICE_URL + "/key-results/by-objectives",
+                KEYRESULT_SERVICE_URL + "/by-objectives",
                 HttpMethod.POST,
                 new HttpEntity<>(objectiveIds),
                 new ParameterizedTypeReference<>() {}

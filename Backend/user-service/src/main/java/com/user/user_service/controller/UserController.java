@@ -41,7 +41,7 @@ public class UserController {
     }
 
     /**
-     * API to fetch all the users
+     * API to fetch user by userId
      * */
     @GetMapping("/{userId}")
     public User getUserById(@PathVariable Long userId){
@@ -49,15 +49,26 @@ public class UserController {
     }
 
     /**
+     * API to fetch user by userEmail
+     * */
+    @GetMapping("/by-email/{userEmail}")
+    public User getUserById(@PathVariable String userEmail) {
+        User user = userServiceImpl.getUserByEmail(userEmail);
+        return userServiceImpl.getUserById(user.getUserId());
+    }
+
+    /**
      * API to update the user
      * */
     @PutMapping("/{userId}")
-    public User updateUserById(@PathVariable Long userId, @RequestBody User updatedUser){
+    public User updateUserById(@PathVariable String userEmail, @RequestBody User updatedUser){
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
         return userServiceImpl.updateUserById(userId, updatedUser);
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable Long userId){
+    public void deleteUser(@PathVariable String userEmail){
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
         userServiceImpl.deleteUser(userId);
     }
 
@@ -65,7 +76,8 @@ public class UserController {
      * API to fetch active project count for a user.
      */
     @GetMapping("/projects/active/count")
-    public Long getActiveProjectsCount(@RequestParam Long userId, @RequestParam String userRole) {
+    public Long getActiveProjectsCount(@RequestParam String userEmail, @RequestParam String userRole) {
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
         return userServiceImpl.getActiveProjectsCount(userId, userRole);
     }
 
@@ -74,9 +86,10 @@ public class UserController {
      */
     @PostMapping("/objectives")
     public ResponseEntity<List<Objective>> getAllObjectivesByRole(
-            @RequestParam Long userId,
+            @RequestParam String userEmail,
             @RequestParam String userRole) {
 
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
         List<Objective> objectives = userServiceImpl.getAllObjectivesByRole(userId, userRole);
         return ResponseEntity.ok(objectives);
     }
@@ -86,9 +99,10 @@ public class UserController {
      */
     @PostMapping("/objectives/active")
     public ResponseEntity<Map<String, List<Objective>>> getObjectivesByRole(
-            @RequestParam Long userId,
+            @RequestParam String userEmail,
             @RequestParam String userRole) {
 
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
         Map<String, List<Objective>> objectives = userServiceImpl.getObjectivesByRole(userId, userRole);
         return ResponseEntity.ok(objectives);
     }
@@ -98,8 +112,11 @@ public class UserController {
      */
 
     @PostMapping("/key-results")
-    public ResponseEntity<Map<String, List<KeyResult>>> getKeyResultsForProjects(@RequestBody List<Long> projectIds) {
-        Map<String, List<KeyResult>> keyResults = userServiceImpl.getKeyResultsForProjects(projectIds);
+    public ResponseEntity<Map<String, List<KeyResult>>> getKeyResultsForProjects(@RequestParam String userEmail,
+                                                                                 @RequestParam String userRole) {
+
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
+        Map<String, List<KeyResult>> keyResults = userServiceImpl.getKeyResultsForProjects(userId, userRole);
         return ResponseEntity.ok(keyResults);
     }
 
