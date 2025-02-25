@@ -1,13 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { tap, map, catchError } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { tap, map, catchError, switchMap } from 'rxjs/operators';
+
+export interface UserDTO {
+  name: string;
+  userName: string;
+  emailId: string;
+  password: string;
+}
+
+export interface UserServiceDTO {
+  userName: string;
+  userEmail: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private readonly AUTH_API = 'http://localhost:8088/api/auth';
+  private readonly USER_API = 'http://localhost:8060/api/users';  // Through API Gateway
   private readonly TOKEN_KEY = 'auth_token';
   private readonly ROLES_KEY = 'user_roles';
 
@@ -19,6 +32,7 @@ export class AuthService {
         tap((response: any) => {
           localStorage.setItem(this.TOKEN_KEY, response.token);
           localStorage.setItem(this.ROLES_KEY, JSON.stringify(response.roles));
+          localStorage.setItem('username', username);
         })
       );
   }
@@ -51,5 +65,35 @@ export class AuthService {
 
   isValidToken(): Observable<boolean> {
     return this.validate();
+  }
+
+  register(userDTO: UserDTO): Observable<any> {
+    let keycloakUserId: string;
+
+    return this.http.post(`${this.AUTH_API}/register`, userDTO).pipe(
+      // Store the Keycloak response
+      tap((response: any) => {
+        keycloakUserId = response[0]?.id; // Store Keycloak user ID for potential rollback
+      }),
+      // Attempt user service registration
+      switchMap(() => {
+        const userServiceDTO: UserServiceDTO = {
+          userName: userDTO.name,
+          userEmail: userDTO.emailId
+        };
+        return this.http.post(this.USER_API, userServiceDTO);
+      }),
+      // If user service registration fails, delete from Keycloak
+      catchError(error => {
+        if (keycloakUserId) {
+          // Delete the user from Keycloak
+          return this.http.delete(`${this.AUTH_API}/delete/${keycloakUserId}`).pipe(
+            // Re-throw the original error after cleanup
+            switchMap(() => throwError(() => new Error('Registration failed. Please try again.')))
+          );
+        }
+        return throwError(() => error);
+      })
+    );
   }
 }

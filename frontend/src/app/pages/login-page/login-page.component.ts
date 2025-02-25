@@ -137,7 +137,28 @@ export class LoginPageComponent {
       return;
     }
 
-    // Proceed with signup
-    // Add your signup logic here
+
+    const userDTO = {
+      name: this.signupName,
+      userName: this.signupEmail,
+      emailId: this.signupEmail,
+      password: this.signupPassword
+    };
+
+    this.authService.register(userDTO).subscribe({
+      next: () => {
+        // Reset form and show success message
+        this.signupErrorMessage = '';
+        this.signupName = '';
+        this.signupEmail = '';
+        this.signupPassword = '';
+        this.confirmPassword = '';
+        // Switch to login panel
+        this.isRightPanelActive = false;
+      },
+      error: (error) => {
+        this.signupErrorMessage = error.error?.message || 'Registration failed. Please try again.';
+      }
+    });
   }
 }

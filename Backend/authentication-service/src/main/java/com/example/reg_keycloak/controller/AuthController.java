@@ -126,7 +126,7 @@ public class AuthController {
     @Autowired
     KeyCloakService service;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<List<UserRepresentation>>  addUser(@RequestBody UserDTO userDTO){
         List<UserRepresentation> user1 = service.addUser(userDTO);
         return ResponseEntity.ok(user1);
@@ -144,7 +144,7 @@ public class AuthController {
         return "User Details Updated Successfully.";
     }
 
-    @DeleteMapping(path = "/delete/{userId}")
+    @DeleteMapping("/delete/{userId}")
     public String deleteUser(@PathVariable("userId") String userId){
         service.deleteUser(userId);
         return "User Deleted Successfully.";
