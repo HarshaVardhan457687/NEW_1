@@ -11,6 +11,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
@@ -29,6 +30,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     private static final String PROJECT_SERVICE_URL = "http://localhost:8085/api/projects";
     private static final String OBJECTIVE_SERVICE_URL = "http://localhost:8081/api/objective";
@@ -104,6 +108,21 @@ public class UserServiceImpl implements UserService {
         existingUser.setUserTeamLeaderProjectId(user.getUserTeamLeaderProjectId());
         existingUser.setUserTeamMemberProjectId(user.getUserTeamMemberProjectId());
         return userRepository.save(existingUser);
+    }
+
+    public String uploadUserProfilePhoto(Long userId, MultipartFile file) {
+        // Find user by ID
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Upload to Cloudinary
+        String imageUrl = cloudinaryService.uploadImage(file);
+
+        // Save the URL in the database
+        user.setUserProfilePhoto(imageUrl);
+        userRepository.save(user);
+
+        return imageUrl;
     }
 
     /**
