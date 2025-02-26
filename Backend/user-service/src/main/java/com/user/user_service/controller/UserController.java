@@ -68,6 +68,12 @@ public class UserController {
         return ResponseEntity.ok(imageUrl);
     }
 
+    @GetMapping("/get/profile-pic")
+    public ResponseEntity<String> getUserProfilePic(@RequestParam String userEmail) {
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
+        return ResponseEntity.ok(userServiceImpl.getProfilePicture(userId));
+    }
+
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable String userEmail){
         Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();

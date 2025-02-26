@@ -125,6 +125,12 @@ public class UserServiceImpl implements UserService {
         return imageUrl;
     }
 
+    public String getProfilePicture(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getUserProfilePhoto();
+    }
+
     /**
      * Deletes a user by its ID.
      *
