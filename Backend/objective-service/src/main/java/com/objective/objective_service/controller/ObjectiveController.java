@@ -2,6 +2,7 @@ package com.objective.objective_service.controller;
 
 import com.objective.objective_service.entity.Objective;
 import com.objective.objective_service.service.ObjectiveService;
+import com.objective.objective_service.service.ObjectiveServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -117,5 +118,26 @@ public class ObjectiveController {
         List<Objective> response = objectiveService.getAllObjectiveByProjectIds(projectIds);
         return ResponseEntity.ok(response);
     }
+
+
+    /**
+     * Endpoint to fetch progress  based on its objectiveId.
+     * @param objectiveId - The ID of the objective.
+     * @return ResponseEntity containing the progress and HTTP status 200 (OK).
+     */
+    @GetMapping("/progress/{objectiveId}")
+    public ResponseEntity<Double> getObjectiveProgress(@PathVariable Long objectiveId){
+        Double progress = objectiveService.calculateObjectiveProgress(objectiveId);
+        return ResponseEntity.ok(progress);
+    }
+
+    @GetMapping("/by-project/progress/{projectId}")
+    public ResponseEntity<Double> getProjectProgress(@PathVariable Long projectId) {
+        double projectProgress = objectiveService.calculateProjectProgress(projectId);
+        return ResponseEntity.ok(projectProgress);
+    }
+
+
+
 
 }

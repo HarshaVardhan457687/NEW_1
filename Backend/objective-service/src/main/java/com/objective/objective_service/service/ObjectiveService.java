@@ -14,4 +14,6 @@ public interface ObjectiveService {
     public List<Objective> getAllObjectiveByProjectId(Long projectId);
     public Map<String, List<Objective>> getObjectivesByProjects(List<Long> projectIds);
     public List<Objective> getAllObjectiveByProjectIds(List<Long> projectIds);
+    public double calculateObjectiveProgress(Long objectiveId);
+    public double calculateProjectProgress(Long projectId);
 }

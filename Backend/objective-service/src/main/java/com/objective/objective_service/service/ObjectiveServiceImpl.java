@@ -6,6 +6,9 @@ import com.objective.objective_service.entity.Task;
 import com.objective.objective_service.exception.ObjectiveNotFoundException;
 import com.objective.objective_service.repository.ObjectiveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -209,5 +212,65 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         List<Objective> allObjectives = objectiveRepository.findByMappedProjectIn(projectIds);
         return allObjectives;
     }
+
+
+
+
+    /**
+     * Take the objectiveId of the objectives and give progress of it
+     * @param objectiveId ID of the objective
+     * @return progress of the objective
+     * */
+    public double calculateObjectiveProgress(Long objectiveId) {
+        String url = KEYRESULT_SERVICE_URL + "/objective/" + objectiveId;
+
+        ResponseEntity<List<KeyResult>> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<>() {}
+        );
+
+        List<KeyResult> keyResults = response.getBody();
+
+        // No KeyResults, progress is 0%
+        if (keyResults == null || keyResults.isEmpty()) {
+            return 0.0;
+        }
+
+        double totalProgress = 0.0;
+
+        for (KeyResult keyResult : keyResults) {
+            if (keyResult.getKeyResultTargetVal() > 0) { // Avoid division by zero
+                double keyResultProgress = ((double) keyResult.getKeyResultcurrentVal() / keyResult.getKeyResultTargetVal());
+                totalProgress += keyResultProgress;
+            }
+        }
+
+        return (totalProgress / keyResults.size()) * 100; // Convert to percentage
+    }
+
+
+    /**
+     * Take the progress of objective
+     */
+    @Override
+    public double calculateProjectProgress(Long projectId) {
+        List<Objective> objectives = objectiveRepository.findByMappedProject(projectId);
+
+        if (objectives.isEmpty()) {
+            return 0.0; // No objectives, progress is 0%
+        }
+
+        double totalProgress = 0.0;
+
+        for (Objective objective : objectives) {
+            totalProgress += calculateObjectiveProgress(objective.getObjectiveId());
+        }
+
+        return totalProgress / objectives.size(); // Average progress of all objectives
+    }
+
+
 }
 

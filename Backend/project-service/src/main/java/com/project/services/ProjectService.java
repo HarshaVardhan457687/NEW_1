@@ -91,5 +91,12 @@ public class ProjectService {
     public long getActiveProjectsCount(List<Long> projectIds) {
         return projectRepository.countByProjectIdInAndIsActiveTrue(projectIds);
     }
-    
+
+    public String getNameOfProjectById(Long projectId) {
+        return projectRepository.findById(projectId)
+                .map(Project::getProjectName)  // If present, get the project name
+                .orElse("Project not found");  // If not present, return a default message
+    }
+
+
 }
