@@ -18,6 +18,11 @@ export interface KeyResultProgress {
   totalKeyResults: number;
 }
 
+export interface TaskProgress {
+  activeTasks: number;
+  totalTasks: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -52,5 +57,13 @@ export class DashboardPageService {
       .set('userRole', role);
 
     return this.http.get<KeyResultProgress>(`${this.API_URL}/key-results/count`, { params });
+  }
+
+  getTaskProgress(role: UserRole): Observable<TaskProgress> {
+    const params = new HttpParams()
+      .set('userEmail', this.getUserEmail())
+      .set('userRole', role);
+
+    return this.http.get<TaskProgress>(`${this.API_URL}/tasks/tasks-count`, { params });
   }
 }

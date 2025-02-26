@@ -172,7 +172,7 @@ public class UserController {
     }
 
     //api to get active project with progress for user
-    @GetMapping("/project/active/progres")
+    @GetMapping("/project/find-active")
     public ResponseEntity<List<Project>> getAllActiveProjectWithProgress(
             @RequestParam String userEmail,
             @RequestParam String userRole) {

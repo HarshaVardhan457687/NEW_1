@@ -12,6 +12,7 @@ import com.example.reg_keycloak.DTO.UserDTO;
 import com.example.reg_keycloak.config.KeycloakConfig;
 import com.example.reg_keycloak.service.KeyCloakService;
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 
@@ -19,10 +20,6 @@ import java.util.stream.Collectors;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-
-
-
 
 
 
@@ -99,6 +96,8 @@ public class AuthController {
         ResponseEntity<Map> tokenResponse = restTemplate.exchange(
                 tokenEndpoint, HttpMethod.POST, tokenRequest, Map.class);
 
+        
+
         if (!tokenResponse.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("Failed to fetch access token: " + tokenResponse.getBody());
         }
@@ -113,10 +112,25 @@ public class AuthController {
                 .map(authority -> authority.getAuthority().replace("ROLE_", ""))  // Remove "ROLE_" prefix
                 .collect(Collectors.toList());
 
+
+        UsersResource usersResource = KeycloakConfig.getInstance().realm(KeycloakConfig.realm).users();
+        List<UserRepresentation> users = usersResource.search(username, true);
+        if (users.isEmpty()) {
+             throw new RuntimeException("User not found in Keycloak.");
+        }
+
+        UserRepresentation user = users.get(0);
+
+        List<String> name = null;
+        if (user.getAttributes() != null && user.getAttributes().containsKey("name")) {
+            name = user.getAttributes().get("name");
+        }
+        
         // Step 3: Return Access Token and Roles
         Map<String, Object> response = new HashMap<>();
         response.put("token", accessToken);
         response.put("roles", roles);
+        response.put("name", name);
 
         return response;
     }

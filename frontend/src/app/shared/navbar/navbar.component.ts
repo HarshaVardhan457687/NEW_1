@@ -65,6 +65,10 @@ export class NavbarComponent implements OnInit {
   }
 
   getWelcomeText(): string {
-    return this.projectTitle || 'Welcome back, John Doe';
+    if (this.projectTitle) {
+      return this.projectTitle;
+    }
+    const username = localStorage.getItem('name') || 'User';
+    return `Welcome back, ${username}`;
   }
 }

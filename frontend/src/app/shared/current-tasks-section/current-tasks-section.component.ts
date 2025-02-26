@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CurrentTaskCardComponent } from '../current-task-card/current-task-card.component';
-import { TaskService, Task } from '../../core/services/tasks.service';
-import { ProjectService } from '../../core/services/projects.service';
-import { map, switchMap } from 'rxjs';
+import { CurrentTasksSectionService, ActiveTask } from '../../core/services/current-tasks-section.service';
+import { UserRole } from '../../core/services/role-selection.service';
 
 @Component({
   selector: 'app-current-tasks-section',
@@ -13,25 +12,31 @@ import { map, switchMap } from 'rxjs';
   styleUrl: './current-tasks-section.component.scss'
 })
 export class CurrentTasksSectionComponent implements OnInit {
-  tasks: Task[] = [];
+  @Input() role!: UserRole;
+  tasks: ActiveTask[] = [];
+  loading = true;
+  error = false;
 
-  constructor(
-    private taskService: TaskService,
-    private projectService: ProjectService
-  ) {}
+  constructor(private currentTasksService: CurrentTasksSectionService) {}
 
   ngOnInit() {
-    this.taskService.getTasks().pipe(
-      switchMap(tasks => 
-        this.projectService.getProjects().pipe(
-          map(projects => tasks.map(task => ({
-            ...task,
-            project: projects.find(p => p.id === task.projectId)?.title || ''
-          })))
-        )
-      )
-    ).subscribe(
-      tasks => this.tasks = tasks
-    );
+    const userEmail = localStorage.getItem('username') || '';
+    
+    this.currentTasksService.getActiveTasks(userEmail, this.role)
+      .subscribe({
+        next: (tasks) => {
+          this.tasks = tasks;
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error loading active tasks:', error);
+          this.tasks = [];
+          this.loading = false;
+          this.error = true;
+        },
+        complete: () => {
+          this.loading = false;
+        }
+      });
   }
 }

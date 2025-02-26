@@ -69,7 +69,7 @@ export class TeamLeaderDashboardComponent implements OnInit {
           ...this.stats[0],
           activeCount: data.activeProjects,
           totalCount: data.totalProjects,
-          percentage: (data.activeProjects / data.totalProjects) * 100
+          percentage: Math.floor(((data.totalProjects - data.activeProjects) / data.totalProjects) * 100)
         };
       },
       error: (error) => {
@@ -83,7 +83,7 @@ export class TeamLeaderDashboardComponent implements OnInit {
           ...this.stats[1],
           activeCount: data.activeObjectives,
           totalCount: data.totalObjectives,
-          percentage: (data.activeObjectives / data.totalObjectives) * 100
+          percentage: Math.floor(((data.totalObjectives - data.activeObjectives) / data.totalObjectives) * 100)
         };
       },
       error: (error) => {
@@ -97,11 +97,25 @@ export class TeamLeaderDashboardComponent implements OnInit {
           ...this.stats[2],
           activeCount: data.activeKeyResults,
           totalCount: data.totalKeyResults,
-          percentage: (data.activeKeyResults / data.totalKeyResults) * 100
+          percentage: Math.floor(((data.totalKeyResults - data.activeKeyResults) / data.totalKeyResults) * 100)
         };
       },
       error: (error) => {
         console.error('Error loading key results data:', error);
+      }
+    });
+
+    this.dashboardService.getTaskProgress('team_leader').subscribe({
+      next: (data) => {
+        this.stats[3] = {
+          ...this.stats[3],
+          activeCount: data.activeTasks,
+          totalCount: data.totalTasks,
+          percentage: Math.floor(((data.totalTasks - data.activeTasks) / data.totalTasks) * 100)
+        };
+      },
+      error: (error) => {
+        console.error('Error loading tasks data:', error);
       }
     });
   }

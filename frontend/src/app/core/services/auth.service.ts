@@ -33,6 +33,7 @@ export class AuthService {
           localStorage.setItem(this.TOKEN_KEY, response.token);
           localStorage.setItem(this.ROLES_KEY, JSON.stringify(response.roles));
           localStorage.setItem('username', username);
+          localStorage.setItem('name', response.name);
         })
       );
   }
