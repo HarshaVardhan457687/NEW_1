@@ -13,6 +13,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -142,36 +143,67 @@ public class UserServiceImpl implements UserService {
         return List.of();
     }
 
-//    public List<Project> getActiveProjects(Long userId, String userRole) {
-//        // Fetch user from DB
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        // Select the correct project list based on role
-//        List<Long> projectIds = switch (userRole.toUpperCase()) {
-//            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
-//            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
-//            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
-//            default -> throw new RuntimeException("Invalid role: " + userRole);
-//        };
-//
-//
-//        // Create request entity with headers
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
-//
-//        // Make a POST request to Project Service to get active projects count
-//        ResponseEntity<Long> response = restTemplate.exchange(
-//                PROJECT_SERVICE_URL,
-//                HttpMethod.POST,
-//                requestEntity,
-//                Long.class
-//        );
-//        List<Project> activeProjects = response.getBody();
-//
-//        return activeProjects;
-//    }
+    /**
+    *   get active projects with progress
+    */
+    public List<Project> getActiveProjects(Long userId, String userRole) {
+        // Fetch user from DB
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Select the correct project list based on role
+        List<Long> projectIds = switch (userRole.toUpperCase()) {
+            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
+            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
+            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
+            default -> throw new RuntimeException("Invalid role: " + userRole);
+        };
+
+        if (projectIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // Create request entity with headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
+
+        // Make a POST request to Project Service to get active projects
+        ResponseEntity<List<Project>> response = restTemplate.exchange(
+                PROJECT_SERVICE_URL + "/active",
+                HttpMethod.POST,
+                requestEntity,
+                new ParameterizedTypeReference<List<Project>>() {}
+        );
+
+        List<Project> activeProjects = response.getBody();
+        if (activeProjects == null || activeProjects.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // Fetch progress for each project from Objective Service
+        for (Project project : activeProjects) {
+            double progress = getProjectProgressById(project.getProjectId()); // Fetch progress
+            project.setProjectProgress(progress); // Set progress in project object
+        }
+
+        return activeProjects;
+    }
+
+    private int getProjectProgressById(Long projectId) {
+        try {
+            ResponseEntity<Integer> response = restTemplate.exchange(
+                    OBJECTIVE_SERVICE_URL + "/by-project/progress/" + projectId,
+                    HttpMethod.GET,
+                    null,
+                    Integer.class
+            );
+            return response.getBody() != null ? response.getBody() : 0;
+        } catch (Exception e) {
+            System.err.println("Error fetching progress for project ID: " + projectId);
+            return 0; // Default progress if service fails
+        }
+    }
 
 
     /**
@@ -371,18 +403,6 @@ public class UserServiceImpl implements UserService {
             default -> throw new RuntimeException("Invalid role: " + userRole);
         };
 
-        // Prepare request body with projectIds and userId
-//        Map<String, Object> requestBody = new HashMap<>();
-//        requestBody.put("projectIds", projectIds);
-//        requestBody.put("userId", userId);
-//
-//        ResponseEntity<List<Task>> taskResponse = restTemplate.exchange(
-//                TASK_SERVICE_URL + "/by-projects-and-user",
-//                HttpMethod.POST,
-//                new HttpEntity<>(requestBody),
-//                new ParameterizedTypeReference<>() {
-//                }
-//        );
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

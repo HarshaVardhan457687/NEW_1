@@ -96,9 +96,16 @@ public class ProjectController {
         return ResponseEntity.ok(projectName);
     }
 
-//    @PostMapping("/active/count")
-//    public ResponseEntity<List<Project>> getActiveProjects(@RequestBody List<Long> projectIds) {
-//        List<Project> allProject= projectService.getActiveProjectsCount(projectIds);
-//        return ResponseEntity.ok(activeCount);
-//    }
+
+    @PostMapping("/active")
+    public ResponseEntity<List<Project>> getActiveProjects(@RequestBody List<Long> projectIds) {
+        List<Project> allActiveProjects = projectService.getAllActiveProjects(projectIds);
+
+        if (allActiveProjects.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Returns 204 if no active projects found
+        }
+
+        return ResponseEntity.ok(allActiveProjects);
+    }
+
 }

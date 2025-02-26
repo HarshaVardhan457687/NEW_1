@@ -53,6 +53,7 @@ public class ProjectService {
         project.setKeyResultIds(projectDetails.getKeyResultIds());
         project.setProjectDueDate(projectDetails.getProjectDueDate());
         project.setProjectManagerId(projectDetails.getProjectManagerId());
+        project.setProjectProgress(projectDetails.getProjectProgress());
 
         return projectRepository.save(project);
     }
@@ -97,6 +98,11 @@ public class ProjectService {
                 .map(Project::getProjectName)  // If present, get the project name
                 .orElse("Project not found");  // If not present, return a default message
     }
+
+    public List<Project> getAllActiveProjects(List<Long> projectIds) {
+        return projectRepository.findByProjectIdInAndIsActive(projectIds, true);
+    }
+
 
 
 }

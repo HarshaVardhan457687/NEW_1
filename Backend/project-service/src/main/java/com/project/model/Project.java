@@ -52,6 +52,9 @@ public class Project {
     @Temporal(TemporalType.DATE)
     private Date projectDueDate;
 
+    @Transient
+    private Double projectProgress;
+
     public Long getProjectId() {
         return projectId;
     }
@@ -94,6 +97,14 @@ public class Project {
 
     public Boolean getActive() {
         return isActive;
+    }
+
+    public Double getProjectProgress() {
+        return projectProgress;
+    }
+
+    public void setProjectProgress(Double projectProgress) {
+        this.projectProgress = projectProgress;
     }
 
     public void setActive(Boolean active) {

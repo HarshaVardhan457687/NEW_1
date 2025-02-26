@@ -16,7 +16,7 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     // Custom query to count completed projects
 
-    // Additional query methods can be added here
+    List<Project> findByProjectIdInAndIsActive(List<Long> projectIds, boolean isActive);
     long countByProjectStatus(ProjectStatus status);
     long countByIsActive(Boolean isActive);
     long countByProjectIdInAndIsActiveTrue(List<Long> projectIds);

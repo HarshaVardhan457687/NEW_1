@@ -1,9 +1,6 @@
 package com.user.user_service.controller;
 
-import com.user.user_service.entity.KeyResult;
-import com.user.user_service.entity.Objective;
-import com.user.user_service.entity.Task;
-import com.user.user_service.entity.User;
+import com.user.user_service.entity.*;
 import com.user.user_service.repository.UserRepository;
 import com.user.user_service.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,6 +169,16 @@ public class UserController {
         Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
         List<Task> allActiveTasks = userServiceImpl.getActiveTasksForUser(userId, userRole);
         return ResponseEntity.ok(allActiveTasks);
+    }
+
+    //api to get active project with progress for user
+    @GetMapping("/project/active/progres")
+    public ResponseEntity<List<Project>> getAllActiveProjectWithProgress(
+            @RequestParam String userEmail,
+            @RequestParam String userRole) {
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
+        List<Project> allActiveProject = userServiceImpl.getActiveProjects(userId, userRole);
+        return ResponseEntity.ok(allActiveProject);
     }
 
 
