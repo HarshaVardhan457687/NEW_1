@@ -138,7 +138,7 @@ public class AuthController {
     @Autowired
     KeyCloakService service;
 
-    @PostMapping(/"register")
+    @PostMapping("/register")
     public ResponseEntity<List<UserRepresentation>>  addUser(@RequestBody UserDTO userDTO){
         List<UserRepresentation> user1 = service.addUser(userDTO);
         return ResponseEntity.ok(user1);
