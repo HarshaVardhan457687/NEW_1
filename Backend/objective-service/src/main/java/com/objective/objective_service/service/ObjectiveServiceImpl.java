@@ -147,6 +147,7 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         existingObjective.setKeyResultIds(objectiveToUpdate.getKeyResultIds());
         existingObjective.setKeyResult(objectiveToUpdate.getKeyResult());
         existingObjective.setObjectiveDueDate(objectiveToUpdate.getObjectiveDueDate());
+        existingObjective.setObjectivePriority(objectiveToUpdate.getObjectivePriority());
         existingObjective.setObjectiveStatus(objectiveToUpdate.getObjectiveStatus());
         existingObjective.setObjectiveIsActive(objectiveToUpdate.isObjectiveIsActive());
 
@@ -244,7 +245,7 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         for (KeyResult keyResult : keyResults) {
             if (keyResult.getKeyResultTargetVal() > 0) { // Avoid division by zero
                 double progress = (double) keyResult.getKeyResultcurrentVal() / keyResult.getKeyResultTargetVal();
-                double weight = getPriorityWeight(keyResult.getKeyResultPriority()); // Fixed here
+                double weight = getPriorityWeight(keyResult.getKeyResultPriority().name());
 
                 weightedSum += progress * weight;
                 totalWeight += weight;
@@ -261,15 +262,12 @@ public class ObjectiveServiceImpl implements ObjectiveService {
             case "HIGH" -> 1.5;
             case "MEDIUM" -> 1.0;
             case "LOW" -> 0.5;
-            default -> 1.0; // Default to MEDIUM weight if unknown priority
+            default -> 1.0;
         };
     }
 
 
 
-    /**
-     * Take the progress of objective
-     */
     @Override
     public double calculateProjectProgress(Long projectId) {
         List<Objective> objectives = objectiveRepository.findByMappedProject(projectId);
@@ -278,13 +276,19 @@ public class ObjectiveServiceImpl implements ObjectiveService {
             return 0.0; // No objectives, progress is 0%
         }
 
-        double totalProgress = 0.0;
+        double weightedSum = 0.0;
+        double totalWeight = 0.0;
 
         for (Objective objective : objectives) {
-            totalProgress += calculateObjectiveProgress(objective.getObjectiveId());
+            double objectiveProgress = calculateObjectiveProgress(objective.getObjectiveId());
+            double weight = getPriorityWeight(objective.getObjectivePriority().name()); // Convert Enum to String
+
+            weightedSum += objectiveProgress * weight;
+            totalWeight += weight;
         }
 
-        return totalProgress / objectives.size(); // Average progress of all objectives
+
+        return (totalWeight > 0) ? (weightedSum / totalWeight) : 0.0;
     }
 
 

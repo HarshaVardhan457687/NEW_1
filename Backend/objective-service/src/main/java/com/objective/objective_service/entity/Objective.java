@@ -1,6 +1,7 @@
 package com.objective.objective_service.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.objective.objective_service.constants.ObjectivePriority;
 import com.objective.objective_service.constants.ObjectiveStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,7 @@ public class Objective {
     private Date objectiveDueDate;
 
     private ObjectiveStatus objectiveStatus;
+    private ObjectivePriority objectivePriority;
     private boolean objectiveIsActive;
 
     //GETTERS AND SETTERS
@@ -69,8 +71,6 @@ public class Objective {
     public void setMappedProject(Long mappedProject) {
         this.mappedProject = mappedProject;
     }
-
-
 
     public List<Long> getKeyResultIds() {
         return keyResultIds;
@@ -110,6 +110,22 @@ public class Objective {
 
     public void setObjectiveStatus(ObjectiveStatus objectiveStatus) {
         this.objectiveStatus = objectiveStatus;
+    }
+
+    public Date getObjectiveCreatedAt() {
+        return objectiveCreatedAt;
+    }
+
+    public void setObjectiveCreatedAt(Date objectiveCreatedAt) {
+        this.objectiveCreatedAt = objectiveCreatedAt;
+    }
+
+    public ObjectivePriority getObjectivePriority() {
+        return objectivePriority;
+    }
+
+    public void setObjectivePriority(ObjectivePriority objectivePriority) {
+        this.objectivePriority = objectivePriority;
     }
 
     public boolean isObjectiveIsActive() {

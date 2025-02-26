@@ -1,9 +1,15 @@
 package com.user.user_service.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.user.user_service.constants.TaskPriority;
+import com.user.user_service.constants.TaskStatus;
+import jakarta.persistence.Column;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 
@@ -15,14 +21,21 @@ public class Task {
     private String taskHeading;
     private String taskDescription;
     private Long taskOwner;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @CreationTimestamp
+    @Temporal(TemporalType.DATE)
+    @Column(updatable = false)
     private Date taskStartDate;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date taskDueDate;
     private String taskTag;
     private boolean taskIsActive;
+    private Long taskAssociatedProject;
     private Long taskAssociatedKeyResult;
-    private Long taskAssociatedObjective;
+    private TaskStatus taskStatus;
+    private TaskPriority taskPriority;
+
+    //GETTERS AND SETTERS
+
 
     public Long getTaskId() {
         return taskId;
@@ -88,6 +101,14 @@ public class Task {
         this.taskIsActive = taskIsActive;
     }
 
+    public Long getTaskAssociatedProject() {
+        return taskAssociatedProject;
+    }
+
+    public void setTaskAssociatedProject(Long taskAssociatedProject) {
+        this.taskAssociatedProject = taskAssociatedProject;
+    }
+
     public Long getTaskAssociatedKeyResult() {
         return taskAssociatedKeyResult;
     }
@@ -96,11 +117,19 @@ public class Task {
         this.taskAssociatedKeyResult = taskAssociatedKeyResult;
     }
 
-    public Long getTaskAssociatedObjective() {
-        return taskAssociatedObjective;
+    public TaskStatus getTaskStatus() {
+        return taskStatus;
     }
 
-    public void setTaskAssociatedObjective(Long taskAssociatedObjective) {
-        this.taskAssociatedObjective = taskAssociatedObjective;
+    public void setTaskStatus(TaskStatus taskStatus) {
+        this.taskStatus = taskStatus;
+    }
+
+    public TaskPriority getTaskPriority() {
+        return taskPriority;
+    }
+
+    public void setTaskPriority(TaskPriority taskPriority) {
+        this.taskPriority = taskPriority;
     }
 }
