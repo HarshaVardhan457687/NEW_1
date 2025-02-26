@@ -158,16 +158,18 @@ public class UserController {
     // Get task count for the user's projects based on their role
     @GetMapping("/tasks/tasks-count")
     public ResponseEntity<Map<String, Long>> getTaskCountForUserProjects(
-            @RequestParam Long userId,
+            @RequestParam String userEmail,
             @RequestParam String userRole) {
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
         Map<String, Long> taskCount = userServiceImpl.getTasksCountByRole(userId, userRole);
         return ResponseEntity.ok(taskCount);
     }
 
     @GetMapping("/tasks/active")
     public ResponseEntity<List<Task>> getActiveTaskForUserProjects(
-            @RequestParam Long userId,
+            @RequestParam String userEmail,
             @RequestParam String userRole) {
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
         List<Task> allActiveTasks = userServiceImpl.getActiveTasksForUser(userId, userRole);
         return ResponseEntity.ok(allActiveTasks);
     }

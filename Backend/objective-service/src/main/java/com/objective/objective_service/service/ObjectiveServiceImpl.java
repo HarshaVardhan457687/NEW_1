@@ -244,7 +244,7 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         for (KeyResult keyResult : keyResults) {
             if (keyResult.getKeyResultTargetVal() > 0) { // Avoid division by zero
                 double progress = (double) keyResult.getKeyResultcurrentVal() / keyResult.getKeyResultTargetVal();
-                double weight = getPriorityWeight(getPriorityWeight(keyResult.getKeyResultPriority()));
+                double weight = getPriorityWeight(keyResult.getKeyResultPriority()); // Fixed here
 
                 weightedSum += progress * weight;
                 totalWeight += weight;
