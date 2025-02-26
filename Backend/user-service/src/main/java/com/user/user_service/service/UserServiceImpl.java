@@ -372,16 +372,28 @@ public class UserServiceImpl implements UserService {
         };
 
         // Prepare request body with projectIds and userId
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("projectIds", projectIds);
-        requestBody.put("userId", userId);
+//        Map<String, Object> requestBody = new HashMap<>();
+//        requestBody.put("projectIds", projectIds);
+//        requestBody.put("userId", userId);
+//
+//        ResponseEntity<List<Task>> taskResponse = restTemplate.exchange(
+//                TASK_SERVICE_URL + "/by-projects-and-user",
+//                HttpMethod.POST,
+//                new HttpEntity<>(requestBody),
+//                new ParameterizedTypeReference<>() {
+//                }
+//        );
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
+
+        // Call API with userId as a query parameter
         ResponseEntity<List<Task>> taskResponse = restTemplate.exchange(
-                TASK_SERVICE_URL + "/by-projects-and-user",
+                TASK_SERVICE_URL + "/by-projects-and-user?userId=" + userId,  // Pass userId correctly
                 HttpMethod.POST,
-                new HttpEntity<>(requestBody),
-                new ParameterizedTypeReference<>() {
-                }
+                requestEntity,  // Send only projectIds in the body
+                new ParameterizedTypeReference<>() {}
         );
 
         // Grouping tasks into categories

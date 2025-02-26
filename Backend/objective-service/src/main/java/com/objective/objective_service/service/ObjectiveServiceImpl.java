@@ -238,17 +238,33 @@ public class ObjectiveServiceImpl implements ObjectiveService {
             return 0.0;
         }
 
-        double totalProgress = 0.0;
+        double weightedSum = 0.0;
+        double totalWeight = 0.0;
 
         for (KeyResult keyResult : keyResults) {
             if (keyResult.getKeyResultTargetVal() > 0) { // Avoid division by zero
-                double keyResultProgress = ((double) keyResult.getKeyResultcurrentVal() / keyResult.getKeyResultTargetVal());
-                totalProgress += keyResultProgress;
+                double progress = (double) keyResult.getKeyResultcurrentVal() / keyResult.getKeyResultTargetVal();
+                double weight = getPriorityWeight(getPriorityWeight(keyResult.getKeyResultPriority()));
+
+                weightedSum += progress * weight;
+                totalWeight += weight;
             }
         }
 
-        return (totalProgress / keyResults.size()) * 100; // Convert to percentage
+        // Avoid division by zero if all weights are zero
+        return (totalWeight > 0) ? (weightedSum / totalWeight) * 100 : 0.0;
     }
+
+    // Helper method to get the weight for a given priority
+    private double getPriorityWeight(String priority) {
+        return switch (priority.toUpperCase()) {
+            case "HIGH" -> 1.5;
+            case "MEDIUM" -> 1.0;
+            case "LOW" -> 0.5;
+            default -> 1.0; // Default to MEDIUM weight if unknown priority
+        };
+    }
+
 
 
     /**
