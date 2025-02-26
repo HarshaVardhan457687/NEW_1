@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserRole } from './role-selection.service';
+import { ActiveProjectService, ActiveProject } from './active-project.service';
 
 export interface ProjectProgress {
   activeProjects: number;
@@ -29,7 +30,10 @@ export interface TaskProgress {
 export class DashboardPageService {
   private readonly API_URL = 'http://localhost:8060/api/users';  // Through API Gateway
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private activeProjectService: ActiveProjectService
+  ) {}
 
   private getUserEmail(): string {
     return localStorage.getItem('username') || '';
@@ -65,5 +69,9 @@ export class DashboardPageService {
       .set('userRole', role);
 
     return this.http.get<TaskProgress>(`${this.API_URL}/tasks/tasks-count`, { params });
+  }
+
+  getActiveProjects(role: UserRole): Observable<ActiveProject[]> {
+    return this.activeProjectService.getActiveProjects(this.getUserEmail(), role);
   }
 }
