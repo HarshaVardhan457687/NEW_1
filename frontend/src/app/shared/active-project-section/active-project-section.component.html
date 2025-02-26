@@ -1,11 +1,28 @@
 <div class="active-projects-section">
   <h2>Active Projects</h2>
   <div class="projects-list">
-    <app-active-projects-card
-      *ngFor="let project of projects"
-      [name]="project.title"
-      [objectives]="project.objectives"
-      [progress]="project.progress">
-    </app-active-projects-card>
+    <ng-container *ngIf="!loading; else loadingTpl">
+      <ng-container *ngIf="projects.length > 0; else noProjects">
+        <app-active-projects-card
+          *ngFor="let project of projects"
+          [name]="project.projectName"
+          [objectives]="project.objectivesCount"
+          [progress]="project.projectProgress">
+        </app-active-projects-card>
+      </ng-container>
+    </ng-container>
   </div>
 </div>
+
+<ng-template #noProjects>
+  <div class="no-projects-message">
+    No active projects
+  </div>
+</ng-template>
+
+<ng-template #loadingTpl>
+  <div class="loading-message">
+    Loading projects...
+  </div>
+</ng-template>
+

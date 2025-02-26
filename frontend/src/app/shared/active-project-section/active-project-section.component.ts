@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActiveProjectsCardComponent } from '../active-projects-card/active-projects-card.component';
-import { ProjectService } from '../../core/services/projects.service';
+import { ActiveProject } from '../../core/services/active-project.service';
+import { UserRole } from '../../core/services/role-selection.service';
+import { DashboardPageService } from '../../core/services/dashboard.page.service';
 
 @Component({
   selector: 'app-active-project-section',
@@ -11,13 +13,29 @@ import { ProjectService } from '../../core/services/projects.service';
   styleUrl: './active-project-section.component.scss'
 })
 export class ActiveProjectSectionComponent implements OnInit {
-  projects: any[] = [];
+  @Input() role!: UserRole;
+  projects: ActiveProject[] = [];
+  loading = true;
+  error = false;
 
-  constructor(private projectService: ProjectService) {}
+  constructor(private dashboardService: DashboardPageService) {}
 
   ngOnInit() {
-    this.projectService.getActiveProjects().subscribe(
-      projects => this.projects = projects
-    );
+    this.dashboardService.getActiveProjects(this.role)
+      .subscribe({
+        next: (projects) => {
+          this.projects = projects;
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error loading active projects:', error);
+          this.projects = [];
+          this.loading = false;
+          this.error = true;
+        },
+        complete: () => {
+          this.loading = false;
+        }
+      });
   }
 }
