@@ -197,5 +197,10 @@ public class TaskServiceImpl implements TaskService {
 
     }
 
+    @Override
+    public int getActiveTasksCountForUserInProject(Long projectId, Long userId) {
+        List<Task> activeTasks = taskRepository.findByTaskAssociatedProjectAndTaskOwnerAndTaskIsActive(projectId, userId, true);
+        return activeTasks.size();
+    }
 
 }

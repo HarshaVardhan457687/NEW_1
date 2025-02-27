@@ -5,6 +5,7 @@ import com.project.model.Objective;
 import com.project.model.Project;
 import com.project.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -145,10 +146,25 @@ public class ProjectService {
         return mapInfo;
     }
 
-//    public Map<String, Integer> getTasksInfo(Long projectId){
-//        String url = TASK_SERVICE_URL;
-//
-//        ResponseEntity<Map<String, Integer>> taskInfo = restTemplate.getForObject(url, Map.class);
-//    }
+    public Map<String, Integer> getTaskInfoForProject(Long projectId) {
+        // URL to call the TaskController's endpoint
+        String url =  TASK_SERVICE_URL + "project/task-info/{projectId}";
+
+        try {
+            // Make GET request to TaskController's endpoint and get response
+            ResponseEntity<Map> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    null, // No request body needed
+                    Map.class, // Response is of type Map (task info)
+                    projectId // Pass the projectId as a path variable
+            );
+
+            return response.getBody(); // Return the task info (map of task count data)
+        } catch (Exception e) {
+            // Handle errors gracefully (e.g., TaskController is down, network issues)
+            return Collections.emptyMap(); // Return an empty map if there's an error
+        }
+    }
 
 }

@@ -126,4 +126,10 @@ public class ProjectController {
         return ResponseEntity.ok(objectiveInfo);
     }
 
+    @GetMapping("/task-info/{projectId}")
+    public ResponseEntity<Map<String, Integer>> getTaskInfoForProject(@PathVariable Long projectId) {
+        Map<String, Integer> taskInfo = projectService.getTaskInfoForProject(projectId);
+        return ResponseEntity.ok(taskInfo);
+    }
+
 }

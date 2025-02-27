@@ -212,6 +212,15 @@ public class UserController {
         return ResponseEntity.ok(allActiveProject);
     }
 
+    @GetMapping("/project/{projectId}/user/{userId}/active-tasks")
+    public ResponseEntity<Integer> getActiveTasksCountForUser(@PathVariable Long projectId, @PathVariable Long userId) {
+        // Call UserService to get the active task count
+        int activeTasksCount = userServiceImpl.getActiveTasksCountForUserInProject(projectId, userId);
+
+        // Return the active task count in the response
+        return ResponseEntity.ok(activeTasksCount);
+    }
+
 
 
 
