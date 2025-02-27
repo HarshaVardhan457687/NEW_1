@@ -1,0 +1,181 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .profile-edit-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    width: 500px;
+    max-height: 90vh; // Limit height to 90% of the viewport
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+  
+      h2 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #0d0d0e; 
+        margin: 0;
+        
+      }
+  
+      @keyframes scaleUp {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+  
+      .close-btn {
+        background: none;
+        border: none;
+        color: #6b7280;
+        font-size: 20px;
+        cursor: pointer;
+  
+        &:hover {
+          color: #111827;
+        }
+      }
+    }
+  
+    .profile-form {
+      flex: 1; // Allow the form to take up remaining space
+      overflow-y: auto; // Enable scrolling for the form
+      padding-right: 8px;
+      margin-bottom: 16px; // Add space above the fixed buttons
+  
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+  
+      &::-webkit-scrollbar-track {
+        background: #f3f4f6;
+        border-radius: 3px;
+      }
+  
+      &::-webkit-scrollbar-thumb {
+        background: #d1d5db;
+        border-radius: 3px;
+  
+        &:hover {
+          background: #9ca3af;
+        }
+      }
+  
+      .form-row {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 0.75rem;
+  
+        label {
+          font-size: 14px;
+          font-weight: 500;
+          color: #374151;
+  
+          .required {
+            color: #ef4444;
+            margin-left: 4px;
+          }
+        }
+  
+        .form-control {
+          padding: 8px 12px;
+          border: 1px solid #d1d5db;
+          border-radius: 6px;
+          font-size: 14px;
+          color: #111827;
+  
+          &:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 1px #4f46e5;
+          }
+        }
+  
+        .phone-inputs {
+          display: flex;
+          gap: 8px;
+  
+          .country-code {
+            width: 30%;
+          }
+  
+          .phone-number {
+            width: 70%;
+          }
+        }
+  
+        .error-message {
+          color: #ef4444;
+          font-size: 12px;
+          margin-top: 4px;
+        }
+      }
+    }
+  
+    .button-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding-top: 16px; // Add padding above the buttons
+      border-top: 1px solid #e5e7eb; // Optional: Add a border above the buttons
+      background: white; // Ensure the buttons have a solid background
+      position: sticky;
+      bottom: 0; // Stick the buttons to the bottom
+      z-index: 1; // Ensure the buttons stay above the form content
+    }
+  
+    .cancel-btn {
+      background: white;
+      border: 1px solid #d1d5db;
+      color: #374151;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+  
+      &:hover {
+        background: #f3f4f6;
+      }
+    }
+  
+    .save-btn {
+      background: #4f46e5;
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+  
+      &:hover {
+        background: #4338ca;
+      }
+    }
+  }

@@ -1,0 +1,139 @@
+<div class="modal-overlay">
+    <div class="profile-edit-card">
+      <!-- Header with Close Button (X mark) -->
+      <div class="header">
+        <h2><b>Edit Your Profile</b></h2>
+        <button class="close-btn" (click)="closePopup()">&#10005;</button>
+      </div>
+  
+      <!-- Form -->
+      <form #profileForm="ngForm" [formGroup]="registrationForm" class="profile-form">
+        <!-- Name Field -->
+        <div class="form-row">
+          <label for="name">Name <span class="required">*</span></label>
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            placeholder="Enter your name"
+            class="form-control"
+          />
+          <div *ngIf="submitted && f['name'].errors" class="error-message">
+            <div *ngIf="f['name'].errors['required']">Name is required</div>
+            <div *ngIf="f['name'].errors['pattern']">Only alphabets are allowed</div>
+          </div>
+        </div>
+  
+        <!-- Email Field -->
+        <div class="form-row">
+          <label for="email">Email <span class="required">*</span></label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="Enter your email"
+            class="form-control"
+          />
+          <div *ngIf="submitted && f['email'].errors" class="error-message">
+            <div *ngIf="f['email'].errors['required']">Email is required</div>
+            <div *ngIf="f['email'].errors['email']">Enter a valid email address</div>
+          </div>
+        </div>
+  
+        <!-- Phone Number Field -->
+        <div class="form-row">
+          <label for="phoneNumber">Phone Number <span class="required">*</span></label>
+          <div class="phone-inputs">
+            <select
+              id="countryCode"
+              formControlName="countryCode"
+              class="form-control country-code"
+            >
+              <option *ngFor="let code of countryCodes" [value]="code.value">
+                {{ code.label }}
+              </option>
+            </select>
+            <input
+              type="text"
+              id="phoneNumber"
+              formControlName="phoneNumber"
+              placeholder="Enter your phone number"
+              class="form-control phone-number"
+            />
+          </div>
+          <div *ngIf="submitted && f['phoneNumber'].errors" class="error-message">
+            <div *ngIf="f['phoneNumber'].errors['required']">Phone number is required</div>
+            <div *ngIf="f['phoneNumber'].errors['pattern']">Only numbers are allowed</div>
+          </div>
+        </div>
+  
+        <!-- Address Field -->
+        <div class="form-row">
+          <label for="address">Address <span class="required">*</span></label>
+          <textarea
+            id="address"
+            formControlName="address"
+            placeholder="Enter your address"
+            class="form-control address-field"
+            rows="2"
+          ></textarea>
+          <div *ngIf="submitted && f['address'].errors" class="error-message">
+            <div *ngIf="f['address'].errors['required']">Address is required</div>
+          </div>
+        </div>
+  
+        <!-- Designation Field -->
+        <div class="form-row">
+          <label for="designation">Designation <span class="required">*</span></label>
+          <input
+            type="text"
+            id="designation"
+            formControlName="designation"
+            placeholder="Enter your designation"
+            class="form-control"
+          />
+          <div *ngIf="submitted && f['designation'].errors" class="error-message">
+            <div *ngIf="f['designation'].errors['required']">Designation is required</div>
+          </div>
+        </div>
+  
+        <!-- Timezone Field -->
+        <div class="form-row">
+          <label for="timezone">Timezone <span class="required">*</span></label>
+          <select
+            id="timezone"
+            formControlName="timezone"
+            class="form-control"
+          >
+            <option value="" disabled>Select your timezone</option>
+            <option *ngFor="let timezone of timezones" [value]="timezone.value">
+              {{ timezone.label }}
+            </option>
+          </select>
+          <div *ngIf="submitted && f['timezone'].errors" class="error-message">
+            <div *ngIf="f['timezone'].errors['required']">Timezone is required</div>
+          </div>
+        </div>
+  
+        <!-- Joining Date Field -->
+        <div class="form-row">
+          <label for="joiningDate">Joining Date <span class="required">*</span></label>
+          <input
+            type="date"
+            id="joiningDate"
+            formControlName="joiningDate"
+            class="form-control"
+          />
+          <div *ngIf="submitted && f['joiningDate'].errors" class="error-message">
+            <div *ngIf="f['joiningDate'].errors['required']">Joining date is required</div>
+          </div>
+        </div>
+      </form>
+  
+      <!-- Submit and Cancel Buttons -->
+      <div class="button-row">
+        <button type="button" class="cancel-btn" (click)="closePopup()">Cancel</button>
+        <button type="button" class="save-btn" (click)="onSubmit()">Save Changes</button>
+      </div>
+    </div>
+  </div>

@@ -5,7 +5,7 @@
         <div class="back-button" (click)="goBack()">
           <img src="../../assets/profile-icons/back.png" alt="Back" class="back-icon">
         </div>
-        <button class="edit-profile-btn">
+        <button class="edit-profile-btn" (click)="openEditProfile()">
           <img src="../../assets/profile-icons/edit.png" alt="Edit" class="edit-icon">
           Edit Profile
         </button>
@@ -16,8 +16,8 @@
           <div class="profile-image-container">
             <div class="profile-image-wrapper">
               <img
-                src="../../assets/profile-icons/picture.png"
-                alt="Profile photo"
+                [src]="profile.imageUrl || '../../assets/profile-icons/picture.png'"
+                [alt]="profile.imageUrl ? 'Profile photo' : 'Default profile photo'"
                 class="profile-image"
               >
             </div>
@@ -85,13 +85,13 @@
                 <span class="icon">
                   <img src="../../assets/profile-icons/people.png" alt="Projects" class="info-icon">
                 </span>
-                <span>Involved in {{ profile.projects }} Projects</span>
+                <span>Involved in {{ profile.projectsCount }} Projects</span>
               </div>
               <div class="info-item">
                 <span class="icon">
                   <img src="../../assets/profile-icons/experience.png" alt="Experience" class="info-icon">
                 </span>
-                <span>{{ profile.experience }}</span>
+                <span>{{ calculateExperience(profile.joiningDate) }}</span>
               </div>
             </section>
 
@@ -118,3 +118,9 @@
     </div>
   </div>
 </div>
+
+<app-edit-profile
+  *ngIf="showEditProfile"
+  (close)="closeEditProfile()"
+  (formSubmit)="handleProfileUpdate($event)"
+></app-edit-profile>

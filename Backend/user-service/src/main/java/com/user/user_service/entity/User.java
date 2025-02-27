@@ -29,7 +29,7 @@ public class User {
 
     private String userProfilePhoto; // Cloudinary link
 
-    private Integer userPhoneNo;
+    private Long userPhoneNo;
 
     private String userAddress;
 
@@ -99,11 +99,11 @@ public class User {
         this.userProfilePhoto = userProfilePhoto;
     }
 
-    public Integer getUserPhoneNo() {
+    public Long getUserPhoneNo() {
         return userPhoneNo;
     }
 
-    public void setUserPhoneNo(Integer userPhoneNo) {
+    public void setUserPhoneNo(Long userPhoneNo) {
         this.userPhoneNo = userPhoneNo;
     }
 
