@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ModalService } from '../../core/services/modal.service';
@@ -13,6 +13,8 @@ import { EditProfileComponent } from '../../shared/edit-profile/edit-profile.com
   styleUrls: ['./profile-page.component.scss']
 })
 export class ProfilePageComponent implements OnInit {
+  @ViewChild('fileInput') fileInput!: ElementRef;
+
   profile: ProfileData = {
     name: 'loading...',
     title: 'loading...',
@@ -120,5 +122,29 @@ export class ProfilePageComponent implements OnInit {
         // Handle error appropriately (show error message, etc.)
       }
     });
+  }
+
+  triggerFileInput(): void {
+    this.fileInput.nativeElement.click();
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      this.profileService.uploadProfilePicture(formData).subscribe({
+        next: (imageUrl: string) => {
+          this.profile.imageUrl = imageUrl;
+          // Clear cache and reload profile data
+          this.profileService.clearCache();
+          this.loadProfileData();
+        },
+        error: (error) => {
+          console.error('Error uploading profile picture:', error);
+        }
+      });
+    }
   }
 }

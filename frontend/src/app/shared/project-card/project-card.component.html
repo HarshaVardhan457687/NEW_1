@@ -2,7 +2,7 @@
   <div class="card-header">
     <h3>{{title}}</h3>
     <div class="status-priority">
-      <span class="status-badge" [class]="statusClass">{{status}}</span>
+      <span class="status-badge" [class]="statusClass">{{statusDisplay}}</span>
       <span class="priority-badge" [class]="priorityClass">{{priority}}</span>
     </div>
   </div>
@@ -18,8 +18,8 @@
         <span>{{teamSize}} Teams</span>
       </div>
       <div class="detail-item">
-        <img src="assets/projects_role_icon.png" alt="Role">
-        <span>{{role}}</span>
+        <img src="assets/objectives_proj_page_icon.png" alt="Objectives">
+        <span>{{objectivesCount}} Objectives</span>
       </div>
     </div>
 
@@ -32,10 +32,10 @@
     </div>
 
     <div class="project-manager">
-      <img src="assets/default_profile.png" alt="Team Lead">
+      <img [src]="projectManager.profilePic || 'assets/default_profile.png'" [alt]="projectManager.name">
       <div class="lead-info">
         <span class="label">Project Manager</span>
-        <span class="name">{{projectManager}}</span>
+        <span class="name">{{projectManager.name}}</span>
       </div>
     </div>
   </div>

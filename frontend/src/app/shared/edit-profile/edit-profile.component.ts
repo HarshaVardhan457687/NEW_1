@@ -51,12 +51,11 @@ export class EditProfileComponent implements OnInit {
     if (profile.timezone) formValues.timezone = profile.timezone;
     if (profile.joiningDate) formValues.joiningDate = profile.joiningDate;
     
-    // Handle phone number separately - now assuming number doesn't include '+'
+    // Handle phone number - now expecting number with '+' prefix
     if (profile.phone) {
-      // Extract first 2 digits for country code and rest for phone number
-      const phoneStr = profile.phone.toString();
-      formValues.countryCode = `+${phoneStr.substring(0, 2)}`;
-      formValues.phoneNumber = phoneStr.substring(2);
+      // Phone already includes '+', so just split it
+      formValues.countryCode = profile.phone.substring(0, 3); // Get +91, +1, etc.
+      formValues.phoneNumber = profile.phone.substring(3); // Get rest of the number
     }
 
     // Only patch values that exist

@@ -22,9 +22,16 @@
               >
             </div>
             <div class="camera-icon">
-              <span>
-                <img src="../../assets/profile-icons/button.png" >
+              <span (click)="triggerFileInput()">
+                <img src="../../assets/profile-icons/button.png">
               </span>
+              <!-- Hidden file input -->
+              <input 
+                type="file" 
+                #fileInput 
+                (change)="onFileSelected($event)"
+                accept="image/*"
+                style="display: none">
             </div>
           </div>
 

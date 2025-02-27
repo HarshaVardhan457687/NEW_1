@@ -103,4 +103,11 @@ export class ProfilePageService {
       })
     );
   }
+
+  uploadProfilePicture(formData: FormData): Observable<string> {
+    const userEmail = this.getUserEmail();
+    return this.http.post(`${this.API_URL}/${userEmail}/upload-profile`, formData, {
+      responseType: 'text'  // Tell HttpClient to expect a text response
+    });
+  }
 } 

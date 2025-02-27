@@ -28,10 +28,11 @@
       font-weight: 600;
       color: #111827;
       margin: 0;
-      width: 150px; /* Set a fixed width (adjust as needed) */
-      white-space: nowrap; /* Prevents wrapping */
-      overflow: hidden; /* Hides overflow */
-      text-overflow: ellipsis; /* Adds "..." when text is too long */
+      flex: 1;
+      margin-right: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     
 
@@ -55,6 +56,11 @@
       .status-blue {
         background: #DBEAFE;
         color: #2563EB;
+      }
+
+      .status-yellow {
+        background: #FEF9C3;
+        color: #CA8A04;
       }
 
       .priority-high {
