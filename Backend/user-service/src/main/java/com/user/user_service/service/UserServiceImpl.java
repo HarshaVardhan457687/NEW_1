@@ -563,4 +563,22 @@ public class UserServiceImpl implements UserService {
                 .toList();
     }
 
+    @Override
+    public int getActiveTasksCountForUserInProject(Long projectId, Long userId) {
+        String url = TASK_SERVICE_URL + "/project/" + projectId + "/user/" + userId + "/active-tasks" ;
+
+        // Call the task service using RestTemplate
+        ResponseEntity<Integer> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null, // No request body
+                Integer.class, // The response type is Integer
+                projectId,
+                userId
+        );
+
+        return response.getBody(); // Return the body of the response, which is the active task count
+    }
+
+
 }

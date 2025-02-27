@@ -15,5 +15,6 @@ public interface UserService {
     public User getUserByEmail(String email);
     public List<Task> getAllTasksOfUser(Long userId);
     public List<Team> getAllTeamsOfUser(Long userId);
+    public int getActiveTasksCountForUserInProject(Long projectId, Long userId);
 
 }

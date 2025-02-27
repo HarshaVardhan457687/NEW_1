@@ -163,7 +163,14 @@ public class TaskController {
 
     @GetMapping("/project/task-info/{projectId}")
     public Map<String, Integer> getAllTaskInfoForProject(@PathVariable Long projectId){
-        Map<String, Integer> taskInfoMap =
+        return taskService.getAllTasksInfoForProjectId(projectId);
     }
+
+    @GetMapping("/project/{projectId}/user/{userId}/active-tasks")
+    public ResponseEntity<Integer> getActiveTasksCount(@PathVariable Long projectId, @PathVariable Long userId) {
+        int activeTaskCount = taskService.getActiveTasksCountForUserInProject(projectId, userId);
+        return ResponseEntity.ok(activeTaskCount);
+    }
+
 
 }
