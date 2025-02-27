@@ -1,20 +1,10 @@
 import { Routes } from '@angular/router';
-import { RoleSelectionPageComponent } from './pages/role-selection-page/role-selection-page.component';
-import { TeamMemberDashboardComponent } from './pages/team-member-dashboard/team-member-dashboard.component';
-import { UnderConstructionComponent } from './pages/under-construction/under-construction.component';
-import { ProjectsComponent as TeamMemberProjectsComponent } from './pages/team-member-dashboard/projects/projects.component';
-import { PROJECT_ROUTES } from './pages/team-member-dashboard/project-page/project-page.routes';
-import { LEADER_PROJECT_ROUTES } from './pages/team-leader-dashboard/project-page/project-page.routes';
-import { MANAGER_PROJECT_ROUTES } from './pages/team-manager-dashboard/project-page/project-page.routes';
+import { AuthGuard } from './core/guards/auth.guard';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
-import { TeamLeaderDashboardComponent } from './pages/team-leader-dashboard/team-leader-dashboard.component';
-import { ProjectsComponent as TeamLeaderProjectsComponent } from './pages/team-leader-dashboard/projects/projects.component';
-import { TeamManagerDashboardComponent } from './pages/team-manager-dashboard/team-manager-dashboard.component';
-import { ProjectsComponent as TeamManagerProjectsComponent } from './pages/team-manager-dashboard/projects/projects.component';
+import { RoleSelectionPageComponent } from './pages/role-selection-page/role-selection-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { ChangePasswordComponent } from './shared/change-password/change-password.component';
-import { AuthGuard } from './core/guards/auth.guard';
-
+import { UnderConstructionComponent } from './pages/under-construction/under-construction.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -23,38 +13,20 @@ export const routes: Routes = [
   {
     path: 'team-member-dashboard',
     canActivate: [AuthGuard],
-    children: [
-      { path: '', component: TeamMemberDashboardComponent },
-      { path: 'projects', component: TeamMemberProjectsComponent },
-      {
-        path: 'projects/:id',
-        children: PROJECT_ROUTES
-      }
-    ]
+    loadChildren: () => import('./pages/team-member-dashboard/team-member-dashboard.module')
+      .then(m => m.TeamMemberDashboardModule)
   },
   {
     path: 'team-leader-dashboard',
     canActivate: [AuthGuard],
-    children: [
-      { path: '', component: TeamLeaderDashboardComponent },
-      { path: 'projects', component: TeamLeaderProjectsComponent },
-      {
-        path: 'projects/:id',
-        children: LEADER_PROJECT_ROUTES
-      }
-    ]
+    loadChildren: () => import('./pages/team-leader-dashboard/team-leader-dashboard.module')
+      .then(m => m.TeamLeaderDashboardModule)
   },
   {
     path: 'team-manager-dashboard',
     canActivate: [AuthGuard],
-    children: [
-      { path: '', component: TeamManagerDashboardComponent },
-      { path: 'projects', component: TeamManagerProjectsComponent },
-      {
-        path: 'projects/:id',
-        children: MANAGER_PROJECT_ROUTES
-      }
-    ]
+    loadChildren: () => import('./pages/team-manager-dashboard/team-manager-dashboard.module')
+      .then(m => m.TeamManagerDashboardModule)
   },
   { path: 'profile', component: ProfilePageComponent },
   { path: 'change-password', component: ChangePasswordComponent },
