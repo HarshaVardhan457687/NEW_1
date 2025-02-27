@@ -44,7 +44,7 @@ public class User {
     private UserRole userRole;
 
     @ElementCollection
-    private List<Long> usertaskAssigned;
+    private List<Long> userTaskAssigned;
 
     @ElementCollection
     private List<Long> userInvolvedTeamsId;
@@ -147,12 +147,12 @@ public class User {
         this.userRole = userRole;
     }
 
-    public List<Long> getUsertaskAssigned() {
-        return usertaskAssigned;
+    public List<Long> getUserTaskAssigned() {
+        return userTaskAssigned;
     }
 
-    public void setUsertaskAssigned(List<Long> usertaskAssigned) {
-        this.usertaskAssigned = usertaskAssigned;
+    public void setUserTaskAssigned(List<Long> userTaskAssigned) {
+        this.userTaskAssigned = userTaskAssigned;
     }
 
 

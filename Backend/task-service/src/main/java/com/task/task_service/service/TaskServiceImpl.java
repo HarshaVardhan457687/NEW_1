@@ -175,6 +175,11 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.findByTaskAssociatedProjectInAndTaskOwner(projectIds, userId);
     }
 
+    @Override
+    public List<Task> getTasksByIdsAndProjects(List<Long> taskIds, List<Long> projectIds) {
+        return taskRepository.findByTaskIdInAndTaskAssociatedProjectIn(taskIds, projectIds);
+    }
+
 
 
 }

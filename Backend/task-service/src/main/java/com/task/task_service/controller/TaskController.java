@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controller class for handling HTTP requests related to Task operations.
@@ -150,6 +151,14 @@ public class TaskController {
             @RequestParam Long userId) {
         List<Task> tasks = taskService.getTasksByProjectIdsAndUserId(projectIds, userId);
         return ResponseEntity.ok(tasks);
+    }
+
+    @PostMapping("/tasks-by-ids-and-projects")
+    public List<Task> getTasksByIdsAndProjects(@RequestBody Map<String, List<Long>> requestBody) {
+        List<Long> taskIds = requestBody.get("taskIds");
+        List<Long> projectIds = requestBody.get("projectIds");
+
+        return taskService.getTasksByIdsAndProjects(taskIds, projectIds);
     }
 
 }

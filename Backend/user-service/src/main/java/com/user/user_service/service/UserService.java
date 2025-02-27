@@ -10,7 +10,7 @@ public interface UserService {
     public User createNewUser(User user);
     public List<User> getAllUsers();
     public User getUserById(Long userId);
-    public User updateUserById(Long userId, User user);
+    public User updateUserById(Long userId, User user, boolean isPatch);
     public void deleteUser(Long userId);
     public User getUserByEmail(String email);
     public List<Task> getAllTasksOfUser(Long userId);

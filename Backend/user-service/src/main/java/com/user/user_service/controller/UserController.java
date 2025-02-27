@@ -56,14 +56,22 @@ public class UserController {
     /**
      * API to update the user
      * */
-    @PutMapping("/{userId}")
-    public User updateUserById(@PathVariable String userEmail, @RequestBody User updatedUser){
+    @PatchMapping("/{userEmail}")
+    public ResponseEntity<User> patchUser(@PathVariable String userEmail, @RequestBody User user) {
         Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
-        return userServiceImpl.updateUserById(userId, updatedUser);
+        return ResponseEntity.ok(userServiceImpl.updateUserById(userId, user, true));
     }
 
-    @PostMapping("/{userId}/upload-profile")
-    public ResponseEntity<String> uploadProfilePicture(@PathVariable Long userId, @RequestParam("file") MultipartFile file) {
+    @PutMapping("/{userEmail}")
+    public ResponseEntity<User> putUser(@PathVariable String userEmail, @RequestBody User user) {
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
+        return ResponseEntity.ok(userServiceImpl.updateUserById(userId, user, false));
+    }
+
+
+    @PostMapping("/{userEmail}/upload-profile")
+    public ResponseEntity<String> uploadProfilePicture(@PathVariable String userEmail, @RequestParam("file") MultipartFile file) {
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
         String imageUrl = userServiceImpl.uploadUserProfilePhoto(userId, file);
         return ResponseEntity.ok(imageUrl);
     }
@@ -157,7 +165,7 @@ public class UserController {
     }
 
     // Get all tasks for the user's projects based on their role
-    @GetMapping("tasks")
+    @GetMapping("/tasks")
     public ResponseEntity<Map<String, List<Task>>> getTasksForUserProjects(
             @RequestParam Long userId,
             @RequestParam String userRole) {
@@ -184,6 +192,7 @@ public class UserController {
         return ResponseEntity.ok(allActiveTasks);
     }
 
+
     //api to get active project with progress for user
     @GetMapping("/project/find-active")
     public ResponseEntity<List<Project>> getAllActiveProjectWithProgress(
@@ -193,6 +202,8 @@ public class UserController {
         List<Project> allActiveProject = userServiceImpl.getActiveProjects(userId, userRole);
         return ResponseEntity.ok(allActiveProject);
     }
+
+
 
 
 }

@@ -16,4 +16,5 @@ public interface TaskService {
     public List<Task> getAllActiveTasksWithUserId(Long userId);
     public String approveTask(Long taskId);
     public List<Task> getTasksByProjectIdsAndUserId(List<Long> projectIds, Long userId);
+    public List<Task> getTasksByIdsAndProjects(List<Long> taskIds, List<Long> projectIds);
 }

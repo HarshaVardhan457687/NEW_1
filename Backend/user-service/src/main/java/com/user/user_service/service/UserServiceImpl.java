@@ -14,10 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -90,23 +87,31 @@ public class UserServiceImpl implements UserService {
      * @throws ResourceNotFoundException if no user is found with the given ID.
      */
     @Override
-    public User updateUserById(Long userId, User user) {
+    public User updateUserById(Long userId, User user, boolean isPatch) {
         // Get existing user
         User existingUser = getUserById(userId);
 
-        existingUser.setUserName(user.getUserName());
-        existingUser.setUserEmail(user.getUserEmail());
-        existingUser.setUserDesignation(user.getUserDesignation());
-        existingUser.setUserProfilePhoto(user.getUserProfilePhoto());
-        existingUser.setUserPhoneNo(user.getUserPhoneNo());
-        existingUser.setUserAddress(user.getUserAddress());
-        existingUser.setUserTimeZone(user.getUserTimeZone());
-        existingUser.setUserIsNotificationAlert(user.getUserIsNotificationAlert());
-        existingUser.setUserRole(user.getUserRole());
-        existingUser.setUserInvolvedTeamsId(user.getUserInvolvedTeamsId());
-        existingUser.setUserManagerProjectId(user.getUserManagerProjectId());
-        existingUser.setUserTeamLeaderProjectId(user.getUserTeamLeaderProjectId());
-        existingUser.setUserTeamMemberProjectId(user.getUserTeamMemberProjectId());
+        if (isPatch) { // PATCH - Update only non-null fields
+            if (user.getUserName() != null) existingUser.setUserName(user.getUserName());
+            if (user.getUserEmail() != null) existingUser.setUserEmail(user.getUserEmail());
+            if (user.getUserDesignation() != null) existingUser.setUserDesignation(user.getUserDesignation());
+            if (user.getUserProfilePhoto() != null) existingUser.setUserProfilePhoto(user.getUserProfilePhoto());
+            if (user.getUserPhoneNo() != null) existingUser.setUserPhoneNo(user.getUserPhoneNo());
+            if (user.getUserAddress() != null) existingUser.setUserAddress(user.getUserAddress());
+            if (user.getUserTimeZone() != null) existingUser.setUserTimeZone(user.getUserTimeZone());
+            if (user.getUserIsNotificationAlert() != null) existingUser.setUserIsNotificationAlert(user.getUserIsNotificationAlert());
+            if (user.getUserRole() != null) existingUser.setUserRole(user.getUserRole());
+            if (user.getUserJoiningDate() != null) existingUser.setUserJoiningDate(user.getUserJoiningDate());
+            if (user.getUserTaskAssigned() != null) existingUser.setUserTaskAssigned(user.getUserTaskAssigned());
+            if (user.getUserInvolvedTeamsId() != null) existingUser.setUserInvolvedTeamsId(user.getUserInvolvedTeamsId());
+            if (user.getUserManagerProjectId() != null) existingUser.setUserManagerProjectId(user.getUserManagerProjectId());
+            if (user.getUserTeamLeaderProjectId() != null) existingUser.setUserTeamLeaderProjectId(user.getUserTeamLeaderProjectId());
+            if (user.getUserTeamMemberProjectId() != null) existingUser.setUserTeamMemberProjectId(user.getUserTeamMemberProjectId());
+        } else { // PUT - Full update (replace entire object)
+            existingUser = user; // Replace entire object
+            existingUser.setUserId(userId); // Ensure ID remains unchanged
+        }
+
         return userRepository.save(existingUser);
     }
 
@@ -428,7 +433,6 @@ public class UserServiceImpl implements UserService {
             default -> throw new RuntimeException("Invalid role: " + userRole);
         };
 
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
@@ -467,6 +471,8 @@ public class UserServiceImpl implements UserService {
         return countMap;
     }
 
+    // DONE
+    // takes the userId and userRole and return list of active task
     public List<Task> getActiveTasksForUser(Long userId, String userRole) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -478,26 +484,38 @@ public class UserServiceImpl implements UserService {
             default -> throw new RuntimeException("Invalid role: " + userRole);
         };
 
-        // Create HttpEntity with the correct body (only projectIds)
+        // assigned task IDs
+        List<Long> taskIds = user.getUserTaskAssigned();
+
+        // Prepare request body with both taskIds and projectIds
+        Map<String, List<Long>> requestBody = new HashMap<>();
+        requestBody.put("taskIds", taskIds);
+        requestBody.put("projectIds", projectIds);
+
+        // headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
 
-        // Call API with userId as a query parameter
+        // HttpEntity with correct request body
+        HttpEntity<Map<String, List<Long>>> requestEntity = new HttpEntity<>(requestBody, headers);
+
+        // Call Task Service
         ResponseEntity<List<Task>> taskResponse = restTemplate.exchange(
-                TASK_SERVICE_URL + "/by-projects-and-user?userId=" + userId,  // Pass userId correctly
+                TASK_SERVICE_URL + "/tasks-by-ids-and-projects",  // Ensure correct endpoint
                 HttpMethod.POST,
-                requestEntity,  // Send only projectIds in the body
-                new ParameterizedTypeReference<>() {}
+                requestEntity,
+                new ParameterizedTypeReference<List<Task>>() {}
         );
 
         List<Task> allTasks = taskResponse.getBody();
-        List<Task> activeTasks = allTasks.stream()
+        if (allTasks == null) {
+            return new ArrayList<>();
+        }
+
+        // Filtering only active tasks
+        return allTasks.stream()
                 .filter(Task::isTaskIsActive)
                 .toList();
-
-        return activeTasks;
     }
-
 
 }
