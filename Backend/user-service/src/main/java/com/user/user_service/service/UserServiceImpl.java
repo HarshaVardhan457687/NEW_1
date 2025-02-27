@@ -220,6 +220,51 @@ public class UserServiceImpl implements UserService {
         return activeProjects;
     }
 
+    // take the all projects list for particular role
+    public List<Project> getAllProjects(Long userId, String userRole) {
+        // Fetch user from DB
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Select the correct project list based on role
+        List<Long> projectIds = switch (userRole.toUpperCase()) {
+            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
+            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
+            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
+            default -> throw new RuntimeException("Invalid role: " + userRole);
+        };
+
+        if (projectIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // Create request entity with headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
+
+        // Make a POST request to Project Service to get active projects
+        ResponseEntity<List<Project>> response = restTemplate.exchange(
+                PROJECT_SERVICE_URL + "/all",
+                HttpMethod.POST,
+                requestEntity,
+                new ParameterizedTypeReference<List<Project>>() {}
+        );
+
+        List<Project> allProjects = response.getBody();
+        if (allProjects == null || allProjects.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // Fetch progress for each project from Objective Service
+        for (Project project : allProjects) {
+            double progress = getProjectProgressById(project.getProjectId()); // Fetch progress
+            project.setProjectProgress(progress); // Set progress in project object
+        }
+
+        return allProjects;
+    }
+
     private int getProjectProgressById(Long projectId) {
         try {
             ResponseEntity<Integer> response = restTemplate.exchange(

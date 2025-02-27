@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/projects")
@@ -106,6 +107,23 @@ public class ProjectController {
         }
 
         return ResponseEntity.ok(allActiveProjects);
+    }
+
+    @PostMapping("/all")
+    public ResponseEntity<List<Project>> getAllProjects(@RequestBody List<Long> projectIds){
+        List<Project> allProjects = projectService.getAllProjects(projectIds);
+
+        if (allProjects.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Returns 204 if no active projects found
+        }
+
+        return ResponseEntity.ok(allProjects);
+    }
+
+    @GetMapping("/objectives-info")
+    public ResponseEntity<Map<String, Integer>> getObjectsiveInfo(@RequestBody List<Long> objectivesId){
+        Map<String, Integer> objectiveInfo = projectService.getObjectivesInfo(objectivesId);
+        return ResponseEntity.ok(objectiveInfo);
     }
 
 }

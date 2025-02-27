@@ -98,6 +98,15 @@ public class UserController {
     }
 
     /**
+     * API to fetch active project count for a user.
+     */
+    @GetMapping("/all/projects")
+    public ResponseEntity<List<Project>> getAllProjects(@RequestParam String userEmail, @RequestParam String userRole) {
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
+        return ResponseEntity.ok(userServiceImpl.getAllProjects(userId, userRole));
+    }
+
+    /**
      * API to fetch all objectives by userIds.
      */
     @PostMapping("/objectives")
