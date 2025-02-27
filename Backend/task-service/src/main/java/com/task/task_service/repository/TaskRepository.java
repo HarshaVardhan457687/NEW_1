@@ -9,6 +9,10 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByTaskAssociatedProjectInAndTaskOwner(List<Long> projectIds, Long taskOwner);
-    public List<Task> findAllByTaskAssociatedKeyResult(Long keyresultId);
-    public List<Task> findAllByTaskOwner(Long userId);
-    List<Task> findByTaskIdInAndTaskAssociatedProjectIn(List<Long> taskIds, List<Long> projectIds);}
+    List<Task> findAllByTaskAssociatedKeyResult(Long keyresultId);
+    List<Task> findAllByTaskOwner(Long userId);
+    List<Task> findByTaskIdInAndTaskAssociatedProjectIn(List<Long> taskIds, List<Long> projectIds);
+    List<Task> findByTaskAssociatedProject(Long projectId);
+    List<Task> findByTaskAssociatedProjectAndTaskIsActive(Long projectId, boolean taskIsActive);
+}
+

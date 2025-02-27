@@ -11,7 +11,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -180,6 +182,20 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.findByTaskIdInAndTaskAssociatedProjectIn(taskIds, projectIds);
     }
 
+    @Override
+    public Map<String, Integer> getAllTasksInfoForProjectId(Long projectId){
+        List<Task> totalTaskCnt = taskRepository.findByTaskAssociatedProject(projectId);
+        List<Task> totalCompletedTaskCnt = taskRepository.findByTaskAssociatedProjectAndTaskIsActive(projectId, false);
+        List<Task> totalActiveTaskCnt = taskRepository.findByTaskAssociatedProjectAndTaskIsActive(projectId, true);
+
+        Map<String, Integer> taskInfo = new HashMap<>();
+        taskInfo.put("totalTask", totalTaskCnt.size());
+        taskInfo.put("totalCompletedTask", totalCompletedTaskCnt.size());
+        taskInfo.put("totalActiveTask", totalActiveTaskCnt.size());
+
+        return taskInfo;
+
+    }
 
 
 }

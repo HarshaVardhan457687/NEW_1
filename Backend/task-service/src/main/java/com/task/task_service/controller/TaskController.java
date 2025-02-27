@@ -161,4 +161,9 @@ public class TaskController {
         return taskService.getTasksByIdsAndProjects(taskIds, projectIds);
     }
 
+    @GetMapping("/project/task-info/{projectId}")
+    public Map<String, Integer> getAllTaskInfoForProject(@PathVariable Long projectId){
+        Map<String, Integer> taskInfoMap =
+    }
+
 }

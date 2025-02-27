@@ -120,7 +120,7 @@ public class ProjectController {
         return ResponseEntity.ok(allProjects);
     }
 
-    @GetMapping("/objectives-info")
+    @PostMapping("/objectives-info")
     public ResponseEntity<Map<String, Integer>> getObjectsiveInfo(@RequestBody List<Long> objectivesId){
         Map<String, Integer> objectiveInfo = projectService.getObjectivesInfo(objectivesId);
         return ResponseEntity.ok(objectiveInfo);

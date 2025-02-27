@@ -3,6 +3,7 @@ package com.task.task_service.service;
 import com.task.task_service.entity.Task;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TaskService {
 
@@ -17,4 +18,5 @@ public interface TaskService {
     public String approveTask(Long taskId);
     public List<Task> getTasksByProjectIdsAndUserId(List<Long> projectIds, Long userId);
     public List<Task> getTasksByIdsAndProjects(List<Long> taskIds, List<Long> projectIds);
+    public Map<String, Integer> getAllTasksInfoForProjectId(Long projectId);
 }

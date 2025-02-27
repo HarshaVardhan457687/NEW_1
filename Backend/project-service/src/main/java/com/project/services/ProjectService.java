@@ -15,7 +15,7 @@ import java.util.*;
 public class ProjectService {
 
     private static final String OBJECTIVE_URL = "http://localhost:8081/api/objective/";
-
+    private static final String TASK_SERVICE_URL = "http://localhost:8083/api/tasks/";
     @Autowired
     private ProjectRepository projectRepository;
 
@@ -145,6 +145,10 @@ public class ProjectService {
         return mapInfo;
     }
 
-
+//    public Map<String, Integer> getTasksInfo(Long projectId){
+//        String url = TASK_SERVICE_URL;
+//
+//        ResponseEntity<Map<String, Integer>> taskInfo = restTemplate.getForObject(url, Map.class);
+//    }
 
 }
