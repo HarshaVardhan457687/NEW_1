@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { tap, map, catchError, switchMap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 export interface UserDTO {
   name: string;
@@ -24,12 +25,14 @@ export class AuthService {
   private readonly TOKEN_KEY = 'auth_token';
   private readonly ROLES_KEY = 'user_roles';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(username: string, password: string): Observable<any> {
     return this.http.post(`${this.AUTH_API}/authenticate`, { username, password })
       .pipe(
         tap((response: any) => {
+          localStorage.clear();
+          sessionStorage.clear();
           localStorage.setItem(this.TOKEN_KEY, response.token);
           localStorage.setItem(this.ROLES_KEY, JSON.stringify(response.roles));
           localStorage.setItem('username', username);
@@ -39,8 +42,9 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.ROLES_KEY);
+    localStorage.clear();
+    sessionStorage.clear();
+    this.router.navigate(['/login']);
   }
 
   isLoggedIn(): boolean {

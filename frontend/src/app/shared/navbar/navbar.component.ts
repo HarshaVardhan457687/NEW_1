@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { RouterLink, RouterLinkActive, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../core/services/modal.service';
 import { NavbarService } from '../../core/services/navbar.service';
@@ -7,7 +7,7 @@ import { NavbarService } from '../../core/services/navbar.service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, RouterModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
   host: { 'id': 'navbar-component' }

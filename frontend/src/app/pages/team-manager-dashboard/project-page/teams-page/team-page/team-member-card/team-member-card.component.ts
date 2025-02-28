@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProgressBarLinearComponent } from '../../../../../../shared/progress-bar-linear/progress-bar-linear.component';
+
 
 @Component({
   selector: 'app-team-member-card',
   standalone: true,
-  imports: [CommonModule, ProgressBarLinearComponent],
+  imports: [CommonModule],
   templateUrl: './team-member-card.component.html',
   styleUrls: ['./team-member-card.component.scss']
 })

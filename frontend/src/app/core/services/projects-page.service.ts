@@ -17,8 +17,7 @@ export interface ProjectData {
     name: string;
     profilePic: string;
   };
-  status: ProjectStatus;
-  statusDisplay: ProjectStatusDisplay;
+  status: ProjectStatusDisplay;
   priority: 'High' | 'Medium' | 'Low';
 }
 
@@ -83,8 +82,7 @@ export class ProjectsPageService {
                   objectivesCount: project.objectiveId?.length || 0,
                   progress: project.projectProgress || 0,
                   projectManager: managers[index],
-                  status: status,
-                  statusDisplay: this.mapStatusToDisplay(status),
+                  status: this.mapStatusToDisplay(status),
                   priority: this.mapPriority(project.projectPriority)
                 };
               });
@@ -130,5 +128,18 @@ export class ProjectsPageService {
       case 'LOW': return 'Low';
       default: return 'Medium';
     }
+  }
+
+  setSelectedProject(projectId: number): void {
+    sessionStorage.setItem('project_selected', projectId.toString());
+  }
+
+  getSelectedProject(): number | null {
+    const projectId = sessionStorage.getItem('project_selected');
+    return projectId ? parseInt(projectId) : null;
+  }
+
+  clearSelectedProject(): void {
+    sessionStorage.removeItem('project_selected');
   }
 } 

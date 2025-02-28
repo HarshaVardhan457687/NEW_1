@@ -1,13 +1,14 @@
 <app-navbar [dashboardType]="'team-leader'"></app-navbar>
 <div class="projects-container">
-  <div class="projects-grid">
+  <div *ngIf="isLoading" class="loading-text">Loading...</div>
+  <div class="projects-grid" *ngIf="!isLoading">
     <app-project-card
       *ngFor="let project of projects"
       [id]="project.id"
       [title]="project.title"
       [dueDate]="project.dueDate"
       [teamSize]="project.teamSize"
-      [objectivesCount]="3"
+      [objectivesCount]="project.objectivesCount"
       [progress]="project.progress"
       [projectManager]="project.projectManager"
       [status]="project.status"

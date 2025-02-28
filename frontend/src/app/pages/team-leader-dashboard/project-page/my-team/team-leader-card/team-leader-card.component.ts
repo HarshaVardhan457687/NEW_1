@@ -5,7 +5,7 @@ import { ProgressBarLinearComponent } from '../../../../../shared/progress-bar-l
 @Component({
   selector: 'app-team-leader-card',
   standalone: true,
-  imports: [CommonModule, ProgressBarLinearComponent],
+  imports: [CommonModule],
   templateUrl: './team-leader-card.component.html',
   styleUrls: ['./team-leader-card.component.scss']
 })

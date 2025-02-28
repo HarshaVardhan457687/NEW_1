@@ -68,7 +68,6 @@ export class ProjectPageComponent implements OnInit {
 
   onTabChange(tab: string) {
     this.selectedTab = tab;
-    // Handle special case for my-team tab
     const route = tab === 'my-team' ? 'my-team' : tab;
     this.router.navigate([route], {
       relativeTo: this.route

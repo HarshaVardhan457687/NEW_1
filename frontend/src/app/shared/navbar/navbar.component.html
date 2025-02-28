@@ -9,7 +9,10 @@
 
     <div class="nav-icons">
       <img src="assets/bell_icon.png" alt="Notifications" class="notification-icon" (click)="navigateToUnderConstruction()">
-      <img [src]="profilePicUrl" alt="Profile" class="profile-icon" (click)="navigateToProfile()">
+      <img 
+        [src]="profilePicUrl || 'assets/default_profile.png'"
+        [alt]="profilePicUrl ? 'Profile photo' : 'Default profile photo'" 
+        class="profile-icon" (click)="navigateToProfile()">
     </div>
   </div>
 </nav>

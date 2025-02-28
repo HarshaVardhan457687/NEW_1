@@ -13,12 +13,19 @@ import { ProjectsPageService, ProjectData } from '../../../core/services/project
 })
 export class ProjectsComponent implements OnInit {
   projects: ProjectData[] = [];
+  isLoading = true;
 
   constructor(private projectsPageService: ProjectsPageService) {}
 
   ngOnInit() {
-    this.projectsPageService.getProjects().subscribe(
-      projects => this.projects = projects
-    );
+    this.projectsPageService.getProjects().subscribe({
+      next: (projects) => {
+        this.projects = projects;
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
+      }
+    });
   }
 }

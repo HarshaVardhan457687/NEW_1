@@ -2,7 +2,8 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ProgressBarLinearComponent } from '../progress-bar-linear/progress-bar-linear.component';
-import { ProjectStatus, ProjectStatusDisplay } from '../../core/services/projects-page.service';
+import { ProjectStatus } from '../../core/services/projects-page.service';
+import { ProjectsPageService } from '../../core/services/projects-page.service';
 
 @Component({
   selector: 'app-project-card',
@@ -19,12 +20,14 @@ export class ProjectCardComponent {
   @Input() progress: number = 0;
   @Input() projectManager: { name: string; profilePic: string } = { name: '', profilePic: '' };
   @Input() status: ProjectStatus = 'ON_TRACK';
-  @Input() statusDisplay: ProjectStatusDisplay = 'On Track';
   @Input() priority: 'High' | 'Medium' | 'Low' = 'Medium';
   @Input() id: number = 0;
   @Input() dashboardType: 'team-manager' | 'team-leader' | 'team-member' = 'team-member';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private projectsPageService: ProjectsPageService
+  ) {}
 
   get statusClass(): string {
     switch(this.status) {
@@ -43,7 +46,10 @@ export class ProjectCardComponent {
     }
   }
 
-  navigateToConstruction() {
+  navigateToProject() {
+    // Set the selected project
+    this.projectsPageService.setSelectedProject(this.id);
+    // navigate to the project page
     let basePath = '';
     if (this.dashboardType === 'team-manager') {
       basePath = '/team-manager-dashboard';
@@ -52,7 +58,7 @@ export class ProjectCardComponent {
     } else {
       basePath = '/team-member-dashboard';
     }
-  
+
     this.router.navigate([`${basePath}/projects/${this.id}`]);
   }
   
