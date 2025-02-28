@@ -1,5 +1,6 @@
 package com.project.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +50,7 @@ public class Project {
     @Column(updatable = false)
     private Date projectCreatedAt;
 
-    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date projectDueDate;
 
     @Transient

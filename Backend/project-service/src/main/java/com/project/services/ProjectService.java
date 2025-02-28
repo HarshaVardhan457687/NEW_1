@@ -1,5 +1,6 @@
 package com.project.services;
 
+import com.project.DTO.TeamDetailsDTO;
 import com.project.constants.ProjectStatus;
 import com.project.model.Objective;
 import com.project.model.Project;
@@ -17,6 +18,10 @@ public class ProjectService {
 
     private static final String OBJECTIVE_URL = "http://localhost:8081/api/objective/";
     private static final String TASK_SERVICE_URL = "http://localhost:8083/api/tasks/";
+    private static final String TEAM_SERVICE_URL = "http://localhost:8084/api/teams/";
+    private static final String USER_SERVICE_URL = "http://localhost:8086/api/users/";
+
+
     @Autowired
     private ProjectRepository projectRepository;
 
@@ -166,5 +171,15 @@ public class ProjectService {
             return Collections.emptyMap(); // Return an empty map if there's an error
         }
     }
+
+//    public TeamDetailsDTO getTeamsDetail(Long projectId){
+//        Project project = projectRepository.findById(projectId)
+//                .orElseThrow(() -> new RuntimeException("Project Not Found"));
+//
+//        List<Long> teamsinvolved = project.getTeamsInvolvedId();
+//
+//
+//
+//    }
 
 }
