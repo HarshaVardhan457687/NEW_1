@@ -1,5 +1,6 @@
 package com.project.controller;
 
+import com.project.DTO.TeamDetailsDTO;
 import com.project.constants.ProjectStatus;
 import com.project.model.Project;
 import com.project.model.Objective;
@@ -41,6 +42,14 @@ public class ProjectController {
         @RequestBody Project projectDetails
     ) {
         return ResponseEntity.ok(projectService.updateProject(id, projectDetails));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Project> patchProject(
+            @PathVariable Long id,
+            @RequestBody Project projectDetails
+    ) {
+        return ResponseEntity.ok(projectService.patchProject(id, projectDetails));
     }
 
     @DeleteMapping("/{id}")
@@ -130,6 +139,12 @@ public class ProjectController {
     public ResponseEntity<Map<String, Integer>> getTaskInfoForProject(@PathVariable Long projectId) {
         Map<String, Integer> taskInfo = projectService.getTaskInfoForProject(projectId);
         return ResponseEntity.ok(taskInfo);
+    }
+
+    @GetMapping("/{projectId}/teams-details")
+    public ResponseEntity<List<TeamDetailsDTO>> getProjectTeamsDetails(@PathVariable Long projectId) {
+        List<TeamDetailsDTO> teamDetailsList = projectService.getProjectTeamsDetails(projectId);
+        return ResponseEntity.ok(teamDetailsList);
     }
 
 }

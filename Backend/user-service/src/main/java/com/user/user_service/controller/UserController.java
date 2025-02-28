@@ -1,5 +1,6 @@
 package com.user.user_service.controller;
 
+import com.user.user_service.DTO.UserSummaryDTO;
 import com.user.user_service.entity.*;
 import com.user.user_service.repository.UserRepository;
 import com.user.user_service.service.UserServiceImpl;
@@ -80,6 +81,12 @@ public class UserController {
     public ResponseEntity<String> getUserProfilePic(@RequestParam String userEmail) {
         Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
         return ResponseEntity.ok(userServiceImpl.getProfilePicture(userId));
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<List<UserSummaryDTO>> getAllUsersWithProfile() {
+        List<UserSummaryDTO> users = userServiceImpl.findAllUsersWithProfile();
+        return ResponseEntity.ok(users);
     }
 
     @DeleteMapping("/{userId}")
@@ -221,7 +228,17 @@ public class UserController {
         return ResponseEntity.ok(activeTasksCount);
     }
 
-
+    @PatchMapping("/update-teams")
+    public ResponseEntity<String> updateUserTeams(@RequestBody Map<String, Object> request) {
+        try {
+            userServiceImpl.updateUserTeams(request);
+            return ResponseEntity.ok("Users updated successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update users");
+        }
+    }
 
 
 }

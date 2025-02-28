@@ -6,25 +6,28 @@ import com.team.team_service.repository.TeamRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.awt.event.WindowFocusListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TeamServiceImpl implements TeamService {
 
     // Injecting the TeamRepository dependency to interact with the database
-    private final TeamRepository teamRepository;
+    @Autowired
+    private TeamRepository teamRepository;
 
+    @Autowired
+    private RestTemplate restTemplate;
     // Logger to log the activities performed in the service
     private static final Logger LOGGER = LoggerFactory.getLogger(TeamServiceImpl.class);
 
-    // Constructor-based dependency injection for TeamRepository
-    @Autowired
-    public TeamServiceImpl(TeamRepository teamRepository) {
-        this.teamRepository = teamRepository;
-    }
+    private static final String USER_SERVICE_URL = "http://localhost:8086/api/users";
 
     /**
      * Creates a new team in the database.
@@ -38,9 +41,36 @@ public class TeamServiceImpl implements TeamService {
         // Logging the creation of a new team
         LOGGER.info("Creating a new Team with name: {}", newTeam.getTeamName());
 
-        // Saving the new team to the database and returning the saved entity
-        return teamRepository.save(newTeam);
+        // Saving the new team to the database
+        Team savedTeam = teamRepository.save(newTeam);
+
+        // Call User Service to update user fields
+        updateUserTeams(savedTeam.getTeamMembers(), savedTeam.getTeamId(), savedTeam.getAssignedProject(), savedTeam.getTeamLead());
+
+        return savedTeam;
     }
+
+    private void updateUserTeams(List<Long> teamMemberIds, Long teamId, Long assignedProject, Long teamLead) {
+        if (teamMemberIds == null || teamMemberIds.isEmpty()) {
+            return;
+        }
+
+        Map<String, Object> request = new HashMap<>();
+        request.put("teamMemberIds", teamMemberIds);
+        request.put("teamId", teamId);
+        request.put("assignedProject", assignedProject);
+        request.put("teamLead", teamLead);
+
+        try {
+            String url = USER_SERVICE_URL + "/update-teams";
+            restTemplate.patchForObject(url, new HttpEntity<>(request), String.class);
+            LOGGER.info("Updated user details for team: {}, project: {}, team members: {}", teamId, assignedProject, teamMemberIds);
+        } catch (Exception e) {
+            LOGGER.error("Failed to update user details in User Service: {}", e.getMessage());
+        }
+    }
+
+
 
     /**
      * Fetches a team by its ID from the database.
@@ -131,5 +161,7 @@ public class TeamServiceImpl implements TeamService {
         // Logging the successful deletion of the team
         LOGGER.info("Team with teamID: {} deleted successfully", teamId);
     }
+
+
 }
 

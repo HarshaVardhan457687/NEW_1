@@ -1,6 +1,8 @@
 package com.project.services;
 
+import com.project.DTO.TeamDTO;
 import com.project.DTO.TeamDetailsDTO;
+import com.project.DTO.UserDTO;
 import com.project.constants.ProjectStatus;
 import com.project.model.Objective;
 import com.project.model.Project;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.PublicKey;
 import java.util.*;
 
 @Service
@@ -62,6 +65,28 @@ public class ProjectService {
 
         return projectRepository.save(project);
     }
+
+    // PATCH PROJECT
+    public Project patchProject(Long id, Project projectDetails){
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        // Update only non-null fields
+        if (projectDetails.getProjectName() != null) project.setProjectName(projectDetails.getProjectName());
+        if (projectDetails.getProjectDescription() != null) project.setProjectDescription(projectDetails.getProjectDescription());
+        if (projectDetails.getProjectPriority() != null) project.setProjectPriority(projectDetails.getProjectPriority());
+        if (projectDetails.getProjectStatus() != null) project.setProjectStatus(projectDetails.getProjectStatus());
+        if (projectDetails.getActive() != null) project.setActive(projectDetails.getActive());
+        if (projectDetails.getTeamsInvolvedId() != null) project.setTeamsInvolvedId(projectDetails.getTeamsInvolvedId());
+        if (projectDetails.getObjectiveId() != null) project.setObjectiveId(projectDetails.getObjectiveId());
+        if (projectDetails.getKeyResultIds() != null) project.setKeyResultIds(projectDetails.getKeyResultIds());
+        if (projectDetails.getProjectDueDate() != null) project.setProjectDueDate(projectDetails.getProjectDueDate());
+        if (projectDetails.getProjectManagerId() != null) project.setProjectManagerId(projectDetails.getProjectManagerId());
+        if (projectDetails.getProjectProgress() != null) project.setProjectProgress(projectDetails.getProjectProgress());
+
+        return projectRepository.save(project);
+    }
+
 
     // Delete Project
     public void deleteProject(Long id) {
@@ -172,14 +197,31 @@ public class ProjectService {
         }
     }
 
-//    public TeamDetailsDTO getTeamsDetail(Long projectId){
-//        Project project = projectRepository.findById(projectId)
-//                .orElseThrow(() -> new RuntimeException("Project Not Found"));
-//
-//        List<Long> teamsinvolved = project.getTeamsInvolvedId();
-//
-//
-//
-//    }
+    public List<TeamDetailsDTO> getProjectTeamsDetails(Long projectId) {
+        // Fetch the project
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        List<Long> teamIds = project.getTeamsInvolvedId(); // Get team IDs
+
+        List<TeamDetailsDTO> teamDetailsList = new ArrayList<>();
+
+        for (Long teamId : teamIds) {
+            TeamDTO team = restTemplate.getForObject(TEAM_SERVICE_URL + teamId, TeamDTO.class);
+
+            Long teamLeadId = team.getTeamLead();
+            UserDTO teamLeader = restTemplate.getForObject(USER_SERVICE_URL + teamLeadId, UserDTO.class);
+
+            // Create DTO response
+            TeamDetailsDTO teamDetails = new TeamDetailsDTO();
+            teamDetails.setTeamName(team.getTeamName());
+            teamDetails.setTeamLeaderName(teamLeader.getUserName());
+            teamDetails.setTeamLeaderProfile(teamLeader.getUserProfilePhoto());
+
+            teamDetailsList.add(teamDetails);
+        }
+
+        return teamDetailsList;
+    }
 
 }

@@ -1,8 +1,10 @@
 package com.user.user_service.service;
 
+import com.user.user_service.DTO.UserSummaryDTO;
 import com.user.user_service.entity.*;
 import com.user.user_service.exception.ResourceNotFoundException;
 import com.user.user_service.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,6 +136,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return user.getUserProfilePhoto();
+    }
+
+    public List<UserSummaryDTO> findAllUsersWithProfile(){
+        return userRepository.findAllUsersWithProfile();
     }
 
     /**
@@ -580,5 +586,58 @@ public class UserServiceImpl implements UserService {
         return response.getBody(); // Return the body of the response, which is the active task count
     }
 
+    @Transactional
+    public void updateUserTeams(Map<String, Object> request) {
+        List<Long> teamMemberIds = (List<Long>) request.get("teamMemberIds");
+        Long teamId = ((Number) request.get("teamId")).longValue();
+        Long assignedProject = ((Number) request.get("assignedProject")).longValue();
+        Long teamLead = ((Number) request.get("teamLead")).longValue();
 
+        if (teamMemberIds == null || teamId == null || assignedProject == null || teamLead == null) {
+            throw new IllegalArgumentException("Invalid request data");
+        }
+
+        // Fetch all team members
+        List<User> users = userRepository.findAllById(teamMemberIds);
+
+        for (User user : users) {
+            // Update userInvolvedTeamsId
+            List<Long> userTeams = user.getUserInvolvedTeamsId();
+            if (userTeams == null) {
+                userTeams = new ArrayList<>();
+            }
+            if (!userTeams.contains(teamId)) {
+                userTeams.add(teamId);
+            }
+            user.setUserInvolvedTeamsId(userTeams);
+
+            // Exclude team leader from userTeamMemberProjectId update
+            if (!user.getUserId().equals(teamLead)) {
+                List<Long> memberProjects = user.getUserTeamMemberProjectId();
+                if (memberProjects == null) {
+                    memberProjects = new ArrayList<>();
+                }
+                if (!memberProjects.contains(assignedProject)) {
+                    memberProjects.add(assignedProject);
+                }
+                user.setUserTeamMemberProjectId(memberProjects);
+            }
+        }
+
+        // Update team lead separately
+        Optional<User> leadUserOpt = userRepository.findById(teamLead);
+        leadUserOpt.ifPresent(leadUser -> {
+            List<Long> leaderProjects = leadUser.getUserTeamLeaderProjectId();
+            if (leaderProjects == null) {
+                leaderProjects = new ArrayList<>();
+            }
+            if (!leaderProjects.contains(assignedProject)) {
+                leaderProjects.add(assignedProject);
+            }
+            leadUser.setUserTeamLeaderProjectId(leaderProjects);
+            userRepository.save(leadUser);
+        });
+
+        userRepository.saveAll(users);
+    }
 }
