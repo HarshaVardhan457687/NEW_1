@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NavbarComponent } from '../../../shared/navbar/navbar.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
-import { ProjectService } from '../../../core/services/projects.service';
-import { ProjectWithManager } from '../../../core/services/projects.service';
+import { ProjectOverviewService, Project } from '../../../core/services/project-overview.service';
 
 @Component({
   selector: 'app-project-page',
@@ -15,7 +14,7 @@ import { ProjectWithManager } from '../../../core/services/projects.service';
 })
 export class ProjectPageComponent implements OnInit {
   projectTitle: string = '';
-  project?: ProjectWithManager;
+  project?: Project;
   isLoading: boolean = true;
   error?: string;
   selectedTab: string = 'overview';
@@ -23,12 +22,12 @@ export class ProjectPageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private projectService: ProjectService
+    private projectService: ProjectOverviewService
   ) {}
 
   ngOnInit() {
     const projectId = Number(this.route.snapshot.paramMap.get('id'));
-    console.log('Loading project ID:', projectId); // Debug log
+    //console.log('Loading project ID:', projectId); // Debug log
     
     if (isNaN(projectId)) {
       this.error = 'Invalid project ID';
@@ -40,7 +39,7 @@ export class ProjectPageComponent implements OnInit {
       next: (project) => {
         console.log('Loaded project:', project); // Debug log
         this.project = project;
-        this.projectTitle = project.title;
+        this.projectTitle = project.projectName;
         
         // Check if we're not already on the overview route
         if (!this.route.firstChild) {

@@ -2,8 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ProgressBarLinearComponent } from '../progress-bar-linear/progress-bar-linear.component';
-import { ProjectStatus } from '../../core/services/projects-page.service';
-import { ProjectsPageService } from '../../core/services/projects-page.service';
+import { ProjectsPageService,ProjectStatusDisplay } from '../../core/services/projects-page.service';
 
 @Component({
   selector: 'app-project-card',
@@ -19,7 +18,7 @@ export class ProjectCardComponent {
   @Input() objectivesCount: number = 0;
   @Input() progress: number = 0;
   @Input() projectManager: { name: string; profilePic: string } = { name: '', profilePic: '' };
-  @Input() status: ProjectStatus = 'ON_TRACK';
+  @Input() status: ProjectStatusDisplay = 'On Track';
   @Input() priority: 'High' | 'Medium' | 'Low' = 'Medium';
   @Input() id: number = 0;
   @Input() dashboardType: 'team-manager' | 'team-leader' | 'team-member' = 'team-member';
@@ -31,9 +30,9 @@ export class ProjectCardComponent {
 
   get statusClass(): string {
     switch(this.status) {
-      case 'COMPLETED': return 'status-green';
-      case 'ON_TRACK': return 'status-blue';
-      case 'AT_RISK': return 'status-yellow';
+      case 'Completed': return 'status-green';
+      case 'On Track': return 'status-blue';
+      case 'At Risk': return 'status-yellow';
       default: return 'status-blue';
     }
   }

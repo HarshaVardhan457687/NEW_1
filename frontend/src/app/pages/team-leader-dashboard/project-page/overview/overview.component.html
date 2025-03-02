@@ -1,56 +1,59 @@
 <div class="overview-container">
-  <app-project-title-card 
-    *ngIf="project"
-    [project]="project">
-  </app-project-title-card>
+  <div *ngIf="isLoading" class="loading-text">Loading...</div>
 
-  <div class="objective-stats-row">
-    <app-objective-stat-card
-      title="Total Objectives"
-      [value]="objectiveStats.total"
-      [isCompact]="true"
-      color="#6B7280">
-    </app-objective-stat-card>
+  <div *ngIf="!isLoading && project">
+    <app-project-title-card 
+      [project]="project">
+    </app-project-title-card>
 
-    <app-objective-stat-card
-      title="Completed"
-      [value]="objectiveStats.completed"
-      [isCompact]="true"
-      color="#10B981">
-    </app-objective-stat-card>
+    <div class="objective-stats-row">
+      <app-objective-stat-card
+        title="Total Objectives"
+        [value]="objectiveStats.total"
+        [isCompact]="true"
+        color="#6B7280">
+      </app-objective-stat-card>
 
-    <app-objective-stat-card
-      title="In Progress"
-      [value]="objectiveStats.inProgress"
-      [isCompact]="true"
-      color="#F59E0B">
-    </app-objective-stat-card>
+      <app-objective-stat-card
+        title="Completed"
+        [value]="objectiveStats.completed"
+        [isCompact]="true"
+        color="#10B981">
+      </app-objective-stat-card>
 
-    <app-objective-stat-card
-      title="Not Started"
-      [value]="objectiveStats.notStarted"
-      [isCompact]="true"
-      color="#EF4444">
-    </app-objective-stat-card>
-  </div>
+      <app-objective-stat-card
+        title="In Progress"
+        [value]="objectiveStats.inProgress"
+        [isCompact]="true"
+        color="#F59E0B">
+      </app-objective-stat-card>
 
-  <div class="info-cards-row">
-    <app-tasks-overview-card 
-      class="info-card"
-      *ngIf="project"
-      [projectId]="project.id">
-    </app-tasks-overview-card>
+      <app-objective-stat-card
+        title="Not Started"
+        [value]="objectiveStats.notStarted"
+        [isCompact]="true"
+        color="#EF4444">
+      </app-objective-stat-card>
+    </div>
 
-    <app-timeline-card
-      class="info-card"
-      *ngIf="project"
-      [projectId]="project.id">
-    </app-timeline-card>
+    <!-- <div class="info-cards-row">
+      <app-tasks-overview-card 
+        class="info-card"
+        *ngIf="project"
+        [projectId]="project.projectId">
+      </app-tasks-overview-card>
 
-    <app-project-team-card
-      class="info-card"
-      *ngIf="project"
-      [projectId]="project.id">
-    </app-project-team-card>
+      <app-timeline-card
+        class="info-card"
+        *ngIf="project"
+        [projectId]="project.projectId">
+      </app-timeline-card>
+
+      <app-project-team-card
+        class="info-card"
+        *ngIf="project"
+        [projectId]="project.projectId">
+      </app-project-team-card>
+    </div> -->
   </div>
 </div> 

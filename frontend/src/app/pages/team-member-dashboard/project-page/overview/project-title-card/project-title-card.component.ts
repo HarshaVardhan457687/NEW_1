@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProgressBarLinearComponent } from '../../../../../shared/progress-bar-linear/progress-bar-linear.component';
-import { ProjectWithManager } from '../../../../../core/services/projects.service';
+import { Project } from '../../../../../core/services/project-overview.service';
 
 @Component({
   selector: 'app-project-title-card',
@@ -11,17 +11,15 @@ import { ProjectWithManager } from '../../../../../core/services/projects.servic
   styleUrl: './project-title-card.component.scss'
 })
 export class ProjectTitleCardComponent {
-  @Input() project!: ProjectWithManager;
+  @Input() project!: Project;
 
   getStatusColor(): string {
-    if (this.project.progress >= 70) return 'status-green';
-    if (this.project.progress < 20) return 'status-blue';
+    if (this.project.projectProgress >= 70) return 'status-green';
+    if (this.project.projectProgress < 20) return 'status-blue';
     return 'status-red';
   }
 
   getStatus(): string {
-    if (this.project.progress >= 70) return 'On Track';
-    if (this.project.progress < 20) return 'New';
-    return 'At Risk';
+    return this.project.projectStatus;
   }
 }

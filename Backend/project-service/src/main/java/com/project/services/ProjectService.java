@@ -43,7 +43,28 @@ public class ProjectService {
 
     // Get Project by ID
     public Optional<Project> getProjectById(Long id) {
-        return projectRepository.findById(id);
+        return projectRepository.findById(id)
+            .map(project -> {
+                double progress = getProjectProgressById(project.getProjectId());
+                project.setProjectProgress(progress);
+                return project;
+            });
+    }
+    
+
+    private int getProjectProgressById(Long projectId) {
+        try {
+            ResponseEntity<Integer> response = restTemplate.exchange(
+                    OBJECTIVE_URL + "/by-project/progress/" + projectId,
+                    HttpMethod.GET,
+                    null,
+                    Integer.class
+            );
+            return response.getBody() != null ? response.getBody() : 0;
+        } catch (Exception e) {
+            System.err.println("Error fetching progress for project ID: " + projectId);
+            return 0; // Default progress if service fails
+        }
     }
 
     // Update Project
