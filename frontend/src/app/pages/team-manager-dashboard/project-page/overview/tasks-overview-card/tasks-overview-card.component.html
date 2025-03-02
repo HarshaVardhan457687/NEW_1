@@ -3,15 +3,15 @@
   <div class="tasks-list">
     <div class="task-item">
       <span class="label">Completed</span>
-      <span class="value">24/40</span>
+      <span class="value">{{taskStats.completed}}/{{taskStats.total}}</span>
     </div>
     <div class="task-item">
       <span class="label">In Progress</span>
-      <span class="value">12</span>
+      <span class="value">{{taskStats.inProgress}}</span>
     </div>
     <div class="task-item">
-      <span class="label">To Do</span>
-      <span class="value">4</span>
+      <span class="label">Yours To Do</span>
+      <span class="value">{{taskStats.yourTasks}}</span>
     </div>
   </div>
 </div>

@@ -35,5 +35,24 @@
         color="#EF4444">
       </app-objective-stat-card>
     </div>
+    <div class="info-cards-row">
+      <app-tasks-overview-card 
+        class="info-card"
+        *ngIf="project"
+        [projectId]="project.projectId">
+      </app-tasks-overview-card>
+    <!-- 
+      <app-timeline-card
+        class="info-card"
+        *ngIf="project"
+        [projectId]="project.projectId">
+      </app-timeline-card>
+
+      <app-project-team-card
+        class="info-card"
+        *ngIf="project"
+        [projectId]="project.projectId">
+      </app-project-team-card>-->
+    </div> 
   </div>
 </div> 
