@@ -186,12 +186,10 @@ public class TaskServiceImpl implements TaskService {
     public Map<String, Integer> getAllTasksInfoForProjectId(Long projectId){
         List<Task> totalTaskCnt = taskRepository.findByTaskAssociatedProject(projectId);
         List<Task> totalCompletedTaskCnt = taskRepository.findByTaskAssociatedProjectAndTaskIsActive(projectId, false);
-        List<Task> totalActiveTaskCnt = taskRepository.findByTaskAssociatedProjectAndTaskIsActive(projectId, true);
-
         Map<String, Integer> taskInfo = new HashMap<>();
         taskInfo.put("totalTask", totalTaskCnt.size());
         taskInfo.put("totalCompletedTask", totalCompletedTaskCnt.size());
-        taskInfo.put("totalActiveTask", totalActiveTaskCnt.size());
+        taskInfo.put("totalActiveTask", totalTaskCnt.size() - totalCompletedTaskCnt.size());
 
         return taskInfo;
 

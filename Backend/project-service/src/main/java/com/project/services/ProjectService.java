@@ -160,42 +160,85 @@ public class ProjectService {
         return allProjects;
     }
 
-    public Map<String, Integer> getObjectivesInfo(List<Long> objectivesIds) {
-        Map<String, Integer> mapInfo = new HashMap<>();
-        mapInfo.put("totalObjectives", objectivesIds.size());
+//    public Map<String, Integer> getObjectivesInfo(List<Long> objectivesIds) {
+//        Map<String, Integer> mapInfo = new HashMap<>();
+//        mapInfo.put("totalObjectives", objectivesIds.size());
+//
+//        int completedObjectives = 0;
+//        int inProgressObjectives = 0;
+//        int notStartedObjectives = 0;
+//
+//        for (Long objectiveId : objectivesIds) {
+//            String url = OBJECTIVE_URL + "progress/" + objectiveId;
+//
+//            try {
+//                ResponseEntity<Double> currProgress = restTemplate.getForEntity(url, Double.class);
+//                if (currProgress.getBody() == null) {
+//                    notStartedObjectives++;
+//                } else {
+//                    double progress = currProgress.getBody();
+//                    if (progress == 0.0) {
+//                        notStartedObjectives++;
+//                    } else if (progress == 100.0) {
+//                        completedObjectives++;
+//                    } else {
+//                        inProgressObjectives++;
+//                    }
+//                }
+//            } catch (Exception e) {
+//                notStartedObjectives++;
+//            }
+//        }
+//
+//        mapInfo.put("completedObjectives", completedObjectives);
+//        mapInfo.put("inProgressObjectives", inProgressObjectives);
+//        mapInfo.put("notStartedObjectives", notStartedObjectives);
+//
+//        return mapInfo;
+//    }
+public Map<String, Integer> getObjectivesInfoByProject(Long projectId) {
+    Map<String, Integer> mapInfo = new HashMap<>();
 
-        int completedObjectives = 0;
-        int inProgressObjectives = 0;
-        int notStartedObjectives = 0;
+    // Fetch objectives related to the project
+    Project project = projectRepository.findById(projectId)
+            .orElseThrow(() -> new RuntimeException("Project not found"));
+    List<Long> objectivesIds = project.getObjectiveId();
 
-        for (Long objectiveId : objectivesIds) {
-            String url = OBJECTIVE_URL + "progress/" + objectiveId;
+    mapInfo.put("totalObjectives", objectivesIds.size());
 
-            try {
-                ResponseEntity<Double> currProgress = restTemplate.getForEntity(url, Double.class);
-                if (currProgress.getBody() == null) {
-                    notStartedObjectives++;
-                } else {
-                    double progress = currProgress.getBody();
-                    if (progress == 0.0) {
-                        notStartedObjectives++;
-                    } else if (progress == 100.0) {
-                        completedObjectives++;
-                    } else {
-                        inProgressObjectives++;
-                    }
-                }
-            } catch (Exception e) {
+    int completedObjectives = 0;
+    int inProgressObjectives = 0;
+    int notStartedObjectives = 0;
+
+    for (Long objectiveId : objectivesIds) {
+        String url = OBJECTIVE_URL + "progress/" + objectiveId;
+
+        try {
+            ResponseEntity<Double> currProgress = restTemplate.getForEntity(url, Double.class);
+            if (currProgress.getBody() == null) {
                 notStartedObjectives++;
+            } else {
+                double progress = currProgress.getBody();
+                if (progress == 0.0) {
+                    notStartedObjectives++;
+                } else if (progress == 100.0) {
+                    completedObjectives++;
+                } else {
+                    inProgressObjectives++;
+                }
             }
+        } catch (Exception e) {
+            notStartedObjectives++;
         }
-
-        mapInfo.put("completedObjectives", completedObjectives);
-        mapInfo.put("inProgressObjectives", inProgressObjectives);
-        mapInfo.put("notStartedObjectives", notStartedObjectives);
-
-        return mapInfo;
     }
+
+    mapInfo.put("completedObjectives", completedObjectives);
+    mapInfo.put("inProgressObjectives", inProgressObjectives);
+    mapInfo.put("notStartedObjectives", notStartedObjectives);
+
+    return mapInfo;
+}
+
 
     public Map<String, Integer> getTaskInfoForProject(Long projectId) {
         // URL to call the TaskController's endpoint
