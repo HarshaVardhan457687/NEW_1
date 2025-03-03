@@ -35,12 +35,26 @@ interface ProjectTasksResponse {
   totalTask: number;
 }
 
+export interface TimelineEvent {
+  timeLineId: number;
+  timeLineHeading: string;
+  timeLineAssociatedProject: number;
+  timeLineStatus: 'UPCOMING' | 'IN_PROGRESS' | 'COMPLETED';
+}
+
+export interface TeamDetails {
+  teamName: string;
+  teamLeaderName: string;
+  teamLeaderProfile: string;  
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectOverviewService {
   private readonly API_URL = 'http://localhost:8060/api/projects';
   private readonly USER_API_URL = 'http://localhost:8060/api/users';
+  private readonly TIMELINE_API_URL = 'http://localhost:8060/api/timelines';
 
   constructor(private http: HttpClient) {}
 
@@ -140,6 +154,33 @@ export class ProjectOverviewService {
           inProgress: 0,
           yourTasks: 0
         });
+      })
+    );
+  }
+
+  getProjectTimeline(projectId: number): Observable<TimelineEvent[]> {
+    return this.http.get<TimelineEvent[]>(`${this.TIMELINE_API_URL}/project/${projectId}`).pipe(
+      map(events => events.sort((a, b) => {
+        // Sort by status: COMPLETED -> IN_PROGRESS -> UPCOMING
+        const statusOrder = {
+          'COMPLETED': 0,
+          'IN_PROGRESS': 1,
+          'UPCOMING': 2
+        };
+        return statusOrder[a.timeLineStatus] - statusOrder[b.timeLineStatus];
+      })),
+      catchError(error => {
+        console.error('Error fetching timeline:', error);
+        return of([]);
+      })
+    );
+  }
+
+  getProjectTeamDetails(projectId: number): Observable<TeamDetails[]> {
+    return this.http.get<TeamDetails[]>(`${this.API_URL}/${projectId}/teams-details`).pipe(
+      catchError(error => {
+        console.error('Error fetching team details:', error);
+        return of([]);
       })
     );
   }

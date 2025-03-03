@@ -3,57 +3,32 @@
     <h2>Teams</h2>
     <button class="add-btn" (click)="onAddTeam()">Add Team</button>
   </div>
+  
   <div class="team-list">
-    <div class="team-member">
-      <img src="assets/pic1.png" alt="Team member" class="member-avatar">
-      <div class="member-info">
-        <div class="name">Backend</div>
-        <div class="role">Sarah Johnson</div>
+    <ng-container *ngIf="isLoading; else loadedContent">
+      <div class="team-member" *ngFor="let team of placeholderTeams">
+        <img src="assets/pic1.png" alt="Loading..." class="member-avatar loading-avatar">
+        <div class="member-info">
+          <div class="name loading-text">Loading...</div>
+          <div class="role loading-text">Loading...</div>
+        </div>
       </div>
-    </div>
-    <div class="team-member">
-      <img src="assets/pic2.png" alt="Team member" class="member-avatar">
-      <div class="member-info">
-        <div class="name">Frontend</div>
-        <div class="role">Mike Chen</div>
+    </ng-container>
+    
+    <ng-template #loadedContent>
+      <div class="team-member" *ngFor="let team of teamDetails">
+        <img [src]="team.teamLeaderProfile || 'assets/pic1.png'" alt="Team member" class="member-avatar">
+        <div class="member-info">
+          <div class="name">{{team.teamName}}</div>
+          <div class="role">{{team.teamLeaderName}}</div>
+        </div>
       </div>
-    </div>
-    <div class="team-member">
-      <img src="assets/pic3.png" alt="Team member" class="member-avatar">
-      <div class="member-info">
-        <div class="name">Sales</div>
-        <div class="role">Anna Smith</div>
-      </div>
-    </div>
-    <div class="team-member">
-      <img src="assets/pic1.png" alt="Team member" class="member-avatar">
-      <div class="member-info">
-        <div class="name">DevOps</div>
-        <div class="role">John Doe</div>
-      </div>
-    </div>
-    <div class="team-member">
-      <img src="assets/pic2.png" alt="Team member" class="member-avatar">
-      <div class="member-info">
-        <div class="name">QA</div>
-        <div class="role">Emily Brown</div>
-      </div>
-    </div>
-    <div class="team-member">
-      <img src="assets/pic3.png" alt="Team member" class="member-avatar">
-      <div class="member-info">
-        <div class="name">UI/UX</div>
-        <div class="role">David Wilson</div>
-      </div>
-    </div>
-    <div class="team-member">
-      <img src="assets/pic1.png" alt="Team member" class="member-avatar">
-      <div class="member-info">
-        <div class="name">Product</div>
-        <div class="role">Lisa Anderson</div>
-      </div>
-    </div>
+    </ng-template>
   </div>
 </div>
 
-<app-add-team-card [(show)]="showAddTeamCard"></app-add-team-card>
+<app-add-team-card 
+  [(show)]="showAddTeamCard"
+  [projectId]="projectId"
+  (teamSaved)="onTeamSaved($event)">
+</app-add-team-card>

@@ -27,15 +27,15 @@
         <label>Status<span class="required">*</span></label>
         <div class="radio-group">
           <label class="radio-label">
-            <input type="radio" [(ngModel)]="newEvent.status" value="upcoming">
+            <input type="radio" [(ngModel)]="newEvent.status" value="UPCOMING">
             Upcoming
           </label>
           <label class="radio-label">
-            <input type="radio" [(ngModel)]="newEvent.status" value="in-progress">
+            <input type="radio" [(ngModel)]="newEvent.status" value="IN_PROGRESS">
             In Progress
           </label>
           <label class="radio-label">
-            <input type="radio" [(ngModel)]="newEvent.status" value="completed">
+            <input type="radio" [(ngModel)]="newEvent.status" value="COMPLETED">
             Completed
           </label>
         </div>
@@ -53,7 +53,7 @@
       
       <div class="events-list">
         <div class="event-item" *ngFor="let event of events">
-          <span class="event-name">{{ event.phase }}</span>
+          <span class="event-name">{{ event.timeLineHeading }}</span>
           <div class="event-actions">
             <button class="update-status-btn" (click)="onUpdateStatus(event)">Update Status</button>
             <button class="delete-btn" (click)="onDeleteEvent(event)">Delete</button>
@@ -69,20 +69,20 @@
 
     <!-- Status Update Form -->
     <div class="status-update-form" *ngIf="showStatusUpdate">
-      <h3>Update Status for "{{ selectedEvent?.phase }}"</h3>
+      <h3>Update Status for "{{ selectedEvent?.timeLineHeading }}"</h3>
       <div class="form-row">
         <label>Status<span class="required">*</span></label>
         <div class="radio-group">
           <label class="radio-label">
-            <input type="radio" [(ngModel)]="selectedEvent!.status" value="upcoming">
+            <input type="radio" [(ngModel)]="selectedStatus" value="UPCOMING">
             Upcoming
           </label>
           <label class="radio-label">
-            <input type="radio" [(ngModel)]="selectedEvent!.status" value="in-progress">
+            <input type="radio" [(ngModel)]="selectedStatus" value="IN_PROGRESS">
             In Progress
           </label>
           <label class="radio-label">
-            <input type="radio" [(ngModel)]="selectedEvent!.status" value="completed">
+            <input type="radio" [(ngModel)]="selectedStatus" value="COMPLETED">
             Completed
           </label>
         </div>

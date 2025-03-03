@@ -34,8 +34,8 @@
 
             <div class="selected-leader" *ngIf="selectedLeader">
               <div class="leader-info">
-                <img [src]="'assets/' + selectedLeader.avatar" [alt]="selectedLeader.name">
-                <span>{{ selectedLeader.name }}</span>
+                <img [src]="selectedLeader.userProfilePhoto || 'assets/pic1.png'" [alt]="selectedLeader.userName">
+                <span>{{ selectedLeader.userName }}</span>
               </div>
               <button class="remove-btn" (click)="removeLeader()">×</button>
             </div>
@@ -44,8 +44,8 @@
               <div class="dropdown-item" 
                    *ngFor="let leader of filteredLeaders"
                    (click)="selectLeader(leader)">
-                <img [src]="'assets/' + leader.avatar" [alt]="leader.name">
-                <span>{{ leader.name }}</span>
+                <img [src]="leader.userProfilePhoto || 'assets/pic1.png'" [alt]="leader.userName">
+                <span>{{ leader.userName }}</span>
               </div>
             </div>
           </div>
@@ -71,8 +71,8 @@
             <div class="selected-members" *ngIf="selectedMembers.length > 0">
               <div class="member-item" *ngFor="let member of selectedMembers">
                 <div class="member-info">
-                  <img [src]="'assets/' + member.avatar" [alt]="member.name">
-                  <span>{{ member.name }}</span>
+                  <img [src]="member.userProfilePhoto || 'assets/pic1.png'" [alt]="member.userName">
+                  <span>{{ member.userName }}</span>
                 </div>
                 <button class="remove-btn" (click)="removeMember(member)">×</button>
               </div>
@@ -82,8 +82,8 @@
               <div class="dropdown-item" 
                    *ngFor="let member of filteredMembers"
                    (click)="selectMember(member)">
-                <img [src]="'assets/' + member.avatar" [alt]="member.name">
-                <span>{{ member.name }}</span>
+                <img [src]="member.userProfilePhoto || 'assets/pic1.png'" [alt]="member.userName">
+                <span>{{ member.userName }}</span>
               </div>
             </div>
           </div>

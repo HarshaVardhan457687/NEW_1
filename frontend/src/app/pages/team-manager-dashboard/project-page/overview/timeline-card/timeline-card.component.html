@@ -4,66 +4,20 @@
     <button class="update-btn" (click)="showUpdateModal = true">Update</button>
   </div>
   <div class="timeline-list">
-    <div class="timeline-item completed">
+    <div class="timeline-item" *ngFor="let event of timelineEvents" [ngClass]="getStatusClass(event.timeLineStatus)">
       <div class="status-dot"></div>
       <div class="content">
-        <div class="phase">Project Initiation</div>
-        <div class="status">Completed</div>
-      </div>
-    </div>
-    <div class="timeline-item completed">
-      <div class="status-dot"></div>
-      <div class="content">
-        <div class="phase">Requirements Gathering</div>
-        <div class="status">Completed</div>
-      </div>
-    </div>
-    <div class="timeline-item completed">
-      <div class="status-dot"></div>
-      <div class="content">
-        <div class="phase">Design Phase</div>
-        <div class="status">Completed</div>
-      </div>
-    </div>
-    <div class="timeline-item in-progress">
-      <div class="status-dot"></div>
-      <div class="content">
-        <div class="phase">Development</div>
-        <div class="status">In Progress</div>
-      </div>
-    </div>
-    <div class="timeline-item upcoming">
-      <div class="status-dot"></div>
-      <div class="content">
-        <div class="phase">Testing</div>
-        <div class="status">Upcoming</div>
-      </div>
-    </div>
-    <div class="timeline-item upcoming">
-      <div class="status-dot"></div>
-      <div class="content">
-        <div class="phase">User Acceptance Testing</div>
-        <div class="status">Upcoming</div>
-      </div>
-    </div>
-    <div class="timeline-item upcoming">
-      <div class="status-dot"></div>
-      <div class="content">
-        <div class="phase">Deployment</div>
-        <div class="status">Upcoming</div>
-      </div>
-    </div>
-    <div class="timeline-item upcoming">
-      <div class="status-dot"></div>
-      <div class="content">
-        <div class="phase">Post-Launch Support</div>
-        <div class="status">Upcoming</div>
+        <div class="phase">{{event.timeLineHeading}}</div>
+        <div class="status">{{ getFormattedStatus(event.timeLineStatus) | titlecase }}</div>
       </div>
     </div>
   </div>
 </div>
 
 <app-timeline-update-card 
-  [show]="showUpdateModal" 
-  (showChange)="showUpdateModal = $event">
+  [show]="showUpdateModal"
+  [projectId]="projectId"
+  [events]="timelineEvents"
+  (showChange)="showUpdateModal = $event"
+  (updated)="onTimelineUpdated()">
 </app-timeline-update-card>

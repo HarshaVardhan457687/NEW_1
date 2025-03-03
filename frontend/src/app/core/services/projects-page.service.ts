@@ -32,7 +32,7 @@ export class ProjectsPageService {
   private getUserCredentials(): { email: string; role: string } {
     return {
       email: localStorage.getItem('username') || '',
-      role: localStorage.getItem('role_selected') || ''
+      role: sessionStorage.getItem('role_selected') || ''
     };
   }
 

@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UserService, User } from '../../core/services/user.service';
+import { AddTeamService, UserSummary } from '../../core/services/add-team.service';
 
 @Component({
   selector: 'app-add-team-card',
@@ -14,11 +14,16 @@ export class AddTeamCardComponent implements OnInit {
   // Make console available to template
   console = console;
 
+  @Input() projectId!: number;
+
   @Input() set show(value: boolean) {
     console.log('Show value changed:', value);
     this._show = value;
     if (value && this.editingTeam) {
       this.prefillForm(this.editingTeam);
+    }
+    if (value) {
+      this.loadUsers();
     }
     if (!value) {
       this.resetForm();
@@ -40,11 +45,11 @@ export class AddTeamCardComponent implements OnInit {
   @Output() teamSaved = new EventEmitter<any>();
 
   teamName = '';
-  selectedLeader: User | null = null;
-  selectedMembers: User[] = [];
+  selectedLeader: UserSummary | null = null;
+  selectedMembers: UserSummary[] = [];
   
-  teamLeaders: User[] = [];
-  teamMembers: User[] = [];
+  teamLeaders: UserSummary[] = [];
+  teamMembers: UserSummary[] = [];
   
   showLeaderDropdown = false;
   showMemberDropdown = false;
@@ -57,15 +62,27 @@ export class AddTeamCardComponent implements OnInit {
   isMembersTouched = false;
 
   constructor(
-    private userService: UserService,
+    private addTeamService: AddTeamService,
     private elementRef: ElementRef
   ) {}
 
   ngOnInit() {
     console.log('AddTeamCardComponent initialized, show:', this.show);
-    this.userService.getUsers().subscribe(users => {
-      this.teamLeaders = users.filter(user => user.role === 'team_leader');
-      this.teamMembers = users.filter(user => user.role === 'team_member');
+    if (this.show) {
+      this.loadUsers();
+    }
+  }
+
+  private loadUsers() {
+    this.addTeamService.getAllUsersSummary().subscribe({
+      next: (users) => {
+        // We'll need to add role filtering once it's added to UserSummary
+        this.teamLeaders = users;
+        this.teamMembers = users;
+      },
+      error: (err) => {
+        console.error('Error loading users:', err);
+      }
     });
   }
 
@@ -97,7 +114,7 @@ export class AddTeamCardComponent implements OnInit {
     this.isMembersTouched = false;
   }
 
-  selectLeader(leader: User) {
+  selectLeader(leader: UserSummary) {
     this.selectedLeader = leader;
     this.showLeaderDropdown = false;
     this.searchLeader = '';
@@ -109,16 +126,16 @@ export class AddTeamCardComponent implements OnInit {
     this.isLeaderTouched = true;
   }
 
-  selectMember(member: User) {
-    if (!this.selectedMembers.find(m => m.id === member.id)) {
+  selectMember(member: UserSummary) {
+    if (!this.selectedMembers.find(m => m.userId === member.userId)) {
       this.selectedMembers.push(member);
       this.isMembersTouched = true;
     }
     this.searchMember = '';
   }
 
-  removeMember(member: User) {
-    this.selectedMembers = this.selectedMembers.filter(m => m.id !== member.id);
+  removeMember(member: UserSummary) {
+    this.selectedMembers = this.selectedMembers.filter(m => m.userId !== member.userId);
     this.isMembersTouched = true;
   }
 
@@ -167,21 +184,18 @@ export class AddTeamCardComponent implements OnInit {
 
   get filteredLeaders() {
     return this.teamLeaders.filter(leader => 
-      leader.name.toLowerCase().includes(this.searchLeader.toLowerCase())
+      leader.userName.toLowerCase().includes(this.searchLeader.toLowerCase())
     );
   }
 
   get filteredMembers() {
     return this.teamMembers.filter(member => 
-      member.name.toLowerCase().includes(this.searchMember.toLowerCase()) &&
-      !this.selectedMembers.find(m => m.id === member.id)
+      member.userName.toLowerCase().includes(this.searchMember.toLowerCase()) &&
+      !this.selectedMembers.find(m => m.userId === member.userId)
     );
   }
 
-  getRandomAvatar(): string {
-    const avatars = ['pic1.png', 'pic2.png', 'pic3.png', 'pic4.png', 'pic5.png'];
-    return avatars[Math.floor(Math.random() * avatars.length)];
-  }
+  
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {

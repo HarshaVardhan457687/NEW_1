@@ -13,7 +13,7 @@ export class RoleSelectionService {
   constructor() {}
 
   setRole(role: UserRole): void {
-    localStorage.setItem(this.ROLE_KEY, role);
+    sessionStorage.setItem(this.ROLE_KEY, role);
     this.selectedRoleSubject.next(role);
   }
 
@@ -26,13 +26,13 @@ export class RoleSelectionService {
   }
 
   private getStoredRole(): UserRole | null {
-    const role = localStorage.getItem(this.ROLE_KEY);
+    const role = sessionStorage.getItem(this.ROLE_KEY);
     return role ? (role as UserRole) : null;  // Only cast if role is valid
   }
   
 
   clearRole(): void {
-    localStorage.removeItem(this.ROLE_KEY);
+    sessionStorage.removeItem(this.ROLE_KEY);
     this.selectedRoleSubject.next(null);
   }
 } 

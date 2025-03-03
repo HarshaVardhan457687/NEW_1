@@ -1,11 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface TimelineEvent {
-  phase: string;
-  status: 'completed' | 'in-progress' | 'upcoming';
-}
+import { TimelineUpdateService } from '../../core/services/timeline-update.service';
+import { TimelineEvent } from '../../core/services/project-overview.service';
 
 @Component({
   selector: 'app-timeline-update-card',
@@ -16,22 +13,22 @@ interface TimelineEvent {
 })
 export class TimelineUpdateCardComponent {
   @Input() show: boolean = false;
+  @Input() projectId!: number;
+  @Input() events: TimelineEvent[] = [];
   @Output() showChange = new EventEmitter<boolean>();
+  @Output() updated = new EventEmitter<void>();
+
   selectedOption: 'new' | 'update' | null = null;
   showStatusUpdate: boolean = false;
   selectedEvent?: TimelineEvent;
+  selectedStatus: 'UPCOMING' | 'IN_PROGRESS' | 'COMPLETED' = 'UPCOMING';
   
-  newEvent: TimelineEvent = {
+  newEvent = {
     phase: '',
-    status: 'upcoming'
+    status: 'UPCOMING' as 'UPCOMING' | 'IN_PROGRESS' | 'COMPLETED'
   };
 
-  events: TimelineEvent[] = [
-    { phase: 'Project Initiation', status: 'completed' },
-    { phase: 'Requirements Gathering', status: 'completed' },
-    { phase: 'Design Phase', status: 'in-progress' },
-    { phase: 'Development', status: 'upcoming' }
-  ];
+  constructor(private timelineService: TimelineUpdateService) {}
 
   close() {
     this.show = false;
@@ -39,33 +36,74 @@ export class TimelineUpdateCardComponent {
     this.selectedOption = null;
     this.showStatusUpdate = false;
     this.selectedEvent = undefined;
+    this.selectedStatus = 'UPCOMING';
   }
 
   onUpdateStatus(event: TimelineEvent) {
-    this.selectedEvent = event;
+    console.log('Selected event for update:', event);
+    this.selectedEvent = { ...event };
+    this.selectedStatus = event.timeLineStatus;
     this.showStatusUpdate = true;
+    console.log('Current selected status:', this.selectedStatus);
   }
 
   onDeleteEvent(event: TimelineEvent) {
-    this.events = this.events.filter(e => e !== event);
+    this.timelineService.deleteTimeline(event.timeLineId).subscribe({
+      next: () => {
+        this.updated.emit();
+        this.close();
+      },
+      error: (err) => {
+        console.error('Error deleting timeline event:', err);
+      }
+    });
   }
 
   saveNewEvent() {
     if (this.newEvent.phase) {
-      this.events.push({ ...this.newEvent });
-      this.newEvent = { phase: '', status: 'upcoming' };
-      this.close();
+      const request = {
+        timeLineHeading: this.newEvent.phase,
+        timeLineAssociatedProject: this.projectId,
+        timeLineStatus: this.newEvent.status
+      };
+
+      console.log('Creating new event:', request);
+      this.timelineService.createTimeline(request).subscribe({
+        next: () => {
+          this.updated.emit();
+          this.close();
+        },
+        error: (err) => {
+          console.error('Error creating timeline event:', err);
+        }
+      });
     }
   }
 
   saveStatusUpdate() {
     if (this.selectedEvent) {
-      const index = this.events.findIndex(e => e === this.selectedEvent);
-      if (index !== -1) {
-        this.events[index] = { ...this.selectedEvent };
-      }
-      this.showStatusUpdate = false;
-      this.selectedEvent = undefined;
+      const request = {
+        timeLineStatus: this.selectedStatus
+      };
+
+      console.log('Updating event status:', {
+        eventId: this.selectedEvent.timeLineId,
+        currentStatus: this.selectedEvent.timeLineStatus,
+        newStatus: this.selectedStatus,
+        request
+      });
+
+      this.timelineService.updateTimeline(this.selectedEvent.timeLineId, request).subscribe({
+        next: () => {
+          this.updated.emit();
+          this.showStatusUpdate = false;
+          this.selectedEvent = undefined;
+          this.selectedStatus = 'UPCOMING';
+        },
+        error: (err) => {
+          console.error('Error updating timeline event:', err);
+        }
+      });
     }
   }
 }
