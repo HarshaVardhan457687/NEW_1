@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     private static final String OBJECTIVE_SERVICE_URL = "http://localhost:8081/api/objective";
     private static final String KEYRESULT_SERVICE_URL = "http://localhost:8082/api/keyresults";
     private static final String TASK_SERVICE_URL = "http://localhost:8083/api/tasks";
-
+    private static final String TEAM_SERVICE_URL = "http://localhost:8084/api/teams";
     /**
      * Creates a new user and saves it to the database.
      *
@@ -660,4 +660,34 @@ public class UserServiceImpl implements UserService {
 
         userRepository.saveAll(users);
     }
+
+    @Override
+    public UserSummaryDTO getUserSummary(Long userId) {
+        // Fetch user from the repository
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Create the UserSummaryDTO object and return it
+        UserSummaryDTO userSummary = new UserSummaryDTO(user.getUserId(), user.getUserName(), user.getUserProfilePhoto());
+
+        return userSummary;
+    }
+
+    public Long findMappedTeamForUser(Long userId, Long projectId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
+        List<Long> teamIds = user.getUserInvolvedTeamsId(); // Assuming `User` entity has a list of team IDs
+
+        for (Long teamId : teamIds) {
+            String url = TEAM_SERVICE_URL + "?teamId=" + teamId + "&projectId=" + projectId;
+            ResponseEntity<Boolean> response = restTemplate.getForEntity(url, Boolean.class);
+
+            if (Boolean.TRUE.equals(response.getBody())) {
+                return teamId; // Stop and return the first mapped team ID
+            }
+        }
+        return null; // No mapped team found
+    }
+
 }

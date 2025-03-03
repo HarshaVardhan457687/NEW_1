@@ -212,6 +212,15 @@ public class KeyResultServiceImpl implements KeyResultService {
         return result;
     }
 
+    @Override
+    public Long getCompletedKeyResults(List<Long> keyResultIds) {
+        List<KeyResult> keyResults = keyResultRepository.findAllById(keyResultIds);
+        return keyResults.stream()
+                .filter(kr -> kr.getKeyResultcurrentVal() == 100)
+                .count();
+    }
+
+
 }
 
 

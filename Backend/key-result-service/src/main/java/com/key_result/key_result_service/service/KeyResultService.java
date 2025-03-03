@@ -14,4 +14,5 @@ public interface KeyResultService {
     public KeyResult updateKeyResult(Long id, KeyResult toUpdateKeyResult);
     public void removeKeyResult(Long id);
     public Map<String, List<KeyResult>> getKeyResultsByObjectiveIds(List<Long> objectiveIds);
+    public Long getCompletedKeyResults(List<Long> keyResultIds);
 }

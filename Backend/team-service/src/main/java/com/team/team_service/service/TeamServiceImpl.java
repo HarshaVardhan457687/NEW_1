@@ -35,6 +35,7 @@ public class TeamServiceImpl implements TeamService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TeamServiceImpl.class);
 
     private static final String USER_SERVICE_URL = "http://localhost:8086/api/users";
+    private static final String KEY_RESULT_SERVICE_URL = "http://localhost:8082/api/keyresults";
 
     /**
      * Creates a new team in the database.
@@ -255,20 +256,40 @@ public class TeamServiceImpl implements TeamService {
         double progress = teamProgress(team.getAssignedProject(), teamId);
         Map<String, Long> taskCount = getTotalAndCompletedTasks(team.getAssignedProject(), teamId);
 
+        // Fetching KeyResult IDs from the team
+        List<Long> keyResultIds = team.getAssignedKeyResult();
+        long totalKeyResults = keyResultIds.size();
+        long completedKeyResults = 0;
+
+        if (!keyResultIds.isEmpty()) {
+            String keyResultUrl = KEY_RESULT_SERVICE_URL + "/completed-count";
+            ResponseEntity<Long> response = restTemplate.exchange(
+                    keyResultUrl,
+                    HttpMethod.POST,
+                    new HttpEntity<>(keyResultIds),
+                    Long.class
+            );
+            completedKeyResults = response.getBody() != null ? response.getBody() : 0;
+        }
+
+        Map<String, Long> keyResultSummary = new HashMap<>();
+        keyResultSummary.put("total", totalKeyResults);
+        keyResultSummary.put("completed", completedKeyResults);
+
         // Fetch team leader details from UserService
-        String userUrl = USER_SERVICE_URL + "/" +team.getTeamLead();
-        ResponseEntity<User> response = restTemplate.exchange(
+        String userUrl = USER_SERVICE_URL + "/" + team.getTeamLead();
+        ResponseEntity<User> userResponse = restTemplate.exchange(
                 userUrl, HttpMethod.GET, null, new ParameterizedTypeReference<User>() {}
         );
 
-        User leader = response.getBody();
+        User leader = userResponse.getBody();
         String leaderName = (leader != null) ? leader.getUserName() : "Unknown";
         String leaderProfile = (leader != null) ? leader.getUserProfilePhoto() : "";
 
         // Populate the DTO
         return new TeamResponseDto(
                 team.getTeamName(),
-                team.getAssignedKeyResult().size(),
+                keyResultSummary,
                 team.getTeamMembers().size(),
                 progress,
                 taskCount,
@@ -276,6 +297,7 @@ public class TeamServiceImpl implements TeamService {
                 leaderProfile
         );
     }
+
 
     @Override
     public List<TeamMemberProgressDto> getTeamMembersProgress(Long teamId, Long projectId) {
@@ -316,6 +338,23 @@ public class TeamServiceImpl implements TeamService {
         }
 
         return teamMembersProgress;
+    }
+
+    @Override
+    public Long getTeamLeadId(Long teamId){
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new RuntimeException("Team not found"));
+
+        // Return the team lead's ID
+        return team.getTeamLead();
+    }
+
+    @Override
+    public boolean isTeamMappedToProject(Long teamId, Long projectId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new RuntimeException("Team not found"));
+
+        return team.getAssignedProject().equals(projectId);
     }
 
 

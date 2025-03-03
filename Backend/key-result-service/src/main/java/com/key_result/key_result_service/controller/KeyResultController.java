@@ -107,5 +107,11 @@ public class KeyResultController {
         Map<String, List<KeyResult>> keyResults = keyResultService.getKeyResultsByObjectiveIds(objectiveIds);
         return ResponseEntity.ok(keyResults);
     }
+
+    @PostMapping("/completed-count")
+    public ResponseEntity<Long> getCompletedKeyResults(@RequestBody List<Long> keyResultIds) {
+        Long completedCount = keyResultService.getCompletedKeyResults(keyResultIds);
+        return ResponseEntity.ok(completedCount);
+    }
 }
 

@@ -54,6 +54,12 @@ public class UserController {
         return userServiceImpl.getUserById(user.getUserId());
     }
 
+    @GetMapping("/user-summary")
+    public UserSummaryDTO getUserSummary(@PathVariable Long userId){
+        UserSummaryDTO userSummary = userServiceImpl.getUserSummary(userId);
+        return userSummary;
+    }
+
     /**
      * API to update the user
      * */
@@ -257,6 +263,16 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update users");
         }
+    }
+
+    @GetMapping("/team-mapped-to-project")
+    public ResponseEntity<Long> getMappedTeamForUser(
+            @RequestParam String userEmail,
+            @RequestParam Long projectId) {
+
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
+        Long mappedTeamId = userServiceImpl.findMappedTeamForUser(userId, projectId);
+        return ResponseEntity.ok(mappedTeamId);
     }
 
 

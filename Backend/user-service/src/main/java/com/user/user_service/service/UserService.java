@@ -1,5 +1,6 @@
 package com.user.user_service.service;
 
+import com.user.user_service.DTO.UserSummaryDTO;
 import com.user.user_service.entity.Task;
 import com.user.user_service.entity.Team;
 import com.user.user_service.entity.User;
@@ -16,5 +17,5 @@ public interface UserService {
     public List<Task> getAllTasksOfUser(Long userId);
     public List<Team> getAllTeamsOfUser(Long userId);
     public int getActiveTasksCountForUserInProject(Long projectId, Long userId);
-
+    public UserSummaryDTO getUserSummary(Long userId);
 }
