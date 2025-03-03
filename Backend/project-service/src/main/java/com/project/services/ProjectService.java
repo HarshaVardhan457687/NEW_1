@@ -2,18 +2,19 @@ package com.project.services;
 
 import com.project.DTO.TeamDTO;
 import com.project.DTO.TeamDetailsDTO;
+import com.project.DTO.TeamResponseDTO;
 import com.project.DTO.UserDTO;
 import com.project.constants.ProjectStatus;
 import com.project.model.Objective;
 import com.project.model.Project;
 import com.project.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.security.PublicKey;
 import java.util.*;
 
 @Service
@@ -287,5 +288,34 @@ public Map<String, Integer> getObjectivesInfoByProject(Long projectId) {
 
         return teamDetailsList;
     }
+
+    public List<TeamResponseDTO> getTeamsForProject(Long projectId) {
+        List<TeamResponseDTO> teams = new ArrayList<>();
+        Project project = projectRepository.findById(projectId).orElseThrow(()-> new RuntimeException("Project not found"));
+        List<Long> teamIds = project.getTeamsInvolvedId();
+        for (Long teamId : teamIds) {
+
+            String url = TEAM_SERVICE_URL + "details?teamId=" + teamId;
+
+            try {
+                ResponseEntity<TeamResponseDTO> response = restTemplate.exchange(
+                        url,
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<TeamResponseDTO>() {}
+                );
+
+                if (response.getBody() != null) {
+                    teams.add(response.getBody());
+                }
+            } catch (Exception e) {
+                System.err.println("Failed to fetch details for team ID " + teamId + ": " + e.getMessage());
+            }
+        }
+
+        return teams;
+    }
+
+
 
 }

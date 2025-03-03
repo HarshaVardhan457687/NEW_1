@@ -201,4 +201,15 @@ public class TaskServiceImpl implements TaskService {
         return activeTasks.size();
     }
 
+    @Override
+    public Map<String, Integer> getAllAndActiveTasksCountForUserInProject(Long projectId, Long userId) {
+        List<Task> activeTasks = taskRepository.findByTaskAssociatedProjectAndTaskOwnerAndTaskIsActive(projectId, userId, true);
+        List<Task> completedTasks = taskRepository.findByTaskAssociatedProjectAndTaskOwnerAndTaskIsActive(projectId, userId, false);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("totalTask", activeTasks.size()+completedTasks.size());
+        map.put("completedTask", completedTasks.size());
+
+        return map;
+    }
+
 }

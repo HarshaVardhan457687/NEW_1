@@ -1,5 +1,6 @@
 package com.team.team_service.controller;
 
+import com.team.team_service.DTO.TeamResponseDto;
 import com.team.team_service.entity.Team;
 import com.team.team_service.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +78,15 @@ public class TeamController {
     public ResponseEntity<Void> removeTeam(@PathVariable Long teamId) {
         teamService.removeTeam(teamId);
         return ResponseEntity.noContent().build(); // 204 No Content status
+    }
+
+    @GetMapping("/progress")
+    public double getTeamProgress(@RequestParam Long projectId, @RequestParam Long teamId) {
+        return teamService.teamProgress(projectId, teamId);
+    }
+
+    @GetMapping("/details")
+    public ResponseEntity<TeamResponseDto> getTeamDetails(@RequestParam Long teamId) {
+        return ResponseEntity.ok(teamService.getTeamDetails(teamId));
     }
 }

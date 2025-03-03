@@ -1,6 +1,7 @@
 package com.team.team_service.service;
 
 
+import com.team.team_service.DTO.TeamResponseDto;
 import com.team.team_service.entity.Team;
 
 import java.util.List;
@@ -11,5 +12,7 @@ public interface TeamService {
     public List<Team> getAllTeams();
     public Team updateTeam(Team toUpdate, Long teamId);
     public void removeTeam(Long teamId);
+    public double teamProgress(Long projectId, Long teamId);
+    public TeamResponseDto getTeamDetails(Long teamId);
 
 }

@@ -20,4 +20,5 @@ public interface TaskService {
     public List<Task> getTasksByIdsAndProjects(List<Long> taskIds, List<Long> projectIds);
     public Map<String, Integer> getAllTasksInfoForProjectId(Long projectId);
     public int getActiveTasksCountForUserInProject(Long projectId, Long userId);
+    public Map<String, Integer> getAllAndActiveTasksCountForUserInProject(Long projectId, Long userId);
 }

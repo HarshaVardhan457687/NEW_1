@@ -1,6 +1,7 @@
 package com.project.controller;
 
 import com.project.DTO.TeamDetailsDTO;
+import com.project.DTO.TeamResponseDTO;
 import com.project.constants.ProjectStatus;
 import com.project.model.Project;
 import com.project.model.Objective;
@@ -147,5 +148,12 @@ public class ProjectController {
         List<TeamDetailsDTO> teamDetailsList = projectService.getProjectTeamsDetails(projectId);
         return ResponseEntity.ok(teamDetailsList);
     }
+
+    @GetMapping("/teams")
+    public ResponseEntity<List<TeamResponseDTO>> getTeamsForProject(@RequestParam Long projectId) {
+        List<TeamResponseDTO> teams = projectService.getTeamsForProject(projectId);
+        return ResponseEntity.ok(teams);
+    }
+
 
 }

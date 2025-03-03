@@ -586,6 +586,26 @@ public class UserServiceImpl implements UserService {
         return response.getBody(); // Return the body of the response, which is the active task count
     }
 
+    public Map<String, Integer> getAllAndActiveTasksCountForUserInProject(Long projectId, Long userId) {
+        String url = TASK_SERVICE_URL + "/project/" + projectId + "/user/" + userId + "/all-tasks-count";
+
+        try {
+            // Call the task service using RestTemplate
+            ResponseEntity<Map<String, Integer>> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    null, // No request body
+                    new ParameterizedTypeReference<Map<String, Integer>>() {} // Proper response type handling
+            );
+
+            return response.getBody() != null ? response.getBody() : Collections.emptyMap(); // Return response body safely
+        } catch (Exception e) {
+            LOGGER.error("Failed to fetch task counts for project {} and user {}: {}", projectId, userId, e.getMessage());
+            return Collections.emptyMap(); // Return an empty map in case of failure
+        }
+    }
+
+
     @Transactional
     public void updateUserTeams(Map<String, Object> request) {
         List<Long> teamMemberIds = (List<Long>) request.get("teamMemberIds");

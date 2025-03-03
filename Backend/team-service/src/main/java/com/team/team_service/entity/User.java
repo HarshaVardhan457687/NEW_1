@@ -1,30 +1,64 @@
 package com.team.team_service.entity;
 
+import com.team.team_service.constants.UserRole;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    private Long UserId;
+    private Long userId;
+
+    @Column(nullable = false, length = 100)
     private String userName;
+
+    @Column(nullable = false, unique = true, length = 150)
+    private String userEmail;
+
     private String userDesignation;
-    private String email;
-    private String userPhoneNo;
+
+    private String userProfilePhoto; // Cloudinary link
+
+    private Long userPhoneNo;
+
     private String userAddress;
-    private Boolean userNotificationAlert;
-    private List<Long> userProject;
+
+    private String userTimeZone;
+
+    @Temporal(TemporalType.DATE)
+    private Date userJoiningDate;
+
+    private Boolean userIsNotificationAlert;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
+
+    @ElementCollection
+    private List<Long> userTaskAssigned;
+
+    @ElementCollection
+    private List<Long> userInvolvedTeamsId;
+
+    // for role based projectId list
+    @ElementCollection
+    private List<Long> userManagerProjectId;
+    @ElementCollection
+    private List<Long> userTeamLeaderProjectId;
+    @ElementCollection
+    private List<Long> userTeamMemberProjectId;
 
     public Long getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(Long userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public String getUserName() {
@@ -35,6 +69,14 @@ public class User {
         this.userName = userName;
     }
 
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
     public String getUserDesignation() {
         return userDesignation;
     }
@@ -43,19 +85,19 @@ public class User {
         this.userDesignation = userDesignation;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUserProfilePhoto() {
+        return userProfilePhoto;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserProfilePhoto(String userProfilePhoto) {
+        this.userProfilePhoto = userProfilePhoto;
     }
 
-    public String getUserPhoneNo() {
+    public Long getUserPhoneNo() {
         return userPhoneNo;
     }
 
-    public void setUserPhoneNo(String userPhoneNo) {
+    public void setUserPhoneNo(Long userPhoneNo) {
         this.userPhoneNo = userPhoneNo;
     }
 
@@ -67,19 +109,75 @@ public class User {
         this.userAddress = userAddress;
     }
 
-    public Boolean getUserNotificationAlert() {
-        return userNotificationAlert;
+    public String getUserTimeZone() {
+        return userTimeZone;
     }
 
-    public void setUserNotificationAlert(Boolean userNotificationAlert) {
-        this.userNotificationAlert = userNotificationAlert;
+    public void setUserTimeZone(String userTimeZone) {
+        this.userTimeZone = userTimeZone;
     }
 
-    public List<Long> getUserProject() {
-        return userProject;
+    public Date getUserJoiningDate() {
+        return userJoiningDate;
     }
 
-    public void setUserProject(List<Long> userProject) {
-        this.userProject = userProject;
+    public void setUserJoiningDate(Date userJoiningDate) {
+        this.userJoiningDate = userJoiningDate;
+    }
+
+    public Boolean getUserIsNotificationAlert() {
+        return userIsNotificationAlert;
+    }
+
+    public void setUserIsNotificationAlert(Boolean userIsNotificationAlert) {
+        this.userIsNotificationAlert = userIsNotificationAlert;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
+    }
+
+    public List<Long> getUserTaskAssigned() {
+        return userTaskAssigned;
+    }
+
+    public void setUserTaskAssigned(List<Long> userTaskAssigned) {
+        this.userTaskAssigned = userTaskAssigned;
+    }
+
+    public List<Long> getUserInvolvedTeamsId() {
+        return userInvolvedTeamsId;
+    }
+
+    public void setUserInvolvedTeamsId(List<Long> userInvolvedTeamsId) {
+        this.userInvolvedTeamsId = userInvolvedTeamsId;
+    }
+
+    public List<Long> getUserManagerProjectId() {
+        return userManagerProjectId;
+    }
+
+    public void setUserManagerProjectId(List<Long> userManagerProjectId) {
+        this.userManagerProjectId = userManagerProjectId;
+    }
+
+    public List<Long> getUserTeamLeaderProjectId() {
+        return userTeamLeaderProjectId;
+    }
+
+    public void setUserTeamLeaderProjectId(List<Long> userTeamLeaderProjectId) {
+        this.userTeamLeaderProjectId = userTeamLeaderProjectId;
+    }
+
+    public List<Long> getUserTeamMemberProjectId() {
+        return userTeamMemberProjectId;
+    }
+
+    public void setUserTeamMemberProjectId(List<Long> userTeamMemberProjectId) {
+        this.userTeamMemberProjectId = userTeamMemberProjectId;
     }
 }

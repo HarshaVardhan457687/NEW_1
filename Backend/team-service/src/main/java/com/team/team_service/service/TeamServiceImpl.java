@@ -1,12 +1,17 @@
 package com.team.team_service.service;
 
+import com.team.team_service.DTO.TeamResponseDto;
 import com.team.team_service.entity.Team;
+import com.team.team_service.entity.User;
 import com.team.team_service.exception.ResourceNotFoundException;
 import com.team.team_service.repository.TeamRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -162,6 +167,114 @@ public class TeamServiceImpl implements TeamService {
         LOGGER.info("Team with teamID: {} deleted successfully", teamId);
     }
 
+    @Override
+    public double teamProgress(Long projectId, Long teamId) {
+        long totalTasks = 0;
+        long completedTasks = 0;
 
+        // Fetch the team details
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new RuntimeException("Team not found with ID: " + teamId));
+
+        List<Long> userIds = team.getTeamMembers(); // Fetching list of users in the team
+
+        for (Long userId : userIds) {
+            String url = USER_SERVICE_URL + "/project/user/all-and-active-tasks?projectId=" + projectId + "&userId=" + userId;
+
+            try {
+                ResponseEntity<Map<String, Integer>> response = restTemplate.exchange(
+                        url,
+                        HttpMethod.GET,
+                        null, // No request body
+                        new ParameterizedTypeReference<Map<String, Integer>>() {}
+                );
+
+                if (response.getBody() != null) {
+                    totalTasks += response.getBody().getOrDefault("totalTask", 0);
+                    completedTasks += response.getBody().getOrDefault("completedTask", 0);
+                }
+            } catch (Exception e) {
+                LOGGER.error("Failed to fetch task count for user {} in project {}: {}", userId, projectId, e.getMessage());
+            }
+        }
+
+        // Avoid division by zero
+        if (totalTasks == 0) {
+            return 0.0; // Returning 0.0 for no tasks
+        }
+
+        // Calculate team progress as a double percentage
+        return ((double) completedTasks / totalTasks) * 100;
+    }
+
+    public Map<String, Long> getTotalAndCompletedTasks(Long projectId, Long teamId) {
+        long totalTasks = 0;
+        long completedTasks = 0;
+
+        // Fetch the team details
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new RuntimeException("Team not found with ID: " + teamId));
+
+        List<Long> userIds = team.getTeamMembers(); // Fetching list of users in the team
+
+        for (Long userId : userIds) {
+            String url = USER_SERVICE_URL + "/project/user/all-and-active-tasks?projectId=" + projectId + "&userId=" + userId;
+
+            try {
+                ResponseEntity<Map<String, Integer>> response = restTemplate.exchange(
+                        url,
+                        HttpMethod.GET,
+                        null, // No request body
+                        new ParameterizedTypeReference<Map<String, Integer>>() {}
+                );
+
+                if (response.getBody() != null) {
+                    totalTasks += response.getBody().getOrDefault("totalTask", 0);
+                    completedTasks += response.getBody().getOrDefault("completedTask", 0);
+                }
+            } catch (Exception e) {
+                LOGGER.error("Failed to fetch task count for user {} in project {}: {}", userId, projectId, e.getMessage());
+            }
+        }
+
+        // Return a map containing the total and completed tasks
+        Map<String, Long> taskData = new HashMap<>();
+        taskData.put("totalTasks", totalTasks);
+        taskData.put("completedTasks", completedTasks);
+        return taskData;
+    }
+
+
+    @Override
+    public TeamResponseDto getTeamDetails(Long teamId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new RuntimeException("Team not found with ID: " + teamId));
+
+        double progress = teamProgress(team.getAssignedProject(), teamId);
+        Map<String, Long> taskCount = getTotalAndCompletedTasks(team.getAssignedProject(), teamId);
+
+        // Fetch team leader details from UserService
+        String userUrl = USER_SERVICE_URL + "/" +team.getTeamLead();
+        ResponseEntity<User> response = restTemplate.exchange(
+                userUrl, HttpMethod.GET, null, new ParameterizedTypeReference<User>() {}
+        );
+
+        User leader = response.getBody();
+        String leaderName = (leader != null) ? leader.getUserName() : "Unknown";
+        String leaderProfile = (leader != null) ? leader.getUserProfilePhoto() : "";
+
+        // Populate the DTO
+        return new TeamResponseDto(
+                team.getTeamName(),
+                team.getAssignedKeyResult().size(),
+                team.getTeamMembers().size(),
+                progress,
+                taskCount,
+                leaderName,
+                leaderProfile
+        );
+    }
 }
+
+
 

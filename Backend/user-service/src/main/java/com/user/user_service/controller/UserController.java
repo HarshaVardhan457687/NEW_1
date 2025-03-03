@@ -229,6 +229,24 @@ public class UserController {
         return ResponseEntity.ok(activeTasksCount);
     }
 
+    @GetMapping("/project/{projectId}/user/{userId}/active-tasks")
+    public ResponseEntity<Integer> getActiveTasksCountForUserByUserId(@PathVariable Long projectId, @RequestParam Long userId) {
+        // Call UserService to get the active task count
+        int activeTasksCount = userServiceImpl.getActiveTasksCountForUserInProject(projectId, userId);
+
+        // Return the active task count in the response
+        return ResponseEntity.ok(activeTasksCount);
+    }
+
+    @GetMapping("/project/user/all-and-active-tasks")
+    public ResponseEntity<Map<String, Integer>> getAllAndActiveTasksCountForUserByUserId(@RequestParam Long projectId, @RequestParam Long userId) {
+        // Call UserService to get the active task count
+        Map<String, Integer> map = userServiceImpl.getAllAndActiveTasksCountForUserInProject(projectId, userId);
+
+        // Return the active task count in the response
+        return ResponseEntity.ok(map);
+    }
+
     @PatchMapping("/update-teams")
     public ResponseEntity<String> updateUserTeams(@RequestBody Map<String, Object> request) {
         try {
@@ -240,6 +258,8 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update users");
         }
     }
+
+
 
 
 }
