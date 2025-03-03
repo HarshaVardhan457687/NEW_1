@@ -680,7 +680,7 @@ public class UserServiceImpl implements UserService {
         List<Long> teamIds = user.getUserInvolvedTeamsId(); // Assuming `User` entity has a list of team IDs
 
         for (Long teamId : teamIds) {
-            String url = TEAM_SERVICE_URL + "?teamId=" + teamId + "&projectId=" + projectId;
+            String url = TEAM_SERVICE_URL + "/is-mapped-to-project" +"?teamId=" + teamId + "&projectId=" + projectId;
             ResponseEntity<Boolean> response = restTemplate.getForEntity(url, Boolean.class);
 
             if (Boolean.TRUE.equals(response.getBody())) {
