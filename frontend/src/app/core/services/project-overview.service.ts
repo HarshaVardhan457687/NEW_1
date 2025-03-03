@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, map, switchMap, of } from 'rxjs';
+import { Observable, catchError, map, switchMap, of, forkJoin, tap } from 'rxjs';
 
 export type ProjectStatus = 'ON_TRACK' | 'AT_RISK' | 'COMPLETED';
 export type ProjectStatusDisplay = 'On Track' | 'At Risk' | 'Completed';
@@ -20,6 +20,19 @@ export interface ObjectiveStats {
   completed: number;
   inProgress: number;
   notStarted: number;
+}
+
+export interface TaskStats {
+  total: number;
+  completed: number;
+  inProgress: number;
+  yourTasks: number;
+}
+
+interface ProjectTasksResponse {
+  totalCompletedTask: number;
+  totalActiveTask: number;
+  totalTask: number;
 }
 
 @Injectable({
@@ -88,7 +101,7 @@ export class ProjectOverviewService {
   }
 
   getObjectiveStats(projectId: number): Observable<ObjectiveStats> {
-    return this.http.get<any>(`${this.API_URL}/${projectId}/objectives-info`).pipe(
+    return this.http.post<any>(`${this.API_URL}/objectives-info/${projectId}`, {}).pipe(
       map(response => ({
         completed: response.completedObjectives || 0,
         inProgress: response.inProgressObjectives || 0,
@@ -100,6 +113,32 @@ export class ProjectOverviewService {
           completed: 0,
           inProgress: 0,
           notStarted: 0
+        });
+      })
+    );
+  }
+
+  getTaskStats(projectId: number): Observable<TaskStats> {
+    const userEmail = localStorage.getItem('username') || '';
+    
+    return forkJoin({
+      projectTasks: this.http.get<ProjectTasksResponse>(`${this.API_URL}/task-info/${projectId}`),
+      userTasks: this.http.get<number>(`${this.USER_API_URL}/project/${projectId}/user/active-tasks`, { params: { userEmail } })
+    }).pipe(
+      tap(({ projectTasks }) => console.log(projectTasks)),
+      map(({ projectTasks, userTasks }) => ({
+        total: projectTasks.totalTask || 0,
+        completed: projectTasks.totalCompletedTask || 0,
+        inProgress: projectTasks.totalActiveTask || 0,
+        yourTasks: userTasks || 0
+      })),
+      catchError(error => {
+        console.error('Error fetching task stats:', error);
+        return of({
+          total: 0,
+          completed: 0,
+          inProgress: 0,
+          yourTasks: 0
         });
       })
     );
