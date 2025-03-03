@@ -1,5 +1,6 @@
 package com.team.team_service.service;
 
+import com.team.team_service.DTO.TeamMemberProgressDto;
 import com.team.team_service.DTO.TeamResponseDto;
 import com.team.team_service.entity.Team;
 import com.team.team_service.entity.User;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.awt.event.WindowFocusListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -274,6 +276,49 @@ public class TeamServiceImpl implements TeamService {
                 leaderProfile
         );
     }
+
+    @Override
+    public List<TeamMemberProgressDto> getTeamMembersProgress(Long teamId, Long projectId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new RuntimeException("Team not found with ID: " + teamId));
+
+        List<Long> userIds = team.getTeamMembers();
+        List<TeamMemberProgressDto> teamMembersProgress = new ArrayList<>();
+
+        for (Long userId : userIds) {
+            try {
+                // Fetch user details (name & profile)
+                String userUrl = USER_SERVICE_URL + "/" +  userId;
+                ResponseEntity<User> userResponse = restTemplate.getForEntity(userUrl, User.class);
+
+                User user = userResponse.getBody();
+                String userName = (user != null) ? user.getUserName() : "Unknown";
+                String userProfile = (user != null) ? user.getUserProfilePhoto() : "";
+
+                // Fetch task count (total & completed)
+                String taskUrl = USER_SERVICE_URL + "/project/user/all-and-active-tasks?projectId=" + projectId + "&userId=" + userId;
+                ResponseEntity<Map<String, Integer>> taskResponse = restTemplate.exchange(
+                        taskUrl, HttpMethod.GET, null, new ParameterizedTypeReference<Map<String, Integer>>() {}
+                );
+
+                Map<String, Integer> taskData = taskResponse.getBody();
+                int totalTasks = (taskData != null) ? taskData.getOrDefault("totalTask", 0) : 0;
+                int completedTasks = (taskData != null) ? taskData.getOrDefault("completedTask", 0) : 0;
+
+                // Calculate progress
+                double progress = (totalTasks == 0) ? 0.0 : ((double) completedTasks / totalTasks) * 100;
+
+                // Add to list
+                teamMembersProgress.add(new TeamMemberProgressDto( userName, userProfile, totalTasks, completedTasks, progress));
+            } catch (Exception e) {
+                LOGGER.error("Failed to fetch details for user {}: {}", userId, e.getMessage());
+            }
+        }
+
+        return teamMembersProgress;
+    }
+
+
 }
 
 

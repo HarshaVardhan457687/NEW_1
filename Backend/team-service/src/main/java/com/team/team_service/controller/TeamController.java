@@ -1,5 +1,6 @@
 package com.team.team_service.controller;
 
+import com.team.team_service.DTO.TeamMemberProgressDto;
 import com.team.team_service.DTO.TeamResponseDto;
 import com.team.team_service.entity.Team;
 import com.team.team_service.service.TeamService;
@@ -89,4 +90,12 @@ public class TeamController {
     public ResponseEntity<TeamResponseDto> getTeamDetails(@RequestParam Long teamId) {
         return ResponseEntity.ok(teamService.getTeamDetails(teamId));
     }
+
+    @GetMapping("/project/members-progress")
+    public ResponseEntity<List<TeamMemberProgressDto>> getTeamMembersProgress(
+            @RequestParam Long teamId,
+            @RequestParam Long projectId) {
+        return ResponseEntity.ok(teamService.getTeamMembersProgress(teamId, projectId));
+    }
+
 }

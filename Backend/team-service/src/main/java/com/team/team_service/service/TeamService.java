@@ -1,6 +1,7 @@
 package com.team.team_service.service;
 
 
+import com.team.team_service.DTO.TeamMemberProgressDto;
 import com.team.team_service.DTO.TeamResponseDto;
 import com.team.team_service.entity.Team;
 
@@ -14,5 +15,6 @@ public interface TeamService {
     public void removeTeam(Long teamId);
     public double teamProgress(Long projectId, Long teamId);
     public TeamResponseDto getTeamDetails(Long teamId);
+    public List<TeamMemberProgressDto> getTeamMembersProgress(Long teamId, Long projectId);
 
 }
