@@ -1,7 +1,15 @@
 {
-    "teamName": "Agile Suit",
-    "teamLead": 2,
-    "teamMembers": [11, 13, 15, 16],
-    "assignedProject": 3,
-    "assignedKeyResult": [1]
+    "teamName": "Development Team A",
+    "totalKeyResults": {
+        "total": 1,
+        "completed": 1
+    },
+    "totalMembers": 4,
+    "teamProgress": 33.33333333333333,
+    "teamTasksCount": {
+        "completedTasks": 1,
+        "totalTasks": 3
+    },
+    "teamLeaderName": "Sunny",
+    "teamLeaderProfile": null
 }
