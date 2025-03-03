@@ -297,6 +297,7 @@ public Map<String, Integer> getObjectivesInfoByProject(Long projectId) {
 
             String url = TEAM_SERVICE_URL + "details?teamId=" + teamId;
 
+
             try {
                 ResponseEntity<TeamResponseDTO> response = restTemplate.exchange(
                         url,
@@ -315,6 +316,29 @@ public Map<String, Integer> getObjectivesInfoByProject(Long projectId) {
 
         return teams;
     }
+
+    public TeamResponseDTO getTeamForProject(Long projectId, Long teamId) {
+        projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project not found"));
+
+        String url = TEAM_SERVICE_URL + "details?teamId=" + teamId;
+        try {
+            ResponseEntity<TeamResponseDTO> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<TeamResponseDTO>() {}
+            );
+
+            if (response.getBody() != null) {
+                return response.getBody();
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to fetch details for team ID " + teamId + ": " + e.getMessage());
+        }
+
+        return null;
+    }
+
 
 
 

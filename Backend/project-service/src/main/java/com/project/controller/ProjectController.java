@@ -155,5 +155,11 @@ public class ProjectController {
         return ResponseEntity.ok(teams);
     }
 
+    @GetMapping("/team")
+    public ResponseEntity<TeamResponseDTO> getProjectTeam(@RequestParam Long projectId, @RequestParam Long teamId){
+        TeamResponseDTO team = projectService.getTeamForProject(projectId, teamId);
+        return ResponseEntity.ok(team);
+    }
+
 
 }

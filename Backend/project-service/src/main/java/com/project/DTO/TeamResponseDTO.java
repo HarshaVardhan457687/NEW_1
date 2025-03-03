@@ -4,14 +4,14 @@ import java.util.Map;
 
 public class TeamResponseDTO {
     private String teamName;
-    private int totalKeyResults;
+    private Map<String, Long> totalKeyResults;
     private int totalMembers;
     private double teamProgress;
     private Map<String,Long> teamTasksCount;
     private String teamLeaderName;
     private String teamLeaderProfile;
 
-    public TeamResponseDTO(String teamName, int totalKeyResults, int totalMembers, double teamProgress, Map<String, Long> teamTasksCount, String teamLeaderName, String teamLeaderProfile) {
+    public TeamResponseDTO(String teamName, Map<String, Long> totalKeyResults, int totalMembers, double teamProgress, Map<String, Long> teamTasksCount, String teamLeaderName, String teamLeaderProfile) {
         this.teamName = teamName;
         this.totalKeyResults = totalKeyResults;
         this.totalMembers = totalMembers;
@@ -29,11 +29,11 @@ public class TeamResponseDTO {
         this.teamName = teamName;
     }
 
-    public int getTotalKeyResults() {
+    public Map<String, Long> getTotalKeyResults() {
         return totalKeyResults;
     }
 
-    public void setTotalKeyResults(int totalKeyResults) {
+    public void setTotalKeyResults(Map<String, Long> totalKeyResults) {
         this.totalKeyResults = totalKeyResults;
     }
 
