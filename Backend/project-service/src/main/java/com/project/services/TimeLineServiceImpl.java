@@ -35,17 +35,24 @@ public class TimeLineServiceImpl implements TimeLineService{
     @Override
     public TimeLine updateTimeLine(Long timeLineId, TimeLine timeLine) {
         TimeLine existingTimeLine = timeLineRepository.findById(timeLineId)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+                .orElseThrow(() -> new RuntimeException("TimeLine not found"));
 
-        if(existingTimeLine != null){
+        // Check if the timeLine heading is provided and update if not null
+        if (timeLine.getTimeLineHeading() != null) {
             existingTimeLine.setTimeLineHeading(timeLine.getTimeLineHeading());
+        }
+
+        // Check if the timeLine status is provided and update if not null
+        if (timeLine.getTimeLineStatus() != null) {
             existingTimeLine.setTimeLineStatus(timeLine.getTimeLineStatus());
         }
 
+        // Save the updated timeLine
         timeLineRepository.save(existingTimeLine);
 
         return existingTimeLine;
     }
+
 
     @Override
     public void removeTimeLine(Long timeLineId) {
