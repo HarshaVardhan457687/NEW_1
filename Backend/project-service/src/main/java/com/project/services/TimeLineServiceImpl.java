@@ -42,6 +42,8 @@ public class TimeLineServiceImpl implements TimeLineService{
             existingTimeLine.setTimeLineStatus(timeLine.getTimeLineStatus());
         }
 
+        timeLineRepository.save(existingTimeLine);
+
         return existingTimeLine;
     }
 
