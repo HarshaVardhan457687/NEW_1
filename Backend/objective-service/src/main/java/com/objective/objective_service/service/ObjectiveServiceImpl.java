@@ -1,5 +1,6 @@
 package com.objective.objective_service.service;
 
+import com.objective.objective_service.constants.ObjectiveStatus;
 import com.objective.objective_service.dto.KeyResultSummaryDto;
 import com.objective.objective_service.dto.UserSummaryDTO;
 import com.objective.objective_service.entity.KeyResult;
@@ -10,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,6 +149,10 @@ public class ObjectiveServiceImpl implements ObjectiveService {
 
         for (Objective objective : objectives) {
             Long objectiveId = objective.getObjectiveId();
+
+            ObjectiveStatus newStatus = calculateObjectiveStatus(objective.getObjectiveCreatedAt(), objective.getObjectiveDueDate(), calculateObjectiveProgress(objectiveId));
+            objective.setObjectiveStatus(newStatus);
+
             List<KeyResultSummaryDto> keyResultSummaries = new ArrayList<>();
 
             // Fetch all KeyResults for the given objective from KeyResult Service
@@ -339,6 +346,23 @@ public class ObjectiveServiceImpl implements ObjectiveService {
 
 
         return (totalWeight > 0) ? (weightedSum / totalWeight) : 0.0;
+    }
+
+
+
+    public ObjectiveStatus calculateObjectiveStatus(Date startDate, Date dueDate, double actualProgress) {
+        if (startDate == null || dueDate == null) return ObjectiveStatus.ON_TRACK;
+
+        Date currentDate = new Date();
+        long totalDays = ChronoUnit.DAYS.between(startDate.toInstant(), dueDate.toInstant());
+        long daysPassed = ChronoUnit.DAYS.between(startDate.toInstant(), currentDate.toInstant());
+
+        if (totalDays <= 0) return ObjectiveStatus.ON_TRACK;
+
+        double expectedProgress = (100.0 / totalDays) * daysPassed;
+
+        if (daysPassed == 0) return ObjectiveStatus.ON_TRACK;
+        return actualProgress >= expectedProgress ? ObjectiveStatus.ON_TRACK : ObjectiveStatus.AT_RISK;
     }
 
 
