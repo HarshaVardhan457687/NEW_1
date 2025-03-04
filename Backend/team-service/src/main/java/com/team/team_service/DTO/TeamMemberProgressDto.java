@@ -3,13 +3,15 @@ package com.team.team_service.DTO;
 public class TeamMemberProgressDto {
     private String userName;
     private String userProfile;
+    private String role;
     private int totalTasks;
     private int completedTasks;
     private double progress;
 
-    public TeamMemberProgressDto(String userName, String userProfile, int totalTasks, int completedTasks, double progress) {
+    public TeamMemberProgressDto(String userName, String userProfile, String role,  int totalTasks, int completedTasks, double progress) {
         this.userName = userName;
         this.userProfile = userProfile;
+        this.role = role;
         this.totalTasks = totalTasks;
         this.completedTasks = completedTasks;
         this.progress = progress;
@@ -31,6 +33,14 @@ public class TeamMemberProgressDto {
 
     public void setUserProfile(String userProfile) {
         this.userProfile = userProfile;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public int getTotalTasks() {

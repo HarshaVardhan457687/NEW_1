@@ -317,7 +317,7 @@ public class TeamServiceImpl implements TeamService {
                 User user = userResponse.getBody();
                 String userName = (user != null) ? user.getUserName() : "Unknown";
                 String userProfile = (user != null) ? user.getUserProfilePhoto() : "";
-
+                String role = (user != null) ? user.getUserDesignation() : "";
                 // Fetch task count (total & completed)
                 String taskUrl = USER_SERVICE_URL + "/project/user/all-and-active-tasks?projectId=" + projectId + "&userId=" + userId;
                 ResponseEntity<Map<String, Integer>> taskResponse = restTemplate.exchange(
@@ -332,7 +332,7 @@ public class TeamServiceImpl implements TeamService {
                 double progress = (totalTasks == 0) ? 0.0 : ((double) completedTasks / totalTasks) * 100;
 
                 // Add to list
-                teamMembersProgress.add(new TeamMemberProgressDto( userName, userProfile, totalTasks, completedTasks, progress));
+                teamMembersProgress.add(new TeamMemberProgressDto( userName, userProfile, role,totalTasks, completedTasks, progress));
             } catch (Exception e) {
                 LOGGER.error("Failed to fetch details for user {}: {}", userId, e.getMessage());
             }
