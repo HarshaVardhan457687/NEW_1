@@ -3,6 +3,7 @@ package com.project.controller;
 import com.project.DTO.TeamDetailsDTO;
 import com.project.DTO.TeamResponseDTO;
 import com.project.constants.ProjectStatus;
+import com.project.model.KeyResult;
 import com.project.model.Project;
 import com.project.model.Objective;
 import com.project.services.ProjectService;
@@ -159,6 +160,12 @@ public class ProjectController {
     public ResponseEntity<TeamResponseDTO> getProjectTeam(@RequestParam Long projectId, @RequestParam Long teamId){
         TeamResponseDTO team = projectService.getTeamForProject(projectId, teamId);
         return ResponseEntity.ok(team);
+    }
+
+    @PostMapping("/keyresults")
+    public ResponseEntity<List<KeyResult>> getKeyResultsByObjectives(@RequestParam Long projectId){
+        List<KeyResult> keyResultsList = projectService.getAllKeyResult(projectId);
+        return ResponseEntity.ok(keyResultsList);
     }
 
 

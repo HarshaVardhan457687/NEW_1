@@ -10,11 +10,7 @@ import java.util.List;
 public class KeyResult {
     private Long keyResultId;
     private String keyResultName;
-    private Long ownerId;
-    private List<Long> associatedTasks;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dueDate;
+
 
     public Long getKeyResultId() {
         return keyResultId;
@@ -32,27 +28,4 @@ public class KeyResult {
         this.keyResultName = keyResultName;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    public List<Long> getAssociatedTasks() {
-        return associatedTasks;
-    }
-
-    public void setAssociatedTasks(List<Long> associatedTasks) {
-        this.associatedTasks = associatedTasks;
-    }
-
-    public Date getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-    }
 }
