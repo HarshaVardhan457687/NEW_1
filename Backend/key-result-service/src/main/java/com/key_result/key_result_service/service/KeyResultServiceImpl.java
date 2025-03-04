@@ -213,6 +213,12 @@ public class KeyResultServiceImpl implements KeyResultService {
     }
 
     @Override
+    public List<KeyResult> getALLKeyResultsByObjectiveIds(List<Long> objectiveIds) {
+        // Fetch all key results
+        return keyResultRepository.findByAssociatedObjectiveIdIn(objectiveIds);
+    }
+
+    @Override
     public Long getCompletedKeyResults(List<Long> keyResultIds) {
         List<KeyResult> keyResults = keyResultRepository.findAllById(keyResultIds);
         return keyResults.stream()

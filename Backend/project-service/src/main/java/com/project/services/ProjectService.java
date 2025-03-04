@@ -5,22 +5,26 @@ import com.project.DTO.TeamDetailsDTO;
 import com.project.DTO.TeamResponseDTO;
 import com.project.DTO.UserDTO;
 import com.project.constants.ProjectStatus;
+import com.project.model.KeyResult;
 import com.project.model.Objective;
 import com.project.model.Project;
 import com.project.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
 
     private static final String OBJECTIVE_URL = "http://localhost:8081/api/objective/";
+    private static final String KEYRESULT_URL = "http://localhost:8082/api/keyresults/";
     private static final String TASK_SERVICE_URL = "http://localhost:8083/api/tasks/";
     private static final String TEAM_SERVICE_URL = "http://localhost:8084/api/teams/";
     private static final String USER_SERVICE_URL = "http://localhost:8086/api/users/";
@@ -339,6 +343,36 @@ public Map<String, Integer> getObjectivesInfoByProject(Long projectId) {
         return null;
     }
 
+    public List<KeyResult> getAllKeyResult(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        // Fetch objectives using objectiveId list
+        List<Long> objectiveIds = project.getObjectiveId();
+        System.out.println("Objective IDs retrieved: " + objectiveIds);
+
+        String url = KEYRESULT_URL + "all/by-objectives";
+
+        try {
+            // Use ParameterizedTypeReference to handle generic response type correctly
+            ResponseEntity<List<KeyResult>> responseEntity = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    new HttpEntity<>(objectiveIds),
+                    new ParameterizedTypeReference<List<KeyResult>>() {}
+            );
+
+            // Check for a successful response
+            if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                List<KeyResult> keyResults = responseEntity.getBody();
+                return keyResults != null ? keyResults : Collections.emptyList();
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Properly log the exception
+        }
+
+        return Collections.emptyList(); // Return an empty list instead of null
+    }
 
 
 
