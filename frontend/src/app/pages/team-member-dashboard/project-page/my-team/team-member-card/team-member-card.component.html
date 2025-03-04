@@ -1,7 +1,7 @@
 <div class="team-member-card">
   <!-- Row 1: Image and Name -->
   <div class="card-row name-row">
-    <img [src]="'assets/' + image" [alt]="name" class="member-image">
+    <img [src]="image || 'assets/default_profile.png'" [alt]="name" class="member-image">
     <h3 class="member-name">{{ name }}</h3>
   </div>
   

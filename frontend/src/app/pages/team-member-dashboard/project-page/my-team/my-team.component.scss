@@ -106,14 +106,12 @@
             margin-bottom: 1rem;
 
             span {
-              font-size: 1rem;
-              color: #6B7280;
+              font-size: 1.20rem;
+              font-weight: 500;
+              color: #000000;
             }
 
-            span:nth-child(2) {
-              font-weight: 600;
-              color: #111827;
-            }
+           
           }
         }
 
@@ -198,5 +196,18 @@
   .error {
     color: #EF4444;
   }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 400px;
+}
+
+.loading-text {
+  font-size: 1.2rem;
+  color: #6B7280;
 }
 
