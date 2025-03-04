@@ -1,13 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TeamMemberCardComponent } from '../team-member-card/team-member-card.component';
-
-interface TeamMember {
-  name: string;
-  role: string;
-  image: string;
-  progress: number;
-}
+import { TeamMemberProgress } from '../../../../../core/services/my-team.service';
 
 @Component({
   selector: 'app-team-member-section',
@@ -17,5 +11,5 @@ interface TeamMember {
   styleUrls: ['./team-member-section.component.scss']
 })
 export class TeamMemberSectionComponent {
-  @Input() members: TeamMember[] = [];
+  @Input() members: TeamMemberProgress[] = [];
 }

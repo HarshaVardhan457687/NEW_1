@@ -70,13 +70,6 @@
           border-radius: 0.5rem;
           border: 1px solid #E5E7EB;
 
-          h3 {
-            font-size: 1.20rem;
-            font-weight: 500;
-            color: #000000;
-            margin-bottom: 1rem;
-          }
-
           .progress-info {
             display: flex;
             justify-content: space-between;
@@ -84,13 +77,9 @@
             margin-bottom: 1rem;
 
             span {
-              font-size: 1rem;
-              color: #6B7280;
-            }
-
-            span:nth-child(2) {
-              font-weight: 600;
-              color: #111827;
+              font-size: 1.20rem;
+              font-weight: 500;
+              color: #000000;
             }
           }
         }
@@ -160,6 +149,19 @@
       }
     }
   }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 400px;
+}
+
+.loading-text {
+  font-size: 1.2rem;
+  color: #6B7280;
 }
 
 .loading-error-container {

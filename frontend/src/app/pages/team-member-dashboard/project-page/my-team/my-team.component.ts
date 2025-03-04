@@ -88,5 +88,9 @@ export class MyTeamComponent implements OnInit {
     return `${completed}/${total}`;
   }
   
+  get teamProgress(): number {
+    return Math.floor(this.teamDetails?.teamProgress ?? 0);
+  }
+  
   
 }

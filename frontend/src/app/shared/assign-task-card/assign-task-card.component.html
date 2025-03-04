@@ -56,12 +56,12 @@
         <label>Due Date<span class="required">*</span></label>
         <input type="date" formControlName="dueDate">
       </div>
-
-      <!-- Action Buttons Row -->
-      <div class="form-row button-row">
-        <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
-        <button type="submit" class="assign-btn" (click)="onAssign()">Assign Task</button>
-      </div>
     </form>
+
+    <!-- Action Buttons Row - Moved outside form -->
+    <div class="button-row">
+      <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
+      <button type="button" class="assign-btn" (click)="onAssign()">Assign Task</button>
+    </div>
   </div>
 </div>

@@ -1,9 +1,9 @@
 <div class="team-leader-card">
-    <div class="leader-info">
-      <img [src]="'assets/' + image" [alt]="name" class="leader-image">
-      <div class="leader-details">
-        <h3 class="leader-name">{{ name }}</h3>
-        <p class="leader-role"> Team Leader</p>
-      </div>
+  <div class="leader-info">
+    <img [src]="profilePhoto || 'assets/default_profile.png'" [alt]="name" class="leader-image">
+    <div class="leader-details">
+      <h3 class="leader-name">{{ name }}</h3>
+      <p class="leader-role"> Team Leader</p>
     </div>
   </div>
+</div>

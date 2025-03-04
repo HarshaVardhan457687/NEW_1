@@ -19,6 +19,7 @@ export interface TeamMemberProgress {
   totalTasks: number;
   completedTasks: number;
   progress: number;
+  role: string;
 }
 
 @Injectable({

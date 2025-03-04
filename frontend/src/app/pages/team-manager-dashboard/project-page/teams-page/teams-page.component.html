@@ -2,6 +2,16 @@
   <div class="header">
     <button class="add-btn" (click)="onAddTeam()">Add Team</button>
   </div>
-  <app-teams-section [teams]="teams"></app-teams-section>
+
+  <ng-container *ngIf="!isLoading; else loadingTemplate">
+    <app-teams-section [teams]="teams"></app-teams-section>
+  </ng-container>
+
+  <ng-template #loadingTemplate>
+    <div class="loading-container">
+      <span class="loading-text">Loading teams...</span>
+    </div>
+  </ng-template>
 </div>
+
 <app-add-team-card [(show)]="showAddTeamCard"></app-add-team-card>

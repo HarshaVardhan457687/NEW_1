@@ -14,4 +14,10 @@ export class TeamMemberCardComponent {
   @Input() role: string = '';
   @Input() image: string = '';
   @Input() progress: number = 0;
+
+  get teamProgress(): number {
+    return Math.floor(this.progress);
+  }
+  
 }
+

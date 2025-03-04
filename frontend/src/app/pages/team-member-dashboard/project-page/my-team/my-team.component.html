@@ -23,9 +23,9 @@
           <div class="team-progress-section">
             <div class="progress-info">
               <span>Team Progress</span>
-              <span>{{ teamDetails.teamProgress }}%</span>
+              <span>{{ teamProgress }}%</span>
             </div>
-            <app-progress-bar-linear [progress]="teamDetails.teamProgress" [color]="'status-blue'"></app-progress-bar-linear>
+            <app-progress-bar-linear [progress]="teamProgress" [color]="'status-blue'"></app-progress-bar-linear>
           </div>
 
           <!-- Team Overview -->
@@ -37,7 +37,7 @@
                 <span class="stat-value">{{ teamDetails.totalMembers }}</span>
               </div>
               <div class="stat-item">
-                <span class="stat-label">Objectives</span>
+                <span class="stat-label">Key Results</span>
                 <span class="stat-value">{{ getCompletedKeyResults() }}</span>
               </div>              
               <div class="stat-item">

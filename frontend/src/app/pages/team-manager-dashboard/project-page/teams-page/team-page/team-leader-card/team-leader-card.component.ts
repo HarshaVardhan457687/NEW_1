@@ -11,7 +11,5 @@ import { ProgressBarLinearComponent } from '../../../../../../shared/progress-ba
 })
 export class TeamLeaderCardComponent {
   @Input() name: string = '';
-  @Input() role: string = '';
-  @Input() image: string = '';
-  @Input() progress: number = 0;
+  @Input() profilePhoto: string = '';
 }

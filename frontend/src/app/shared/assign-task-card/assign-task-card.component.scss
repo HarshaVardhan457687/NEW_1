@@ -39,9 +39,10 @@
   .task-form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 1rem;
     overflow-y: auto;
     padding-right: 8px;
+    margin-bottom: 16px;
 
     &::-webkit-scrollbar {
       width: 6px;
@@ -64,7 +65,7 @@
     .form-row {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 4px;
       min-height: fit-content;
 
       label {
@@ -108,41 +109,43 @@
         }
       }
     }
+  }
 
-    .button-row {
-      flex-direction: row;
-      justify-content: flex-end;
-      margin-top: 8px;
-      gap: 12px;
-      min-height: fit-content;
+  .button-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid #E5E7EB;
+    margin-top: auto;
+    background: white;
 
-      button {
-        padding: 8px 16px;
-        border-radius: 6px;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s ease;
+    button {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .cancel-btn {
+      background: white;
+      border: 1px solid #D1D5DB;
+      color: #374151;
+
+      &:hover {
+        background: #F3F4F6;
       }
+    }
 
-      .cancel-btn {
-        background: white;
-        border: 1px solid #D1D5DB;
-        color: #374151;
+    .assign-btn {
+      background: #4F46E5;
+      border: none;
+      color: white;
 
-        &:hover {
-          background: #F3F4F6;
-        }
-      }
-
-      .assign-btn {
-        background: #4F46E5;
-        border: none;
-        color: white;
-
-        &:hover {
-          background: #4338CA;
-        }
+      &:hover {
+        background: #4338CA;
       }
     }
   }
