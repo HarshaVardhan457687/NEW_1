@@ -113,5 +113,11 @@ public class KeyResultController {
         Long completedCount = keyResultService.getCompletedKeyResults(keyResultIds);
         return ResponseEntity.ok(completedCount);
     }
+
+    @GetMapping("/progress/{keyresultId}")
+    public ResponseEntity<Float> getKeyResultProgress(@PathVariable Long keyresultId){
+        float progress = keyResultService.getProgressOfKeyResult(keyresultId);
+        return ResponseEntity.ok(progress);
+    }
 }
 

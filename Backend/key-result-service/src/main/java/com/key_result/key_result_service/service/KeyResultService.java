@@ -15,4 +15,5 @@ public interface KeyResultService {
     public void removeKeyResult(Long id);
     public Map<String, List<KeyResult>> getKeyResultsByObjectiveIds(List<Long> objectiveIds);
     public Long getCompletedKeyResults(List<Long> keyResultIds);
+    public float getProgressOfKeyResult(Long keyResultId);
 }

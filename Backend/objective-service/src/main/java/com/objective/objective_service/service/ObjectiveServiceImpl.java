@@ -1,8 +1,9 @@
 package com.objective.objective_service.service;
 
+import com.objective.objective_service.dto.KeyResultSummaryDto;
+import com.objective.objective_service.dto.UserSummaryDTO;
 import com.objective.objective_service.entity.KeyResult;
 import com.objective.objective_service.entity.Objective;
-import com.objective.objective_service.entity.Task;
 import com.objective.objective_service.exception.ObjectiveNotFoundException;
 import com.objective.objective_service.repository.ObjectiveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,14 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.ZoneId;
 import java.util.*;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 
 @Service
 public class ObjectiveServiceImpl implements ObjectiveService {
@@ -23,14 +27,12 @@ public class ObjectiveServiceImpl implements ObjectiveService {
     private final ObjectiveRepository objectiveRepository;
 
     // Logger to log important service-related information
-    private static final Logger LOGGER = Logger.getLogger(ObjectiveServiceImpl.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ObjectiveServiceImpl.class);
 
     // URL for communicating with the KeyResult service
     private static final String KEYRESULT_SERVICE_URL = "http://localhost:8082/api/keyresults/";
-
-    // URL for communicating with the Task service
-    private static final String TASK_SERVICE_URL = "http://localhost:8083/api/tasks/";
-
+    private static final String USER_SERVICE_URL = "http://localhost:8086/api/users/";
+    private static final String TEAM_SERVICE_URL = "http://localhost:8060/api/teams/";
     // Constructor injection for ObjectiveRepository, allows dependency injection
     @Autowired
     public ObjectiveServiceImpl(ObjectiveRepository objectiveRepository){
@@ -48,30 +50,7 @@ public class ObjectiveServiceImpl implements ObjectiveService {
     @Override
     public List<Objective> getAllObjective() {
         LOGGER.info("Fetching all objectives from the database...");
-
-        // Retrieve all objectives from the repository
         List<Objective> objectives = objectiveRepository.findAll();
-
-        // Iterate through each objective to fetch related KeyResults and Tasks
-        for (Objective objective : objectives) {
-            Long objectiveId = objective.getObjectiveId();
-
-            try {
-                // Fetch KeyResults from KeyResult service using the objective ID
-                String keyResultUrl = KEYRESULT_SERVICE_URL + "objective/" + objectiveId;
-                List<KeyResult> keyResults = Optional.ofNullable(
-                        restTemplate.getForObject(keyResultUrl, KeyResult[].class)
-                ).map(Arrays::asList).orElse(Collections.emptyList());
-                objective.setKeyResult(keyResults);
-
-            } catch (RestClientException e) {
-                // Log error if there's an issue while fetching data from external services
-                LOGGER.severe("Error fetching data for Objective ID: " + objectiveId + " - " + e.getMessage());
-                e.printStackTrace(); // Log the stack trace for debugging
-            }
-        }
-
-        // Return the list of objectives, now populated with KeyResults and Tasks
         return objectives;
     }
 
@@ -91,28 +70,11 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         }
 
         Objective objective = objectiveOpt.get();
-
-        // Fetch related KeyResults from KeyResult service
-        String url = KEYRESULT_SERVICE_URL + "objective/" + id;
-        LOGGER.info("Fetching key results from: " + url);
-
-        try {
-            // Get the list of KeyResults for the objective
-            List<KeyResult> keyResults = Arrays.asList(
-                    restTemplate.getForObject(url, KeyResult[].class)
-            );
-            objective.setKeyResult(keyResults);
-        } catch (RestClientException e) {
-            // Log error if unable to fetch key results
-            LOGGER.severe("Failed to fetch key results for Objective ID: " + id + " - " + e.getMessage());
-            throw new RuntimeException("Failed to fetch key results from the microservice.");
-        }
-
-
-
-        // Return the objective with its related KeyResults and Tasks
         return objective;
     }
+
+
+
 
     /**
      * Creates a new objective and saves it to the database.
@@ -180,9 +142,97 @@ public class ObjectiveServiceImpl implements ObjectiveService {
     public List<Objective> getAllObjectiveByProjectId(Long projectId) {
         LOGGER.info("Fetching all objectives for projectID: " + projectId);
 
-        // Return objectives mapped to the given project
-        return objectiveRepository.findByMappedProject(projectId);
+        List<Objective> objectives = objectiveRepository.findByMappedProject(projectId);
+
+        for (Objective objective : objectives) {
+            Long objectiveId = objective.getObjectiveId();
+            List<KeyResultSummaryDto> keyResultSummaries = new ArrayList<>();
+
+            // Fetch all KeyResults for the given objective from KeyResult Service
+            List<KeyResult> keyResults = fetchKeyResultsByObjectiveId(objectiveId);
+
+            for (KeyResult keyResult : keyResults) {
+                KeyResultSummaryDto keyResultSummary = new KeyResultSummaryDto();
+                keyResultSummary.setName(keyResult.getKeyResultName());
+                keyResultSummary.setPriority(keyResult.getKeyResultPriority().name());
+                keyResultSummary.setCurrKeyResultVal((double) keyResult.getKeyResultcurrentVal());
+                keyResultSummary.setDueDate(keyResult.getKeyResultDueDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                keyResultSummary.setProgress(getKeyResultProgress(keyResult.getKeyResultId()));
+                // Fetch team leader ID from Teams service
+                Long teamLeaderId = fetchTeamLeaderId(keyResult.getTeamId());
+
+                // Fetch team leader details from User service
+                if (teamLeaderId != null) {
+                    UserSummaryDTO userDetails = fetchUserDetails(teamLeaderId);
+                    keyResultSummary.setTeamLeaderName(userDetails.getUserName());
+                    keyResultSummary.setTeamLeaderProfilePic(userDetails.getUserProfilePhoto());
+                }
+
+                keyResultSummaries.add(keyResultSummary);
+            }
+            objective.setKeyResult(keyResultSummaries);
+        }
+
+        return objectives;
     }
+
+    private List<KeyResult> fetchKeyResultsByObjectiveId(Long objectiveId) {
+        try {
+            String url = KEYRESULT_SERVICE_URL + "objective/" + objectiveId;
+            ResponseEntity<List<KeyResult>> response = restTemplate.exchange(
+                    url, HttpMethod.GET, null, new ParameterizedTypeReference<List<KeyResult>>() {});
+            return response.getBody() != null ? response.getBody() : Collections.emptyList();
+        } catch (Exception e) {
+            LOGGER.info("Error fetching key results for objective ID: " + objectiveId);
+            return Collections.emptyList();
+        }
+    }
+
+    private Float getKeyResultProgress(Long keyResultId) {
+        try {
+            String url = KEYRESULT_SERVICE_URL + "progress/" + keyResultId; // Ensure correct URL formatting
+            LOGGER.info("Fetching KeyResult Progress for KeyResultId: {}", keyResultId);
+
+            // Make the HTTP request and get the progress
+            Float progress = restTemplate.getForObject(url, Float.class);
+            LOGGER.info("Received progress for KeyResultId {}: {}", keyResultId, progress);
+
+            return progress;
+        } catch (Exception e) {
+            // Corrected to log keyResultId instead of teamId
+            LOGGER.error("Error fetching progress for KeyResultId: {}", keyResultId, e);
+            // You can return null instead of 0 if you want to signify an error more clearly
+            return 0.0f;
+        }
+    }
+
+
+    private Long fetchTeamLeaderId(Long teamId) {
+        try {
+            String url = TEAM_SERVICE_URL + "get-team-lead/" + teamId;
+            LOGGER.info("Fetching team leader ID from URL: {}", url);
+
+            Long teamLeadId = restTemplate.getForObject(url, Long.class);
+            LOGGER.info("Received team leader ID: {}", teamLeadId);
+
+            return teamLeadId;
+        } catch (Exception e) {
+            LOGGER.error("Error fetching team leader ID for teamId: {}", teamId, e);
+            return null;
+        }
+    }
+
+
+    private UserSummaryDTO fetchUserDetails(Long userId) {
+        try {
+            String url = USER_SERVICE_URL + "user-summary/" + userId;
+            return restTemplate.getForObject(url, UserSummaryDTO.class);
+        } catch (Exception e) {
+            LOGGER.info("Error fetching user details for userId: {}" + userId);
+            return null; // Return null or handle with a default object if needed
+        }
+    }
+
 
 
     /**

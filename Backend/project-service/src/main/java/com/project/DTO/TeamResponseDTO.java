@@ -1,8 +1,16 @@
 package com.project.DTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Map;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class TeamResponseDTO {
+    private Long teamId;
     private String teamName;
     private Map<String, Long> totalKeyResults;
     private int totalMembers;
@@ -11,14 +19,12 @@ public class TeamResponseDTO {
     private String teamLeaderName;
     private String teamLeaderProfile;
 
-    public TeamResponseDTO(String teamName, Map<String, Long> totalKeyResults, int totalMembers, double teamProgress, Map<String, Long> teamTasksCount, String teamLeaderName, String teamLeaderProfile) {
-        this.teamName = teamName;
-        this.totalKeyResults = totalKeyResults;
-        this.totalMembers = totalMembers;
-        this.teamProgress = teamProgress;
-        this.teamTasksCount = teamTasksCount;
-        this.teamLeaderName = teamLeaderName;
-        this.teamLeaderProfile = teamLeaderProfile;
+    public Long getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
     }
 
     public String getTeamName() {

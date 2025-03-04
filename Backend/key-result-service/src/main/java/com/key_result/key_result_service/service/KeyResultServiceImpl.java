@@ -201,7 +201,7 @@ public class KeyResultServiceImpl implements KeyResultService {
 
         // Filter active key results (currVal < 100%)
         List<KeyResult> activeKeyResults = allKeyResults.stream()
-                .filter(kr -> kr.getKeyResultcurrentVal() < 100.0)
+                .filter(kr -> kr.getKeyResultcurrentVal() < kr.getKeyResultTargetVal())
                 .toList();
 
         // Return both lists in a map
@@ -216,8 +216,14 @@ public class KeyResultServiceImpl implements KeyResultService {
     public Long getCompletedKeyResults(List<Long> keyResultIds) {
         List<KeyResult> keyResults = keyResultRepository.findAllById(keyResultIds);
         return keyResults.stream()
-                .filter(kr -> kr.getKeyResultcurrentVal() == 100)
+                .filter(kr -> kr.getKeyResultcurrentVal() == kr.getKeyResultTargetVal())
                 .count();
+    }
+
+    @Override
+    public float getProgressOfKeyResult(Long keyResultId){
+        KeyResult keyResult = keyResultRepository.findById(keyResultId).orElseThrow(() -> new RuntimeException("key result not found"));
+        return (float) keyResult.getKeyResultcurrentVal() / keyResult.getKeyResultTargetVal() * 100;
     }
 
 

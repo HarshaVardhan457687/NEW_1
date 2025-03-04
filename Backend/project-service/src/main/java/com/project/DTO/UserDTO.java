@@ -4,6 +4,7 @@ public class UserDTO {
     private Long userId;
     private String userName;
     private String userProfilePhoto;
+    private String role;
 
     public Long getUserId() {
         return userId;
@@ -27,5 +28,13 @@ public class UserDTO {
 
     public void setUserProfilePhoto(String userProfilePhoto) {
         this.userProfilePhoto = userProfilePhoto;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

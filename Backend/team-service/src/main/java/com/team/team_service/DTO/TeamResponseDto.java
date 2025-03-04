@@ -1,24 +1,31 @@
 package com.team.team_service.DTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Map;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class TeamResponseDto {
+    private Long teamId;
     private String teamName;
     private Map<String, Long> totalKeyResults;
     private int totalMembers;
     private double teamProgress;
     private Map<String,Long> teamTasksCount;
     private String teamLeaderName;
-    private String teamLeaderProfile; // Profile URL or Image
+    private String teamLeaderProfile;
 
-    public TeamResponseDto(String teamName, Map<String, Long> totalKeyResults, int totalMembers, double teamProgress, Map<String, Long> teamTasksCount, String teamLeaderName, String teamLeaderProfile) {
-        this.teamName = teamName;
-        this.totalKeyResults = totalKeyResults;
-        this.totalMembers = totalMembers;
-        this.teamProgress = teamProgress;
-        this.teamTasksCount = teamTasksCount;
-        this.teamLeaderName = teamLeaderName;
-        this.teamLeaderProfile = teamLeaderProfile;
+    public Long getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
     }
 
     public String getTeamName() {

@@ -54,7 +54,7 @@ public class UserController {
         return userServiceImpl.getUserById(user.getUserId());
     }
 
-    @GetMapping("/user-summary")
+    @GetMapping("/user-summary/{userId}")
     public UserSummaryDTO getUserSummary(@PathVariable Long userId){
         UserSummaryDTO userSummary = userServiceImpl.getUserSummary(userId);
         return userSummary;

@@ -668,7 +668,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         // Create the UserSummaryDTO object and return it
-        UserSummaryDTO userSummary = new UserSummaryDTO(user.getUserId(), user.getUserName(), user.getUserProfilePhoto());
+        UserSummaryDTO userSummary = new UserSummaryDTO(user.getUserId(), user.getUserName(), user.getUserProfilePhoto(), user.getUserDesignation());
 
         return userSummary;
     }

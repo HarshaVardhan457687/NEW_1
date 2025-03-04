@@ -1,15 +1,16 @@
 package com.objective.objective_service.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserSummaryDTO {
     private Long userId;
     private String userName;
     private String userProfilePhoto;
-
-    public UserSummaryDTO( Long userId, String userName, String userProfilePhoto) {
-        this.userId = userId;
-        this.userName = userName;
-        this.userProfilePhoto = userProfilePhoto;
-    }
 
     public Long getUserId(){
         return userId;

@@ -288,6 +288,7 @@ public class TeamServiceImpl implements TeamService {
 
         // Populate the DTO
         return new TeamResponseDto(
+                team.getTeamId(),
                 team.getTeamName(),
                 keyResultSummary,
                 team.getTeamMembers().size(),

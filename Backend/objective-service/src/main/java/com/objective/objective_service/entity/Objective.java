@@ -3,6 +3,7 @@ package com.objective.objective_service.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.objective.objective_service.constants.ObjectivePriority;
 import com.objective.objective_service.constants.ObjectiveStatus;
+import com.objective.objective_service.dto.KeyResultSummaryDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,7 +31,7 @@ public class Objective {
     private List<Long> keyResultIds;
 
     @Transient
-    private List<KeyResult> keyResult;
+    private List<KeyResultSummaryDto> keyResult;
 
 
     @CreationTimestamp
@@ -80,11 +81,11 @@ public class Objective {
         this.keyResultIds = keyResultIds;
     }
 
-    public List<KeyResult> getKeyResult() {
+    public List<KeyResultSummaryDto> getKeyResult() {
         return keyResult;
     }
 
-    public void setKeyResult(List<KeyResult> keyResult) {
+    public void setKeyResult(List<KeyResultSummaryDto> keyResult) {
         this.keyResult = keyResult;
     }
 

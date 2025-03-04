@@ -98,9 +98,9 @@ public class TeamController {
         return ResponseEntity.ok(teamService.getTeamMembersProgress(teamId, projectId));
     }
 
-    @GetMapping("/get-team-lead")
-    public ResponseEntity<Long> getTeamLead(@RequestParam Long teamLead){
-        return ResponseEntity.ok(teamService.getTeamLeadId(teamLead));
+    @GetMapping("/get-team-lead/{teamId}")
+    public ResponseEntity<Long> getTeamLead(@PathVariable Long teamId){
+        return ResponseEntity.ok(teamService.getTeamLeadId(teamId));
     }
 
      // Endpoint to check if a team is mapped to a given project
