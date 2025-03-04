@@ -276,6 +276,21 @@ public class UserController {
     }
 
 
+    /**
+     * Endpoint to assign a task to a user.
+     *
+     * @param userId The ID of the user.
+     * @param taskId The ID of the task to be assigned.
+     * @return HTTP response indicating the success or failure of the operation.
+     */
+    @PatchMapping("/{userId}/assign-task")
+    public ResponseEntity<String> assignTaskToUser(@PathVariable Long userId, @RequestBody Long taskId) {
+        boolean taskAssigned = userServiceImpl.assignTaskToUser(userId, taskId);
+        if (taskAssigned) {
+            return ResponseEntity.ok("Task assigned to user successfully");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+    }
 
 
 }

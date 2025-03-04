@@ -16,4 +16,5 @@ public interface KeyResultService {
     public Map<String, List<KeyResult>> getKeyResultsByObjectiveIds(List<Long> objectiveIds);
     public Long getCompletedKeyResults(List<Long> keyResultIds);
     public float getProgressOfKeyResult(Long keyResultId);
+    public boolean addTaskToKeyResult(Long keyResultId, Long taskId);
 }

@@ -119,5 +119,21 @@ public class KeyResultController {
         float progress = keyResultService.getProgressOfKeyResult(keyresultId);
         return ResponseEntity.ok(progress);
     }
+
+    /**
+     * Endpoint to add a task to a key result.
+     *
+     * @param keyResultId The ID of the key result.
+     * @param taskId      The ID of the task to be added.
+     * @return HTTP response indicating success or failure of the operation.
+     */
+    @PatchMapping("/{keyResultId}/add-task")
+    public ResponseEntity<String> addTaskToKeyResult(@PathVariable Long keyResultId, @RequestBody Long taskId) {
+        boolean taskAdded = keyResultService.addTaskToKeyResult(keyResultId, taskId);
+        if (taskAdded) {
+            return ResponseEntity.ok("Task added to KeyResult successfully");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("KeyResult not found");
+    }
 }
 

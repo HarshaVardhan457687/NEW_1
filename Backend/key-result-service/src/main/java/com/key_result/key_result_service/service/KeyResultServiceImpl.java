@@ -226,6 +226,29 @@ public class KeyResultServiceImpl implements KeyResultService {
         return (float) keyResult.getKeyResultcurrentVal() / keyResult.getKeyResultTargetVal() * 100;
     }
 
+    /**
+     * Adds a task to a key result.
+     *
+     * @param keyResultId The ID of the key result.
+     * @param taskId      The ID of the task to be added.
+     * @return true if the task was added successfully, false if the key result was not found.
+     */
+    @Override
+    public boolean addTaskToKeyResult(Long keyResultId, Long taskId) {
+        KeyResult keyResult = keyResultRepository.findById(keyResultId).orElse(null);
+        if (keyResult != null) {
+            List<Long> associatedTasks = keyResult.getKeyResultAssociatedTasksId();
+            if (associatedTasks == null) {
+                associatedTasks = new ArrayList<>();
+            }
+            associatedTasks.add(taskId);
+            keyResult.setKeyResultAssociatedTasksId(associatedTasks);
+            keyResultRepository.save(keyResult);
+            return true;
+        }
+        return false;
+    }
+
 
 }
 

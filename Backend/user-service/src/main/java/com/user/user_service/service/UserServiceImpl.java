@@ -690,4 +690,26 @@ public class UserServiceImpl implements UserService {
         return null; // No mapped team found
     }
 
+    /**
+     * Assigns a task to a user.
+     *
+     * @param userId The ID of the user.
+     * @param taskId The ID of the task to be assigned.
+     * @return true if the task was assigned successfully, false if user was not found.
+     */
+    public boolean assignTaskToUser(Long userId, Long taskId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            List<Long> userTasks = user.getUserTaskAssigned();
+            if (userTasks == null) {
+                userTasks = new ArrayList<>();
+            }
+            userTasks.add(taskId);
+            user.setUserTaskAssigned(userTasks);
+            updateUserById(userId, user, true);
+            return true;
+        }
+        return false;
+    }
+
 }

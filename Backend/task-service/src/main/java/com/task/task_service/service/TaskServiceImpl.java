@@ -7,9 +7,13 @@ import com.task.task_service.repository.TaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +29,6 @@ import java.util.stream.Collectors;
 @Service
 public class TaskServiceImpl implements TaskService {
 
-    private final TaskRepository taskRepository;
 //    private final SimpMessagingTemplate messagingTemplate; // Inject WebSocket messaging
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskServiceImpl.class);
 
@@ -35,10 +38,13 @@ public class TaskServiceImpl implements TaskService {
      * @param taskRepository Repository interface for task-related database operations.
      */
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
-    }
+    private TaskRepository taskRepository;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
+    private static final String KEYRESULT_SERVICE_URL = "http://localhost:8082/api/keyresults/";
+    private static final String USER_SERVICE_URL = "http://localhost:8086/api/users/";
     /**
      * Adds a new task to the database.
      *
@@ -48,7 +54,41 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task addTask(Task task) {
         LOGGER.info("Adding new task with heading: {}", task.getTaskHeading());
-        return taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+
+        updateUserService(savedTask.getTaskOwner(), savedTask.getTaskId());
+        updateKeyResultService(savedTask.getTaskAssociatedKeyResult(), savedTask.getTaskId());
+        return savedTask;
+    }
+
+    private void updateUserService(Long userId, Long taskId) {
+        String url = USER_SERVICE_URL + "{userId}/assign-task";
+
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<Long> requestEntity = new HttpEntity<>(taskId, headers);
+
+            restTemplate.exchange(url, HttpMethod.PATCH, requestEntity, Void.class, userId);
+            LOGGER.info("Successfully updated UserService for user {} with task {}", userId, taskId);
+        } catch (Exception e) {
+            LOGGER.error("Failed to update UserService: {}", e.getMessage());
+        }
+    }
+
+    private void updateKeyResultService(Long keyResultId, Long taskId) {
+        String url = KEYRESULT_SERVICE_URL + "{keyResultId}/add-task";
+
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<Long> requestEntity = new HttpEntity<>(taskId, headers);
+
+            restTemplate.exchange(url, HttpMethod.PATCH, requestEntity, Void.class, keyResultId);
+            LOGGER.info("Successfully updated KeyResultService for keyResult {} with task {}", keyResultId, taskId);
+        } catch (Exception e) {
+            LOGGER.error("Failed to update KeyResultService: {}", e.getMessage());
+        }
     }
 
     /**
