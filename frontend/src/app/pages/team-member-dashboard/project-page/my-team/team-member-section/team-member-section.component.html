@@ -3,7 +3,7 @@
     <app-team-member-card
       *ngFor="let member of members"
       [name]="member.userName"
-      [role]="'Team Member'"
+      [role]="member.role"
       [image]="member.userProfile"
       [progress]="member.progress">
     </app-team-member-card>

@@ -11,7 +11,7 @@
   <div class="metrics-row">
     <div class="metric">
       <img src="assets/key_result_icon.png" alt="Key Results" class="icon">
-      <span>{{ team.overview.objectives }} Key Results</span>
+      <span>{{ team.overview.keyResults }} Key Results</span>
     </div>
     <div class="metric">
       <img src="assets/members_icon.png" alt="Team Members" class="icon1">
@@ -28,7 +28,7 @@
 
   <!-- Team Leader -->
   <div class="team-leader">
-    <img [src]="'assets/' + team.teamLeader.image" alt="Team Leader" class="leader-avatar">
+    <img [src]="teamLeaderImage" alt="Team Leader" class="leader-avatar">
     <div class="leader-info">
       <span class="leader-name">{{ team.teamLeader.name }}</span>
       <span class="leader-role">Team Leader</span>

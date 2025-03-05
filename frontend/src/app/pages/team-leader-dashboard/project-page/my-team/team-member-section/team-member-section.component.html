@@ -2,9 +2,9 @@
     <div class="members-list">
       <app-team-member-card
         *ngFor="let member of members"
-        [name]="member.name"
-        [role]="member.role"
-        [image]="member.image"
+        [name]="member.userName"
+        [role]="'Team Member'"
+        [image]="member.userProfile"
         [progress]="member.progress">
       </app-team-member-card>
     </div>

@@ -48,4 +48,9 @@ export class TeamMemberCardComponent implements OnInit, OnDestroy {
       data: { memberId: this.id }  // Pass any relevant data
     });
   }
+
+  get teamProgress(): number {
+    return Math.floor(this.progress);
+  }
+  
 }

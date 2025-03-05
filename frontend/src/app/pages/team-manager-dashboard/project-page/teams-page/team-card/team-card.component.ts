@@ -14,7 +14,7 @@ interface Team {
   };
   overview: {
     teamMembers: number;
-    objectives: string;
+    keyResults: string;
   };
 }
 
@@ -40,4 +40,9 @@ export class TeamCard {
     
     this.router.navigate(['/team-manager-dashboard', 'projects', projectId, 'teams', this.team.id]);
   }
+
+  get teamLeaderImage(): string {
+    return this.team.teamLeader?.image || 'assets/default_profile.png';
+  }
+  
 }

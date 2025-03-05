@@ -67,11 +67,12 @@
 .progress-row {
   margin-bottom: 16px;
 
+  span{
+    margin-bottom: 0.75rem;
+  }
   .progress-label {
-    display: block;
     font-size: 14px;
     color: #374151;
-    margin-bottom: 4px;
   }
 
   .progress-value {

@@ -2,7 +2,7 @@
   <div class="teams-grid">
     <app-team-card 
       *ngFor="let team of teams" 
-      [team]="team">
+      [team]="mapTeamResponseToCardFormat(team)">
     </app-team-card>
   </div>
 </div>
