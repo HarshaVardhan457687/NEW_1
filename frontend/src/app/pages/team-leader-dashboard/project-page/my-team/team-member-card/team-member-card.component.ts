@@ -1,12 +1,13 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProgressBarLinearComponent } from '../../../../../shared/progress-bar-linear/progress-bar-linear.component';
 import { ModalService } from '../../../../../core/services/modal.service';
+import { AssignTaskCardComponent } from '../../../../../shared/assign-task-card/assign-task-card.component';
 
 @Component({
   selector: 'app-team-member-card',
   standalone: true,
-  imports: [CommonModule, ProgressBarLinearComponent],
+  imports: [CommonModule, ProgressBarLinearComponent, AssignTaskCardComponent],
   templateUrl: './team-member-card.component.html',
   styleUrls: ['./team-member-card.component.scss']
 })
@@ -16,6 +17,9 @@ export class TeamMemberCardComponent implements OnInit, OnDestroy {
   @Input() role: string = '';
   @Input() image: string = '';
   @Input() progress: number = 0;
+  @Input() projectId: number = 0;
+  
+  @ViewChild('assignTaskModal') assignTaskModal!: AssignTaskCardComponent;
   
   showMenu: boolean = false;
   private clickListener: any;
@@ -23,6 +27,7 @@ export class TeamMemberCardComponent implements OnInit, OnDestroy {
   constructor(private modalService: ModalService) {}
 
   ngOnInit() {
+    console.log("[TeamMemberCardComponent] id:", this.id);
     this.clickListener = (event: MouseEvent) => {
       if (!event.target) return;
       const target = event.target as HTMLElement;
@@ -43,10 +48,14 @@ export class TeamMemberCardComponent implements OnInit, OnDestroy {
   }
 
   onAssignTask() {
-    this.modalService.open({
-      type: 'assignTask',
-      data: { memberId: this.id }  // Pass any relevant data
-    });
+    if (this.assignTaskModal) {
+      this.assignTaskModal.open();
+    } else {
+      this.modalService.open({
+        type: 'assignTask',
+        data: { memberId: this.id }
+      });
+    }
   }
 
   get teamProgress(): number {

@@ -12,4 +12,6 @@ import { TeamMemberProgress } from '../../../../../core/services/my-team.service
 })
 export class TeamMemberSectionComponent {
   @Input() members: TeamMemberProgress[] = [];
+  @Input() projectId: number = 0;
+  
 }

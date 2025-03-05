@@ -26,5 +26,12 @@
   <div class="popup-menu" *ngIf="showMenu" (click)="onAssignTask()">
     <div class="menu-item">Assign Task</div>
   </div>
+
+  <!-- Add assign task card at the end -->
+  <app-assign-task-card
+    #assignTaskModal
+    [projectId]="projectId"
+    [userId]="id">
+  </app-assign-task-card>
 </div>
 

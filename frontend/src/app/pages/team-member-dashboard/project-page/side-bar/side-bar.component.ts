@@ -17,7 +17,7 @@ export class SideBarComponent implements OnInit {
 
   tabs = [
     { icon: 'home_icon.svg', label: 'Overview', route: './overview', id: 'overview' },
-    { icon: 'team_icon.svg', label: 'Teams', route: './my-team', id: 'teams' },
+    { icon: 'team_icon.svg', label: 'My Team', route: './my-team', id: 'my-team' },
     { icon: 'objectives_icon.svg', label: 'Objectives', route: './objectives', id: 'objectives' },
     { icon: 'my_tasks_icon.svg', label: 'My Tasks', route: './tasks', id: 'tasks' },
     { icon: 'calender_icon.svg', label: 'Calendar', route: './calendar', id: 'calendar' }

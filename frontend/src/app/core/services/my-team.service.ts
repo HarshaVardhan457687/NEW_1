@@ -14,6 +14,7 @@ export interface TeamResponse {
 }
 
 export interface TeamMemberProgress {
+  userId: number;
   userName: string;
   userProfile: string;
   totalTasks: number;
