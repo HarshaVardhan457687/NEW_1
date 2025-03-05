@@ -5,6 +5,7 @@ import com.key_result.key_result_service.entity.Task;
 import com.key_result.key_result_service.exception.ResourceNotFoundException;
 import com.key_result.key_result_service.repository.KeyResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -29,6 +30,8 @@ public class KeyResultServiceImpl implements KeyResultService {
 
     // Defining the TASK_SERVICE_URL to interact with Task Service via HTTP
     private final static String TASK_SERVICE_URL = "http://localhost:8083/api/tasks/";
+    private final static String OBJECTIVE_SERVICE_URL = "http://localhost:8081/api/objective/";
+
 
     // Constructor-based dependency injection for KeyResultRepository
     @Autowired
@@ -50,7 +53,46 @@ public class KeyResultServiceImpl implements KeyResultService {
     @Override
     public KeyResult addKeyResult(KeyResult keyResult) {
         LOGGER.info("Adding a new KeyResult: {}", keyResult);
-        return keyResultRepository.save(keyResult);
+
+        // Save the KeyResult first
+        KeyResult savedKeyResult = keyResultRepository.save(keyResult);
+
+        // Update the Objective's keyResultIds list
+        updateObjectiveWithKeyResult(savedKeyResult.getAssociatedObjectiveId(), savedKeyResult.getKeyResultId());
+
+        return savedKeyResult;
+    }
+
+    private void updateObjectiveWithKeyResult(Long objectiveId, Long keyResultId) {
+        if (objectiveId == null || keyResultId == null) {
+            LOGGER.warn("Objective ID or KeyResult ID is null. Skipping update.");
+            return;
+        }
+
+        // ✅ Fix: Send a List<Long> instead of a Map
+        List<Long> requestBody = Collections.singletonList(keyResultId);
+
+        // Set headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<List<Long>> requestEntity = new HttpEntity<>(requestBody, headers);
+
+        // API URL
+        String updateUrl = OBJECTIVE_SERVICE_URL + objectiveId + "/add-key-result";
+
+        try {
+            // ✅ Fix: Use exchange() instead of patchForObject()
+            ResponseEntity<String> response = restTemplate.exchange(
+                    updateUrl, HttpMethod.PATCH, requestEntity, String.class);
+
+            LOGGER.info("Updated Objective {} with new KeyResult {} via API. Response: {}",
+                    objectiveId, keyResultId, response.getBody());
+
+        } catch (Exception e) {
+            LOGGER.error("Failed to update Objective {} with KeyResult {}. Error: {}",
+                    objectiveId, keyResultId, e.getMessage(), e);
+        }
     }
 
     /**

@@ -36,7 +36,7 @@ public class TeamServiceImpl implements TeamService {
 
     private static final String USER_SERVICE_URL = "http://localhost:8086/api/users";
     private static final String KEY_RESULT_SERVICE_URL = "http://localhost:8082/api/keyresults";
-
+    private static final String PROJECT_SERVICE_URL = "http://localhost:8085/api/projects";
     /**
      * Creates a new team in the database.
      * This method accepts a Team object, saves it, and returns the saved Team object.
@@ -54,6 +54,9 @@ public class TeamServiceImpl implements TeamService {
 
         // Call User Service to update user fields
         updateUserTeams(savedTeam.getTeamMembers(), savedTeam.getTeamId(), savedTeam.getAssignedProject(), savedTeam.getTeamLead());
+
+        // Call Project Service to update teamsInvolvedId list
+        updateProjectTeams(savedTeam.getAssignedProject(), savedTeam.getTeamId());
 
         return savedTeam;
     }
@@ -77,6 +80,26 @@ public class TeamServiceImpl implements TeamService {
             LOGGER.error("Failed to update user details in User Service: {}", e.getMessage());
         }
     }
+
+    private void updateProjectTeams(Long projectId, Long teamId) {
+        if (projectId == null || teamId == null) {
+            LOGGER.warn("Project ID or Team ID is null. Skipping Project Service update.");
+            return;
+        }
+
+        Map<String, Object> request = new HashMap<>();
+        request.put("projectId", projectId);
+        request.put("teamId", teamId);
+
+        try {
+            String url = PROJECT_SERVICE_URL + "/update-teams";
+            restTemplate.patchForObject(url, new HttpEntity<>(request), String.class);
+            LOGGER.info("Updated Project Service: Added Team {} to Project {}", teamId, projectId);
+        } catch (Exception e) {
+            LOGGER.error("Failed to update Project Service: {}", e.getMessage());
+        }
+    }
+
 
 
 

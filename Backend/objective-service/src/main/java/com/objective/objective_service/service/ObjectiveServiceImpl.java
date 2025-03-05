@@ -2,6 +2,7 @@ package com.objective.objective_service.service;
 
 import com.objective.objective_service.constants.ObjectiveStatus;
 import com.objective.objective_service.dto.KeyResultSummaryDto;
+import com.objective.objective_service.dto.ObjectiveSummaryDTO;
 import com.objective.objective_service.dto.UserSummaryDTO;
 import com.objective.objective_service.entity.KeyResult;
 import com.objective.objective_service.entity.Objective;
@@ -142,20 +143,23 @@ public class ObjectiveServiceImpl implements ObjectiveService {
      * @return List of objectives mapped to the project.
      */
     @Override
-    public List<Objective> getAllObjectiveByProjectId(Long projectId) {
+    public List<ObjectiveSummaryDTO> getAllObjectiveByProjectId(Long projectId) {
         LOGGER.info("Fetching all objectives for projectID: " + projectId);
 
         List<Objective> objectives = objectiveRepository.findByMappedProject(projectId);
+        List<ObjectiveSummaryDTO> objectiveSummaries = new ArrayList<>();
 
         for (Objective objective : objectives) {
             Long objectiveId = objective.getObjectiveId();
 
-            ObjectiveStatus newStatus = calculateObjectiveStatus(objective.getObjectiveCreatedAt(), objective.getObjectiveDueDate(), calculateObjectiveProgress(objectiveId));
+            // Calculate objective progress and status
+            double progress = calculateObjectiveProgress(objectiveId);
+            ObjectiveStatus newStatus = calculateObjectiveStatus(objective.getObjectiveCreatedAt(), objective.getObjectiveDueDate(), progress);
             objective.setObjectiveStatus(newStatus);
 
             List<KeyResultSummaryDto> keyResultSummaries = new ArrayList<>();
 
-            // Fetch all KeyResults for the given objective from KeyResult Service
+            // Fetch all KeyResults for the given objective
             List<KeyResult> keyResults = fetchKeyResultsByObjectiveId(objectiveId);
 
             for (KeyResult keyResult : keyResults) {
@@ -165,6 +169,7 @@ public class ObjectiveServiceImpl implements ObjectiveService {
                 keyResultSummary.setCurrKeyResultVal((double) keyResult.getKeyResultcurrentVal());
                 keyResultSummary.setDueDate(keyResult.getKeyResultDueDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                 keyResultSummary.setProgress(getKeyResultProgress(keyResult.getKeyResultId()));
+
                 // Fetch team leader ID from Teams service
                 Long teamLeaderId = fetchTeamLeaderId(keyResult.getTeamId());
 
@@ -177,11 +182,20 @@ public class ObjectiveServiceImpl implements ObjectiveService {
 
                 keyResultSummaries.add(keyResultSummary);
             }
-            objective.setKeyResult(keyResultSummaries);
+
+            // Create an ObjectiveSummaryDto and add it to the list
+            ObjectiveSummaryDTO summaryDto = new ObjectiveSummaryDTO();
+            summaryDto.setObjectiveName(objective.getObjectiveName());
+            summaryDto.setObjectiveStatus(objective.getObjectiveStatus());
+            summaryDto.setObjectiveProgress(progress);
+            summaryDto.setKeyResults(keyResultSummaries);
+
+            objectiveSummaries.add(summaryDto);
         }
 
-        return objectives;
+        return objectiveSummaries;
     }
+
 
     private List<KeyResult> fetchKeyResultsByObjectiveId(Long objectiveId) {
         try {
@@ -363,6 +377,32 @@ public class ObjectiveServiceImpl implements ObjectiveService {
 
         if (daysPassed == 0) return ObjectiveStatus.ON_TRACK;
         return actualProgress >= expectedProgress ? ObjectiveStatus.ON_TRACK : ObjectiveStatus.AT_RISK;
+    }
+
+    @Override
+    public String addKeyResultToObjective(Long objectiveId, List<Long> request) {
+        if (request == null || request.isEmpty()) {
+            return "Invalid request body";
+        }
+
+        Long keyResultId = request.get(0); // ✅ Fix: Get the first key result ID from the list
+
+        Optional<Objective> optionalObjective = objectiveRepository.findById(objectiveId);
+        if (optionalObjective.isPresent()) {
+            Objective objective = optionalObjective.get();
+
+            if (objective.getKeyResultIds() == null) {
+                objective.setKeyResultIds(new ArrayList<>());
+            }
+
+            if (!objective.getKeyResultIds().contains(keyResultId)) {
+                objective.getKeyResultIds().add(keyResultId);
+                objectiveRepository.save(objective);
+                return "KeyResult added successfully";
+            }
+            return "KeyResult already exists";
+        }
+        return "Objective not found";
     }
 
 

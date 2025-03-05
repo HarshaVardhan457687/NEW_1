@@ -18,10 +18,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectService.class);
+
 
     private static final String OBJECTIVE_URL = "http://localhost:8081/api/objective/";
     private static final String KEYRESULT_URL = "http://localhost:8082/api/keyresults/";
@@ -374,6 +379,17 @@ public Map<String, Integer> getObjectivesInfoByProject(Long projectId) {
         return Collections.emptyList(); // Return an empty list instead of null
     }
 
+    public void addTeamToProject(Long projectId, Long teamId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
 
+        if (!project.getTeamsInvolvedId().contains(teamId)) {
+            project.getTeamsInvolvedId().add(teamId);
+            projectRepository.save(project);
+            LOGGER.info("Team {} added to Project {}", teamId, projectId);
+        } else {
+            LOGGER.warn("Team {} is already part of Project {}", teamId, projectId);
+        }
+    }
 
 }

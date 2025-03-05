@@ -1,5 +1,6 @@
 package com.objective.objective_service.controller;
 
+import com.objective.objective_service.dto.ObjectiveSummaryDTO;
 import com.objective.objective_service.entity.Objective;
 import com.objective.objective_service.service.ObjectiveService;
 import com.objective.objective_service.service.ObjectiveServiceImpl;
@@ -89,9 +90,9 @@ public class ObjectiveController {
      * @return ResponseEntity containing the list of objectives for the project and HTTP status 200 (OK).
      */
     @GetMapping("/project/{projectId}")
-    public ResponseEntity<List<Objective>> getAllObjectiveByProjectId(@PathVariable Long projectId) {
+    public ResponseEntity<List<ObjectiveSummaryDTO>> getAllObjectiveByProjectId(@PathVariable Long projectId) {
         LOGGER.info("Fetching objective with project associated with projectID: {}", projectId);
-        List<Objective> objectivesWithProjectId = objectiveService.getAllObjectiveByProjectId(projectId);
+        List<ObjectiveSummaryDTO> objectivesWithProjectId = objectiveService.getAllObjectiveByProjectId(projectId);
         return ResponseEntity.ok(objectivesWithProjectId);
     }
 
@@ -136,6 +137,22 @@ public class ObjectiveController {
         double projectProgress = objectiveService.calculateProjectProgress(projectId);
         return ResponseEntity.ok(projectProgress);
     }
+
+    @PatchMapping("/{objectiveId}/add-key-result")
+    public ResponseEntity<String> addKeyResultToObjective(
+            @PathVariable Long objectiveId, @RequestBody List<Long> request) {
+
+        String response = objectiveService.addKeyResultToObjective(objectiveId, request);
+
+        if ("Objective not found".equals(response)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } else if ("Invalid request body".equals(response)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
 
 
 

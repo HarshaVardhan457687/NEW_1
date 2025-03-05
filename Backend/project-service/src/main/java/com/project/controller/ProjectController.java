@@ -162,11 +162,22 @@ public class ProjectController {
         return ResponseEntity.ok(team);
     }
 
-    @PostMapping("/keyresults")
+    @GetMapping("/keyresults")
     public ResponseEntity<List<KeyResult>> getKeyResultsByObjectives(@RequestParam Long projectId){
         List<KeyResult> keyResultsList = projectService.getAllKeyResult(projectId);
         return ResponseEntity.ok(keyResultsList);
     }
+
+    @PatchMapping("/update-teams")
+    public ResponseEntity<String> updateProjectTeams(@RequestBody Map<String, Object> request) {
+        Long projectId = ((Number) request.get("projectId")).longValue();
+        Long teamId = ((Number) request.get("teamId")).longValue();
+
+        projectService.addTeamToProject(projectId, teamId);
+
+        return ResponseEntity.ok("Updated Project with new Team");
+    }
+
 
 
 }
