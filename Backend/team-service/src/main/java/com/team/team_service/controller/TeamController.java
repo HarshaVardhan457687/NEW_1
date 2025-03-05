@@ -5,6 +5,7 @@ import com.team.team_service.DTO.TeamResponseDto;
 import com.team.team_service.entity.Team;
 import com.team.team_service.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -114,4 +115,15 @@ public class TeamController {
 
         return ResponseEntity.ok(isMapped);
     }
+
+    @PatchMapping("/{teamId}/add-key-result")
+    public ResponseEntity<String> addKeyResultToTeam(@PathVariable Long teamId, @RequestBody List<Long> request) {
+        String response = teamService.addKeyResultToTeam(teamId, request);
+
+        if ("Team not found".equals(response)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        return ResponseEntity.ok(response);
+    }
+
 }

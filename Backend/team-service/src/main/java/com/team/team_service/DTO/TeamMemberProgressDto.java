@@ -1,6 +1,7 @@
 package com.team.team_service.DTO;
 
 public class TeamMemberProgressDto {
+    private Long userId;
     private String userName;
     private String userProfile;
     private String role;
@@ -8,7 +9,8 @@ public class TeamMemberProgressDto {
     private int completedTasks;
     private double progress;
 
-    public TeamMemberProgressDto(String userName, String userProfile, String role,  int totalTasks, int completedTasks, double progress) {
+    public TeamMemberProgressDto(Long userId,String userName, String userProfile, String role,  int totalTasks, int completedTasks, double progress) {
+        this.userId = userId;
         this.userName = userName;
         this.userProfile = userProfile;
         this.role = role;
@@ -18,6 +20,13 @@ public class TeamMemberProgressDto {
     }
 
     // Getters and Setters
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getUserName() {
         return userName;

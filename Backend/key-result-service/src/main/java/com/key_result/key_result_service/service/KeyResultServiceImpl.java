@@ -29,8 +29,10 @@ public class KeyResultServiceImpl implements KeyResultService {
     private final KeyResultRepository keyResultRepository;
 
     // Defining the TASK_SERVICE_URL to interact with Task Service via HTTP
+
     private final static String TASK_SERVICE_URL = "http://localhost:8083/api/tasks/";
     private final static String OBJECTIVE_SERVICE_URL = "http://localhost:8081/api/objective/";
+    private final static String TEAM_SERVICE_URL = "http://localhost:8084/api/teams/";
 
 
     // Constructor-based dependency injection for KeyResultRepository
@@ -59,6 +61,7 @@ public class KeyResultServiceImpl implements KeyResultService {
 
         // Update the Objective's keyResultIds list
         updateObjectiveWithKeyResult(savedKeyResult.getAssociatedObjectiveId(), savedKeyResult.getKeyResultId());
+        updateTeamWithKeyResult(keyResult.getTeamId(), savedKeyResult.getKeyResultId());
 
         return savedKeyResult;
     }
@@ -94,6 +97,37 @@ public class KeyResultServiceImpl implements KeyResultService {
                     objectiveId, keyResultId, e.getMessage(), e);
         }
     }
+
+    private void updateTeamWithKeyResult(Long teamId, Long keyResultId) {
+        if (teamId == null || keyResultId == null) {
+            LOGGER.warn("Team ID or KeyResult ID is null. Skipping update.");
+            return;
+        }
+
+        // Prepare request (Send List<Long>)
+        List<Long> requestBody = Collections.singletonList(keyResultId);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<List<Long>> requestEntity = new HttpEntity<>(requestBody, headers);
+
+        // Define API Endpoint
+        String updateUrl = TEAM_SERVICE_URL + teamId + "/add-key-result";
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    updateUrl, HttpMethod.PATCH, requestEntity, String.class);
+
+            LOGGER.info("Updated Team {} with new KeyResult {} via API. Response: {}",
+                    teamId, keyResultId, response.getBody());
+
+        } catch (Exception e) {
+            LOGGER.error("Failed to update Team {} with KeyResult {}. Error: {}",
+                    teamId, keyResultId, e.getMessage(), e);
+        }
+    }
+
 
     /**
      * Retrieves all KeyResults from the database.

@@ -392,4 +392,34 @@ public Map<String, Integer> getObjectivesInfoByProject(Long projectId) {
         }
     }
 
+
+    public String addObjectiveToProject(Long projectId, List<Long> request) {
+        if (request == null || request.isEmpty()) {
+            return "Invalid request body";
+        }
+
+        Long objectiveId = request.get(0);  // Extract single objectiveId
+
+        Optional<Project> optionalProject = projectRepository.findById(projectId);
+        if (optionalProject.isPresent()) {
+            Project project = optionalProject.get();
+
+            // Ensure the list is initialized before modifying
+            if (project.getObjectiveId() == null) {
+                project.setObjectiveId(new ArrayList<>());
+            }
+
+            // Only add if it's not already in the list
+            if (!project.getObjectiveId().contains(objectiveId)) {
+                project.getObjectiveId().add(objectiveId);
+                projectRepository.save(project);
+                return "Objective added to Project successfully";
+            }
+            return "Objective already assigned to Project";
+        }
+        return "Project not found";
+    }
+
+
+
 }

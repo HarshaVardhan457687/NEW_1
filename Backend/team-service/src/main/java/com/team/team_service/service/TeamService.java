@@ -18,4 +18,5 @@ public interface TeamService {
     public List<TeamMemberProgressDto> getTeamMembersProgress(Long teamId, Long projectId);
     public Long getTeamLeadId(Long teamId);
     public boolean isTeamMappedToProject(Long teamId, Long projectId);
+    public String addKeyResultToTeam(Long teamId, List<Long> request);
 }

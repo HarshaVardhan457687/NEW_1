@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.awt.event.WindowFocusListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class TeamServiceImpl implements TeamService {
@@ -355,7 +352,7 @@ public class TeamServiceImpl implements TeamService {
                 double progress = (totalTasks == 0) ? 0.0 : ((double) completedTasks / totalTasks) * 100;
 
                 // Add to list
-                teamMembersProgress.add(new TeamMemberProgressDto( userName, userProfile, role,totalTasks, completedTasks, progress));
+                teamMembersProgress.add(new TeamMemberProgressDto(userId, userName, userProfile, role,totalTasks, completedTasks, progress));
             } catch (Exception e) {
                 LOGGER.error("Failed to fetch details for user {}: {}", userId, e.getMessage());
             }
@@ -380,6 +377,33 @@ public class TeamServiceImpl implements TeamService {
 
         return team.getAssignedProject().equals(projectId);
     }
+
+    @Override
+    public String addKeyResultToTeam(Long teamId, List<Long> request) {
+        if (request == null || request.isEmpty()) {
+            return "Invalid request body";
+        }
+
+        Long keyResultId = request.get(0);
+
+        Optional<Team> optionalTeam = teamRepository.findById(teamId);
+        if (optionalTeam.isPresent()) {
+            Team team = optionalTeam.get();
+
+            if (team.getAssignedKeyResult() == null) {
+                team.setAssignedKeyResult(new ArrayList<>());
+            }
+
+            if (!team.getAssignedKeyResult().contains(keyResultId)) {
+                team.getAssignedKeyResult().add(keyResultId);
+                teamRepository.save(team);
+                return "KeyResult added to Team successfully";
+            }
+            return "KeyResult already assigned to Team";
+        }
+        return "Team not found";
+    }
+
 
 
 }

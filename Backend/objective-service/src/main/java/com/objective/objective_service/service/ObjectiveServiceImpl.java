@@ -10,8 +10,7 @@ import com.objective.objective_service.exception.ObjectiveNotFoundException;
 import com.objective.objective_service.repository.ObjectiveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -36,7 +35,8 @@ public class ObjectiveServiceImpl implements ObjectiveService {
     // URL for communicating with the KeyResult service
     private static final String KEYRESULT_SERVICE_URL = "http://localhost:8082/api/keyresults/";
     private static final String USER_SERVICE_URL = "http://localhost:8086/api/users/";
-    private static final String TEAM_SERVICE_URL = "http://localhost:8060/api/teams/";
+    private static final String TEAM_SERVICE_URL = "http://localhost:8084/api/teams/";
+    private static final String PROJECT_SERVICE_URL = "http://localhost:8085/api/projects/";
     // Constructor injection for ObjectiveRepository, allows dependency injection
     @Autowired
     public ObjectiveServiceImpl(ObjectiveRepository objectiveRepository){
@@ -82,16 +82,48 @@ public class ObjectiveServiceImpl implements ObjectiveService {
 
     /**
      * Creates a new objective and saves it to the database.
-     * @param obj Objective object to be created.
+     * @param objective Objective object to be created.
      * @return The saved Objective.
      */
     @Override
-    public Objective createObjective(Objective obj) {
+    public Objective createObjective(Objective objective) {
         LOGGER.info("Creating a new objective...");
+        Objective savedObjective = objectiveRepository.save(objective);
 
-        // Save the objective and return it
-        return objectiveRepository.save(obj);
+        updateProjectWithObjective(savedObjective.getMappedProject(), savedObjective.getObjectiveId());
+        return savedObjective;
     }
+
+    private void updateProjectWithObjective(Long projectId, Long objectiveId) {
+        if (projectId == null || objectiveId == null) {
+            LOGGER.warn("Project ID or Objective ID is null. Skipping update.");
+            return;
+        }
+
+        // Prepare request (We send a single objectiveId in a List)
+        List<Long> requestBody = Collections.singletonList(objectiveId);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<List<Long>> requestEntity = new HttpEntity<>(requestBody, headers);
+
+        // Define API Endpoint
+        String updateUrl = PROJECT_SERVICE_URL  + projectId + "/add-objective";
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    updateUrl, HttpMethod.PATCH, requestEntity, String.class);
+
+            LOGGER.info("Updated Project {} with new Objective {} via API. Response: {}",
+                    projectId, objectiveId, response.getBody());
+
+        } catch (Exception e) {
+            LOGGER.error("Failed to update Project {} with Objective {}. Error: {}",
+                    projectId, objectiveId, e.getMessage(), e);
+        }
+    }
+
 
     /**
      * Updates an existing objective with new data.

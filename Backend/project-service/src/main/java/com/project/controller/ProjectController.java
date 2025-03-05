@@ -9,6 +9,7 @@ import com.project.model.Objective;
 import com.project.services.ProjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -177,6 +178,17 @@ public class ProjectController {
 
         return ResponseEntity.ok("Updated Project with new Team");
     }
+
+    @PatchMapping("/{projectId}/add-objective")
+    public ResponseEntity<String> addObjectiveToProject(@PathVariable Long projectId, @RequestBody List<Long> request) {
+        String response = projectService.addObjectiveToProject(projectId, request);
+
+        if ("Project not found".equals(response)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        return ResponseEntity.ok(response);
+    }
+
 
 
 
