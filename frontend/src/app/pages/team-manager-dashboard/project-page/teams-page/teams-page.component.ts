@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TeamsSection } from './teams-section/teams-section.component';
 import { AddTeamCardComponent } from '../../../../shared/add-team-card/add-team-card.component';
 import { TeamsPageService, TeamResponse } from '../../../../core/services/teams-page.service';
+import { AddTeamService } from '../../../../core/services/add-team.service';
 
 @Component({
   selector: 'app-teams-page',
@@ -23,6 +24,7 @@ export class TeamsPageComponent implements OnInit {
 
   constructor(
     private teamsPageService: TeamsPageService,
+    private addTeamService: AddTeamService,
     private route: ActivatedRoute
   ) {}
 
@@ -56,5 +58,26 @@ export class TeamsPageComponent implements OnInit {
   showAddTeamCard = false;
   onAddTeam() {
     this.showAddTeamCard = true;
+  }
+
+  onTeamSaved(teamData: any) {
+    const createTeamRequest = {
+      teamName: teamData.name,
+      teamLead: teamData.leader.userId,
+      teamMembers: teamData.members.map((member: any) => member.userId),
+      assignedProject: this.projectId,
+      assignedKeyResult: []
+    };
+
+    this.addTeamService.createTeam(createTeamRequest).subscribe({
+      next: (createdTeam) => {
+        console.log('Team created successfully:', createdTeam);
+        // Refresh the team list
+        this.loadTeams();
+      },
+      error: (err) => {
+        console.error('Error creating team:', err);
+      }
+    });
   }
 }

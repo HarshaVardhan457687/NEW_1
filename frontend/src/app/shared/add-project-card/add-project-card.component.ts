@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray, Abs
 import { AddProjectGeneralSectionComponent } from '../add-project-general-section/add-project-general-section.component';
 import { AddProjectTeamSectionComponent } from '../add-project-team-section/add-project-team-section.component';
 import { AddProjectObjectivesSectionComponent } from '../add-project-objectives-section/add-project-objectives-section.component';
+import { AddProjectService } from '../../core/services/add-project.service';
 
 @Component({
   selector: 'app-add-project-card',
@@ -24,7 +25,10 @@ export class AddProjectCardComponent implements OnInit {
   currentSection = 0;
   projectForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private addProjectService: AddProjectService
+  ) {
     this.initializeForm();
   }
 
@@ -88,6 +92,13 @@ export class AddProjectCardComponent implements OnInit {
   nextSection() {
     console.log('Next button clicked. Current Section:', this.currentSection);
     if (this.validateSection(this.currentSection)) {
+      // Update service with current section data
+      if (this.currentSection === 0) {
+        this.addProjectService.updateProjectInfo(this.projectForm.get('projectInfo')?.value);
+      } else if (this.currentSection === 1) {
+        this.addProjectService.updateTeamInfo(this.projectForm.get('team')?.value);
+      }
+
       if (this.currentSection < 2) {
         this.currentSection++;
         console.log('Moving to section:', this.currentSection);
@@ -104,12 +115,18 @@ export class AddProjectCardComponent implements OnInit {
 
   onSubmit() {
     if (this.projectForm.valid) {
-      console.log('Form submitted:', this.projectForm.value);
+      this.addProjectService.updateObjectives(this.projectForm.get('objectives')?.value);
+      
+      const { data, formattedJson } = this.addProjectService.getFinalProjectData();
+      console.log('Final Project Data:', data);
+      console.log('Formatted JSON:\n', formattedJson);
+      
       this.close();
     }
   }
 
   close() {
+    this.addProjectService.reset(); // Reset the service data
     this.closeModal.emit();
   }
 }

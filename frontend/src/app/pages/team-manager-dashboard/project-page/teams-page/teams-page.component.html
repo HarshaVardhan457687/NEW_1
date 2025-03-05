@@ -14,4 +14,8 @@
   </ng-template>
 </div>
 
-<app-add-team-card [(show)]="showAddTeamCard"></app-add-team-card>
+<app-add-team-card 
+  [(show)]="showAddTeamCard" 
+  [projectId]="projectId"
+  (teamSaved)="onTeamSaved($event)">
+</app-add-team-card>
