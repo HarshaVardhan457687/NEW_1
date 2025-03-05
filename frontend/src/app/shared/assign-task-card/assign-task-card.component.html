@@ -1,7 +1,11 @@
-<div class="modal-overlay">
-  <div class="assign-task-card">
+<div class="modal-overlay" *ngIf="isOpen" (click)="onCancel()">
+  <div class="assign-task-card" (click)="$event.stopPropagation()">
     <h2>Assign Tasks</h2>
     <p class="subtitle">Assign tasks to team members</p>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
 
     <form [formGroup]="taskForm" class="task-form">
       <!-- Task Name Row -->
@@ -25,10 +29,14 @@
       <!-- Associated Key Result Row -->
       <div class="form-row">
         <label>Associated Key Result<span class="required">*</span></label>
-        <select formControlName="keyResult">
-          <option value="">Select key result</option>
-          <option value="1">Key Result 1</option>
-          <option value="2">Key Result 2</option>
+        <select 
+          id="keyResult" 
+          formControlName="keyResult"
+          class="form-select">
+          <option value="">Select a Key Result</option>
+          <option *ngFor="let kr of keyResults" [ngValue]="kr.keyResultId">
+            {{ kr.keyResultName }}
+          </option>
         </select>
       </div>
 
@@ -61,7 +69,14 @@
     <!-- Action Buttons Row - Moved outside form -->
     <div class="button-row">
       <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
-      <button type="button" class="assign-btn" (click)="onAssign()">Assign Task</button>
+      <button 
+        type="button" 
+        class="assign-btn"
+        (click)="onAssign()" 
+        [disabled]="!taskForm.valid || isLoading">
+        {{ isLoading ? 'Assigning...' : 'Assign' }}
+      </button>
+      
     </div>
   </div>
 </div>
