@@ -178,57 +178,71 @@ public class ObjectiveServiceImpl implements ObjectiveService {
     public List<ObjectiveSummaryDTO> getAllObjectiveByProjectId(Long projectId) {
         LOGGER.info("Fetching all objectives for projectID: " + projectId);
 
-        List<Objective> objectives = objectiveRepository.findByMappedProject(projectId);
-        List<ObjectiveSummaryDTO> objectiveSummaries = new ArrayList<>();
+        try{
+            List<Objective> objectives = objectiveRepository.findByMappedProject(projectId);
+            LOGGER.info("line 1 ", projectId);
 
-        for (Objective objective : objectives) {
-            Long objectiveId = objective.getObjectiveId();
+            LOGGER.info("line 2 " + objectives.size());
+            List<ObjectiveSummaryDTO> objectiveSummaries = new ArrayList<>();
 
-            // Calculate objective progress and status
-            double progress = calculateObjectiveProgress(objectiveId);
-            ObjectiveStatus newStatus = calculateObjectiveStatus(objective.getObjectiveCreatedAt(), objective.getObjectiveDueDate(), progress);
-            objective.setObjectiveStatus(newStatus);
+            for (Objective objective : objectives) {
+                Long objectiveId = objective.getObjectiveId();
+                LOGGER.info("line 3 " + objectiveId);
+                // Calculate objective progress and status
+                double progress = calculateObjectiveProgress(objectiveId);
+                LOGGER.info("line 4 " + progress);
+//                ObjectiveStatus newStatus = calculateObjectiveStatus(objective.getObjectiveCreatedAt(), objective.getObjectiveDueDate(), progress);
+//                objective.setObjectiveStatus(newStatus);
 
-            List<KeyResultSummaryDto> keyResultSummaries = new ArrayList<>();
+                List<KeyResultSummaryDto> keyResultSummaries = new ArrayList<>();
+                LOGGER.info("line 5 " + keyResultSummaries.size());
 
-            // Fetch all KeyResults for the given objective
-            List<KeyResult> keyResults = fetchKeyResultsByObjectiveId(objectiveId);
+                // Fetch all KeyResults for the given objective
+                List<KeyResult> keyResults = fetchKeyResultsByObjectiveId(objectiveId);
+                LOGGER.info("line 6 " + keyResults.size());
+                for (KeyResult keyResult : keyResults) {
+                    KeyResultSummaryDto keyResultSummary = new KeyResultSummaryDto();
+                    keyResultSummary.setKeyResultId(keyResult.getKeyResultId());
+                    keyResultSummary.setName(keyResult.getKeyResultName());
+                    keyResultSummary.setPriority(keyResult.getKeyResultPriority().name());
+                    keyResultSummary.setCurrKeyResultVal((double) keyResult.getKeyResultcurrentVal());
+                    keyResultSummary.setTargetKeyResultVal((double) keyResult.getKeyResultTargetVal());
+                    keyResultSummary.setUnit(keyResult.getKeyResultunit());
+                    keyResultSummary.setDueDate(keyResult.getKeyResultDueDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                    keyResultSummary.setProgress(getKeyResultProgress(keyResult.getKeyResultId()));
+                    keyResultSummary.setTeamName(fetchTeamName(keyResult.getTeamId()));
+                    // Fetch team leader ID from Teams service
+                    Long teamLeaderId = fetchTeamLeaderId(keyResult.getTeamId());
+                    LOGGER.info("line 7 " + teamLeaderId);
 
-            for (KeyResult keyResult : keyResults) {
-                KeyResultSummaryDto keyResultSummary = new KeyResultSummaryDto();
-                keyResultSummary.setKeyResultId(keyResult.getKeyResultId());
-                keyResultSummary.setName(keyResult.getKeyResultName());
-                keyResultSummary.setPriority(keyResult.getKeyResultPriority().name());
-                keyResultSummary.setCurrKeyResultVal((double) keyResult.getKeyResultcurrentVal());
-                keyResultSummary.setTargetKeyResultVal((double) keyResult.getKeyResultTargetVal());
-                keyResultSummary.setUnit(keyResult.getKeyResultunit());
-                keyResultSummary.setDueDate(keyResult.getKeyResultDueDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-                keyResultSummary.setProgress(getKeyResultProgress(keyResult.getKeyResultId()));
-                keyResultSummary.setTeamName(fetchTeamName(keyResult.getTeamId()));
-                // Fetch team leader ID from Teams service
-                Long teamLeaderId = fetchTeamLeaderId(keyResult.getTeamId());
+                    // Fetch team leader details from User service
+                    if (teamLeaderId != null) {
+                        UserSummaryDTO userDetails = fetchUserDetails(teamLeaderId);
+                        LOGGER.info("line 8 " + userDetails.getUserName());
+                        keyResultSummary.setTeamLeaderProfilePic(userDetails.getUserProfilePhoto());
+                        LOGGER.info("line 9 " + userDetails.getUserProfilePhoto());
+                    }
 
-                // Fetch team leader details from User service
-                if (teamLeaderId != null) {
-                    UserSummaryDTO userDetails = fetchUserDetails(teamLeaderId);
-                    keyResultSummary.setTeamLeaderProfilePic(userDetails.getUserProfilePhoto());
+                    keyResultSummaries.add(keyResultSummary);
+                    LOGGER.info("line 10 " + keyResultSummaries.size());
                 }
 
-                keyResultSummaries.add(keyResultSummary);
+                // Create an ObjectiveSummaryDto and add it to the list
+                ObjectiveSummaryDTO summaryDto = new ObjectiveSummaryDTO();
+                summaryDto.setObjectiveId(objective.getObjectiveId());
+                summaryDto.setObjectiveName(objective.getObjectiveName());
+                summaryDto.setObjectiveStatus(objective.getObjectiveStatus());
+                summaryDto.setObjectiveProgress(progress);
+                summaryDto.setKeyResults(keyResultSummaries);
+
+                objectiveSummaries.add(summaryDto);
             }
-
-            // Create an ObjectiveSummaryDto and add it to the list
-            ObjectiveSummaryDTO summaryDto = new ObjectiveSummaryDTO();
-            summaryDto.setObjectiveId(objective.getObjectiveId());
-            summaryDto.setObjectiveName(objective.getObjectiveName());
-            summaryDto.setObjectiveStatus(objective.getObjectiveStatus());
-            summaryDto.setObjectiveProgress(progress);
-            summaryDto.setKeyResults(keyResultSummaries);
-
-            objectiveSummaries.add(summaryDto);
+            LOGGER.info("line 9 ");
+            return objectiveSummaries;
+        }catch (Exception e){
+            LOGGER.info("Error fetching key results for all objective ");
+            return null;
         }
-
-        return objectiveSummaries;
     }
 
 
@@ -237,10 +251,10 @@ public class ObjectiveServiceImpl implements ObjectiveService {
             String url = KEYRESULT_SERVICE_URL + "objective/" + objectiveId;
             ResponseEntity<List<KeyResult>> response = restTemplate.exchange(
                     url, HttpMethod.GET, null, new ParameterizedTypeReference<List<KeyResult>>() {});
-            return response.getBody() != null ? response.getBody() : Collections.emptyList();
+            return response.getBody() != null ? response.getBody() : null;
         } catch (Exception e) {
             LOGGER.info("Error fetching key results for objective ID: " + objectiveId);
-            return Collections.emptyList();
+            return null;
         }
     }
 

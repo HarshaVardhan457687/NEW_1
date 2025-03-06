@@ -205,11 +205,16 @@ public class KeyResultServiceImpl implements KeyResultService {
     @Override
     public List<KeyResult> getKeyResultsByObjectiveId(Long objectiveId) {
         LOGGER.info("Fetching KeyResults for Objective ID: {}", objectiveId);
-        List<KeyResult> keyResults = keyResultRepository.findKeyResultByAssociatedObjectiveId(objectiveId);
-        if (keyResults.isEmpty()) {
-            LOGGER.warn("No KeyResults found for Objective ID: {}", objectiveId);
+        try {
+            List<KeyResult> keyResults = keyResultRepository.findKeyResultByAssociatedObjectiveId(objectiveId);
+            if (keyResults.isEmpty()) {
+                LOGGER.warn("No KeyResults found for Objective ID: {}", objectiveId);
+            }
+            return keyResults;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        return keyResults;
+
     }
 
     /**
