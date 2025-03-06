@@ -1,5 +1,6 @@
 package com.task.task_service.service;
 
+import com.task.task_service.constants.TaskStatus;
 import com.task.task_service.entity.Notification;
 import com.task.task_service.entity.Task;
 import com.task.task_service.exception.ResourceNotFoundException;
@@ -145,6 +146,15 @@ public class TaskServiceImpl implements TaskService {
                     return taskRepository.save(existingTask); // Save updated task
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with ID: " + taskId));
+    }
+
+    @Override
+    public Task updateTaskStatus(Long taskId, TaskStatus status) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found with ID: " + taskId));
+
+        task.setTaskStatus(status);
+        return taskRepository.save(task);
     }
 
 

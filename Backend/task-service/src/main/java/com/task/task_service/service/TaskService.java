@@ -1,5 +1,6 @@
 package com.task.task_service.service;
 
+import com.task.task_service.constants.TaskStatus;
 import com.task.task_service.entity.Task;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public interface TaskService {
     public Task getTaskById(Long taskId);
     public List<Task> getAllTask();
     public Task updateTask(Long taskId, Task taskToUpdate);
+    public Task updateTaskStatus(Long taskId, TaskStatus status);
     public void removeTask(Long taskId);
     public List<Task> getAlltaskWithKeyResultId(Long keyresulId);
     public List<Task> getAlltaskWithUserId(Long userId);

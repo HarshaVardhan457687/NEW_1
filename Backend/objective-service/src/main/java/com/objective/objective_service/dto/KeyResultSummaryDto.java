@@ -14,6 +14,8 @@ public class KeyResultSummaryDto {
     private String name;
     private String priority;
     private Double currKeyResultVal;
+    private Double targetKeyResultVal;
+    private String unit;
     private LocalDate dueDate;
     private Float progress;
     private String teamName;
@@ -50,6 +52,22 @@ public class KeyResultSummaryDto {
 
     public void setCurrKeyResultVal(Double currKeyResultVal) {
         this.currKeyResultVal = currKeyResultVal;
+    }
+
+    public Double getTargetKeyResultVal() {
+        return targetKeyResultVal;
+    }
+
+    public void setTargetKeyResultVal(Double targetKeyResultVal) {
+        this.targetKeyResultVal = targetKeyResultVal;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public LocalDate getDueDate() {

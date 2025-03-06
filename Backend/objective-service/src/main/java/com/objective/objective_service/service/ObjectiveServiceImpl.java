@@ -200,6 +200,8 @@ public class ObjectiveServiceImpl implements ObjectiveService {
                 keyResultSummary.setName(keyResult.getKeyResultName());
                 keyResultSummary.setPriority(keyResult.getKeyResultPriority().name());
                 keyResultSummary.setCurrKeyResultVal((double) keyResult.getKeyResultcurrentVal());
+                keyResultSummary.setTargetKeyResultVal((double) keyResult.getKeyResultTargetVal());
+                keyResultSummary.setUnit(keyResult.getKeyResultunit());
                 keyResultSummary.setDueDate(keyResult.getKeyResultDueDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                 keyResultSummary.setProgress(getKeyResultProgress(keyResult.getKeyResultId()));
                 keyResultSummary.setTeamName(fetchTeamName(keyResult.getTeamId()));

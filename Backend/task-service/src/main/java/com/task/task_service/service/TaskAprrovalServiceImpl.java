@@ -1,6 +1,7 @@
 package com.task.task_service.service;
 
 import com.task.task_service.constants.ApprovalStatus;
+import com.task.task_service.constants.TaskStatus;
 import com.task.task_service.entity.TaskApproval;
 import com.task.task_service.repository.TaskApprovalRepository;
 import com.task.task_service.repository.TaskRepository;
@@ -15,21 +16,25 @@ public class TaskAprrovalServiceImpl implements TaskApprovalService{
     @Autowired
     private TaskApprovalRepository taskApprovalRepository;
 
+    @Autowired
+    private TaskService taskService;
+
     @Override
     public TaskApproval requestApproval(Long taskId, Long submitterId, String role, Long id) {
         TaskApproval approval = new TaskApproval();
         approval.setTaskId(taskId);
         approval.setSubmitterId(submitterId);
 
-        if ("Project Manager".equals(role)) {
+        if ("PROJECT_MANAGER".equals(role)) {
             approval.setProjectId(id);
 
-        } else if ("Team Leader".equals(role)) {
+        } else if ("TEAM_LEADER".equals(role)) {
             approval.setTeamId(id);
         } else {
             throw new IllegalArgumentException("Invalid role: " + role);
         }
-    // call the task servce and change the task status to pending 
+
+        taskService.updateTaskStatus(taskId, TaskStatus.WAITING_FOR_APPROVAL);
         approval.setStatus(ApprovalStatus.PENDING);
         return taskApprovalRepository.save(approval);
     }
@@ -41,15 +46,21 @@ public class TaskAprrovalServiceImpl implements TaskApprovalService{
 
         approval.setStatus(ApprovalStatus.APPROVED);
         approval.setApprovedDate(new Date());
+
+        taskService.updateTaskStatus(approval.getTaskId(), TaskStatus.COMPLETED);
+
         return taskApprovalRepository.save(approval);
     }
 
-    public TaskApproval rejectTask(Long approvalId, String reason) {
+    public TaskApproval rejectTask(Long approvalId) {
         TaskApproval approval = taskApprovalRepository.findById(approvalId)
                 .orElseThrow(() -> new RuntimeException("Approval request not found"));
 
         approval.setStatus(ApprovalStatus.REJECTED);
         approval.setApprovedDate(new Date());
+
+        taskService.updateTaskStatus(approval.getTaskId(), TaskStatus.PENDING);
+
         return taskApprovalRepository.save(approval);
     }
 
