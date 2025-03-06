@@ -14,6 +14,7 @@ import { ObjectivesSectionComponent } from './objectives-section/objectives-sect
 })
 export class ObjectivesPageComponent implements OnInit {
   projectId!: number;
+  isLoading: boolean = true;
   objectiveStats: ObjectivePageStats = {
     totalObjectives: 0,
     completedObjectives: 0,
@@ -34,12 +35,15 @@ export class ObjectivesPageComponent implements OnInit {
   }
 
   private loadObjectiveStats(): void {
+    this.isLoading = true;
     this.objectivePageService.getObjectiveStats(this.projectId).subscribe({
       next: (stats: ObjectivePageStats) => {
         this.objectiveStats = stats;
+        this.isLoading = false;
       },
       error: (error: Error) => {
         console.error('Error loading objective stats:', error);
+        this.isLoading = false;
       }
     });
   }

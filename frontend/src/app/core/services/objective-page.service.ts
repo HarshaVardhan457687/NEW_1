@@ -10,11 +10,33 @@ export interface ObjectivePageStats {
   completedKeys: number;
 }
 
+interface KeyResult {
+  keyResultId: number;
+  name: string;
+  priority: string;
+  currKeyResultVal: number;
+  targetKeyResultVal: number;
+  unit: string;
+  dueDate: string;
+  progress: number;
+  teamName: string;
+  teamLeaderProfilePic: string | null;
+}
+
+export interface ObjectiveSummary {
+  objectiveId: number;
+  objectiveName: string;
+  objectiveStatus: string;
+  objectiveProgress: number;
+  keyResults: KeyResult[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ObjectivePageService {
   private readonly API_URL = 'http://localhost:8060/api/projects';
+  private readonly OBJECTIVE_API_URL = 'http://localhost:8060/api/objective';
 
   constructor(private http: HttpClient) {}
 
@@ -37,5 +59,9 @@ export class ObjectivePageService {
         completedKeys: response.keyResults['completedKeyResults'] || 0
       }))
     );
+  }
+
+  getObjectivesWithKeyResults(projectId: number): Observable<ObjectiveSummary[]> {
+    return this.http.get<ObjectiveSummary[]>(`${this.OBJECTIVE_API_URL}/project/${projectId}`);
   }
 }

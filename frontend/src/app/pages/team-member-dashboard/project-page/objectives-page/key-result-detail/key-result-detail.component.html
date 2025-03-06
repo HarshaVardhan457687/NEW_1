@@ -1,15 +1,15 @@
 <div class="key-result-card">
-  <div class="title">{{ keyResult.title }}</div>
+  <div class="title">{{ keyResult.name }}</div>
   <div class="owner-section">
-    <img [src]="profilePic" alt="owner" class="avatar">
-    <span class="owner-name">{{ keyResult.owner }}</span>
+    <img [src]="keyResult.owner.profilePic || 'assets/default-avatar.png'" alt="owner" class="avatar">
+    <span class="owner-name">{{ keyResult.owner.name }}</span>
   </div>
-  <div class="priority" [class.high]="keyResult.priority === 'high'" [class.medium]="keyResult.priority === 'medium'" [class.low]="keyResult.priority === 'low'">
+  <div class="priority" [ngClass]="getPriorityClass(keyResult.priority)">
     {{ keyResult.priority }}
   </div>
   <div class="progress-section">
     <app-progress-bar-linear [progress]="keyResult.progress"></app-progress-bar-linear>
     <span class="progress-text">{{ keyResult.progress }}%</span>
   </div>
-  <div class="timeline">{{ keyResult.timeline | date:'MMM d' }}</div>
+  <div class="timeline">{{ keyResult.dueDate | date:'MMM d' }}</div>
 </div>

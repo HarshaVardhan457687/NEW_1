@@ -1,8 +1,8 @@
 <div class="objective-card">
   <div class="header-row">
-    <h3 class="title">{{ objective.title }}</h3>
-    <div class="status" [class]="objective.status">
-      {{ objective.status | titlecase }}
+    <h3 class="title">{{ objective.name }}</h3>
+    <div class="status" [ngClass]="getStatusClass(objective.status)">
+      {{ formatStatus(objective.status) }}
     </div>
   </div>
   <div class="progress-label-row">

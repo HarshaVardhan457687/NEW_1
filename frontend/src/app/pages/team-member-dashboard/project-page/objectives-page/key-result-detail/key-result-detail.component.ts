@@ -1,7 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { KeyResult } from '../../../../../core/services/objectives.service';
 import { ProgressBarLinearComponent } from '../../../../../shared/progress-bar-linear/progress-bar-linear.component';
+
+interface TransformedKeyResult {
+  name: string;
+  owner: {
+    name: string;
+    profilePic: string | null;
+  };
+  priority: string;
+  progress: number;
+  dueDate: string;
+  currentValue: number;
+}
 
 @Component({
   selector: 'app-key-result-detail',
@@ -10,13 +21,15 @@ import { ProgressBarLinearComponent } from '../../../../../shared/progress-bar-l
   templateUrl: './key-result-detail.component.html',
   styleUrls: ['./key-result-detail.component.scss']
 })
-export class KeyResultDetailComponent implements OnInit {
-  @Input() keyResult!: KeyResult;
-  profilePic: string = '';
+export class KeyResultDetailComponent {
+  @Input() keyResult!: TransformedKeyResult;
 
-  ngOnInit() {
-    // Randomly select a profile picture
-    const picNum = Math.floor(Math.random() * 5) + 1;
-    this.profilePic = `assets/pic${picNum}.png`;
+  getPriorityClass(priority: string): { [key: string]: boolean } {
+    const priorityLower = priority.toLowerCase();
+    return {
+      'high': priorityLower === 'high',
+      'medium': priorityLower === 'medium',
+      'low': priorityLower === 'low'
+    };
   }
 }

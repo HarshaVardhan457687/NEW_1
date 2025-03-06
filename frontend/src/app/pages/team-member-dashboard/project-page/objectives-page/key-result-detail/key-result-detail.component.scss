@@ -10,7 +10,7 @@
   box-sizing: border-box;
 
   .title {
-    flex: 0 0 39%;
+    flex: 0 0 35%;
     color: var(--text-color);
     white-space: nowrap;
     overflow: hidden;
@@ -19,9 +19,9 @@
   }
 
   .owner-section {
-    flex: 0 0 18.2%;
+    flex: 0 0 22.5%;
     display: flex;
-    align-items: center;
+    text-align: center;
     gap: 0.4rem; // Reduced from 0.5rem
 
     .avatar {
@@ -29,6 +29,7 @@
       height: 26px; // Reduced from 32px
       border-radius: 50%;
       object-fit: cover;
+      align-items: left;
     }
 
     .owner-name {
@@ -36,19 +37,21 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      font-size: 0.8rem; // Reduced from 1rem
+      font-size: 0.8rem;
+      text-align: left; 
     }
   }
 
   .priority {
-    flex: 0 0 8%;
+    flex: 0 0 11%;
     padding: 0.2rem 0.4rem; // Reduced from 0.25rem 0.5rem
     border-radius: 4px;
     text-transform: capitalize;
     font-size: 0.7rem; // Reduced from 0.875rem
     text-align: center;
     white-space: nowrap;
-    align-items: center;
+    align-items: left;
+    margin-right: 1rem;
 
     &.high {
       background: #fee2e2;

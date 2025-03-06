@@ -15,16 +15,16 @@ export class AppInitializerService {
 
   initializeApp(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const lastLoadTime = sessionStorage.getItem(this.REFRESH_KEY);
-      const currentTime = Date.now().toString();
+      // const lastLoadTime = sessionStorage.getItem(this.REFRESH_KEY);
+      // const currentTime = Date.now().toString();
 
-      if (lastLoadTime) {
-        // If REFRESH_KEY exists, it's a refresh
-        sessionStorage.clear();
-      }
+      // if (lastLoadTime) {
+      //   // If REFRESH_KEY exists, it's a refresh
+      //   sessionStorage.clear();
+      // }
       
-      // Set new timestamp
-      sessionStorage.setItem(this.REFRESH_KEY, currentTime);
+      // // Set new timestamp
+      // sessionStorage.setItem(this.REFRESH_KEY, currentTime);
 
       const roleSelected = sessionStorage.getItem('role_selected');
       const username = localStorage.getItem('username');
