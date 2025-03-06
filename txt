@@ -1,34 +1,7 @@
-[
-    {
-        "objectiveId": 1,
-        "objectiveName": "Improve Customer Satisfaction",
-        "objectiveStatus": "ON_TRACK",
-        "objectiveProgress": 100.0,
-        "keyResults": [
-            {
-                "keyResultId": 2,
-                "name": "Increase Monthly Revenue",
-                "priority": "LOW",
-                "currKeyResultVal": 100.0,
-                "targetKeyResultVal": 100.0,
-                "unit": "USD",
-                "dueDate": "2025-03-31",
-                "progress": 100.0,
-                "teamName": "Development Team A",
-                "teamLeaderProfilePic": null
-            },
-            {
-                "keyResultId": 3,
-                "name": "Increase Monthly Revenue",
-                "priority": "LOW",
-                "currKeyResultVal": 100.0,
-                "targetKeyResultVal": 100.0,
-                "unit": "USD",
-                "dueDate": "2025-03-31",
-                "progress": 100.0,
-                "teamName": "OKR Team",
-                "teamLeaderProfilePic": "https://res.cloudinary.com/dopdnslog/image/upload/v1740659540/zidy4krugkzl5rgsnepl.jpg"
-            }
-        ]
-    }
-]
+{
+    "projectName": "New Project",
+    "projectMangerEmail": "adam@gmail.com",
+    "projectDescription": "A complete redesign of the company website, focusing on user experience and aesthetics.",
+    "projectPriority": "LOW",
+    "projectDueDate": "2025-05-29"
+}
