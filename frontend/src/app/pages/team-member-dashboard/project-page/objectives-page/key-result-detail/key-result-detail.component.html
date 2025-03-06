@@ -1,7 +1,7 @@
 <div class="key-result-card">
   <div class="title">{{ keyResult.name }}</div>
   <div class="owner-section">
-    <img [src]="keyResult.owner.profilePic || 'assets/default-avatar.png'" alt="owner" class="avatar">
+    <img [src]="keyResult.owner.profilePic || 'assets/default_profile.png'" alt="owner" class="avatar">
     <span class="owner-name">{{ keyResult.owner.name }}</span>
   </div>
   <div class="priority" [ngClass]="getPriorityClass(keyResult.priority)">

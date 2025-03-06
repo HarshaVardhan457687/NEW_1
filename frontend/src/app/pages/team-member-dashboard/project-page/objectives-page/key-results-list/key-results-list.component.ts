@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { KeyResultDetailComponent } from '../key-result-detail/key-result-detail.component';
 
 interface KeyResultDisplay {
+  keyResultId: number;
   name: string;
   owner: {
     name: string;
@@ -25,9 +26,12 @@ interface KeyResultDisplay {
 })
 export class KeyResultsListComponent {
   @Input() keyResults: any[] = [];
+  showTooltip = false;
+  tooltipData: { current: number; target: number; unit: string } | null = null;
 
   transformKeyResult(keyResult: any): KeyResultDisplay {
     return {
+      keyResultId: keyResult.keyResultId,
       name: keyResult.name,
       owner: {
         name: keyResult.teamName,
@@ -40,5 +44,19 @@ export class KeyResultsListComponent {
       targetValue: keyResult.targetKeyResultVal,
       unit: keyResult.unit
     };
+  }
+
+  showValueTooltip(keyResult: any): void {
+    this.tooltipData = {
+      current: keyResult.currKeyResultVal,
+      target: keyResult.targetKeyResultVal,
+      unit: keyResult.unit
+    };
+    this.showTooltip = true;
+  }
+
+  hideValueTooltip(): void {
+    this.showTooltip = false;
+    this.tooltipData = null;
   }
 }

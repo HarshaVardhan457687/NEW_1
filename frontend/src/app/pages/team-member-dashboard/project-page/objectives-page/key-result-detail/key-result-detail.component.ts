@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ProgressBarLinearComponent } from '../../../../../shared/progress-bar-linear/progress-bar-linear.component';
 
 interface TransformedKeyResult {
+  keyResultId: number;
   name: string;
   owner: {
     name: string;
@@ -12,6 +13,8 @@ interface TransformedKeyResult {
   progress: number;
   dueDate: string;
   currentValue: number;
+  targetValue: number;
+  unit: string;
 }
 
 @Component({
