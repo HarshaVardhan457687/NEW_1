@@ -69,6 +69,12 @@ public class UserController {
         return ResponseEntity.ok(userServiceImpl.updateUserById(userId, user, true));
     }
 
+    @GetMapping("getUserId/{userEmail}")
+    public ResponseEntity<Long> patchUser(@PathVariable String userEmail) {
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
+        return ResponseEntity.ok(userId);
+    }
+
     @PutMapping("/{userEmail}")
     public ResponseEntity<User> putUser(@PathVariable String userEmail, @RequestBody User user) {
         Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();

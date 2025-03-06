@@ -1,5 +1,7 @@
 package com.project.services;
 
+import com.project.DTO.ProjectDTO;
+import com.project.DTO.SelectTeamDTO;
 import com.project.DTO.TeamDetailsDTO;
 import com.project.DTO.TeamResponseDTO;
 import com.project.model.KeyResult;
@@ -11,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface ProjectService {
-    public Project createProject(Project project);
+    public Project createProject(ProjectDTO newProject);
     public List<Project> getAllProjects();
     public Optional<Project> getProjectById(Long id);
     public Project updateProject(Long id, Project projectDetails);
@@ -25,6 +27,7 @@ public interface ProjectService {
     public Map<String, Integer> getObjectivesInfoByProject(Long projectId);
     public Map<String, Integer> getTaskInfoForProject(Long projectId);
     public List<TeamDetailsDTO> getProjectTeamsDetails(Long projectId);
+    public List<SelectTeamDTO> getProjectTeamsSelection(Long projectId);
     public List<TeamResponseDTO> getTeamsForProject(Long projectId);
     public TeamResponseDTO getTeamForProject(Long projectId, Long teamId);
     public List<KeyResult> getAllKeyResult(Long projectId);

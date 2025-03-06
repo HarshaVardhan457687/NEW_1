@@ -38,12 +38,23 @@ public class ProjectServiceImpl implements ProjectService{
 
     /**
      * Create a new project.
-     * @param project The project object to be created.
+     * @param newProject The project object to be created.
      * @return The created project object.
      */
     @Override
-    public Project createProject(Project project) {
+    public Project createProject(ProjectDTO newProject) {
+        Project project = new Project();
+        project.setProjectName(newProject.getProjectName());
+        project.setProjectDescription(newProject.getProjectDescription());
+        project.setProjectDueDate(newProject.getProjectDueDate());
+        project.setProjectPriority(newProject.getProjectPriority());
+        project.setProjectManagerId(getProjectManagerId(newProject.getProjectManagerEmail()));
         return projectRepository.save(project);
+    }
+
+    private Long getProjectManagerId(String projectManagerEmail) {
+        String userServiceUrl = USER_SERVICE_URL + "getUserId/" + projectManagerEmail;
+        return restTemplate.getForObject(userServiceUrl, Long.class);
     }
 
     /**
@@ -326,6 +337,30 @@ public class ProjectServiceImpl implements ProjectService{
         return teamDetailsList;
     }
 
+
+    @Override
+    public List<SelectTeamDTO> getProjectTeamsSelection(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        List<Long> teamIds = project.getTeamsInvolvedId();
+
+        List<SelectTeamDTO> allTeams = new ArrayList<>();
+
+        for (Long teamId : teamIds) {
+            TeamDTO team = restTemplate.getForObject(TEAM_SERVICE_URL + teamId, TeamDTO.class);
+
+            Long teamLeadId = team.getTeamLead();
+            UserDTO teamLeader = restTemplate.getForObject(USER_SERVICE_URL + teamLeadId, UserDTO.class);
+
+            SelectTeamDTO currTeam = new SelectTeamDTO();
+            currTeam.setTeamId(teamId);
+            currTeam.setTeamName(team.getTeamName());
+
+            allTeams.add(currTeam);
+        }
+        return allTeams;
+    }
     /**
      * Retrieves all teams associated with a specific project.
      *

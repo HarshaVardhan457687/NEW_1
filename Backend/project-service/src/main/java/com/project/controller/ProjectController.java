@@ -1,5 +1,7 @@
 package com.project.controller;
 
+import com.project.DTO.ProjectDTO;
+import com.project.DTO.SelectTeamDTO;
 import com.project.DTO.TeamDetailsDTO;
 import com.project.DTO.TeamResponseDTO;
 import com.project.constants.ProjectStatus;
@@ -23,7 +25,7 @@ public class ProjectController {
     private ProjectServiceImpl projectService;
 
     @PostMapping("/new")
-    public ResponseEntity<Project> createProject(@RequestBody Project project) {
+    public ResponseEntity<Project> createProject(@RequestBody ProjectDTO project) {
         return ResponseEntity.ok(projectService.createProject(project));
     }
 
@@ -137,6 +139,12 @@ public class ProjectController {
     @GetMapping("/{projectId}/teams-details")
     public ResponseEntity<List<TeamDetailsDTO>> getProjectTeamsDetails(@PathVariable Long projectId) {
         List<TeamDetailsDTO> teamDetailsList = projectService.getProjectTeamsDetails(projectId);
+        return ResponseEntity.ok(teamDetailsList);
+    }
+
+    @GetMapping("/{projectId}/teams-select")
+    public ResponseEntity<List<SelectTeamDTO>> getProjectTeamsSelect(@PathVariable Long projectId) {
+        List<SelectTeamDTO> teamDetailsList = projectService.getProjectTeamsSelection(projectId);
         return ResponseEntity.ok(teamDetailsList);
     }
 
