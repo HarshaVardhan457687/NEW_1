@@ -5,6 +5,7 @@ import com.task.task_service.constants.ApprovalStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 
@@ -15,7 +16,8 @@ import java.util.Date;
 public class TaskApproval {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "complex-long-id-generator")
+    @GenericGenerator(name = "complex-long-id-generator", strategy = "com.task.task_service.util.ComplexLongIdGenerator")
     private Long approvalId;
 
     private Long taskId;

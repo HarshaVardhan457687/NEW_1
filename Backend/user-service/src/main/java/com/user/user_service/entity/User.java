@@ -3,6 +3,8 @@ package com.user.user_service.entity;
 import com.user.user_service.constants.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +18,8 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "complex-long-id-generator")
+    @GenericGenerator(name = "complex-long-id-generator", strategy = "com.user.user_service.util.ComplexLongIdGenerator")
     private Long userId;
 
     @Column(nullable = false, length = 100)
