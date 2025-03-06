@@ -48,7 +48,7 @@ public class Objective {
 
     private ObjectiveStatus objectiveStatus;
     private ObjectivePriority objectivePriority;
-    private boolean objectiveIsActive;
+    private boolean objectiveIsActive = true;
 
     //GETTERS AND SETTERS
 
