@@ -1,83 +1,27 @@
-//Team
-{
-    "teamId": 2,
-    "teamName": "OKR Team",
-    "teamLead": 4,
-    "teamMembers": [
-        2,
-        11,
-        6
-    ],
-    "assignedProject": 4,
-    "assignedKeyResult": [
-        1,
-        9
-    ]
-}
-
-//objectives
-{
-    "objectiveId": 3,
-    "objectiveName": "Make 100% increase in sales",
-    "mappedProject": 2,
-    "keyResultIds": [
-        3,
-        4,
-        8
-    ],
-    "keyResult": null,
-    "objectiveCreatedAt": "2025-02-25",
-    "objectiveDueDate": "2025-03-03",
-    "objectiveStatus": "ON_TRACK",
-    "objectivePriority": "LOW",
-    "objectiveIsActive": true,
-    "projectCreatedAt": "2025-02-25"
-}
-
-//keyresult
-{
-    "keyResultId": 3,
-    "keyResultName": "Increase Monthly Revenue",
-    "keyResultOwnerId": 2,
-    "associatedObjectiveId": 1,
-    "keyResultcurrentVal": 100,
-    "keyResultTargetVal": 100,
-    "keyResultunit": "USD",
-    "keyResultPriority": "LOW",
-    "keyResultAssociatedTasksId": [
-        3
-    ],
-
-    "keyResultCreatedAt": "2025-02-25",
-    "keyResultDueDate": "2025-03-31",
-    "teamId": 2,
-    "projectCreatedAt": "2025-02-25"
-}
-
-//project
-{
-    "projectId": 2,
-    "projectName": "Website Deployement",
-    "projectDescription": "A complete redesign of the company website, focusing on user experience and aesthetics.",
-    "projectPriority": "LOW",
-    "projectStatus": "ON_TRACK",
-    "projectManagerId": 2,
-    "teamsInvolvedId": [
-        1,
-        6
-    ],
-    "objectiveId": [
-        1,
-        2,
-        10
-    ],
-    "objectives": null,
-    "keyResultIds": [
-        1,
-        2
-    ],
-    "projectCreatedAt": "2025-02-25",
-    "projectDueDate": null,
-    "projectProgress": 0.0,
-    "active": false
-}
+[
+    {
+        "objectiveName": "Improve Customer Satisfaction",
+        "objectiveStatus": "ON_TRACK",
+        "objectiveProgress": 100.0,
+        "keyResults": [
+            {
+                "name": "Increase Monthly Revenue",
+                "priority": "LOW",
+                "currKeyResultVal": 100.0,
+                "dueDate": "2025-03-31",
+                "progress": 100.0,
+                "teamLeaderName": "Sunny",
+                "teamLeaderProfilePic": null
+            },
+            {
+                "name": "Increase Monthly Revenue",
+                "priority": "LOW",
+                "currKeyResultVal": 100.0,
+                "dueDate": "2025-03-31",
+                "progress": 100.0,
+                "teamLeaderName": "Aryan",
+                "teamLeaderProfilePic": "https://res.cloudinary.com/dopdnslog/image/upload/v1740659540/zidy4krugkzl5rgsnepl.jpg"
+            }
+        ]
+    }
+]
