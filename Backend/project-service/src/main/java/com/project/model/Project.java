@@ -8,12 +8,14 @@ import java.util.List;
 import com.project.constants.ProjectPriority;
 import com.project.constants.ProjectStatus;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "projects")
 public class Project {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "complex-long-id-generator")
+    @GenericGenerator(name = "complex-long-id-generator", strategy = "com.project.util.ComplexLongIdGenerator")
     private Long projectId;
 
     @Column(nullable = false)

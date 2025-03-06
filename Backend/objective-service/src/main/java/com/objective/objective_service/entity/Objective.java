@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 import java.util.List;
@@ -20,8 +21,10 @@ import java.util.List;
 @Table(name = "objective")
 public class Objective {
 
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "complex-long-id-generator")
+    @GenericGenerator(name = "complex-long-id-generator", strategy = "com.objective.objective_service.util.ComplexLongIdGenerator")
     private Long objectiveId;
     private String objectiveName;
     private Long mappedProject;

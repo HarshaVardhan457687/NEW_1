@@ -9,6 +9,7 @@ import com.team.team_service.repository.TeamRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -31,9 +32,31 @@ public class TeamServiceImpl implements TeamService {
     // Logger to log the activities performed in the service
     private static final Logger LOGGER = LoggerFactory.getLogger(TeamServiceImpl.class);
 
-    private static final String USER_SERVICE_URL = "http://localhost:8086/api/users";
-    private static final String KEY_RESULT_SERVICE_URL = "http://localhost:8082/api/keyresults";
-    private static final String PROJECT_SERVICE_URL = "http://localhost:8085/api/projects";
+//    private static final String USER_SERVICE_URL = "http://localhost:8086/api/users";
+//    private static final String KEY_RESULT_SERVICE_URL = "http://localhost:8082/api/keyresults";
+//    private static final String PROJECT_SERVICE_URL = "http://localhost:8085/api/projects";
+@Value("${user.service.url}")
+private String USER_SERVICE_URL;
+
+    @Value("${keyresult.service.url}")
+    private String KEY_RESULT_SERVICE_URL;
+
+    @Value("${project.service.url}")
+    private String PROJECT_SERVICE_URL;
+
+    public String getUserServiceUrl() {
+        return USER_SERVICE_URL;
+    }
+
+    public String getKeyResultServiceUrl() {
+        return KEY_RESULT_SERVICE_URL;
+    }
+
+    public String getProjectServiceUrl() {
+        return PROJECT_SERVICE_URL;
+    }
+
+
     /**
      * Creates a new team in the database.
      * This method accepts a Team object, saves it, and returns the saved Team object.

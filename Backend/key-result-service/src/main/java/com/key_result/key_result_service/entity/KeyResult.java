@@ -5,6 +5,7 @@ import com.key_result.key_result_service.constants.KeyResultPriority;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 import java.util.List;
@@ -17,7 +18,8 @@ import java.util.List;
 public class KeyResult {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "complex-long-id-generator")
+    @GenericGenerator(name = "complex-long-id-generator", strategy = "com.key_result.key_result_service.util.ComplexLongIdGenerator")
     private Long keyResultId;
     private String keyResultName;
     private Long keyResultOwnerId;
