@@ -1,0 +1,41 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+export interface ObjectivePageStats {
+  totalObjectives: number;
+  completedObjectives: number;
+  totalKeys: number;
+  completedKeys: number;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ObjectivePageService {
+  private readonly API_URL = 'http://localhost:8060/api/projects';
+
+  constructor(private http: HttpClient) {}
+
+  getObjectiveStats(projectId: number): Observable<ObjectivePageStats> {
+    const objectivesInfo = this.http.post<Record<string, number>>(`${this.API_URL}/objectives-info/${projectId}`, {});
+    const keyResultsCount = this.http.get<Record<string, number>>(`${this.API_URL}/keyresults/count`, {
+      params: new HttpParams().set('projectId', projectId.toString())
+    });
+
+    return forkJoin({
+      objectives: objectivesInfo,
+      keyResults: keyResultsCount
+    }).pipe(
+      map(response => ({
+        totalObjectives: (response.objectives['completedObjectives'] || 0) + 
+                        (response.objectives['inProgressObjectives'] || 0) + 
+                        (response.objectives['notStartedObjectives'] || 0),
+        completedObjectives: response.objectives['completedObjectives'] || 0,
+        totalKeys: response.keyResults['totalKeyResults'] || 0,
+        completedKeys: response.keyResults['completedKeyResults'] || 0
+      }))
+    );
+  }
+}

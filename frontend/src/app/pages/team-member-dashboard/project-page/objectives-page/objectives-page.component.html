@@ -7,14 +7,14 @@
     </app-objective-stat-card>
 
     <app-objective-stat-card
-      title="In Progress"
-      [value]="objectiveStats.inProgress"
+      title="Completed Objectives"
+      [value]="objectiveStats.completedObjectives"
       color="#F59E0B">
     </app-objective-stat-card>
 
     <app-objective-stat-card
-      title="Completed"
-      [value]="objectiveStats.completed"
+      title="Total Keys"
+      [value]="objectiveStats.totalKeys"
       color="#10B981">
     </app-objective-stat-card>
 
@@ -23,7 +23,8 @@
       [value]="objectiveStats.completedKeys"
       color="#2563EB">
     </app-objective-stat-card>
-    
   </div>
-  <app-objectives-section [projectId]="projectId"></app-objectives-section>
+  
+  <!-- Commented out objectives section for now -->
+  <!-- <app-objectives-section [projectId]="projectId"></app-objectives-section> -->
 </div>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ObjectiveStatCardComponent } from '../../../../shared/objective-stat-card/objective-stat-card.component';
 import { ActivatedRoute } from '@angular/router';
-import { ObjectivesService, ObjectiveStats } from '../../../../core/services/objectives.service';
+import { ObjectivePageService, ObjectivePageStats } from '../../../../core/services/objective-page.service';
 import { ObjectivesSectionComponent } from './objectives-section/objectives-section.component';
 
 @Component({
@@ -14,16 +14,16 @@ import { ObjectivesSectionComponent } from './objectives-section/objectives-sect
 })
 export class ObjectivesPageComponent implements OnInit {
   projectId!: number;
-  objectiveStats: ObjectiveStats = {
+  objectiveStats: ObjectivePageStats = {
     totalObjectives: 0,
-    inProgress: 0,
-    completed: 0,
+    completedObjectives: 0,
+    totalKeys: 0,
     completedKeys: 0
   };
 
   constructor(
     private route: ActivatedRoute,
-    private objectivesService: ObjectivesService
+    private objectivePageService: ObjectivePageService
   ) {}
 
   ngOnInit(): void {
@@ -34,8 +34,8 @@ export class ObjectivesPageComponent implements OnInit {
   }
 
   private loadObjectiveStats(): void {
-    this.objectivesService.getObjectiveStats(this.projectId).subscribe({
-      next: (stats: ObjectiveStats) => {
+    this.objectivePageService.getObjectiveStats(this.projectId).subscribe({
+      next: (stats: ObjectivePageStats) => {
         this.objectiveStats = stats;
       },
       error: (error: Error) => {
