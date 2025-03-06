@@ -90,7 +90,7 @@ public class ObjectiveController {
      * @return ResponseEntity containing the list of objectives for the project and HTTP status 200 (OK).
      */
     @GetMapping("/project/{projectId}")
-    public ResponseEntity<List<ObjectiveSummaryDTO>> getAllObjectiveByProjectId(@PathVariable Long projectId) {
+    public ResponseEntity<List<ObjectiveSummaryDTO>> getAllObjectiveByProjectId(@PathVariable("projectId") Long projectId) {
         LOGGER.info("Fetching objective with project associated with projectID: {}", projectId);
         List<ObjectiveSummaryDTO> objectivesWithProjectId = objectiveService.getAllObjectiveByProjectId(projectId);
         return ResponseEntity.ok(objectivesWithProjectId);
