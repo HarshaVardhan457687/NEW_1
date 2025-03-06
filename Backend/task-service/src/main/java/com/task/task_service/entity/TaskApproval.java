@@ -20,7 +20,6 @@ public class TaskApproval {
 
     private Long taskId;
     private Long submitterId;
-    private Long approverId;
     private Long projectId;
     private Long teamId;
 
@@ -34,7 +33,6 @@ public class TaskApproval {
 
     @Enumerated(EnumType.STRING)
     private ApprovalStatus status;
-
 
 
     // GETTERS AND SETTERS
@@ -61,14 +59,6 @@ public class TaskApproval {
 
     public void setSubmitterId(Long submitterId) {
         this.submitterId = submitterId;
-    }
-
-    public Long getApproverId() {
-        return approverId;
-    }
-
-    public void setApproverId(Long approverId) {
-        this.approverId = approverId;
     }
 
     public Long getProjectId() {

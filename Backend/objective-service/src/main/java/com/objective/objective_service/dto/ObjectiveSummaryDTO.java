@@ -13,10 +13,19 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ObjectiveSummaryDTO {
+    private Long objectiveId;
     private String objectiveName;
     private ObjectiveStatus objectiveStatus;
     private double objectiveProgress;
     private List<KeyResultSummaryDto> keyResults;
+
+    public Long getObjectiveId() {
+        return objectiveId;
+    }
+
+    public void setObjectiveId(Long objectiveId) {
+        this.objectiveId = objectiveId;
+    }
 
     public String getObjectiveName() {
         return objectiveName;

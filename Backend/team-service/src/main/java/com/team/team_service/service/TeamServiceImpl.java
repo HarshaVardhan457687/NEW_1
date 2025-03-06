@@ -371,6 +371,15 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public String getTeamName(Long teamId){
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new RuntimeException("Team not found"));
+
+        // Return the team lead's ID
+        return team.getTeamName();
+    }
+
+    @Override
     public boolean isTeamMappedToProject(Long teamId, Long projectId) {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new RuntimeException("Team not found"));

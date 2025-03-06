@@ -196,19 +196,19 @@ public class ObjectiveServiceImpl implements ObjectiveService {
 
             for (KeyResult keyResult : keyResults) {
                 KeyResultSummaryDto keyResultSummary = new KeyResultSummaryDto();
+                keyResultSummary.setKeyResultId(keyResult.getKeyResultId());
                 keyResultSummary.setName(keyResult.getKeyResultName());
                 keyResultSummary.setPriority(keyResult.getKeyResultPriority().name());
                 keyResultSummary.setCurrKeyResultVal((double) keyResult.getKeyResultcurrentVal());
                 keyResultSummary.setDueDate(keyResult.getKeyResultDueDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                 keyResultSummary.setProgress(getKeyResultProgress(keyResult.getKeyResultId()));
-
+                keyResultSummary.setTeamName(fetchTeamName(keyResult.getTeamId()));
                 // Fetch team leader ID from Teams service
                 Long teamLeaderId = fetchTeamLeaderId(keyResult.getTeamId());
 
                 // Fetch team leader details from User service
                 if (teamLeaderId != null) {
                     UserSummaryDTO userDetails = fetchUserDetails(teamLeaderId);
-                    keyResultSummary.setTeamLeaderName(userDetails.getUserName());
                     keyResultSummary.setTeamLeaderProfilePic(userDetails.getUserProfilePhoto());
                 }
 
@@ -217,6 +217,7 @@ public class ObjectiveServiceImpl implements ObjectiveService {
 
             // Create an ObjectiveSummaryDto and add it to the list
             ObjectiveSummaryDTO summaryDto = new ObjectiveSummaryDTO();
+            summaryDto.setObjectiveId(objective.getObjectiveId());
             summaryDto.setObjectiveName(objective.getObjectiveName());
             summaryDto.setObjectiveStatus(objective.getObjectiveStatus());
             summaryDto.setObjectiveProgress(progress);
@@ -271,6 +272,21 @@ public class ObjectiveServiceImpl implements ObjectiveService {
             return teamLeadId;
         } catch (Exception e) {
             LOGGER.error("Error fetching team leader ID for teamId: {}", teamId, e);
+            return null;
+        }
+    }
+
+    private String fetchTeamName(Long teamId) {
+        try {
+            String url = TEAM_SERVICE_URL + "get-team-name/" + teamId;
+            LOGGER.info("Fetching team name from URL: {}", url);
+
+            String teamName = restTemplate.getForObject(url, String.class);
+            LOGGER.info("Received team name: {}", teamName);
+
+            return teamName;
+        } catch (Exception e) {
+            LOGGER.error("Error fetching team name for teamId: {}", teamId, e);
             return null;
         }
     }

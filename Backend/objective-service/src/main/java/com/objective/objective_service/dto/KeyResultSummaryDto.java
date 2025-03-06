@@ -10,15 +10,23 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class KeyResultSummaryDto {
+    private Long keyResultId;
     private String name;
     private String priority;
     private Double currKeyResultVal;
     private LocalDate dueDate;
     private Float progress;
-    private String teamLeaderName;
+    private String teamName;
     private String teamLeaderProfilePic;
 
     // Getters & Setters
+    public Long getKeyResultId() {
+        return keyResultId;
+    }
+
+    public void setKeyResultId(Long keyResultId) {
+        this.keyResultId = keyResultId;
+    }
 
     public String getName() {
         return name;
@@ -60,12 +68,12 @@ public class KeyResultSummaryDto {
         this.progress = progress;
     }
 
-    public String getTeamLeaderName() {
-        return teamLeaderName;
+    public String getTeamName() {
+        return teamName;
     }
 
-    public void setTeamLeaderName(String teamLeaderName) {
-        this.teamLeaderName = teamLeaderName;
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 
     public String getTeamLeaderProfilePic() {

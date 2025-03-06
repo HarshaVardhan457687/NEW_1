@@ -16,23 +16,24 @@ public class TaskAprrovalServiceImpl implements TaskApprovalService{
     private TaskApprovalRepository taskApprovalRepository;
 
     @Override
-    public TaskApproval requestApproval(Long taskId, Long submitterId, Long projectId, Long teamId) {
+    public TaskApproval requestApproval(Long taskId, Long submitterId, String role, Long id) {
         TaskApproval approval = new TaskApproval();
         approval.setTaskId(taskId);
         approval.setSubmitterId(submitterId);
-        approval.setProjectId(projectId);
-        approval.setTeamId(teamId);
 
-        // Assign approver based on whether task is team-related or not
-        if (teamId != null) {
-            approval.setApproverId(getTeamLeaderId(teamId)); // Fetch from DB or API
-        } else if (projectId != null) {
-            approval.setApproverId(getProjectManagerId(projectId)); // Fetch from DB or API
+        if ("Project Manager".equals(role)) {
+            approval.setProjectId(id);
+
+        } else if ("Team Leader".equals(role)) {
+            approval.setTeamId(id);
+        } else {
+            throw new IllegalArgumentException("Invalid role: " + role);
         }
-
+    // call the task servce and change the task status to pending 
         approval.setStatus(ApprovalStatus.PENDING);
         return taskApprovalRepository.save(approval);
     }
+
 
     public TaskApproval approveTask(Long approvalId) {
         TaskApproval approval = taskApprovalRepository.findById(approvalId)
@@ -51,16 +52,5 @@ public class TaskAprrovalServiceImpl implements TaskApprovalService{
         approval.setApprovedDate(new Date());
         return taskApprovalRepository.save(approval);
     }
-
-    private Long getTeamLeaderId(Long teamId) {
-        // Fetch team leader ID from the Team Service
-        return 101L; // Placeholder
-    }
-
-    private Long getProjectManagerId(Long projectId) {
-        // Fetch project manager ID from the Project Service
-        return 201L; // Placeholder
-    }
-
 
 }
