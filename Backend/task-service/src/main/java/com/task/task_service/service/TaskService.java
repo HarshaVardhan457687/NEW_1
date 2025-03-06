@@ -12,7 +12,7 @@ public interface TaskService {
     public Task getTaskById(Long taskId);
     public List<Task> getAllTask();
     public Task updateTask(Long taskId, Task taskToUpdate);
-    public Task updateTaskStatus(Long taskId, TaskStatus status);
+    public Task updateTaskStatus(Long taskId, TaskStatus status, boolean isActive);
     public void removeTask(Long taskId);
     public List<Task> getAlltaskWithKeyResultId(Long keyresulId);
     public List<Task> getAlltaskWithUserId(Long userId);

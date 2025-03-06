@@ -149,11 +149,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task updateTaskStatus(Long taskId, TaskStatus status) {
+    public Task updateTaskStatus(Long taskId, TaskStatus status, boolean isActive) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task not found with ID: " + taskId));
 
         task.setTaskStatus(status);
+        task.setTaskIsActive(isActive);
         return taskRepository.save(task);
     }
 

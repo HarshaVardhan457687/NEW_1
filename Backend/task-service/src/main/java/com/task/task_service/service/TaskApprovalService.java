@@ -4,5 +4,6 @@ import com.task.task_service.entity.TaskApproval;
 
 public interface TaskApprovalService {
     public TaskApproval requestApproval(Long taskId, Long submitterId, String role, Long id);
-
+    public TaskApproval approveTask(Long approvalId);
+    public TaskApproval rejectTask(Long approvalId);
 }

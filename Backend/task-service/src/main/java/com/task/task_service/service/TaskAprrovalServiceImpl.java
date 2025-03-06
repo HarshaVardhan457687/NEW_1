@@ -34,12 +34,12 @@ public class TaskAprrovalServiceImpl implements TaskApprovalService{
             throw new IllegalArgumentException("Invalid role: " + role);
         }
 
-        taskService.updateTaskStatus(taskId, TaskStatus.WAITING_FOR_APPROVAL);
+        taskService.updateTaskStatus(taskId, TaskStatus.WAITING_FOR_APPROVAL, true);
         approval.setStatus(ApprovalStatus.PENDING);
         return taskApprovalRepository.save(approval);
     }
 
-
+    @Override
     public TaskApproval approveTask(Long approvalId) {
         TaskApproval approval = taskApprovalRepository.findById(approvalId)
                 .orElseThrow(() -> new RuntimeException("Approval request not found"));
@@ -47,11 +47,12 @@ public class TaskAprrovalServiceImpl implements TaskApprovalService{
         approval.setStatus(ApprovalStatus.APPROVED);
         approval.setApprovedDate(new Date());
 
-        taskService.updateTaskStatus(approval.getTaskId(), TaskStatus.COMPLETED);
+        taskService.updateTaskStatus(approval.getTaskId(), TaskStatus.COMPLETED, false);
 
         return taskApprovalRepository.save(approval);
     }
 
+    @Override
     public TaskApproval rejectTask(Long approvalId) {
         TaskApproval approval = taskApprovalRepository.findById(approvalId)
                 .orElseThrow(() -> new RuntimeException("Approval request not found"));
@@ -59,7 +60,7 @@ public class TaskAprrovalServiceImpl implements TaskApprovalService{
         approval.setStatus(ApprovalStatus.REJECTED);
         approval.setApprovedDate(new Date());
 
-        taskService.updateTaskStatus(approval.getTaskId(), TaskStatus.PENDING);
+        taskService.updateTaskStatus(approval.getTaskId(), TaskStatus.PENDING, true);
 
         return taskApprovalRepository.save(approval);
     }
