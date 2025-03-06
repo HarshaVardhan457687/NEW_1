@@ -6,7 +6,7 @@ import com.project.constants.ProjectStatus;
 import com.project.model.KeyResult;
 import com.project.model.Project;
 import com.project.model.Objective;
-import com.project.services.ProjectService;
+import com.project.services.ProjectServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import java.util.Map;
 @RequestMapping("/api/projects")
 public class ProjectController {
     @Autowired
-    private ProjectService projectService;
+    private ProjectServiceImpl projectService;
 
     @PostMapping("/new")
     public ResponseEntity<Project> createProject(@RequestBody Project project) {
@@ -61,17 +61,6 @@ public class ProjectController {
         return ResponseEntity.ok().build();
     }
 
-
-
-    @GetMapping("/dashboard/status/{status}")
-    public ResponseEntity<Long> getProjectCountByStatus(@PathVariable ProjectStatus status) {
-        return ResponseEntity.ok(projectService.getProjectCountByStatus(status));
-    }
-
-    @GetMapping("/dashboard/active/{isActive}")
-    public ResponseEntity<Long> getProjectCountByActiveStatus(@PathVariable Boolean isActive) {
-        return ResponseEntity.ok(projectService.getProjectCountByActiveStatus(isActive));
-    }
 
     @GetMapping("/search")
     public ResponseEntity<List<Project>> searchProjects(
@@ -190,6 +179,15 @@ public class ProjectController {
     }
 
 
-
+    /**
+     * Endpoint to get the count of total and completed key results for a project.
+     *
+     * @param projectId The ID of the project
+     * @return Map containing the total count of key results and completed key results count
+     */
+    @GetMapping("/keyresults/count")
+    public Map<String, Integer> getKeyResultsCounts(@RequestParam Long projectId) {
+        return projectService.getKeyResultsCounts(projectId);
+    }
 
 }
