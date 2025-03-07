@@ -191,7 +191,8 @@ export class AddTeamCardComponent implements OnInit {
   get filteredMembers() {
     return this.teamMembers.filter(member => 
       member.userName.toLowerCase().includes(this.searchMember.toLowerCase()) &&
-      !this.selectedMembers.find(m => m.userId === member.userId)
+      !this.selectedMembers.find(m => m.userId === member.userId) &&
+      (!this.selectedLeader || member.userId !== this.selectedLeader.userId)
     );
   }
 
