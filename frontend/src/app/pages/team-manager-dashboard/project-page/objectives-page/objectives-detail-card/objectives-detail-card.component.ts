@@ -53,4 +53,8 @@ export class ObjectivesDetailCardComponent {
   formatProgress(progess:number):number{
     return Math.floor(progess);
   }
+
+  onAddKeyResult() {
+    console.log('Add Key Result button clicked');
+  }
 }

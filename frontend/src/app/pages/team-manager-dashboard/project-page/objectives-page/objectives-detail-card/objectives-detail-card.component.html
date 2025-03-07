@@ -1,6 +1,7 @@
 <div class="objective-card">
   <div class="header-row">
     <h3 class="title">{{ objective.name }}</h3>
+    <button class="add-key-result-button" (click)="onAddKeyResult()">Add Key Result</button>
     <div class="status" [ngClass]="getStatusClass(objective.status)">
       {{ formatStatus(objective.status) }}
     </div>

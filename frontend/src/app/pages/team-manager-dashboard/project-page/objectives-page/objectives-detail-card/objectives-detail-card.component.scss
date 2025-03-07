@@ -17,6 +17,24 @@
       color: var(--text-color);
       margin: 0;
     }
+    
+
+    .add-key-result-button {
+      font-size: 0.75rem;
+      border-radius: 0.8rem;
+      margin-left: 0.5rem;
+      margin-right: auto;
+      font-weight: 500;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid #6B7280;
+      color: #6B7280;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: #E5E7EB;
+      }
+    }
 
     .status {
       padding: 0.2rem 0.6rem; // Reduced from 0.25rem 0.75rem
