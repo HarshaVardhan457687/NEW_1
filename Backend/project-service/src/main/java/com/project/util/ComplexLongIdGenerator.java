@@ -14,10 +14,13 @@ public class ComplexLongIdGenerator implements IdentifierGenerator {
         // Get the current timestamp in milliseconds
         long timestamp = System.currentTimeMillis();
 
-        // Generate a 5-digit random number (ensuring it’s always 5 digits)
-        long randomValue = 1000 + new Random().nextInt(9000);
+        // Extract the last 8 digits of the timestamp
+        long timestampPart = timestamp % 100000000;  // Last 8 digits
 
-        // Combine timestamp and random value to form a unique ID
-        return timestamp * 1000 + randomValue;
+        // Generate a 4-digit random number (ensuring it’s always 4 digits)
+        long randomValue = 1000 + new Random().nextInt(9000);  // Random number between 1000 and 9999
+
+        // Combine the timestamp and random value to form a 12-digit unique ID
+        return timestampPart * 10000 + randomValue;  // This guarantees a 12-digit ID
     }
 }

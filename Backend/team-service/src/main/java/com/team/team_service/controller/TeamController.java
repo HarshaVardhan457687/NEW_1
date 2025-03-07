@@ -109,13 +109,11 @@ public class TeamController {
         return ResponseEntity.ok(teamService.getTeamName(teamId));
     }
 
-     // Endpoint to check if a team is mapped to a given project
     @GetMapping("/is-mapped-to-project")
     public ResponseEntity<Boolean> isTeamMappedToProject(
             @RequestParam Long teamId,
             @RequestParam Long projectId) {
 
-        // Call service to check if the team is mapped to the given project
         boolean isMapped = teamService.isTeamMappedToProject(teamId, projectId);
 
         return ResponseEntity.ok(isMapped);

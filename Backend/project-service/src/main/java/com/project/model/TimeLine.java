@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,7 +14,8 @@ import lombok.*;
 public class TimeLine {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "complex-long-id-generator")
+    @GenericGenerator(name = "complex-long-id-generator", strategy = "com.project.util.ComplexLongIdGenerator")
     private Long timeLineId;
     private String timeLineHeading;
     private Long timeLineAssociatedProject;

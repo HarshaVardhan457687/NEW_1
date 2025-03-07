@@ -3,6 +3,7 @@ package com.user.user_service.service;
 import com.user.user_service.DTO.UserSummaryDTO;
 import com.user.user_service.entity.*;
 import com.user.user_service.exception.ResourceNotFoundException;
+import com.user.user_service.exception.UserNotFoundException;
 import com.user.user_service.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -38,9 +39,9 @@ public class UserServiceImpl implements UserService {
     private static final String KEYRESULT_SERVICE_URL = "http://localhost:8082/api/keyresults";
     private static final String TASK_SERVICE_URL = "http://localhost:8083/api/tasks";
     private static final String TEAM_SERVICE_URL = "http://localhost:8084/api/teams";
+
     /**
      * Creates a new user and saves it to the database.
-     *
      * @param user User object to be created.
      * @return The saved User.
      */
@@ -51,9 +52,8 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Fetches all users.
-     *
-     * @return A list of all users.
+     * Retrieves all users from the database.
+     * @return List of all users
      */
     @Override
     public List<User> getAllUsers() {
@@ -62,23 +62,22 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Fetches a user by its ID.
-     *
-     * @param userId The ID of the user to fetch.
-     * @return The User object if found.
-     * @throws ResourceNotFoundException if no user is found with the given ID.
+     * Retrieves a specific user by ID.
+     * @param userId The ID of the user to retrieve.
+     * @return The user object if found, otherwise throws an exception.
+     * @throws UserNotFoundException if the user does not exist.
      */
     @Override
     public User getUserById(Long userId) {
         LOGGER.info("Fetching user with ID: {}", userId);
         return userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
     }
 
 
     public User getUserByEmail(String email) {
         return userRepository.findByUserEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
     }
 
     /**
@@ -90,10 +89,9 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User updateUserById(Long userId, User user, boolean isPatch) {
-        // Get existing user
         User existingUser = getUserById(userId);
 
-        if (isPatch) { // PATCH - Update only non-null fields
+        if (isPatch) {
             if (user.getUserName() != null) existingUser.setUserName(user.getUserName());
             if (user.getUserEmail() != null) existingUser.setUserEmail(user.getUserEmail());
             if (user.getUserDesignation() != null) existingUser.setUserDesignation(user.getUserDesignation());
@@ -109,23 +107,24 @@ public class UserServiceImpl implements UserService {
             if (user.getUserManagerProjectId() != null) existingUser.setUserManagerProjectId(user.getUserManagerProjectId());
             if (user.getUserTeamLeaderProjectId() != null) existingUser.setUserTeamLeaderProjectId(user.getUserTeamLeaderProjectId());
             if (user.getUserTeamMemberProjectId() != null) existingUser.setUserTeamMemberProjectId(user.getUserTeamMemberProjectId());
-        } else { // PUT - Full update (replace entire object)
-            existingUser = user; // Replace entire object
-            existingUser.setUserId(userId); // Ensure ID remains unchanged
+        } else {
+            existingUser = user;
+            existingUser.setUserId(userId);
         }
 
         return userRepository.save(existingUser);
     }
 
+    /**
+     * upload the
+     */
     public String uploadUserProfilePhoto(Long userId, MultipartFile file) {
-        // Find user by ID
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Upload to Cloudinary
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+
         String imageUrl = cloudinaryService.uploadImage(file);
 
-        // Save the URL in the database
         user.setUserProfilePhoto(imageUrl);
         userRepository.save(user);
 
@@ -134,10 +133,9 @@ public class UserServiceImpl implements UserService {
 
     public String getProfilePicture(Long userId){
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
         return user.getUserProfilePhoto();
     }
-
     public List<UserSummaryDTO> findAllUsersWithProfile(){
         return userRepository.findAllUsersWithProfile();
     }
@@ -146,38 +144,19 @@ public class UserServiceImpl implements UserService {
      * Deletes a user by its ID.
      *
      * @param userId The ID of the user to delete.
-     * @throws ResourceNotFoundException if no user is found with the given ID.
+     * @throws UserNotFoundException if no user is found with the given ID.
      */
     @Override
     public void deleteUser(Long userId) {
         LOGGER.info("Deleting user with ID: {}", userId);
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
         userRepository.delete(user);
     }
 
-    /**
-     * Fetches all tasks assigned to a user.
-     *
-     * @param userId The ID of the user whose tasks are to be fetched.
-     * @return A list of tasks assigned to the user.
-     */
-//    @Override
-//    public List<Task> getAllTasksOfUser(Long userId) {
-//        LOGGER.info("Fetching all tasks for user with ID: {}", userId);
-//        return userRepository.;
-//    }
-    @Override
-    public List<Task> getAllTasksOfUser(Long userId) {
-        return List.of();
-    }
 
 
-    @Override
-    public List<Team> getAllTeamsOfUser(Long userId) {
-        return List.of();
-    }
 
     /**
     *   get active projects with progress
@@ -185,7 +164,7 @@ public class UserServiceImpl implements UserService {
     public List<Project> getActiveProjects(Long userId, String userRole) {
         // Fetch user from DB
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
         // Select the correct project list based on role
         List<Long> projectIds = switch (userRole.toUpperCase()) {
@@ -217,10 +196,9 @@ public class UserServiceImpl implements UserService {
             return Collections.emptyList();
         }
 
-        // Fetch progress for each project from Objective Service
         for (Project project : activeProjects) {
-            double progress = getProjectProgressById(project.getProjectId()); // Fetch progress
-            project.setProjectProgress(progress); // Set progress in project object
+            double progress = getProjectProgressById(project.getProjectId());
+            project.setProjectProgress(progress);
         }
 
         return activeProjects;
@@ -228,11 +206,9 @@ public class UserServiceImpl implements UserService {
 
     // take the all projects list for particular role
     public List<Project> getAllProjects(Long userId, String userRole) {
-        // Fetch user from DB
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
-        // Select the correct project list based on role
         List<Long> projectIds = switch (userRole.toUpperCase()) {
             case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
             case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
@@ -244,12 +220,10 @@ public class UserServiceImpl implements UserService {
             return Collections.emptyList();
         }
 
-        // Create request entity with headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
 
-        // Make a POST request to Project Service to get active projects
         ResponseEntity<List<Project>> response = restTemplate.exchange(
                 PROJECT_SERVICE_URL + "/all",
                 HttpMethod.POST,
@@ -262,10 +236,9 @@ public class UserServiceImpl implements UserService {
             return Collections.emptyList();
         }
 
-        // Fetch progress for each project from Objective Service
         for (Project project : allProjects) {
-            double progress = getProjectProgressById(project.getProjectId()); // Fetch progress
-            project.setProjectProgress(progress); // Set progress in project object
+            double progress = getProjectProgressById(project.getProjectId());
+            project.setProjectProgress(progress);
         }
 
         return allProjects;
@@ -282,7 +255,7 @@ public class UserServiceImpl implements UserService {
             return response.getBody() != null ? response.getBody() : 0;
         } catch (Exception e) {
             System.err.println("Error fetching progress for project ID: " + projectId);
-            return 0; // Default progress if service fails
+            return 0;
         }
     }
 
@@ -291,11 +264,9 @@ public class UserServiceImpl implements UserService {
      * Fetch active project count based on user role.
      */
     public Map<String, Long> getActiveAndTotalProjectsCount(Long userId, String userRole) {
-        // Fetch user from DB
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
-        // Select the correct project list based on role
         List<Long> projectIds = switch (userRole.toUpperCase()) {
             case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
             case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
@@ -303,7 +274,6 @@ public class UserServiceImpl implements UserService {
             default -> throw new RuntimeException("Invalid role: " + userRole);
         };
 
-        // Total project count
         long totalProjects = projectIds.size();
 
         // Create request entity with headers
@@ -311,7 +281,6 @@ public class UserServiceImpl implements UserService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
 
-        // Make a POST request to Project Service to get active projects count
         ResponseEntity<Long> response = restTemplate.exchange(
                 PROJECT_SERVICE_URL + "/active/count",
                 HttpMethod.POST,
@@ -320,7 +289,6 @@ public class UserServiceImpl implements UserService {
         );
         long activeProjects = response.getBody();
 
-        // Return both active and total project counts
         Map<String, Long> result = new HashMap<>();
         result.put("activeProjects", activeProjects);
         result.put("totalProjects", totalProjects);
@@ -333,7 +301,7 @@ public class UserServiceImpl implements UserService {
     public List<Objective> getAllObjectivesByRole(Long userId, String userRole) {
         // Fetch user from DB
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
         // Select the correct project list based on role
         List<Long> projectIds = switch (userRole.toUpperCase()) {
@@ -370,7 +338,7 @@ public class UserServiceImpl implements UserService {
     public Map<String, List<Objective>> getObjectivesByRole(Long userId, String userRole) {
         // Fetch user from DB
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
         // Select the correct project list based on role
         List<Long> projectIds = switch (userRole.toUpperCase()) {
@@ -419,7 +387,7 @@ public class UserServiceImpl implements UserService {
     public Map<String, List<KeyResult>> getKeyResultsForProjects(Long userId, String userRole) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
         // Step 2: Select the correct project list based on role
         List<Long> projectIds = switch (userRole.toUpperCase()) {
@@ -475,7 +443,7 @@ public class UserServiceImpl implements UserService {
 
     public Map<String, List<Task>> getTasksForProjects(Long userId, String userRole) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
         List<Long> projectIds = switch (userRole.toUpperCase()) {
             case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
@@ -496,8 +464,8 @@ public class UserServiceImpl implements UserService {
                 new ParameterizedTypeReference<>() {}
         );
 
-        // Grouping tasks into categories
         List<Task> allTasks = taskResponse.getBody();
+
         List<Task> activeTasks = allTasks.stream()
                 .filter(Task::isTaskIsActive)
                 .toList();
@@ -526,7 +494,7 @@ public class UserServiceImpl implements UserService {
     // takes the userId and userRole and return list of active task
     public List<Task> getActiveTasksForUser(Long userId, String userRole) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
         List<Long> projectIds = switch (userRole.toUpperCase()) {
             case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
@@ -573,35 +541,33 @@ public class UserServiceImpl implements UserService {
     public int getActiveTasksCountForUserInProject(Long projectId, Long userId) {
         String url = TASK_SERVICE_URL + "/project/" + projectId + "/user/" + userId + "/active-tasks" ;
 
-        // Call the task service using RestTemplate
         ResponseEntity<Integer> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
-                null, // No request body
-                Integer.class, // The response type is Integer
+                null,
+                Integer.class,
                 projectId,
                 userId
         );
 
-        return response.getBody(); // Return the body of the response, which is the active task count
+        return response.getBody();
     }
 
     public Map<String, Integer> getAllAndActiveTasksCountForUserInProject(Long projectId, Long userId) {
         String url = TASK_SERVICE_URL + "/project/" + projectId + "/user/" + userId + "/all-tasks-count";
 
         try {
-            // Call the task service using RestTemplate
             ResponseEntity<Map<String, Integer>> response = restTemplate.exchange(
                     url,
                     HttpMethod.GET,
                     null, // No request body
-                    new ParameterizedTypeReference<Map<String, Integer>>() {} // Proper response type handling
+                    new ParameterizedTypeReference<Map<String, Integer>>() {}
             );
 
-            return response.getBody() != null ? response.getBody() : Collections.emptyMap(); // Return response body safely
+            return response.getBody() != null ? response.getBody() : Collections.emptyMap();
         } catch (Exception e) {
             LOGGER.error("Failed to fetch task counts for project {} and user {}: {}", projectId, userId, e.getMessage());
-            return Collections.emptyMap(); // Return an empty map in case of failure
+            return Collections.emptyMap();
         }
     }
 
@@ -613,15 +579,9 @@ public class UserServiceImpl implements UserService {
         Long assignedProject = ((Number) request.get("assignedProject")).longValue();
         Long teamLead = ((Number) request.get("teamLead")).longValue();
 
-        if (teamMemberIds == null || teamId == null || assignedProject == null || teamLead == null) {
-            throw new IllegalArgumentException("Invalid request data");
-        }
-
-        // Fetch all team members
         List<User> users = userRepository.findAllById(teamMemberIds);
 
         for (User user : users) {
-            // Update userInvolvedTeamsId
             List<Long> userTeams = user.getUserInvolvedTeamsId();
             if (userTeams == null) {
                 userTeams = new ArrayList<>();
@@ -631,7 +591,6 @@ public class UserServiceImpl implements UserService {
             }
             user.setUserInvolvedTeamsId(userTeams);
 
-            // Exclude team leader from userTeamMemberProjectId update
             if (!user.getUserId().equals(teamLead)) {
                 List<Long> memberProjects = user.getUserTeamMemberProjectId();
                 if (memberProjects == null) {
@@ -644,7 +603,6 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        // Update team lead separately
         Optional<User> leadUserOpt = userRepository.findById(teamLead);
         leadUserOpt.ifPresent(leadUser -> {
             List<Long> leaderProjects = leadUser.getUserTeamLeaderProjectId();
@@ -663,14 +621,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserSummaryDTO getUserSummary(Long userId) {
-        // Fetch user from the repository
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Create the UserSummaryDTO object and return it
-        UserSummaryDTO userSummary = new UserSummaryDTO(user.getUserId(), user.getUserName(), user.getUserProfilePhoto());
-
-        return userSummary;
+        return new UserSummaryDTO(user.getUserId(), user.getUserName(), user.getUserProfilePhoto());
     }
 
     public Long findMappedTeamForUser(Long userId, Long projectId) {
@@ -684,10 +638,10 @@ public class UserServiceImpl implements UserService {
             ResponseEntity<Boolean> response = restTemplate.getForEntity(url, Boolean.class);
 
             if (Boolean.TRUE.equals(response.getBody())) {
-                return teamId; // Stop and return the first mapped team ID
+                return teamId;
             }
         }
-        return null; // No mapped team found
+        return null;
     }
 
     /**
@@ -698,7 +652,9 @@ public class UserServiceImpl implements UserService {
      * @return true if the task was assigned successfully, false if user was not found.
      */
     public boolean assignTaskToUser(Long userId, Long taskId) {
-        User user = userRepository.findById(userId).orElse(null);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+
         if (user != null) {
             List<Long> userTasks = user.getUserTaskAssigned();
             if (userTasks == null) {
@@ -714,7 +670,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateProjectMangerProject(Long userId, Long projectId) {
-        User user = userRepository.findById(userId).orElse(null);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+
         if (user != null) {
             List<Long> userManagerList = user.getUserManagerProjectId();
             if (userManagerList == null) {

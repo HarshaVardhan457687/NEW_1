@@ -46,7 +46,7 @@ public class Objective {
     @Temporal(TemporalType.DATE)
     private Date objectiveDueDate;
 
-    private ObjectiveStatus objectiveStatus;
+    private ObjectiveStatus objectiveStatus = ObjectiveStatus.ON_TRACK;
     private ObjectivePriority objectivePriority;
     private boolean objectiveIsActive = true;
 

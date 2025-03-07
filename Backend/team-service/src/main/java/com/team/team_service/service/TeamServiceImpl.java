@@ -5,6 +5,7 @@ import com.team.team_service.DTO.TeamResponseDto;
 import com.team.team_service.entity.Team;
 import com.team.team_service.entity.User;
 import com.team.team_service.exception.ResourceNotFoundException;
+import com.team.team_service.exception.TeamNotFoundException;
 import com.team.team_service.repository.TeamRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,26 +18,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.awt.event.WindowFocusListener;
 import java.util.*;
 
 @Service
 public class TeamServiceImpl implements TeamService {
 
-    // Injecting the TeamRepository dependency to interact with the database
     @Autowired
     private TeamRepository teamRepository;
 
     @Autowired
     private RestTemplate restTemplate;
-    // Logger to log the activities performed in the service
+
     private static final Logger LOGGER = LoggerFactory.getLogger(TeamServiceImpl.class);
 
-//    private static final String USER_SERVICE_URL = "http://localhost:8086/api/users";
-//    private static final String KEY_RESULT_SERVICE_URL = "http://localhost:8082/api/keyresults";
-//    private static final String PROJECT_SERVICE_URL = "http://localhost:8085/api/projects";
-@Value("${user.service.url}")
-private String USER_SERVICE_URL;
+
+    @Value("${user.service.url}")
+    private String USER_SERVICE_URL;
 
     @Value("${keyresult.service.url}")
     private String KEY_RESULT_SERVICE_URL;
@@ -66,16 +63,12 @@ private String USER_SERVICE_URL;
      */
     @Override
     public Team createTeam(Team newTeam) {
-        // Logging the creation of a new team
         LOGGER.info("Creating a new Team with name: {}", newTeam.getTeamName());
 
-        // Saving the new team to the database
         Team savedTeam = teamRepository.save(newTeam);
 
-        // Call User Service to update user fields
         updateUserTeams(savedTeam.getTeamMembers(), savedTeam.getTeamId(), savedTeam.getAssignedProject(), savedTeam.getTeamLead());
 
-        // Call Project Service to update teamsInvolvedId list
         updateProjectTeams(savedTeam.getAssignedProject(), savedTeam.getTeamId());
 
         return savedTeam;
@@ -129,7 +122,7 @@ private String USER_SERVICE_URL;
      *
      * @param teamId The ID of the team to be fetched.
      * @return The Team object corresponding to the teamId.
-     * @throws ResourceNotFoundException if the team is not found.
+     * @throws TeamNotFoundException if the team is not found.
      */
     @Override
     public Team getTeam(Long teamId) {
@@ -161,31 +154,25 @@ private String USER_SERVICE_URL;
      * @param toUpdate The Team object containing the updated information.
      * @param teamId   The ID of the team to be updated.
      * @return The updated Team object.
-     * @throws ResourceNotFoundException if the team does not exist.
+     * @throws TeamNotFoundException if the team does not exist.
      */
     @Override
     public Team updateTeam(Team toUpdate, Long teamId) {
-        // Logging the attempt to update a team
         LOGGER.info("Updating the Team with teamId: {}", teamId);
 
-        // Trying to find the team by ID, and if found, updating its fields
         return teamRepository.findById(teamId)
                 .map(existingTeam -> {
-                    // Updating the existing team's fields with the new values
                     existingTeam.setTeamName(toUpdate.getTeamName());
                     existingTeam.setTeamLead(toUpdate.getTeamLead());
                     existingTeam.setTeamMembers(toUpdate.getTeamMembers());
                     existingTeam.setAssignedProject(toUpdate.getAssignedProject());
                     existingTeam.setAssignedKeyResult(toUpdate.getAssignedKeyResult());
 
-                    // Logging the successful update
                     LOGGER.info("Team with teamID: {} updated successfully", teamId);
 
-                    // Saving the updated team and returning it
                     return teamRepository.save(existingTeam);
                 })
-                // If the team is not found, throw an exception
-                .orElseThrow(() -> new ResourceNotFoundException("Team not found with ID: " + teamId));
+                .orElseThrow(() -> new TeamNotFoundException("Team not found with ID: " + teamId));
     }
 
     /**
@@ -193,23 +180,17 @@ private String USER_SERVICE_URL;
      * If the team exists, deletes it. If the team does not exist, throws a ResourceNotFoundException.
      *
      * @param teamId The ID of the team to be removed.
-     * @throws ResourceNotFoundException if the team does not exist.
+     * @throws TeamNotFoundException if the team does not exist.
      */
     @Override
     public void removeTeam(Long teamId) {
-        // Logging the attempt to remove a team
         LOGGER.info("Removing the Team with teamId: {}", teamId);
 
-        // Checking if the team exists in the database
         if (!teamRepository.existsById(teamId)) {
-            // If the team does not exist, throwing an exception
-            throw new ResourceNotFoundException("Team with teamId: " + teamId + " not found");
+            throw new TeamNotFoundException("Team not found with ID: " + teamId);
         }
 
-        // Deleting the team by its ID if it exists
         teamRepository.deleteById(teamId);
-
-        // Logging the successful deletion of the team
         LOGGER.info("Team with teamID: {} deleted successfully", teamId);
     }
 
@@ -218,11 +199,10 @@ private String USER_SERVICE_URL;
         long totalTasks = 0;
         long completedTasks = 0;
 
-        // Fetch the team details
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new RuntimeException("Team not found with ID: " + teamId));
+                .orElseThrow(() -> new TeamNotFoundException("Team not found with ID: " + teamId));
 
-        List<Long> userIds = team.getTeamMembers(); // Fetching list of users in the team
+        List<Long> userIds = team.getTeamMembers();
 
         for (Long userId : userIds) {
             String url = USER_SERVICE_URL + "/project/user/all-and-active-tasks?projectId=" + projectId + "&userId=" + userId;
@@ -231,7 +211,7 @@ private String USER_SERVICE_URL;
                 ResponseEntity<Map<String, Integer>> response = restTemplate.exchange(
                         url,
                         HttpMethod.GET,
-                        null, // No request body
+                        null,
                         new ParameterizedTypeReference<Map<String, Integer>>() {}
                 );
 
@@ -244,12 +224,10 @@ private String USER_SERVICE_URL;
             }
         }
 
-        // Avoid division by zero
         if (totalTasks == 0) {
-            return 0.0; // Returning 0.0 for no tasks
+            return 0.0;
         }
 
-        // Calculate team progress as a double percentage
         return ((double) completedTasks / totalTasks) * 100;
     }
 
@@ -257,11 +235,10 @@ private String USER_SERVICE_URL;
         long totalTasks = 0;
         long completedTasks = 0;
 
-        // Fetch the team details
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new RuntimeException("Team not found with ID: " + teamId));
+                .orElseThrow(() -> new TeamNotFoundException("Team not found with ID: " + teamId));
 
-        List<Long> userIds = team.getTeamMembers(); // Fetching list of users in the team
+        List<Long> userIds = team.getTeamMembers();
 
         for (Long userId : userIds) {
             String url = USER_SERVICE_URL + "/project/user/all-and-active-tasks?projectId=" + projectId + "&userId=" + userId;
@@ -283,7 +260,6 @@ private String USER_SERVICE_URL;
             }
         }
 
-        // Return a map containing the total and completed tasks
         Map<String, Long> taskData = new HashMap<>();
         taskData.put("totalTasks", totalTasks);
         taskData.put("completedTasks", completedTasks);
@@ -299,7 +275,6 @@ private String USER_SERVICE_URL;
         double progress = teamProgress(team.getAssignedProject(), teamId);
         Map<String, Long> taskCount = getTotalAndCompletedTasks(team.getAssignedProject(), teamId);
 
-        // Fetching KeyResult IDs from the team
         List<Long> keyResultIds = team.getAssignedKeyResult();
         long totalKeyResults = keyResultIds.size();
         long completedKeyResults = 0;
@@ -319,7 +294,6 @@ private String USER_SERVICE_URL;
         keyResultSummary.put("total", totalKeyResults);
         keyResultSummary.put("completed", completedKeyResults);
 
-        // Fetch team leader details from UserService
         String userUrl = USER_SERVICE_URL + "/" + team.getTeamLead();
         ResponseEntity<User> userResponse = restTemplate.exchange(
                 userUrl, HttpMethod.GET, null, new ParameterizedTypeReference<User>() {}
@@ -329,7 +303,6 @@ private String USER_SERVICE_URL;
         String leaderName = (leader != null) ? leader.getUserName() : "Unknown";
         String leaderProfile = (leader != null) ? leader.getUserProfilePhoto() : "";
 
-        // Populate the DTO
         return new TeamResponseDto(
                 team.getTeamId(),
                 team.getTeamName(),
@@ -346,14 +319,13 @@ private String USER_SERVICE_URL;
     @Override
     public List<TeamMemberProgressDto> getTeamMembersProgress(Long teamId, Long projectId) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new RuntimeException("Team not found with ID: " + teamId));
+                .orElseThrow(() -> new TeamNotFoundException("Team not found with ID: " + teamId));
 
         List<Long> userIds = team.getTeamMembers();
         List<TeamMemberProgressDto> teamMembersProgress = new ArrayList<>();
 
         for (Long userId : userIds) {
             try {
-                // Fetch user details (name & profile)
                 String userUrl = USER_SERVICE_URL + "/" +  userId;
                 ResponseEntity<User> userResponse = restTemplate.getForEntity(userUrl, User.class);
 
@@ -361,7 +333,6 @@ private String USER_SERVICE_URL;
                 String userName = (user != null) ? user.getUserName() : "Unknown";
                 String userProfile = (user != null) ? user.getUserProfilePhoto() : "";
                 String role = (user != null) ? user.getUserDesignation() : "";
-                // Fetch task count (total & completed)
                 String taskUrl = USER_SERVICE_URL + "/project/user/all-and-active-tasks?projectId=" + projectId + "&userId=" + userId;
                 ResponseEntity<Map<String, Integer>> taskResponse = restTemplate.exchange(
                         taskUrl, HttpMethod.GET, null, new ParameterizedTypeReference<Map<String, Integer>>() {}
@@ -371,10 +342,8 @@ private String USER_SERVICE_URL;
                 int totalTasks = (taskData != null) ? taskData.getOrDefault("totalTask", 0) : 0;
                 int completedTasks = (taskData != null) ? taskData.getOrDefault("completedTask", 0) : 0;
 
-                // Calculate progress
                 double progress = (totalTasks == 0) ? 0.0 : ((double) completedTasks / totalTasks) * 100;
 
-                // Add to list
                 teamMembersProgress.add(new TeamMemberProgressDto(userId, userName, userProfile, role,totalTasks, completedTasks, progress));
             } catch (Exception e) {
                 LOGGER.error("Failed to fetch details for user {}: {}", userId, e.getMessage());
@@ -387,25 +356,22 @@ private String USER_SERVICE_URL;
     @Override
     public Long getTeamLeadId(Long teamId){
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new RuntimeException("Team not found"));
-
-        // Return the team lead's ID
+                .orElseThrow(() -> new TeamNotFoundException("Team not found with ID: " + teamId));
         return team.getTeamLead();
     }
 
     @Override
     public String getTeamName(Long teamId){
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new RuntimeException("Team not found"));
+                .orElseThrow(() -> new TeamNotFoundException("Team not found with ID: " + teamId));
 
-        // Return the team lead's ID
         return team.getTeamName();
     }
 
     @Override
     public boolean isTeamMappedToProject(Long teamId, Long projectId) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new RuntimeException("Team not found"));
+                .orElseThrow(() -> new TeamNotFoundException("Team not found with ID: " + teamId));
 
         return team.getAssignedProject().equals(projectId);
     }

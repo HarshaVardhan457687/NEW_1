@@ -1,9 +1,11 @@
 package com.project.services;
 
 import com.project.DTO.*;
+import com.project.constants.TimeLineStatus;
 import com.project.model.KeyResult;
 import com.project.model.Objective;
 import com.project.model.Project;
+import com.project.model.TimeLine;
 import com.project.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -35,6 +37,9 @@ public class ProjectServiceImpl implements ProjectService{
     private ProjectRepository projectRepository;
 
     @Autowired
+    private TimeLineService timeLineService;
+
+    @Autowired
     private RestTemplate restTemplate;
 
     /**
@@ -52,7 +57,7 @@ public class ProjectServiceImpl implements ProjectService{
         project.setProjectManagerId(getProjectManagerId(newProject.getProjectManagerEmail()));
         Project savedProject = projectRepository.save(project);
         updateProjectManagerList(savedProject.getProjectManagerId(), savedProject.getProjectId());
-
+        updateTimeLine(savedProject.getProjectId());
         return savedProject;
     }
 
@@ -70,6 +75,15 @@ public class ProjectServiceImpl implements ProjectService{
         } catch (RestClientException e) {
             LOGGER.error("Failed to update project manager list for userId: {}", userId, e);
         }
+    }
+
+    private TimeLine updateTimeLine( Long projectId){
+        TimeLine timeLine = new TimeLine();
+        timeLine.setTimeLineHeading("Project Created");
+        timeLine.setTimeLineAssociatedProject(projectId);
+        timeLine.setTimeLineStatus(TimeLineStatus.COMPLETED);
+        LOGGER.info("new Time Line Project Created updated for", timeLine);
+        return timeLineService.createTimeLine(timeLine);
     }
 
 

@@ -14,8 +14,6 @@ public interface UserService {
     public User updateUserById(Long userId, User user, boolean isPatch);
     public void deleteUser(Long userId);
     public User getUserByEmail(String email);
-    public List<Task> getAllTasksOfUser(Long userId);
-    public List<Team> getAllTeamsOfUser(Long userId);
     public int getActiveTasksCountForUserInProject(Long projectId, Long userId);
     public UserSummaryDTO getUserSummary(Long userId);
     public boolean updateProjectMangerProject(Long userId, Long projectId);
