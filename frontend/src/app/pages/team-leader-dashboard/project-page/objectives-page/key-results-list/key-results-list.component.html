@@ -3,22 +3,7 @@
     <div class="header-title">Key Result</div>
     <div class="header-owner">Team</div>
     <div class="header-priority">Priority</div>
-    <div class="header-progress">
-      Progress
-      <i class="fas fa-info-circle info-icon" 
-         (mouseenter)="showValueTooltip(keyResults[0])"
-         (mouseleave)="hideValueTooltip()"></i>
-      <div class="value-tooltip" *ngIf="showTooltip && tooltipData">
-        <div class="tooltip-item">
-          <div class="color-dot current"></div>
-          <span class="tooltip-label">Current: {{tooltipData.current}} {{tooltipData.unit}}</span>
-        </div>
-        <div class="tooltip-item">
-          <div class="color-dot target"></div>
-          <span class="tooltip-label">Target: {{tooltipData.target}} {{tooltipData.unit}}</span>
-        </div>
-      </div>
-    </div>
+    <div class="header-progress">Progress</div>
     <div class="header-timeline">Due Date</div>
   </div>
   <div class="key-results-container">

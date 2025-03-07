@@ -1,7 +1,12 @@
 <div class="objectives-section">
-  <app-objectives-detail-card
-    *ngFor="let objective of objectives"
-    [objective]="objective"
-    [keyResults]="getKeyResultsForObjective(objective)">
-  </app-objectives-detail-card>
+  <div *ngIf="!isLoading">
+    <app-objectives-detail-card
+      *ngFor="let objective of objectives"
+      [objective]="transformObjective(objective)"
+      [keyResults]="objective.keyResults">
+    </app-objectives-detail-card>
+  </div>
+  <div *ngIf="isLoading" class="loading-state">
+    Loading objectives...
+  </div>
 </div>

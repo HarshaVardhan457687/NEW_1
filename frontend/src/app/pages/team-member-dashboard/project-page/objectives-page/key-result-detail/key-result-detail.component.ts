@@ -26,6 +26,31 @@ interface TransformedKeyResult {
 })
 export class KeyResultDetailComponent {
   @Input() keyResult!: TransformedKeyResult;
+  showTooltip = false;
+  tooltipData: { current: number; target: number; unit: string } | null = null;
+  tooltipPosition = { top: 0, left: 0 };
+
+  showValueTooltip(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    const rect = target.getBoundingClientRect();
+    
+    this.tooltipPosition = {
+      top: rect.top - 60,  // Position above the icon with some padding
+      left: rect.left
+    };
+
+    this.tooltipData = {
+      current: this.keyResult.currentValue,
+      target: this.keyResult.targetValue,
+      unit: this.keyResult.unit
+    };
+    this.showTooltip = true;
+  }
+
+  hideValueTooltip(): void {
+    this.showTooltip = false;
+    this.tooltipData = null;
+  }
 
   getPriorityClass(priority: string): { [key: string]: boolean } {
     const priorityLower = priority.toLowerCase();

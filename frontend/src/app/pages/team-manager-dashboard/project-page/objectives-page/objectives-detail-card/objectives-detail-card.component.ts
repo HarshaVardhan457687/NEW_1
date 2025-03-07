@@ -1,8 +1,26 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Objective, KeyResult } from '../../../../../core/services/objectives.service';
 import { KeyResultsListComponent } from '../key-results-list/key-results-list.component';
 import { ProgressBarLinearComponent } from '../../../../../shared/progress-bar-linear/progress-bar-linear.component';
+
+interface ObjectiveDisplay {
+  name: string;
+  status: string;
+  progress: number;
+}
+
+interface KeyResultDisplay {
+  keyResultId: number;
+  name: string;
+  priority: string;
+  currKeyResultVal: number;
+  targetKeyResultVal: number;
+  unit: string;
+  dueDate: string;
+  progress: number;
+  teamName: string;
+  teamLeaderProfilePic: string | null;
+}
 
 @Component({
   selector: 'app-objectives-detail-card',
@@ -12,6 +30,17 @@ import { ProgressBarLinearComponent } from '../../../../../shared/progress-bar-l
   styleUrls: ['./objectives-detail-card.component.scss']
 })
 export class ObjectivesDetailCardComponent {
-  @Input() objective!: Objective;
-  @Input() keyResults: KeyResult[] = [];
+  @Input() objective!: ObjectiveDisplay;
+  @Input() keyResults: KeyResultDisplay[] = [];
+
+  getStatusClass(status: string): string {
+    return status.toLowerCase();
+  }
+
+  formatStatus(status: string): string {
+    return status.replace('_', ' ').toLowerCase()
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
 }

@@ -4,10 +4,10 @@
     <input 
       id="projectName" 
       type="text" 
-      formControlName="name" 
+      formControlName="projectName" 
       placeholder="Enter project name"
-      [class.error-field]="isFieldInvalid('name')">
-    <div class="input-error" *ngIf="isFieldInvalid('name')">
+      [class.error-field]="isFieldInvalid('projectName')">
+    <div class="input-error" *ngIf="isFieldInvalid('projectName')">
       <i class="fas fa-info-circle"></i>
       <span>Project name is required</span>
     </div>
@@ -17,19 +17,19 @@
     <label for="projectDescription">Description</label>
     <textarea 
       id="projectDescription" 
-      formControlName="description" 
+      formControlName="projectDescription" 
       placeholder="Enter project description"></textarea>
   </div>
   
   <div class="input-row split">
     <div class="date-picker">
-      <label for="dueDate">Due Date <span class="required">*</span></label>
+      <label for="projectDueDate">Due Date <span class="required">*</span></label>
       <input 
-        id="dueDate" 
+        id="projectDueDate" 
         type="date" 
-        formControlName="dueDate"
-        [class.error-field]="isFieldInvalid('dueDate')">
-      <div class="input-error" *ngIf="isFieldInvalid('dueDate')">
+        formControlName="projectDueDate"
+        [class.error-field]="isFieldInvalid('projectDueDate')">
+      <div class="input-error" *ngIf="isFieldInvalid('projectDueDate')">
         <i class="fas fa-info-circle"></i>
         <span>Due date is required</span>
       </div>
@@ -37,21 +37,21 @@
     
     <div class="priority-selector">
       <label>Priority <span class="required">*</span></label>
-      <div class="radio-group" [class.error-field]="isFieldInvalid('priority')">
+      <div class="radio-group" [class.error-field]="isFieldInvalid('projectPriority')">
         <label class="radio-label">
-          <input type="radio" formControlName="priority" value="high">
+          <input type="radio" formControlName="projectPriority" value="HIGH">
           High
         </label>
         <label class="radio-label">
-          <input type="radio" formControlName="priority" value="medium">
+          <input type="radio" formControlName="projectPriority" value="MEDIUM">
           Medium
         </label>
         <label class="radio-label">
-          <input type="radio" formControlName="priority" value="low">
+          <input type="radio" formControlName="projectPriority" value="LOW">
           Low
         </label>
       </div>
-      <div class="input-error" *ngIf="isFieldInvalid('priority')">
+      <div class="input-error" *ngIf="isFieldInvalid('projectPriority')">
         <i class="fas fa-info-circle"></i>
         <span>Priority is required</span>
       </div>

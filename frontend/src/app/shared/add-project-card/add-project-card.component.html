@@ -10,43 +10,22 @@
     <form class="content" [formGroup]="projectForm">
       <!-- Project Info Section -->
       <app-add-project-general-section 
-        *ngIf="currentSection === 0"
         [projectForm]="projectForm">
       </app-add-project-general-section>
 
-      <!-- Team Selection Section -->
-      <app-add-project-team-section 
-        *ngIf="currentSection === 1"
-        [projectForm]="projectForm">
-      </app-add-project-team-section>
-
-      <!-- Objectives Section -->
-      <app-add-project-objectives-section 
-        *ngIf="currentSection === 2"
-        [projectForm]="projectForm">
-      </app-add-project-objectives-section>
-    </form>
+    </form> <!-- Missing form closing tag -->
 
     <!-- Footer -->
     <div class="footer">
       <button 
         type="button" 
-        class="back-btn" 
-        *ngIf="currentSection > 0" 
-        (click)="previousSection()">
-        Back
-      </button>
-      <button 
-        type="button" 
-        class="next-btn" 
-        *ngIf="currentSection < 2" 
-        (click)="nextSection()">
-        Next
+        class="cancel-btn" 
+        (click)="close()">
+        Cancel
       </button>
       <button 
         type="button" 
         class="submit-btn" 
-        *ngIf="currentSection === 2" 
         (click)="onSubmit()">
         Create Project
       </button>

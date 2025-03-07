@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Objective, KeyResult, ObjectivesService } from '../../../../../core/services/objectives.service';
+import { ObjectivePageService, ObjectiveSummary } from '../../../../../core/services/objective-page.service';
 import { ObjectivesDetailCardComponent } from '../objectives-detail-card/objectives-detail-card.component';
 
 @Component({
@@ -12,39 +12,35 @@ import { ObjectivesDetailCardComponent } from '../objectives-detail-card/objecti
 })
 export class ObjectivesSectionComponent implements OnInit {
   @Input() projectId!: number;
-  objectives: Objective[] = [];
-  keyResults: KeyResult[] = [];
+  objectives: ObjectiveSummary[] = [];
+  isLoading: boolean = true;
 
-  constructor(private objectivesService: ObjectivesService) {}
+  constructor(private objectivePageService: ObjectivePageService) {}
 
   ngOnInit(): void {
     this.loadObjectives();
   }
 
   private loadObjectives(): void {
-    this.objectivesService.getProjectObjectives(this.projectId).subscribe({
+    this.isLoading = true;
+    this.objectivePageService.getObjectivesWithKeyResults(this.projectId).subscribe({
       next: (objectives) => {
         this.objectives = objectives;
-        this.loadKeyResults();
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error loading objectives:', error);
+        this.isLoading = false;
       }
     });
   }
 
-  private loadKeyResults(): void {
-    this.objectivesService.getKeyResults().subscribe({
-      next: (keyResults) => {
-        this.keyResults = keyResults;
-      },
-      error: (error) => {
-        console.error('Error loading key results:', error);
-      }
-    });
-  }
-
-  getKeyResultsForObjective(objective: Objective): KeyResult[] {
-    return this.keyResults.filter(kr => objective.keyResults.includes(kr.id));
+  transformObjective(objective: ObjectiveSummary) {
+    return {
+      id: objective.objectiveId,
+      name: objective.objectiveName,
+      status: objective.objectiveStatus,
+      progress: objective.objectiveProgress
+    };
   }
 }
