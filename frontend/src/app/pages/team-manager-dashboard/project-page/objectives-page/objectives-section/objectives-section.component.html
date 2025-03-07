@@ -2,6 +2,7 @@
   <div *ngIf="!isLoading">
     <app-objectives-detail-card
       *ngFor="let objective of objectives"
+      [projectId]="projectId"
       [objective]="transformObjective(objective)"
       [keyResults]="objective.keyResults">
     </app-objectives-detail-card>

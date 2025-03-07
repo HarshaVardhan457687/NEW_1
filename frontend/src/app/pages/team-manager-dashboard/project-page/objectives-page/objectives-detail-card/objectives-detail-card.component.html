@@ -16,5 +16,12 @@
   <div class="key-results-row">
     <app-key-results-list [keyResults]="keyResults"></app-key-results-list>
   </div>
+  <app-add-key-result-card
+    *ngIf="showAddKeyResult"
+    [projectId]="projectId"
+    [objectiveId]="objective.id"
+    (close)="onCloseKeyResult()"
+    (save)="onSaveKeyResult($event)">
+  </app-add-key-result-card>
 </div>
 

@@ -2,8 +2,10 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { KeyResultsListComponent } from '../key-results-list/key-results-list.component';
 import { ProgressBarLinearComponent } from '../../../../../shared/progress-bar-linear/progress-bar-linear.component';
+import { AddKeyResultCardComponent } from '../../../../../shared/add-key-result-card/add-key-result-card.component';
 
 interface ObjectiveDisplay {
+  id: number;
   name: string;
   status: string;
   progress: number;
@@ -25,13 +27,16 @@ interface KeyResultDisplay {
 @Component({
   selector: 'app-objectives-detail-card',
   standalone: true,
-  imports: [CommonModule, KeyResultsListComponent, ProgressBarLinearComponent],
+  imports: [CommonModule, KeyResultsListComponent, ProgressBarLinearComponent, AddKeyResultCardComponent],
   templateUrl: './objectives-detail-card.component.html',
   styleUrls: ['./objectives-detail-card.component.scss']
 })
 export class ObjectivesDetailCardComponent {
+  @Input() projectId!: number;
   @Input() objective!: ObjectiveDisplay;
   @Input() keyResults: KeyResultDisplay[] = [];
+
+  showAddKeyResult: boolean = false;
 
   getStatusClass(status: string): string {
     if(!status) {
@@ -55,6 +60,16 @@ export class ObjectivesDetailCardComponent {
   }
 
   onAddKeyResult() {
-    console.log('Add Key Result button clicked');
+    this.showAddKeyResult = true;
+  }
+
+  onCloseKeyResult() {
+    this.showAddKeyResult = false;
+  }
+
+  onSaveKeyResult(data: any) {
+    // TODO: Handle the saved key result data
+    console.log('Key result saved:', data);
+    this.showAddKeyResult = false;
   }
 }
