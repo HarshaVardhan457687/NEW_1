@@ -142,8 +142,8 @@ public class ProjectController {
         return ResponseEntity.ok(teamDetailsList);
     }
 
-    @GetMapping("/{projectId}/teams-select")
-    public ResponseEntity<List<SelectTeamDTO>> getProjectTeamsSelect(@PathVariable Long projectId) {
+    @GetMapping("/teams-select")
+    public ResponseEntity<List<SelectTeamDTO>> getProjectTeamsSelect(@RequestParam Long projectId) {
         List<SelectTeamDTO> teamDetailsList = projectService.getProjectTeamsSelection(projectId);
         return ResponseEntity.ok(teamDetailsList);
     }
