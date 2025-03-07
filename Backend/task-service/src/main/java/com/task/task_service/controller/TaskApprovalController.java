@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/approvals")
+@RequestMapping("/api/approvals")
 public class TaskApprovalController {
 
     @Autowired
