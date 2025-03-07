@@ -34,13 +34,23 @@ export class ObjectivesDetailCardComponent {
   @Input() keyResults: KeyResultDisplay[] = [];
 
   getStatusClass(status: string): string {
+    if(!status) {
+      return '';
+    }
     return status.toLowerCase();
   }
 
   formatStatus(status: string): string {
+    if(!status) {
+      return '';
+    }
     return status.replace('_', ' ').toLowerCase()
       .split(' ')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
+  }
+
+  formatProgress(progess:number):number{
+    return Math.floor(progess);
   }
 }

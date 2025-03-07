@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ObjectiveStatCardComponent } from '../../../../shared/objective-stat-card/objective-stat-card.component';
 import { ActivatedRoute } from '@angular/router';
 import { ObjectivePageService, ObjectivePageStats } from '../../../../core/services/objective-page.service';
 import { ObjectivesSectionComponent } from './objectives-section/objectives-section.component';
-import { AddObjectiveCardComponent , ObjectiveFormData } from '../../../../shared/add-objective-card/add-objective-card.component';
+import { AddObjectiveCardComponent, ObjectiveFormData } from '../../../../shared/add-objective-card/add-objective-card.component';
+
 @Component({
   selector: 'app-objectives-page',
   standalone: true,
@@ -13,6 +14,8 @@ import { AddObjectiveCardComponent , ObjectiveFormData } from '../../../../share
   styleUrls: ['./objectives-page.component.scss']
 })
 export class ObjectivesPageComponent implements OnInit {
+  @ViewChild(ObjectivesSectionComponent) objectiveSection!: ObjectivesSectionComponent;
+  
   projectId!: number;
   showAddObjective: boolean = false;
   isLoading: boolean = true;
@@ -61,7 +64,9 @@ export class ObjectivesPageComponent implements OnInit {
     // TODO: Implement save objective logic
     console.log('Saving objective:', data);
     this.showAddObjective = false;
-    // After saving, reload objectives
+    if (this.objectiveSection) {
+      this.objectiveSection.loadObjectives();
+    }
     this.loadObjectiveStats();
   }
 }

@@ -38,6 +38,7 @@
   <app-add-objective-card
     *ngIf="showAddObjective"
     (close)="onCloseObjective()"
-    (save)="onSaveObjective($event)">
+    (save)="onSaveObjective($event)"
+    [projectId]="projectId">
   </app-add-objective-card>
 </div>

@@ -20,6 +20,10 @@ export class ProjectsComponent implements OnInit {
   constructor(private projectsPageService: ProjectsPageService) {}
 
   ngOnInit() {
+    this.loadProjects();
+  }
+
+  private loadProjects() {
     this.projectsPageService.getProjects().subscribe({
       next: (projects) => {
         this.projects = projects;
@@ -37,5 +41,6 @@ export class ProjectsComponent implements OnInit {
 
   closeAddProjectModal() {
     this.showAddProjectModal = false;
+    this.loadProjects();
   }
 }

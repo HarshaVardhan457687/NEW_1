@@ -21,7 +21,7 @@ export class ObjectivesSectionComponent implements OnInit {
     this.loadObjectives();
   }
 
-  private loadObjectives(): void {
+  loadObjectives(): void {
     this.isLoading = true;
     this.objectivePageService.getObjectivesWithKeyResults(this.projectId).subscribe({
       next: (objectives) => {

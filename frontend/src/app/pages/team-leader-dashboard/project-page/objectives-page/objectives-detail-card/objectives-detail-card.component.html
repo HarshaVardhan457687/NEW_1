@@ -7,10 +7,10 @@
   </div>
   <div class="progress-label-row">
     <span class="label">Progress</span>
-    <span class="value">{{ objective.progress }}%</span>
+    <span class="value">{{ formatProgress(objective.progress) }}%</span>
   </div>
   <div class="progress-bar-row">
-    <app-progress-bar-linear [progress]="objective.progress"></app-progress-bar-linear>
+    <app-progress-bar-linear [progress]="formatProgress(objective.progress)"></app-progress-bar-linear>
   </div>
   <div class="key-results-row">
     <app-key-results-list [keyResults]="keyResults"></app-key-results-list>
