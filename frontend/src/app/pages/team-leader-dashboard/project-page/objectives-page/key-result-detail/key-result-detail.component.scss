@@ -94,3 +94,59 @@
     font-size: 0.8rem; // Reduced from 1rem
   }
 }
+
+.info-icon {
+  font-size: 14px;
+  color: #6B7280;
+  margin-left: 8px;
+  cursor: pointer;
+  position: relative;
+
+  &:hover {
+    color: #374151;
+  }
+
+  
+}
+
+.value-tooltip {
+  position: fixed;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 8px;
+  z-index: 1000;
+  min-width: 150px;
+
+  .tooltip-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .color-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+
+      &.current {
+        background-color: #2563EB;
+      }
+
+      &.target {
+        background-color: #10B981;
+      }
+    }
+
+    .tooltip-label {
+      font-size: 12px;
+      color: #374151;
+    }
+  }
+}

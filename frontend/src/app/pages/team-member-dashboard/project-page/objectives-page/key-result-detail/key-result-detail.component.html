@@ -1,5 +1,11 @@
 <div class="key-result-card">
-  <div class="title">{{ keyResult.name }}</div>
+  <div class="title">
+    {{ keyResult.name }}
+    <i class="fas fa-info-circle info-icon" 
+       #tooltipTrigger
+       (mouseenter)="showValueTooltip($event)"
+       (mouseleave)="hideValueTooltip()"></i>
+  </div>
   <div class="owner-section">
     <img [src]="keyResult.owner.profilePic || 'assets/default_profile.png'" alt="owner" class="avatar">
     <span class="owner-name">{{ keyResult.owner.name }}</span>
@@ -12,4 +18,19 @@
     <span class="progress-text">{{ keyResult.progress }}%</span>
   </div>
   <div class="timeline">{{ keyResult.dueDate | date:'MMM d' }}</div>
+</div>
+
+<!-- Tooltip as overlay -->
+<div class="value-tooltip" 
+     *ngIf="showTooltip && tooltipData"
+     [style.top.px]="tooltipPosition.top"
+     [style.left.px]="tooltipPosition.left">
+  <div class="tooltip-item">
+    <div class="color-dot current"></div>
+    <span class="tooltip-label">Current: {{tooltipData.current}} {{tooltipData.unit}}</span>
+  </div>
+  <div class="tooltip-item">
+    <div class="color-dot target"></div>
+    <span class="tooltip-label">Target: {{tooltipData.target}} {{tooltipData.unit}}</span>
+  </div>
 </div>

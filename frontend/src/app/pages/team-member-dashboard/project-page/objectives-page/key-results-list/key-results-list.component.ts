@@ -26,8 +26,6 @@ interface KeyResultDisplay {
 })
 export class KeyResultsListComponent {
   @Input() keyResults: any[] = [];
-  showTooltip = false;
-  tooltipData: { current: number; target: number; unit: string } | null = null;
 
   transformKeyResult(keyResult: any): KeyResultDisplay {
     return {
@@ -44,19 +42,5 @@ export class KeyResultsListComponent {
       targetValue: keyResult.targetKeyResultVal,
       unit: keyResult.unit
     };
-  }
-
-  showValueTooltip(keyResult: any): void {
-    this.tooltipData = {
-      current: keyResult.currKeyResultVal,
-      target: keyResult.targetKeyResultVal,
-      unit: keyResult.unit
-    };
-    this.showTooltip = true;
-  }
-
-  hideValueTooltip(): void {
-    this.showTooltip = false;
-    this.tooltipData = null;
   }
 }
