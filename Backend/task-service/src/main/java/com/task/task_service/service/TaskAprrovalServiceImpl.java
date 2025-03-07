@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class TaskAprrovalServiceImpl implements TaskApprovalService{
@@ -64,5 +65,16 @@ public class TaskAprrovalServiceImpl implements TaskApprovalService{
 
         return taskApprovalRepository.save(approval);
     }
+
+    @Override
+    public List<TaskApproval> getAllTaskApprovalOfProject(Long projectId) {
+        List<TaskApproval> allTaskApproval
+    }
+
+    @Override
+    public List<TaskApproval> getAllTaskApprovalOfTeam(Long teamId) {
+        return List.of();
+    }
+
 
 }

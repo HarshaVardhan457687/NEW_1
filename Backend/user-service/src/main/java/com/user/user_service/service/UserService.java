@@ -18,4 +18,5 @@ public interface UserService {
     public List<Team> getAllTeamsOfUser(Long userId);
     public int getActiveTasksCountForUserInProject(Long projectId, Long userId);
     public UserSummaryDTO getUserSummary(Long userId);
+    public boolean updateProjectMangerProject(Long userId, Long projectId);
 }

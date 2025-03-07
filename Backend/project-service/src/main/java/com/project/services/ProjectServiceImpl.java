@@ -11,6 +11,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -49,13 +50,28 @@ public class ProjectServiceImpl implements ProjectService{
         project.setProjectDueDate(newProject.getProjectDueDate());
         project.setProjectPriority(newProject.getProjectPriority());
         project.setProjectManagerId(getProjectManagerId(newProject.getProjectManagerEmail()));
-        return projectRepository.save(project);
+        Project savedProject = projectRepository.save(project);
+        updateProjectManagerList(savedProject.getProjectManagerId(), savedProject.getProjectId());
+
+        return savedProject;
     }
 
     private Long getProjectManagerId(String projectManagerEmail) {
         String userServiceUrl = USER_SERVICE_URL + "getUserId/" + projectManagerEmail;
         return restTemplate.getForObject(userServiceUrl, Long.class);
     }
+
+    private void updateProjectManagerList(Long userId, Long projectId) {
+        String userServiceUrl = USER_SERVICE_URL + "update-project-manger-list/" + userId;
+
+        try {
+            restTemplate.patchForObject(userServiceUrl, new HttpEntity<>(projectId), String.class);
+            LOGGER.info("Successfully updated project manager list for userId: {}", userId);
+        } catch (RestClientException e) {
+            LOGGER.error("Failed to update project manager list for userId: {}", userId, e);
+        }
+    }
+
 
     /**
      * Get a list of all projects

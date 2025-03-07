@@ -298,6 +298,16 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
     }
 
+    @PatchMapping("/update-project-manger-list/{userId}")
+    public ResponseEntity<String> projectManagerList(@PathVariable Long userId, @RequestBody Long projectId){
+        boolean managerListUpdated = userServiceImpl.updateProjectMangerProject(userId, projectId);
+        if (managerListUpdated) {
+            return ResponseEntity.ok("project updated to project manger successfully");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+
+    }
+
 
 }
 

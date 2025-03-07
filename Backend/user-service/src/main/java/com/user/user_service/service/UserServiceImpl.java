@@ -712,4 +712,20 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    @Override
+    public boolean updateProjectMangerProject(Long userId, Long projectId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            List<Long> userManagerList = user.getUserManagerProjectId();
+            if (userManagerList == null) {
+                userManagerList = new ArrayList<>();
+            }
+            userManagerList.add(projectId);
+            user.setUserManagerProjectId(userManagerList);
+            updateUserById(userId, user, true);
+            return true;
+        }
+        return false;
+    }
+
 }
