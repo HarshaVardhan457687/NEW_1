@@ -73,6 +73,7 @@ export class ProjectsPageService {
           return forkJoin(managerRequests).pipe(
             map(managers => {
               return projects.map((project, index) => {
+                console.log(project);
                 const status = (project.projectStatus as ProjectStatus) || 'ON_TRACK';
                 return {
                   id: project.projectId || 0,

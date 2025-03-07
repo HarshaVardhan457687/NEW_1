@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ObjectiveStatCardComponent } from '../../../../shared/objective-stat-card/objective-stat-card.component';
 import { ActivatedRoute } from '@angular/router';
-import { ObjectivePageService, ObjectivePageStats } from '../../../../core/services/objective-page.service';
+import { ObjectivesService, ObjectiveStats } from '../../../../core/services/objectives.service';
 import { ObjectivesSectionComponent } from './objectives-section/objectives-section.component';
-import { AddObjectiveCardComponent , ObjectiveFormData } from '../../../../shared/add-objective-card/add-objective-card.component';
+import { AddObjectiveCardComponent } from '../../../../shared/add-objective-card/add-objective-card.component';
+import { ObjectiveFormData } from '../../../../shared/add-objective-card/add-objective-card.component';
+
 @Component({
   selector: 'app-objectives-page',
   standalone: true,
@@ -14,18 +16,17 @@ import { AddObjectiveCardComponent , ObjectiveFormData } from '../../../../share
 })
 export class ObjectivesPageComponent implements OnInit {
   projectId!: number;
-  showAddObjective: boolean = false;
-  isLoading: boolean = true;
-  objectiveStats: ObjectivePageStats = {
+  showAddObjective = false;
+  objectiveStats: ObjectiveStats = {
     totalObjectives: 0,
-    completedObjectives: 0,
-    totalKeys: 0,
+    inProgress: 0,
+    completed: 0,
     completedKeys: 0
   };
 
   constructor(
     private route: ActivatedRoute,
-    private objectivePageService: ObjectivePageService
+    private objectivesService: ObjectivesService
   ) {}
 
   ngOnInit(): void {
@@ -36,15 +37,12 @@ export class ObjectivesPageComponent implements OnInit {
   }
 
   private loadObjectiveStats(): void {
-    this.isLoading = true;
-    this.objectivePageService.getObjectiveStats(this.projectId).subscribe({
-      next: (stats: ObjectivePageStats) => {
+    this.objectivesService.getObjectiveStats(this.projectId).subscribe({
+      next: (stats: ObjectiveStats) => {
         this.objectiveStats = stats;
-        this.isLoading = false;
       },
       error: (error: Error) => {
         console.error('Error loading objective stats:', error);
-        this.isLoading = false;
       }
     });
   }
