@@ -74,7 +74,7 @@ public class TaskAprrovalServiceImpl implements TaskApprovalService{
 
     @Override
     public List<TaskApproval> getAllTaskApprovalOfTeam(Long teamId) {
-        return ;
+        return taskApprovalRepository.findByTeamId(teamId);
     }
 
 
