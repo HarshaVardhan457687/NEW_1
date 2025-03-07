@@ -15,9 +15,9 @@ public class ComplexLongIdGenerator implements IdentifierGenerator {
         long timestamp = System.currentTimeMillis();
 
         // Generate a 5-digit random number (ensuring it’s always 5 digits)
-        long randomValue = 10000 + new Random().nextInt(90000);
+        long randomValue = 1000 + new Random().nextInt(9000);
 
         // Combine timestamp and random value to form a unique ID
-        return timestamp * 100000 + randomValue;
+        return timestamp * 1000 + randomValue;
     }
 }
