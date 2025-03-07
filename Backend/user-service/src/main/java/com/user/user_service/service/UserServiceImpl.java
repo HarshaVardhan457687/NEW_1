@@ -40,6 +40,8 @@ public class UserServiceImpl implements UserService {
     private static final String TASK_SERVICE_URL = "http://localhost:8083/api/tasks";
     private static final String TEAM_SERVICE_URL = "http://localhost:8084/api/teams";
 
+
+    //CREATE OR UPLOAD REQUEST ARE HERE
     /**
      * Creates a new user and saves it to the database.
      * @param user User object to be created.
@@ -51,6 +53,29 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    /**
+     * Uploads a user's profile photo to Cloudinary and updates the user record.
+     *
+     * @param userId The ID of the user whose profile photo is being uploaded
+     * @param file The MultipartFile containing the image data
+     * @return The URL of the uploaded image
+     * @throws UserNotFoundException if the user with the given ID does not exist
+     * @throws RuntimeException if there's an error uploading the image to Cloudinary
+     */
+    public String uploadUserProfilePhoto(Long userId, MultipartFile file) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+
+        String imageUrl = cloudinaryService.uploadImage(file);
+
+        user.setUserProfilePhoto(imageUrl);
+        userRepository.save(user);
+
+        return imageUrl;
+    }
+
+    //GET REQUESTS ARE HERE
     /**
      * Retrieves all users from the database.
      * @return List of all users
@@ -80,12 +105,35 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
     }
 
+    public String getProfilePicture(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+        return user.getUserProfilePhoto();
+    }
+
+    public List<UserSummaryDTO> findAllUsersWithProfile(){
+        return userRepository.findAllUsersWithProfile();
+    }
+
+    @Override
+    public UserSummaryDTO getUserSummary(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return new UserSummaryDTO(user.getUserId(), user.getUserName(), user.getUserProfilePhoto());
+    }
+
     /**
-     * Updates a user by its ID.
+     * Updates a user's information either partially (PATCH) or completely (PUT).
      *
-     * @param userId The ID of the user to update.
-     * @return The updated User object.
-     * @throws ResourceNotFoundException if no user is found with the given ID.
+     * In PATCH mode, only the non-null fields in the provided user object will be updated.
+     * In PUT mode, the entire user object will be replaced (except for the ID).
+     *
+     * @param userId The ID of the user to update
+     * @param user The user object containing the updated fields
+     * @param isPatch If true, performs a partial update; if false, performs a complete replacement
+     * @return The updated User object
+     * @throws UserNotFoundException if the user with the given ID does not exist
      */
     @Override
     public User updateUserById(Long userId, User user, boolean isPatch) {
@@ -115,58 +163,22 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(existingUser);
     }
 
-    /**
-     * upload the
-     */
-    public String uploadUserProfilePhoto(Long userId, MultipartFile file) {
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
-
-        String imageUrl = cloudinaryService.uploadImage(file);
-
-        user.setUserProfilePhoto(imageUrl);
-        userRepository.save(user);
-
-        return imageUrl;
-    }
-
-    public String getProfilePicture(Long userId){
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
-        return user.getUserProfilePhoto();
-    }
-    public List<UserSummaryDTO> findAllUsersWithProfile(){
-        return userRepository.findAllUsersWithProfile();
-    }
+    //Projects
 
     /**
-     * Deletes a user by its ID.
+     * Retrieves active projects based on user role and calculates their progress.
      *
-     * @param userId The ID of the user to delete.
-     * @throws UserNotFoundException if no user is found with the given ID.
+     * @param userId The ID of the user
+     * @param userRole The role of the user ("PROJECT_MANAGER", "TEAM_LEADER", or "TEAM_MEMBER")
+     * @return List of active Project objects with calculated progress
+     * @throws UserNotFoundException if the user with the given ID does not exist
+     * @throws RuntimeException if the role is invalid or if there's an error communicating with other services
      */
-    @Override
-    public void deleteUser(Long userId) {
-        LOGGER.info("Deleting user with ID: {}", userId);
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
-
-        userRepository.delete(user);
-    }
-
-
-
-
-    /**
-    *   get active projects with progress
-    */
     public List<Project> getActiveProjects(Long userId, String userRole) {
-        // Fetch user from DB
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
-        // Select the correct project list based on role
         List<Long> projectIds = switch (userRole.toUpperCase()) {
             case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
             case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
@@ -178,12 +190,10 @@ public class UserServiceImpl implements UserService {
             return Collections.emptyList();
         }
 
-        // Create request entity with headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
 
-        // Make a POST request to Project Service to get active projects
         ResponseEntity<List<Project>> response = restTemplate.exchange(
                 PROJECT_SERVICE_URL + "/active",
                 HttpMethod.POST,
@@ -295,6 +305,9 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+
+    //Objectives
+
     /**
      * Fetch objectives based on user role and project list.
      */
@@ -379,24 +392,30 @@ public class UserServiceImpl implements UserService {
         return countMap;
     }
 
-    /**
-     * Fetch all KeyResult and active KeyResult based on user role.
-     */
-    // Just take all the objective first by projectID then take the for taht objective call the keyResult reservice it will//
-    // give all the key results with active and all the keyResults; and endpoint is commented for this
-    public Map<String, List<KeyResult>> getKeyResultsForProjects(Long userId, String userRole) {
+    //KeyResults
 
+    /**
+     * Fetches all KeyResults for projects associated with a user based on their role.
+     *
+     * The response contains two lists:
+     * - "allKeyResults": All KeyResults regardless of status
+     * - "activeKeyResults": Only active KeyResults
+     * @param userId The ID of the user
+     * @param userRole The role of the user ("PROJECT_MANAGER", "TEAM_LEADER", or "TEAM_MEMBER")
+     * @return Map containing lists of all KeyResults and active KeyResults
+     * @throws UserNotFoundException if the user with the given ID does not exist
+     * @throws RuntimeException if there's an error in service communication
+     */
+    public Map<String, List<KeyResult>> getKeyResultsForProjects(Long userId, String userRole) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
-        // Step 2: Select the correct project list based on role
         List<Long> projectIds = switch (userRole.toUpperCase()) {
             case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
             case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
             case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
             default -> throw new RuntimeException("Invalid role: " + userRole);
         };
-        // 1️⃣ Fetch Objectives for given Projects
         ResponseEntity<List<Objective>> objectiveResponse = restTemplate.exchange(
                 OBJECTIVE_SERVICE_URL + "/all/by-projects",
                 HttpMethod.POST,
@@ -410,12 +429,10 @@ public class UserServiceImpl implements UserService {
             return Map.of("allKeyResults", List.of(), "activeKeyResults", List.of());
         }
 
-        // Extract Objective IDs
         List<Long> objectiveIds = objectives.stream()
                 .map(Objective::getObjectiveId)
                 .toList();
 
-        // 2️⃣ Fetch KeyResults for the obtained Objectives
         ResponseEntity<Map<String, List<KeyResult>>> keyResultResponse = restTemplate.exchange(
                 KEYRESULT_SERVICE_URL + "/by-objectives",
                 HttpMethod.POST,
@@ -440,6 +457,9 @@ public class UserServiceImpl implements UserService {
 
         return countMap;
     }
+
+
+    //Tasks
 
     public Map<String, List<Task>> getTasksForProjects(Long userId, String userRole) {
         User user = userRepository.findById(userId)
@@ -490,8 +510,15 @@ public class UserServiceImpl implements UserService {
         return countMap;
     }
 
-    // DONE
-    // takes the userId and userRole and return list of active task
+    /**
+     * Retrieves active tasks assigned to a specific user.
+     *
+     * @param userId The ID of the user
+     * @param userRole The role of the user ("PROJECT_MANAGER", "TEAM_LEADER", or "TEAM_MEMBER")
+     * @return List of active Task objects assigned to the user
+     * @throws UserNotFoundException if the user with the given ID does not exist
+     * @throws RuntimeException if there's an error communicating with the Task Service
+     */
     public List<Task> getActiveTasksForUser(Long userId, String userRole) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
@@ -503,24 +530,19 @@ public class UserServiceImpl implements UserService {
             default -> throw new RuntimeException("Invalid role: " + userRole);
         };
 
-        // assigned task IDs
         List<Long> taskIds = user.getUserTaskAssigned();
 
-        // Prepare request body with both taskIds and projectIds
         Map<String, List<Long>> requestBody = new HashMap<>();
         requestBody.put("taskIds", taskIds);
         requestBody.put("projectIds", projectIds);
 
-        // headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        // HttpEntity with correct request body
         HttpEntity<Map<String, List<Long>>> requestEntity = new HttpEntity<>(requestBody, headers);
 
-        // Call Task Service
         ResponseEntity<List<Task>> taskResponse = restTemplate.exchange(
-                TASK_SERVICE_URL + "/tasks-by-ids-and-projects",  // Ensure correct endpoint
+                TASK_SERVICE_URL + "/tasks-by-ids-and-projects",
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<List<Task>>() {}
@@ -531,7 +553,6 @@ public class UserServiceImpl implements UserService {
             return new ArrayList<>();
         }
 
-        // Filtering only active tasks
         return allTasks.stream()
                 .filter(Task::isTaskIsActive)
                 .toList();
@@ -571,79 +592,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
-    @Transactional
-    public void updateUserTeams(Map<String, Object> request) {
-        List<Long> teamMemberIds = (List<Long>) request.get("teamMemberIds");
-        Long teamId = ((Number) request.get("teamId")).longValue();
-        Long assignedProject = ((Number) request.get("assignedProject")).longValue();
-        Long teamLead = ((Number) request.get("teamLead")).longValue();
-
-        List<User> users = userRepository.findAllById(teamMemberIds);
-
-        for (User user : users) {
-            List<Long> userTeams = user.getUserInvolvedTeamsId();
-            if (userTeams == null) {
-                userTeams = new ArrayList<>();
-            }
-            if (!userTeams.contains(teamId)) {
-                userTeams.add(teamId);
-            }
-            user.setUserInvolvedTeamsId(userTeams);
-
-            if (!user.getUserId().equals(teamLead)) {
-                List<Long> memberProjects = user.getUserTeamMemberProjectId();
-                if (memberProjects == null) {
-                    memberProjects = new ArrayList<>();
-                }
-                if (!memberProjects.contains(assignedProject)) {
-                    memberProjects.add(assignedProject);
-                }
-                user.setUserTeamMemberProjectId(memberProjects);
-            }
-        }
-
-        Optional<User> leadUserOpt = userRepository.findById(teamLead);
-        leadUserOpt.ifPresent(leadUser -> {
-            List<Long> leaderProjects = leadUser.getUserTeamLeaderProjectId();
-            if (leaderProjects == null) {
-                leaderProjects = new ArrayList<>();
-            }
-            if (!leaderProjects.contains(assignedProject)) {
-                leaderProjects.add(assignedProject);
-            }
-            leadUser.setUserTeamLeaderProjectId(leaderProjects);
-            userRepository.save(leadUser);
-        });
-
-        userRepository.saveAll(users);
-    }
-
-    @Override
-    public UserSummaryDTO getUserSummary(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        return new UserSummaryDTO(user.getUserId(), user.getUserName(), user.getUserProfilePhoto());
-    }
-
-    public Long findMappedTeamForUser(Long userId, Long projectId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
-
-        List<Long> teamIds = user.getUserInvolvedTeamsId(); // Assuming `User` entity has a list of team IDs
-
-        for (Long teamId : teamIds) {
-            String url = TEAM_SERVICE_URL + "/is-mapped-to-project" +"?teamId=" + teamId + "&projectId=" + projectId;
-            ResponseEntity<Boolean> response = restTemplate.getForEntity(url, Boolean.class);
-
-            if (Boolean.TRUE.equals(response.getBody())) {
-                return teamId;
-            }
-        }
-        return null;
-    }
-
     /**
      * Assigns a task to a user.
      *
@@ -666,6 +614,88 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
+    }
+
+    //TEAM END POINTS ARE HERE
+
+    @Transactional
+    public void updateUserTeams(Map<String, Object> request) {
+        List<Long> teamMemberIds = (List<Long>) request.get("teamMemberIds");
+        Long teamId = ((Number) request.get("teamId")).longValue();
+        Long assignedProject = ((Number) request.get("assignedProject")).longValue();
+        Long teamLead = ((Number) request.get("teamLead")).longValue();
+
+        List<User> users = userRepository.findAllById(teamMemberIds);
+
+        for (User user : users) {
+            List<Long> userTeams = user.getUserInvolvedTeamsId();
+            if (userTeams == null) {
+                userTeams = new ArrayList<>();
+            }
+            if (!userTeams.contains(teamId)) {
+                userTeams.add(teamId);
+            }
+            user.setUserInvolvedTeamsId(userTeams);
+            if (!user.getUserId().equals(teamLead)) {
+                List<Long> memberProjects = user.getUserTeamMemberProjectId();
+                if (memberProjects == null) {
+                    memberProjects = new ArrayList<>();
+                }
+                if (!memberProjects.contains(assignedProject)) {
+                    memberProjects.add(assignedProject);
+                }
+                user.setUserTeamMemberProjectId(memberProjects);
+            }
+        }
+        Optional<User> leadUserOpt = userRepository.findById(teamLead);
+        leadUserOpt.ifPresent(leadUser -> {
+            List<Long> leaderProjects = leadUser.getUserTeamLeaderProjectId();
+            if (leaderProjects == null) {
+                leaderProjects = new ArrayList<>();
+            }
+            if (!leaderProjects.contains(assignedProject)) {
+                leaderProjects.add(assignedProject);
+            }
+            leadUser.setUserTeamLeaderProjectId(leaderProjects);
+            userRepository.save(leadUser);
+        });
+        userRepository.saveAll(users);
+    }
+
+
+
+
+    /**
+     * Deletes a user by its ID.
+     *
+     * @param userId The ID of the user to delete.
+     * @throws UserNotFoundException if no user is found with the given ID.
+     */
+    @Override
+    public void deleteUser(Long userId) {
+        LOGGER.info("Deleting user with ID: {}", userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+
+        userRepository.delete(user);
+    }
+
+    //MAPPED PROJECT FOR THE USER
+    public Long findMappedTeamForUser(Long userId, Long projectId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
+        List<Long> teamIds = user.getUserInvolvedTeamsId(); // Assuming `User` entity has a list of team IDs
+
+        for (Long teamId : teamIds) {
+            String url = TEAM_SERVICE_URL + "/is-mapped-to-project" +"?teamId=" + teamId + "&projectId=" + projectId;
+            ResponseEntity<Boolean> response = restTemplate.getForEntity(url, Boolean.class);
+
+            if (Boolean.TRUE.equals(response.getBody())) {
+                return teamId;
+            }
+        }
+        return null;
     }
 
     @Override
