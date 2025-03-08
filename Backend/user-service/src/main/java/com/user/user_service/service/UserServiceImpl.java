@@ -1,6 +1,9 @@
 package com.user.user_service.service;
 
+import com.user.user_service.DTO.TaskDetailsDTO;
+import com.user.user_service.DTO.TaskStatusCountDTO;
 import com.user.user_service.DTO.UserSummaryDTO;
+import com.user.user_service.constants.TaskStatus;
 import com.user.user_service.entity.*;
 import com.user.user_service.exception.ResourceNotFoundException;
 import com.user.user_service.exception.UserNotFoundException;
@@ -18,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -557,6 +561,66 @@ public class UserServiceImpl implements UserService {
                 .filter(Task::isTaskIsActive)
                 .toList();
     }
+
+    @Override
+    public List<TaskDetailsDTO> getTasksForUser(Long userId, String userRole) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+
+        List<Long> projectIds = switch (userRole.toUpperCase()) {
+            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
+            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
+            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
+            default -> throw new RuntimeException("Invalid role: " + userRole);
+        };
+
+        List<Long> taskIds = user.getUserTaskAssigned();
+
+        Map<String, List<Long>> requestBody = new HashMap<>();
+        requestBody.put("taskIds", taskIds);
+        requestBody.put("projectIds", projectIds);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, List<Long>>> requestEntity = new HttpEntity<>(requestBody, headers);
+
+        ResponseEntity<List<Task>> taskResponse = restTemplate.exchange(
+                TASK_SERVICE_URL + "/tasks-by-ids-and-projects",
+                HttpMethod.POST,
+                requestEntity,
+                new ParameterizedTypeReference<List<Task>>() {}
+        );
+
+        List<Task> allTasks = taskResponse.getBody();
+        if (allTasks == null) {
+            return new ArrayList<>();
+        }
+
+        return allTasks.stream()
+                .map(task -> new TaskDetailsDTO(
+                        task.getTaskHeading(),
+                        task.getTaskDueDate(),
+                        task.getTaskTag(),
+                        task.getTaskPriority(),
+                        task.getTaskStatus(),
+                        task.getTaskDescription()))
+                .collect(Collectors.toList());
+    }
+
+    public TaskStatusCountDTO getTaskStatusCounts(Long userId, String userRole) {
+        List<TaskDetailsDTO> tasks = getTasksForUser(userId, userRole);
+
+        // Count based on status
+        long totalTasks = tasks.size();
+        long completedTasks = tasks.stream().filter(task -> task.getTaskStatus() == TaskStatus.COMPLETED).count();
+        long waitingForApprovalTasks = tasks.stream().filter(task -> task.getTaskStatus() == TaskStatus.WAITING_FOR_APPROVAL).count();
+        long pendingTasks = tasks.stream().filter(task -> task.getTaskStatus() == TaskStatus.PENDING).count();
+
+        // Return the counts in the DTO
+        return new TaskStatusCountDTO(totalTasks, completedTasks, waitingForApprovalTasks, pendingTasks);
+    }
+
 
     @Override
     public int getActiveTasksCountForUserInProject(Long projectId, Long userId) {

@@ -1,5 +1,7 @@
 package com.user.user_service.controller;
 
+import com.user.user_service.DTO.TaskDetailsDTO;
+import com.user.user_service.DTO.TaskStatusCountDTO;
 import com.user.user_service.DTO.UserSummaryDTO;
 import com.user.user_service.entity.*;
 import com.user.user_service.repository.UserRepository;
@@ -218,6 +220,21 @@ public class UserController {
         Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
         List<Task> allActiveTasks = userServiceImpl.getActiveTasksForUser(userId, userRole);
         return ResponseEntity.ok(allActiveTasks);
+    }
+
+    @GetMapping("/user-tasks")
+    public ResponseEntity<List<TaskDetailsDTO>> getTasksForUser(
+            @RequestParam String userEmail,
+            @RequestParam String userRole) {
+        Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
+        return ResponseEntity.ok(userServiceImpl.getTasksForUser(userId, userRole));
+    }
+
+    @GetMapping("/user-task-status-counts")
+    public TaskStatusCountDTO getTaskStatusCounts(
+            @RequestParam Long userId,
+            @RequestParam String userRole) {
+        return userServiceImpl.getTaskStatusCounts(userId, userRole);
     }
 
 
