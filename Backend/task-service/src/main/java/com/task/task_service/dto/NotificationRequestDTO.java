@@ -1,8 +1,19 @@
 package com.task.task_service.dto;
 
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class NotificationRequestDTO {
     private String message;
-    private String type;
-    private String targetUser;
-    private Long referenceId;
+    private Long targetUser;
+    private Long taskId;
+    private LocalDateTime createdTime;
+
 }

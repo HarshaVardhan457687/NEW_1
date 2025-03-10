@@ -1,6 +1,7 @@
 package com.task.task_service.service;
 
 import com.task.task_service.constants.TaskStatus;
+import com.task.task_service.dto.NotificationRequestDTO;
 import com.task.task_service.entity.Notification;
 import com.task.task_service.entity.Task;
 import com.task.task_service.exception.ResourceNotFoundException;
@@ -46,6 +47,7 @@ public class TaskServiceImpl implements TaskService {
 
     private static final String KEYRESULT_SERVICE_URL = "http://localhost:8082/api/keyresults/";
     private static final String USER_SERVICE_URL = "http://localhost:8086/api/users/";
+    private static final String NOTIFICATION_SERVICE_URL = "http://localhost:8087/api/notifications/";
     /**
      * Adds a new task to the database.
      *
@@ -61,6 +63,25 @@ public class TaskServiceImpl implements TaskService {
         updateKeyResultService(savedTask.getTaskAssociatedKeyResult(), savedTask.getTaskId());
         return savedTask;
     }
+
+//    private void updateNotification(Long taskId, Long userId){
+//        NotificationRequestDTO notificationRequest = new NotificationRequestDTO();
+//        notificationRequest.setMessage("new TASK is created");
+//        notificationRequest.setTaskId(taskId);
+//        notificationRequest.setTargetUser(userId);
+//        notificationRequest.setCreatedTime(LocalDateTime.now());
+//
+//        try {
+//            restTemplate.postForEntity(
+//                    NOTIFICATION_SERVICE_URL ,
+//                    notificationRequest,
+//                    Void.class
+//            );
+//            LOGGER.info("Notification sent for task: {}", savedTask.getTaskId());
+//        } catch (Exception e) {
+//            LOGGER.error("Failed to send notification for task: {}", savedTask.getTaskId(), e);
+//        }
+//    }
 
     private void updateUserService(Long userId, Long taskId) {
         String url = USER_SERVICE_URL + "{userId}/assign-task";

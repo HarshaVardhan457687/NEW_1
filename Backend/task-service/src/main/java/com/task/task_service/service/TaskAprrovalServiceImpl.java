@@ -25,11 +25,11 @@ public class TaskAprrovalServiceImpl implements TaskApprovalService{
         approval.setTaskId(taskId);
         approval.setSubmitterId(taskService.getTaskById(taskId).getTaskOwner());
 
-        if ("PROJECT_MANAGER".equals(role)) {
-            approval.setProjectId(id);
-
-        } else if ("TEAM_LEADER".equals(role)) {
+        if ("team_member".equals(role)) {
             approval.setTeamId(id);
+
+        } else if ("team_leader".equals(role)) {
+            approval.setProjectId(id);
         } else {
             throw new IllegalArgumentException("Invalid role: " + role);
         }
