@@ -681,9 +681,24 @@ public class UserServiceImpl implements UserService {
         Long assignedProject = ((Number) request.get("assignedProject")).longValue();
         Long teamLead = ((Number) request.get("teamLead")).longValue();
 
-        List<User> users = userRepository.findAllById(teamMemberIds);
+        // Fetch the team leader once
+        User teamLeader = userRepository.findById(teamLead)
+                .orElseThrow(() -> new UserNotFoundException("Team leader not found with id: " + teamLead));
 
+        // Ensure the team leader's teams list is initialized
+        List<Long> teamLeadersTeam = teamLeader.getUserInvolvedTeamsId();
+        if (teamLeadersTeam == null) {
+            teamLeadersTeam = new ArrayList<>();
+        }
+        if (!teamLeadersTeam.contains(teamId)) {
+            teamLeadersTeam.add(teamId);
+        }
+        teamLeader.setUserInvolvedTeamsId(teamLeadersTeam); // ✅ Set updated list back to the entity
+
+        // Fetch all team members
+        List<User> users = userRepository.findAllById(teamMemberIds);
         for (User user : users) {
+            // Update teams involved for all users including the team lead
             List<Long> userTeams = user.getUserInvolvedTeamsId();
             if (userTeams == null) {
                 userTeams = new ArrayList<>();
@@ -692,6 +707,8 @@ public class UserServiceImpl implements UserService {
                 userTeams.add(teamId);
             }
             user.setUserInvolvedTeamsId(userTeams);
+
+            // Assign project if the user is NOT the team lead
             if (!user.getUserId().equals(teamLead)) {
                 List<Long> memberProjects = user.getUserTeamMemberProjectId();
                 if (memberProjects == null) {
@@ -703,21 +720,21 @@ public class UserServiceImpl implements UserService {
                 user.setUserTeamMemberProjectId(memberProjects);
             }
         }
-        Optional<User> leadUserOpt = userRepository.findById(teamLead);
-        leadUserOpt.ifPresent(leadUser -> {
-            List<Long> leaderProjects = leadUser.getUserTeamLeaderProjectId();
-            if (leaderProjects == null) {
-                leaderProjects = new ArrayList<>();
-            }
-            if (!leaderProjects.contains(assignedProject)) {
-                leaderProjects.add(assignedProject);
-            }
-            leadUser.setUserTeamLeaderProjectId(leaderProjects);
-            userRepository.save(leadUser);
-        });
+
+        // Update the team leader's projects
+        List<Long> leaderProjects = teamLeader.getUserTeamLeaderProjectId();
+        if (leaderProjects == null) {
+            leaderProjects = new ArrayList<>();
+        }
+        if (!leaderProjects.contains(assignedProject)) {
+            leaderProjects.add(assignedProject);
+        }
+        teamLeader.setUserTeamLeaderProjectId(leaderProjects);
+
+        // Save all updated users (including the team leader)
+        users.add(teamLeader); // ✅ Ensure team leader is saved with all updates
         userRepository.saveAll(users);
     }
-
 
 
 
