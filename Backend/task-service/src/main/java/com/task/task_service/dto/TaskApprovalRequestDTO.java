@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TaskApprovalRequestDTO {
     private Long taskId;
-    private Long submitterId;
     private String role;
     private Long id;
 
@@ -19,14 +18,6 @@ public class TaskApprovalRequestDTO {
 
     public void setTaskId(Long taskId) {
         this.taskId = taskId;
-    }
-
-    public Long getSubmitterId() {
-        return submitterId;
-    }
-
-    public void setSubmitterId(Long submitterId) {
-        this.submitterId = submitterId;
     }
 
     public String getRole() {
