@@ -1,6 +1,7 @@
 package com.user.user_service.service;
 
 import com.user.user_service.DTO.TaskDetailsDTO;
+import com.user.user_service.DTO.TaskStatusCountDTO;
 import com.user.user_service.DTO.UserSummaryDTO;
 import com.user.user_service.entity.Task;
 import com.user.user_service.entity.Team;
@@ -18,5 +19,6 @@ public interface UserService {
     public int getActiveTasksCountForUserInProject(Long projectId, Long userId);
     public UserSummaryDTO getUserSummary(Long userId);
     public boolean updateProjectMangerProject(Long userId, Long projectId);
-    public List<TaskDetailsDTO> getTasksForUser(Long userId, String userRole);
+    public List<TaskDetailsDTO> getTasksForUser(Long userId, Long projectId);
+    public TaskStatusCountDTO getTaskStatusCounts(String userEmail, Long projectId);
 }

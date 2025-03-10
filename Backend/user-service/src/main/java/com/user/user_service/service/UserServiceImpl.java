@@ -572,41 +572,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<TaskDetailsDTO> getTasksForUser(Long userId, String userRole) {
+    public List<TaskDetailsDTO> getTasksForUser(Long userId, Long projectId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
-        List<Long> projectIds = switch (userRole.toUpperCase()) {
-            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
-            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
-            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
-            default -> throw new RuntimeException("Invalid role: " + userRole);
-        };
-
-        List<Long> taskIds = user.getUserTaskAssigned();
-
-        Map<String, List<Long>> requestBody = new HashMap<>();
-        requestBody.put("taskIds", taskIds);
-        requestBody.put("projectIds", projectIds);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<Map<String, List<Long>>> requestEntity = new HttpEntity<>(requestBody, headers);
-
         ResponseEntity<List<Task>> taskResponse = restTemplate.exchange(
-                TASK_SERVICE_URL + "/tasks-by-ids-and-projects",
-                HttpMethod.POST,
-                requestEntity,
+                TASK_SERVICE_URL + "/project/" + projectId + "/user/" + userId + "/all-tasks",
+                HttpMethod.GET,
+                null,
                 new ParameterizedTypeReference<List<Task>>() {}
         );
 
-        List<Task> allTasks = taskResponse.getBody();
-        if (allTasks == null) {
-            return new ArrayList<>();
+        List<Task> tasks = taskResponse.getBody();
+        if (tasks == null) {
+            return Collections.emptyList();
         }
 
-        return allTasks.stream()
+        return tasks.stream()
                 .map(task -> new TaskDetailsDTO(
                         task.getTaskHeading(),
                         task.getTaskDueDate(),
@@ -617,16 +599,17 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    public TaskStatusCountDTO getTaskStatusCounts(Long userId, String userRole) {
-        List<TaskDetailsDTO> tasks = getTasksForUser(userId, userRole);
+    @Override
+    public TaskStatusCountDTO getTaskStatusCounts(String userEmail, Long projectId) {
+        Long userId = getUserByEmail(userEmail).getUserId();
 
-        // Count based on status
+        List<TaskDetailsDTO> tasks = getTasksForUser(userId, projectId);
+
         long totalTasks = tasks.size();
         long completedTasks = tasks.stream().filter(task -> task.getTaskStatus() == TaskStatus.COMPLETED).count();
         long waitingForApprovalTasks = tasks.stream().filter(task -> task.getTaskStatus() == TaskStatus.WAITING_FOR_APPROVAL).count();
         long pendingTasks = tasks.stream().filter(task -> task.getTaskStatus() == TaskStatus.PENDING).count();
 
-        // Return the counts in the DTO
         return new TaskStatusCountDTO(totalTasks, completedTasks, waitingForApprovalTasks, pendingTasks);
     }
 

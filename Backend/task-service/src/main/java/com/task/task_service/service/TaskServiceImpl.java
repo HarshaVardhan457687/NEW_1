@@ -263,4 +263,13 @@ public class TaskServiceImpl implements TaskService {
         return map;
     }
 
+    @Override
+    public List<Task> getAllTasksForUserInProject(Long projectId, Long userId) {
+        List<Task> activeTasks = taskRepository.findByTaskAssociatedProjectAndTaskOwnerAndTaskIsActive(projectId, userId, true);
+        List<Task> inactiveTasks = taskRepository.findByTaskAssociatedProjectAndTaskOwnerAndTaskIsActive(projectId, userId, false);
+
+        return activeTasks;
+    }
+
+
 }

@@ -178,5 +178,11 @@ public class TaskController {
         return ResponseEntity.ok(map);
     }
 
+    @GetMapping("/project/{projectId}/user/{userId}/all-tasks")
+    public ResponseEntity<List<Task>> getAllTasksForProject(@PathVariable Long projectId, @PathVariable Long userId) {
+        List<Task> activeTaskCount = taskService.getAllTasksForUserInProject(projectId, userId);
+        return ResponseEntity.ok(activeTaskCount);
+    }
+
 
 }
