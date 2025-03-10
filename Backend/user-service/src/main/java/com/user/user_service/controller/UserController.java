@@ -360,32 +360,32 @@ public class UserController {
      * This endpoint provides task details including metadata for display.
      *
      * @param userEmail The email address of the user
-     * @param userRole The role of the user in the system
+     * @param projectId The role of the user in the system
      * @return ResponseEntity containing a list of task detail DTOs
      * @throws UserNotFoundException if user with specified email is not found
      */
     @GetMapping("/user-tasks")
     public ResponseEntity<List<TaskDetailsDTO>> getTasksForUser(
             @RequestParam String userEmail,
-            @RequestParam String userRole) {
+            @RequestParam Long projectId) {
         Long userId = userServiceImpl.getUserByEmail(userEmail).getUserId();
-        return ResponseEntity.ok(userServiceImpl.getTasksForUser(userId, userRole));
+        return ResponseEntity.ok(userServiceImpl.getTasksForUser(userId, projectId));
     }
 
     /**
      * Retrieves counts of tasks by status for a user.
      * This endpoint provides metrics for dashboard display.
      *
-     * @param userId The unique identifier of the user
-     * @param userRole The role of the user in the system
+     * @param userEmail The unique identifier of the user
+     * @param projectId The role of the user in the system
      * @return DTO containing task counts by status
      * @throws UserNotFoundException if user with specified ID is not found
      */
     @GetMapping("/user-task-status-counts")
     public TaskStatusCountDTO getTaskStatusCounts(
-            @RequestParam Long userId,
-            @RequestParam String userRole) {
-        return userServiceImpl.getTaskStatusCounts(userId, userRole);
+            @RequestParam String userEmail,
+            @RequestParam Long projectId) {
+        return userServiceImpl.getTaskStatusCounts(userEmail, projectId);
     }
 
     /**
