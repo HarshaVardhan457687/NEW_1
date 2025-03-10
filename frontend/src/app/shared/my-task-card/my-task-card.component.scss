@@ -72,17 +72,17 @@
     font-size: 12px;
     font-weight: 500;
 
-    &.High.Priority {
+    &.priority-high {
       background: #fee2e2;
       color: #dc2626;
     }
 
-    &.Medium.Priority {
+    &.priority-medium {
       background: #fef3c7;
       color: #d97706;
     }
 
-    &.Low.Priority {
+    &.priority-low {
       background: #e0e7ff;
       color: #4f46e5;
     }
@@ -94,12 +94,12 @@
     font-size: 12px;
     font-weight: 500;
 
-    &.pending {
+    &.status-pending {
       background: #4B5563;
       color: #F3F4F6;
     }
 
-    &.waiting_approval {
+    &.status-waiting_for_approval {
       background: #FEF9C3;
       color: #854D0E;
     }

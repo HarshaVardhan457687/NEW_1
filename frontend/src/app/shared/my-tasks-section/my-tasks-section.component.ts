@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MyTaskCardComponent } from '../my-task-card/my-task-card.component';
-import { Task } from '../../core/services/tasks.service';
+import { TaskDetailsDTO } from '../../core/services/my-tasks.service';
 
 @Component({
   selector: 'app-my-tasks-section',
@@ -11,5 +11,5 @@ import { Task } from '../../core/services/tasks.service';
   styleUrl: './my-tasks-section.component.scss'
 })
 export class MyTasksSectionComponent {
-  @Input() tasks: Task[] = [];
+  @Input() tasks: TaskDetailsDTO[] = [];
 }

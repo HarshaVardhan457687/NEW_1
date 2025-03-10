@@ -1,16 +1,16 @@
 <div class="task-card">
   <!-- Row 1: Title and Tag -->
   <div class="task-row title-row">
-    <h3 class="task-title">{{ task.title }}</h3>
+    <h3 class="task-title">{{ task.taskName }}</h3>
   </div>
 
   <!-- Row 2: Due Date, Priority, Status and Submit Button -->
   <div class="task-row info-row">
     <div class="status-group">
-      <span class="due-date">Due: {{ task.dueDate }}</span>
-      <span class="project-tag">{{ task.tag }}</span>
-      <span class="priority" [class]="task.priority">{{ task.priority }}</span>
-      <span class="status" [ngClass]="task.status">{{ task.status | titlecase }}</span>
+      <span class="due-date">Due: {{task.dueDate | date:'dd MMM yyyy' }}</span>
+      <span class="project-tag">{{ task.taskTag }}</span>
+      <span class="priority" [ngClass]="'priority-' + task.taskPriority.toLowerCase()">{{ formatPriority(task.taskPriority) }}</span>
+      <span class="status" [ngClass]="'status-' + task.taskStatus.toLowerCase()">{{ formatStatus(task.taskStatus) }}</span>
 
     </div>
     <button
@@ -24,6 +24,6 @@
 
   <!-- Row 3: Description -->
   <div class="task-row description-row">
-    <p class="task-description">{{ task.description || 'No description available' }}</p>
+    <p class="task-description">{{ task.taskDescription || 'No description available' }}</p>
   </div>
 </div>
