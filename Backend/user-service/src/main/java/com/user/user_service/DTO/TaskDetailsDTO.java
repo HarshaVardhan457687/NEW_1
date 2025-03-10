@@ -12,12 +12,21 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TaskDetailsDTO {
+    private Long taskId;
     private String taskName;
     private Date dueDate;
     private String taskTag;
     private TaskPriority taskPriority;
     private TaskStatus taskStatus;
     private String taskDescription;
+
+    public Long getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
+    }
 
     public String getTaskName() {
         return taskName;

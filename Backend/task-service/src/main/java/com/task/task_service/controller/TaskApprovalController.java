@@ -17,7 +17,7 @@ public class TaskApprovalController {
 
     @PostMapping("/request")
     public ResponseEntity<TaskApproval> requestApproval(@RequestBody TaskApprovalRequestDTO request) {
-        TaskApproval approval = taskApprovalService.requestApproval(request.getTaskId(), request.getSubmitterId(), request.getRole(), request.getId());
+        TaskApproval approval = taskApprovalService.requestApproval(request.getTaskId(), request.getRole(), request.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(approval);
     }
 

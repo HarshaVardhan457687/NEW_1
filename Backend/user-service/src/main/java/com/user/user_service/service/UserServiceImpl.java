@@ -590,6 +590,7 @@ public class UserServiceImpl implements UserService {
 
         return tasks.stream()
                 .map(task -> new TaskDetailsDTO(
+                        task.getTaskId(),
                         task.getTaskHeading(),
                         task.getTaskDueDate(),
                         task.getTaskTag(),

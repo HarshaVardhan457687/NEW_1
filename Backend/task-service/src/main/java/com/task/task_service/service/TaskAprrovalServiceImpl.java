@@ -20,10 +20,10 @@ public class TaskAprrovalServiceImpl implements TaskApprovalService{
     private TaskService taskService;
 
     @Override
-    public TaskApproval requestApproval(Long taskId, Long submitterId, String role, Long id) {
+    public TaskApproval requestApproval(Long taskId, String role, Long id) {
         TaskApproval approval = new TaskApproval();
         approval.setTaskId(taskId);
-        approval.setSubmitterId(submitterId);
+        approval.setSubmitterId(taskService.getTaskById(taskId).getTaskOwner());
 
         if ("PROJECT_MANAGER".equals(role)) {
             approval.setProjectId(id);
