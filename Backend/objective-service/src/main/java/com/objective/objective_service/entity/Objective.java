@@ -92,14 +92,6 @@ public class Objective {
         this.keyResult = keyResult;
     }
 
-    public Date getProjectCreatedAt() {
-        return objectiveCreatedAt;
-    }
-
-    public void setProjectCreatedAt(Date projectCreatedAt) {
-        this.objectiveCreatedAt = projectCreatedAt;
-    }
-
     public Date getObjectiveDueDate() {
         return objectiveDueDate;
     }

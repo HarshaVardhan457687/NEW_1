@@ -167,6 +167,15 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(existingUser);
     }
 
+    //HELPER METHOD
+    private List<Long> getProjectIdsByRole(User user, String userRole) {
+        return switch (userRole.toUpperCase()) {
+            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
+            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
+            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
+            default -> throw new RuntimeException("Invalid role: " + userRole);
+        };
+    }
 
     //Projects
 

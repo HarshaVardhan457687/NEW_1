@@ -211,11 +211,10 @@ public class ObjectiveServiceImpl implements ObjectiveService {
                     keyResultSummary.setDueDate(keyResult.getKeyResultDueDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                     keyResultSummary.setProgress(getKeyResultProgress(keyResult.getKeyResultId()));
                     keyResultSummary.setTeamName(fetchTeamName(keyResult.getTeamId()));
-                    // Fetch team leader ID from Teams service
+
                     Long teamLeaderId = fetchTeamLeaderId(keyResult.getTeamId());
                     LOGGER.info("line 7 " + teamLeaderId);
 
-                    // Fetch team leader details from User service
                     if (teamLeaderId != null) {
                         UserSummaryDTO userDetails = fetchUserDetails(teamLeaderId);
                         LOGGER.info("line 8 " + userDetails.getUserName());
@@ -227,7 +226,6 @@ public class ObjectiveServiceImpl implements ObjectiveService {
                     LOGGER.info("line 10 " + keyResultSummaries.size());
                 }
 
-                // Create an ObjectiveSummaryDto and add it to the list
                 ObjectiveSummaryDTO summaryDto = new ObjectiveSummaryDTO();
                 summaryDto.setObjectiveId(objective.getObjectiveId());
                 summaryDto.setObjectiveName(objective.getObjectiveName());

@@ -4,7 +4,6 @@ import com.task.task_service.constants.ApprovalStatus;
 import com.task.task_service.constants.TaskStatus;
 import com.task.task_service.entity.TaskApproval;
 import com.task.task_service.repository.TaskApprovalRepository;
-import com.task.task_service.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

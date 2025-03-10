@@ -24,6 +24,7 @@ public class TaskApproval {
     private Long submitterId;
     private Long projectId;
     private Long teamId;
+    private Double increament;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -77,6 +78,14 @@ public class TaskApproval {
 
     public void setTeamId(Long teamId) {
         this.teamId = teamId;
+    }
+
+    public Double getIncreament() {
+        return increament;
+    }
+
+    public void setIncreament(Double increament) {
+        this.increament = increament;
     }
 
     public Date getSubmittedDate() {
