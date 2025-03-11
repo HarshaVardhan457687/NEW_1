@@ -192,12 +192,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
-        List<Long> projectIds = switch (userRole.toUpperCase()) {
-            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
-            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
-            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
-            default -> throw new RuntimeException("Invalid role: " + userRole);
-        };
+        List<Long> projectIds = getProjectIdsByRole(user, userRole);
 
         if (projectIds.isEmpty()) {
             return Collections.emptyList();
@@ -232,12 +227,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
-        List<Long> projectIds = switch (userRole.toUpperCase()) {
-            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
-            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
-            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
-            default -> throw new RuntimeException("Invalid role: " + userRole);
-        };
+        List<Long> projectIds = getProjectIdsByRole(user, userRole);
 
         if (projectIds.isEmpty()) {
             return Collections.emptyList();
@@ -290,12 +280,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
-        List<Long> projectIds = switch (userRole.toUpperCase()) {
-            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
-            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
-            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
-            default -> throw new RuntimeException("Invalid role: " + userRole);
-        };
+        List<Long> projectIds = getProjectIdsByRole(user, userRole);
 
         long totalProjects = projectIds.size();
 
@@ -330,12 +315,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
         // Select the correct project list based on role
-        List<Long> projectIds = switch (userRole.toUpperCase()) {
-            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
-            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
-            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
-            default -> throw new RuntimeException("Invalid role: " + userRole);
-        };
+        List<Long> projectIds = getProjectIdsByRole(user, userRole);
 
         // Create request entity with headers
         HttpHeaders headers = new HttpHeaders();
@@ -367,12 +347,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
         // Select the correct project list based on role
-        List<Long> projectIds = switch (userRole.toUpperCase()) {
-            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
-            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
-            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
-            default -> throw new RuntimeException("Invalid role: " + userRole);
-        };
+        List<Long> projectIds = getProjectIdsByRole(user, userRole);
 
         // Create request entity with headers
         HttpHeaders headers = new HttpHeaders();
@@ -423,12 +398,8 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
-        List<Long> projectIds = switch (userRole.toUpperCase()) {
-            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
-            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
-            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
-            default -> throw new RuntimeException("Invalid role: " + userRole);
-        };
+        List<Long> projectIds = getProjectIdsByRole(user, userRole);
+
         ResponseEntity<List<Objective>> objectiveResponse = restTemplate.exchange(
                 OBJECTIVE_SERVICE_URL + "/all/by-projects",
                 HttpMethod.POST,
@@ -478,12 +449,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
-        List<Long> projectIds = switch (userRole.toUpperCase()) {
-            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
-            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
-            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
-            default -> throw new RuntimeException("Invalid role: " + userRole);
-        };
+        List<Long> projectIds = getProjectIdsByRole(user, userRole);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -536,12 +502,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
-        List<Long> projectIds = switch (userRole.toUpperCase()) {
-            case "PROJECT_MANAGER" -> user.getUserManagerProjectId();
-            case "TEAM_LEADER" -> user.getUserTeamLeaderProjectId();
-            case "TEAM_MEMBER" -> user.getUserTeamMemberProjectId();
-            default -> throw new RuntimeException("Invalid role: " + userRole);
-        };
+        List<Long> projectIds = getProjectIdsByRole(user, userRole);
 
         List<Long> taskIds = user.getUserTaskAssigned();
 

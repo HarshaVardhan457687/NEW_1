@@ -59,29 +59,30 @@ public class TaskServiceImpl implements TaskService {
         LOGGER.info("Adding new task with heading: {}", task.getTaskHeading());
         Task savedTask = taskRepository.save(task);
 
+        updateNotification(savedTask.getTaskId(), savedTask.getTaskOwner());
         updateUserService(savedTask.getTaskOwner(), savedTask.getTaskId());
         updateKeyResultService(savedTask.getTaskAssociatedKeyResult(), savedTask.getTaskId());
         return savedTask;
     }
 
-//    private void updateNotification(Long taskId, Long userId){
-//        NotificationRequestDTO notificationRequest = new NotificationRequestDTO();
-//        notificationRequest.setMessage("new TASK is created");
-//        notificationRequest.setTaskId(taskId);
-//        notificationRequest.setTargetUser(userId);
-//        notificationRequest.setCreatedTime(LocalDateTime.now());
-//
-//        try {
-//            restTemplate.postForEntity(
-//                    NOTIFICATION_SERVICE_URL ,
-//                    notificationRequest,
-//                    Void.class
-//            );
-//            LOGGER.info("Notification sent for task: {}", savedTask.getTaskId());
-//        } catch (Exception e) {
-//            LOGGER.error("Failed to send notification for task: {}", savedTask.getTaskId(), e);
-//        }
-//    }
+    private void updateNotification(Long taskId, Long userId){
+        NotificationRequestDTO notificationRequest = new NotificationRequestDTO();
+        notificationRequest.setMessage("new TASK is created");
+        notificationRequest.setTaskId(taskId);
+        notificationRequest.setTargetUser(userId);
+        notificationRequest.setCreatedTime(LocalDateTime.now());
+
+        try {
+            restTemplate.postForEntity(
+                    NOTIFICATION_SERVICE_URL ,
+                    notificationRequest,
+                    Void.class
+            );
+            LOGGER.info("Notification sent for task: {}", taskId);
+        } catch (Exception e) {
+            LOGGER.error("Failed to send notification for task: {}", taskId, e);
+        }
+    }
 
     private void updateUserService(Long userId, Long taskId) {
         String url = USER_SERVICE_URL + "{userId}/assign-task";

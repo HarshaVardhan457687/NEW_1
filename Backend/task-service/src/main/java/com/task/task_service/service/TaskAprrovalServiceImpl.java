@@ -2,11 +2,14 @@ package com.task.task_service.service;
 
 import com.task.task_service.constants.ApprovalStatus;
 import com.task.task_service.constants.TaskStatus;
+import com.task.task_service.dto.TaskApprovalResponseDTO;
+import com.task.task_service.entity.Task;
 import com.task.task_service.entity.TaskApproval;
 import com.task.task_service.repository.TaskApprovalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -66,14 +69,57 @@ public class TaskAprrovalServiceImpl implements TaskApprovalService{
     }
 
     @Override
-    public List<TaskApproval> getAllTaskApprovalOfProject(Long projectId) {
-        return taskApprovalRepository.findByProjectId(projectId);
+    public List<TaskApprovalResponseDTO> getAllTaskApprovalOfProject(Long projectId) {
+        // Get all task approvals for the given projectId
+        List<TaskApproval> allTaskApprovalList = taskApprovalRepository.findByProjectId(projectId);
 
+        // Prepare the result list
+        List<TaskApprovalResponseDTO> allTaskApprovalResponseList = new ArrayList<>();
+
+        // Iterate over the task approvals
+        for (TaskApproval taskApproval : allTaskApprovalList) {
+            // Fetch the task once and reuse the object
+            Task task = taskService.getTaskById(taskApproval.getTaskId());
+
+            // Map the TaskApproval to TaskApprovalResponseDTO
+            TaskApprovalResponseDTO currTaskApprovalResponseDTO = new TaskApprovalResponseDTO();
+            currTaskApprovalResponseDTO.setTaskApprovalId(taskApproval.getApprovalId());
+            currTaskApprovalResponseDTO.setTaskName(task.getTaskHeading());
+            currTaskApprovalResponseDTO.setTaskTag(task.getTaskTag());
+            currTaskApprovalResponseDTO.setTaskPriority(task.getTaskPriority());
+            currTaskApprovalResponseDTO.setTaskDescription(task.getTaskDescription());
+            currTaskApprovalResponseDTO.setTaskDueDate(task.getTaskDueDate());
+            currTaskApprovalResponseDTO.setApprovalStatus(taskApproval.getStatus());
+
+            // Add to the response list
+            allTaskApprovalResponseList.add(currTaskApprovalResponseDTO);
+        }
+
+        return allTaskApprovalResponseList;
     }
 
+
     @Override
-    public List<TaskApproval> getAllTaskApprovalOfTeam(Long teamId) {
-        return taskApprovalRepository.findByTeamId(teamId);
+    public List<TaskApprovalResponseDTO> getAllTaskApprovalOfTeam(Long teamId) {
+        List<TaskApproval> allTaskApprovalList = taskApprovalRepository.findByTeamId(teamId);
+        List<TaskApprovalResponseDTO> allTaskApprovalResponseList = new ArrayList<>();
+
+        for (TaskApproval taskApproval : allTaskApprovalList) {
+            Task task = taskService.getTaskById(taskApproval.getTaskId());
+
+            TaskApprovalResponseDTO currTaskApprovalResponseDTO = new TaskApprovalResponseDTO();
+            currTaskApprovalResponseDTO.setTaskApprovalId(taskApproval.getApprovalId());
+            currTaskApprovalResponseDTO.setTaskName(task.getTaskHeading());
+            currTaskApprovalResponseDTO.setTaskTag(task.getTaskTag());
+            currTaskApprovalResponseDTO.setTaskPriority(task.getTaskPriority());
+            currTaskApprovalResponseDTO.setTaskDescription(task.getTaskDescription());
+            currTaskApprovalResponseDTO.setTaskDueDate(task.getTaskDueDate());
+            currTaskApprovalResponseDTO.setApprovalStatus(taskApproval.getStatus());
+
+            allTaskApprovalResponseList.add(currTaskApprovalResponseDTO);
+        }
+
+        return allTaskApprovalResponseList;
     }
 
 
