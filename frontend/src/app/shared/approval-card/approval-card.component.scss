@@ -161,7 +161,7 @@
         transition: all 0.2s ease;
       }
   
-      .approve-btn {
+      .approve-button {
         background: #4F46E5;
         color: white;
   
@@ -170,7 +170,7 @@
         }
       }
   
-      .reject-btn {
+      .reject-button {
         background: #EF4444;
         color: white;
   
@@ -198,5 +198,22 @@
           color: white;
         }
       }
+    }
+  }
+
+  .error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  button {
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
     }
   }

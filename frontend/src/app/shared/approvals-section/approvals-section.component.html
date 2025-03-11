@@ -1,13 +1,24 @@
 <div class="approvals-section">
-  <div class="approvals-grid">
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="isLoading" class="loading-message">
+    Loading approvals...
+  </div>
+
+  <div class="approvals-grid" *ngIf="!isLoading && !error">
     <app-approval-card
       *ngFor="let approval of approvals"
-      [taskName]="approval.title"
-      [tag]="approval.tag"
-      [priority]="approval.priority"
-      [description]="approval.description"
-      [dueDate]="approval.dueDate"
-      [owner]="approval.owner">
+      [taskApprovalId]="approval.taskApprovalId"
+      [taskName]="approval.taskName"
+      [tag]="approval.taskTag"
+      [priority]="approval.taskPriority"
+      [description]="approval.taskDescription"
+      [dueDate]="approval.taskDueDate"
+      [owner]="approval.ownerName"
+      [status]="approval.approvalStatus"
+      (statusChanged)="onStatusChanged()">
     </app-approval-card>
   </div>
 </div>

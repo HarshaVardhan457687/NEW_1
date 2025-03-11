@@ -7,8 +7,8 @@
 
   <!-- Row 2: Priority and Assignee -->
   <div class="row priority-row">
-    <div class="owner">{{owner}}</div>
-    <div [class]="'priority ' + priorityClass">{{priority}} Priority</div>
+    <div class="owner">{{owner || 'N/A'}}</div>
+    <div [class]="'priority ' + priorityClass">{{priority | titlecase}} Priority</div>
   </div>
 
   <!-- Row 3: Description -->
@@ -20,20 +20,35 @@
   <div class="row details-row">
     <div class="due-date">
       <img src="assets/calender_icon.png" alt="calendar">
-      Due: {{dueDate}}
+      Due: {{ dueDate | date:'MMM d yyyy'}}
     </div>
   </div>
 
   <!-- Row 5: Action Buttons or Status -->
   <div class="row action-row">
-    <ng-container *ngIf="status === 'pending'; else statusBadge">
-      <button class="approve-btn" (click)="onApprove()">Approve</button>
-      <button class="reject-btn" (click)="onReject()">Reject</button>
+    <ng-container *ngIf="isPendingStatus; else statusBadge">
+      <button 
+        (click)="onApprove()" 
+        [disabled]="isProcessing"
+        class="approve-button">
+        {{ isProcessing ? 'Processing...' : 'Approve' }}
+      </button>
+      <button 
+        (click)="onReject()" 
+        [disabled]="isProcessing"
+        class="reject-button">
+        {{ isProcessing ? 'Processing...' : 'Reject' }}
+      </button>
     </ng-container>
     <ng-template #statusBadge>
-      <div [class]="'status-badge ' + status">
-        {{status | titlecase}}
+      <div *ngIf="!isPendingStatus" [ngClass]="'status-badge ' + statusClass">
+        {{ status | titlecase }}
       </div>
     </ng-template>
+  </div>
+
+  <!-- Add error message display -->
+  <div *ngIf="error" class="error-message">
+    {{ error }}
   </div>
 </div>
