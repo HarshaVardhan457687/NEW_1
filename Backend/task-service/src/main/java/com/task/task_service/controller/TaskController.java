@@ -185,7 +185,7 @@ public class TaskController {
         return ResponseEntity.ok(activeTaskCount);
     }
 
-    @GetMapping("/keyresult/{taskId}")
+    @GetMapping("/get/keyresult/{taskId}")
     public ResponseEntity<Long> getKeyResultByTaskId(@PathVariable Long taskId) {
         try {
             Long keyResultId = taskService.getKeyResultByTaskId(taskId);

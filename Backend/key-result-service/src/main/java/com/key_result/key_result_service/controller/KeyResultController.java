@@ -153,8 +153,8 @@ public class KeyResultController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("KeyResult not found");
     }
 
-    @GetMapping("/get-progress/{taskId}")
-    public ResponseEntity<KeyResultUnitDTO> getKeyResultUnit(@PathVariable Long taskId) {
+    @GetMapping("/get/progress")
+    public ResponseEntity<KeyResultUnitDTO> getKeyResultUnit(@RequestParam Long taskId) {
         KeyResultUnitDTO keyResultUnitDTO = keyResultService.getKeyResultUnitById(taskId);
         return ResponseEntity.ok(keyResultUnitDTO);
     }

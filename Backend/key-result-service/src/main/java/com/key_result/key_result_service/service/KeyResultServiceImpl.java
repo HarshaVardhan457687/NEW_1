@@ -339,7 +339,7 @@ public class KeyResultServiceImpl implements KeyResultService {
 
     @Override
     public KeyResultUnitDTO getKeyResultUnitById(Long taskId) {
-        String taskServiceUrl = TASK_SERVICE_URL + "keyresult/" + taskId;
+        String taskServiceUrl = TASK_SERVICE_URL + "get/keyresult/" + taskId;
         Long keyResultId = restTemplate.getForObject(taskServiceUrl, Long.class);
 
         if (keyResultId == null) {
