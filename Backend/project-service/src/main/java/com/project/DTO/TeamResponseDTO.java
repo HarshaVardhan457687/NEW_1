@@ -16,6 +16,7 @@ public class TeamResponseDTO {
     private int totalMembers;
     private double teamProgress;
     private Map<String,Long> teamTasksCount;
+    private Long teamLeaderId;
     private String teamLeaderName;
     private String teamLeaderProfile;
 
@@ -65,6 +66,14 @@ public class TeamResponseDTO {
 
     public void setTeamTasksCount(Map<String, Long> teamTasksCount) {
         this.teamTasksCount = teamTasksCount;
+    }
+
+    public Long getTeamLeaderId() {
+        return teamLeaderId;
+    }
+
+    public void setTeamLeaderId(Long teamLeaderId) {
+        this.teamLeaderId = teamLeaderId;
     }
 
     public String getTeamLeaderName() {
