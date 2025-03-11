@@ -12,4 +12,5 @@ import { TaskDetailsDTO } from '../../core/services/my-tasks.service';
 })
 export class MyTasksSectionComponent {
   @Input() tasks: TaskDetailsDTO[] = [];
+  @Input() projectId!: number;
 }

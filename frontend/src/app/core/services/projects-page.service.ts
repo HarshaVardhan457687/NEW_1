@@ -108,7 +108,7 @@ export class ProjectsPageService {
           return of({ name: 'Not Found', profilePic: 'assets/default_profile.png' });
         }
 
-        return this.http.get<string>(`${this.API_URL}/get/profile-pic?userEmail=${manager.userEmail}`)
+        return this.http.get(`${this.API_URL}/get/profile-pic?userEmail=${manager.userEmail}`, { responseType: 'text' })
           .pipe(
             catchError(error => {
               console.error('Error fetching profile picture:', error);

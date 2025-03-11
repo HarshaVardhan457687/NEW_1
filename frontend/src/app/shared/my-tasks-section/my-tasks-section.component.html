@@ -5,7 +5,8 @@
   <div class="tasks-list">
     <app-my-task-card
       *ngFor="let task of tasks"
-      [task]="task">
+      [task]="task"
+      [projectId]="projectId">
     </app-my-task-card>
   </div>
 </div>

@@ -16,6 +16,7 @@ export class MyTasksComponent implements OnInit {
   tasks: TaskDetailsDTO[] = [];
   isLoading = true;
   error?: string;
+  projectId!: number;
   
   taskStats = {
     pending: 0,
@@ -33,9 +34,9 @@ export class MyTasksComponent implements OnInit {
     console.log("MyTasksComponent initialized");
     const userEmail = localStorage.getItem('username');
     this.route.parent?.params.subscribe(params => {
-      const projectId = Number(params['id']);
+      this.projectId = Number(params['id']);
       
-      if (!userEmail || !projectId) {
+      if (!userEmail || !this.projectId) {
         this.error = 'Missing required parameters';
         console.error('Missing required parameters');
         this.isLoading = false;
@@ -43,7 +44,7 @@ export class MyTasksComponent implements OnInit {
       }
 
       // Fetch task statistics
-      this.myTasksService.getTaskStatusCounts(userEmail, projectId).subscribe({
+      this.myTasksService.getTaskStatusCounts(userEmail, this.projectId).subscribe({
         next: (stats) => {
           this.taskStats = {
             pending: stats.pendingTasks,
@@ -60,7 +61,7 @@ export class MyTasksComponent implements OnInit {
       });
 
       // Fetch task details
-      this.myTasksService.getTasksForUser(userEmail, projectId).subscribe({
+      this.myTasksService.getTasksForUser(userEmail, this.projectId).subscribe({
         next: (tasks) => {
           this.tasks = tasks;
           console.log(this.tasks);

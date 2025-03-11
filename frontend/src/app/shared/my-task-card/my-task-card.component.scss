@@ -131,3 +131,14 @@
     }
   }
 }
+
+.error-message {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  padding: 0.75rem 1.25rem;
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+}
