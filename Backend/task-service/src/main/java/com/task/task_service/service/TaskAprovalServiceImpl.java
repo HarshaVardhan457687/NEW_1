@@ -47,7 +47,7 @@ public class TaskAprovalServiceImpl implements TaskApprovalService{
     }
 
     @Override
-    public TaskApproval approveTask(Long approvalId) {
+    public TaskApproval approveTask(Long approvalId, Double increment) {
         TaskApproval approval = taskApprovalRepository.findById(approvalId)
                 .orElseThrow(() -> new RuntimeException("Approval request not found"));
 

@@ -1,5 +1,6 @@
 package com.key_result.key_result_service.service;
 
+import com.key_result.key_result_service.dto.KeyResultUnitDTO;
 import com.key_result.key_result_service.entity.KeyResult;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface KeyResultService {
     public float getProgressOfKeyResult(Long keyResultId);
     public boolean addTaskToKeyResult(Long keyResultId, Long taskId);
     public List<KeyResult> getALLKeyResultsByObjectiveIds(List<Long> objectiveIds);
+    public KeyResultUnitDTO getKeyResultUnitById(Long keyResultId);
+    public KeyResult updateKeyResultCurrentVal(Long keyResultId, int currentVal);
 }

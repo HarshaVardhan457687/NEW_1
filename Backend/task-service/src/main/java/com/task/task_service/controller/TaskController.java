@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * Controller class for handling HTTP requests related to Task operations.
@@ -184,5 +185,14 @@ public class TaskController {
         return ResponseEntity.ok(activeTaskCount);
     }
 
+    @GetMapping("/keyresult/{taskId}")
+    public ResponseEntity<Long> getKeyResultByTaskId(@PathVariable Long taskId) {
+        try {
+            Long keyResultId = taskService.getKeyResultByTaskId(taskId);
+            return ResponseEntity.ok(keyResultId);  // Return keyResultId if task exists
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();  // Task not found, return 404
+        }
+    }
 
 }

@@ -26,8 +26,8 @@ public class TaskApprovalController {
 
 
     @PostMapping("/approve")
-    public ResponseEntity<TaskApproval> approveTask(@RequestParam Long approvalId) {
-        TaskApproval approvedTask = taskApprovalService.approveTask(approvalId);
+    public ResponseEntity<TaskApproval> approveTask(@RequestParam Long approvalId, @RequestParam Double increment) {
+        TaskApproval approvedTask = taskApprovalService.approveTask(approvalId, increment);
         return ResponseEntity.ok(approvedTask);
     }
 

@@ -1,5 +1,6 @@
 package com.key_result.key_result_service.service;
 
+import com.key_result.key_result_service.dto.KeyResultUnitDTO;
 import com.key_result.key_result_service.entity.KeyResult;
 import com.key_result.key_result_service.entity.Task;
 import com.key_result.key_result_service.exception.ResourceNotFoundException;
@@ -334,6 +335,35 @@ public class KeyResultServiceImpl implements KeyResultService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public KeyResultUnitDTO getKeyResultUnitById(Long taskId) {
+        String taskServiceUrl = TASK_SERVICE_URL + "keyresult/" + taskId;
+        Long keyResultId = restTemplate.getForObject(taskServiceUrl, Long.class);
+
+        if (keyResultId == null) {
+            throw new ResourceNotFoundException("KeyResult not found for taskId: " + taskId);
+        }
+
+        KeyResult keyResult = keyResultRepository.findById(keyResultId)
+                .orElseThrow(() -> new ResourceNotFoundException("KeyResult not found with id: " + keyResultId));
+
+        return new KeyResultUnitDTO(
+                keyResult.getKeyResultId(),
+                keyResult.getKeyResultcurrentVal(),
+                keyResult.getKeyResultTargetVal(),
+                keyResult.getKeyResultunit()
+        );
+    }
+
+    @Override
+    public KeyResult updateKeyResultCurrentVal(Long keyResultId, int currentVal) {
+        KeyResult keyResult = keyResultRepository.findById(keyResultId)
+                .orElseThrow(() -> new ResourceNotFoundException("KeyResult not found with id: " + keyResultId));
+
+        keyResult.setKeyResultcurrentVal(currentVal);
+        return keyResultRepository.save(keyResult);
     }
 
 

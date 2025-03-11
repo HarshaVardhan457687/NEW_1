@@ -1,5 +1,6 @@
 package com.key_result.key_result_service.controller;
 
+import com.key_result.key_result_service.dto.KeyResultUnitDTO;
 import com.key_result.key_result_service.entity.KeyResult;
 import com.key_result.key_result_service.service.KeyResultService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,22 @@ public class KeyResultController {
     public KeyResult updateKeyResult(@PathVariable Long id, @RequestBody KeyResult keyResult) {
         return keyResultService.updateKeyResult(id, keyResult);
     }
+
+    /**
+     * Update the currentVal of keyResult Key Result by its ID.
+     *
+     * @param id        the ID of the Key Result to update
+     * @param keyResult the updated Key Result details
+     * @return the updated Key Result
+     */
+    @PatchMapping("/currentVal/{keyResultId}")
+    public ResponseEntity<KeyResult> updateKeyResultCurrentVal(
+            @PathVariable Long keyResultId,
+            @RequestParam int currentVal) {
+        KeyResult updatedKeyResult = keyResultService.updateKeyResultCurrentVal(keyResultId, currentVal);
+        return ResponseEntity.ok(updatedKeyResult);
+    }
+
 
     /**
      * Delete a Key Result by its ID.
@@ -140,6 +157,12 @@ public class KeyResultController {
             return ResponseEntity.ok("Task added to KeyResult successfully");
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("KeyResult not found");
+    }
+
+    @GetMapping("/get-progress/{taskId}")
+    public ResponseEntity<KeyResultUnitDTO> getKeyResultUnit(@PathVariable Long taskId) {
+        KeyResultUnitDTO keyResultUnitDTO = keyResultService.getKeyResultUnitById(taskId);
+        return ResponseEntity.ok(keyResultUnitDTO);
     }
 }
 

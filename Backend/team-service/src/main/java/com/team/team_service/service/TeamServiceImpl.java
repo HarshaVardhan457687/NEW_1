@@ -272,6 +272,7 @@ public class TeamServiceImpl implements TeamService {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new RuntimeException("Team not found with ID: " + teamId));
 
+
         double progress = teamProgress(team.getAssignedProject(), teamId);
         Map<String, Long> taskCount = getTotalAndCompletedTasks(team.getAssignedProject(), teamId);
 
@@ -294,7 +295,9 @@ public class TeamServiceImpl implements TeamService {
         keyResultSummary.put("total", totalKeyResults);
         keyResultSummary.put("completed", completedKeyResults);
 
-        String userUrl = USER_SERVICE_URL + "/" + team.getTeamLead();
+        Long teamLeaderId = team.getTeamLead();
+
+                String userUrl = USER_SERVICE_URL + "/" + team.getTeamLead();
         ResponseEntity<User> userResponse = restTemplate.exchange(
                 userUrl, HttpMethod.GET, null, new ParameterizedTypeReference<User>() {}
         );
@@ -310,6 +313,7 @@ public class TeamServiceImpl implements TeamService {
                 team.getTeamMembers().size(),
                 progress,
                 taskCount,
+                teamLeaderId,
                 leaderName,
                 leaderProfile
         );

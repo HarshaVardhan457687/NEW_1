@@ -293,5 +293,10 @@ public class TaskServiceImpl implements TaskService {
         return activeTasks;
     }
 
+    @Override
+    public Long getKeyResultByTaskId(Long taskId){
+        return taskRepository.findById(taskId).get().getTaskAssociatedKeyResult();
+    }
+
 
 }

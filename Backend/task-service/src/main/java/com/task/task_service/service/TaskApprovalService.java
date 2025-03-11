@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TaskApprovalService {
     public TaskApproval requestApproval(Long taskId, String role, Long id);
-    public TaskApproval approveTask(Long approvalId);
+    public TaskApproval approveTask(Long approvalId, Double increment);
     public TaskApproval rejectTask(Long approvalId);
     public List<TaskApprovalResponseDTO> getAllTaskApprovalOfProject(Long projectId);
     public List<TaskApprovalResponseDTO> getAllTaskApprovalOfTeam(Long teamId);
