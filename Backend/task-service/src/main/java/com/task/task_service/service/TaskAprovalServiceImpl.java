@@ -56,6 +56,11 @@ public class TaskAprovalServiceImpl implements TaskApprovalService{
 
         taskService.updateTaskStatus(approval.getTaskId(), TaskStatus.COMPLETED, false);
 
+        Long keyResultId = taskService.getKeyResultByTaskId(approval.getTaskId());
+        String keyResultServiceUrl = "http://localhost:8082/api/keyresults/currentVal/" + keyResultId + "?currentVal=" + increment.intValue();
+        restTemplate.patchForObject(keyResultServiceUrl, null, Void.class);
+
+
         return taskApprovalRepository.save(approval);
     }
 

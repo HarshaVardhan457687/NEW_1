@@ -68,13 +68,7 @@ public class KeyResultController {
         return keyResultService.updateKeyResult(id, keyResult);
     }
 
-    /**
-     * Update the currentVal of keyResult Key Result by its ID.
-     *
-     * @param id        the ID of the Key Result to update
-     * @param keyResult the updated Key Result details
-     * @return the updated Key Result
-     */
+
     @PatchMapping("/currentVal/{keyResultId}")
     public ResponseEntity<KeyResult> updateKeyResultCurrentVal(
             @PathVariable Long keyResultId,
