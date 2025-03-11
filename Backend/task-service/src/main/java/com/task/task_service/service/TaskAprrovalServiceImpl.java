@@ -70,18 +70,13 @@ public class TaskAprrovalServiceImpl implements TaskApprovalService{
 
     @Override
     public List<TaskApprovalResponseDTO> getAllTaskApprovalOfProject(Long projectId) {
-        // Get all task approvals for the given projectId
         List<TaskApproval> allTaskApprovalList = taskApprovalRepository.findByProjectId(projectId);
 
-        // Prepare the result list
         List<TaskApprovalResponseDTO> allTaskApprovalResponseList = new ArrayList<>();
 
-        // Iterate over the task approvals
         for (TaskApproval taskApproval : allTaskApprovalList) {
-            // Fetch the task once and reuse the object
             Task task = taskService.getTaskById(taskApproval.getTaskId());
 
-            // Map the TaskApproval to TaskApprovalResponseDTO
             TaskApprovalResponseDTO currTaskApprovalResponseDTO = new TaskApprovalResponseDTO();
             currTaskApprovalResponseDTO.setTaskApprovalId(taskApproval.getApprovalId());
             currTaskApprovalResponseDTO.setTaskName(task.getTaskHeading());
@@ -91,7 +86,6 @@ public class TaskAprrovalServiceImpl implements TaskApprovalService{
             currTaskApprovalResponseDTO.setTaskDueDate(task.getTaskDueDate());
             currTaskApprovalResponseDTO.setApprovalStatus(taskApproval.getStatus());
 
-            // Add to the response list
             allTaskApprovalResponseList.add(currTaskApprovalResponseDTO);
         }
 

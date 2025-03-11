@@ -3,6 +3,7 @@ package com.user.user_service.service;
 import com.user.user_service.DTO.TaskDetailsDTO;
 import com.user.user_service.DTO.TaskStatusCountDTO;
 import com.user.user_service.DTO.UserSummaryDTO;
+import com.user.user_service.config.ServiceUrlsConfig;
 import com.user.user_service.constants.TaskStatus;
 import com.user.user_service.entity.*;
 import com.user.user_service.exception.ResourceNotFoundException;
@@ -38,12 +39,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private CloudinaryService cloudinaryService;
 
-    private static final String PROJECT_SERVICE_URL = "http://localhost:8085/api/projects";
-    private static final String OBJECTIVE_SERVICE_URL = "http://localhost:8081/api/objective";
-    private static final String KEYRESULT_SERVICE_URL = "http://localhost:8082/api/keyresults";
-    private static final String TASK_SERVICE_URL = "http://localhost:8083/api/tasks";
-    private static final String TEAM_SERVICE_URL = "http://localhost:8084/api/teams";
-
+    @Autowired
+    private ServiceUrlsConfig serviceUrlsConfig;
 
     //CREATE OR UPLOAD REQUEST ARE HERE
     /**
@@ -203,7 +200,7 @@ public class UserServiceImpl implements UserService {
         HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
 
         ResponseEntity<List<Project>> response = restTemplate.exchange(
-                PROJECT_SERVICE_URL + "/active",
+                serviceUrlsConfig.getPROJECT_SERVICE_URL() + "/active",
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<List<Project>>() {}
@@ -238,12 +235,11 @@ public class UserServiceImpl implements UserService {
         HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
 
         ResponseEntity<List<Project>> response = restTemplate.exchange(
-                PROJECT_SERVICE_URL + "/all",
+                serviceUrlsConfig.getPROJECT_SERVICE_URL() + "/all",
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<List<Project>>() {}
         );
-
         List<Project> allProjects = response.getBody();
         if (allProjects == null || allProjects.isEmpty()) {
             return Collections.emptyList();
@@ -260,7 +256,7 @@ public class UserServiceImpl implements UserService {
     private int getProjectProgressById(Long projectId) {
         try {
             ResponseEntity<Integer> response = restTemplate.exchange(
-                    OBJECTIVE_SERVICE_URL + "/by-project/progress/" + projectId,
+                    serviceUrlsConfig.getOBJECTIVE_SERVICE_URL() + "/by-project/progress/" + projectId,
                     HttpMethod.GET,
                     null,
                     Integer.class
@@ -290,7 +286,7 @@ public class UserServiceImpl implements UserService {
         HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
 
         ResponseEntity<Long> response = restTemplate.exchange(
-                PROJECT_SERVICE_URL + "/active/count",
+                serviceUrlsConfig.getPROJECT_SERVICE_URL() + "/active/count",
                 HttpMethod.POST,
                 requestEntity,
                 Long.class
@@ -325,7 +321,7 @@ public class UserServiceImpl implements UserService {
         // Make a POST request to Objective Service
         try {
             ResponseEntity<List<Objective>> response = restTemplate.exchange(
-                    OBJECTIVE_SERVICE_URL + "/all/by-projects",
+                    serviceUrlsConfig.getOBJECTIVE_SERVICE_URL() + "/all/by-projects",
                     HttpMethod.POST,
                     requestEntity,
                     new ParameterizedTypeReference<List<Objective>>() {
@@ -356,11 +352,11 @@ public class UserServiceImpl implements UserService {
 
         // Make a POST request to Objective Service
         ResponseEntity<Map<String, List<Objective>>> response = restTemplate.exchange(
-                OBJECTIVE_SERVICE_URL + "/by-projectIds",
+                serviceUrlsConfig.getOBJECTIVE_SERVICE_URL() + "/by-projectIds",
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<Map<String, List<Objective>>>() {
-                } // Handling map response
+                }
         );
 
         return response.getBody(); // Return the map containing objectives
@@ -401,7 +397,7 @@ public class UserServiceImpl implements UserService {
         List<Long> projectIds = getProjectIdsByRole(user, userRole);
 
         ResponseEntity<List<Objective>> objectiveResponse = restTemplate.exchange(
-                OBJECTIVE_SERVICE_URL + "/all/by-projects",
+                serviceUrlsConfig.getOBJECTIVE_SERVICE_URL() + "/all/by-projects",
                 HttpMethod.POST,
                 new HttpEntity<>(projectIds),
                 new ParameterizedTypeReference<>() {
@@ -418,7 +414,7 @@ public class UserServiceImpl implements UserService {
                 .toList();
 
         ResponseEntity<Map<String, List<KeyResult>>> keyResultResponse = restTemplate.exchange(
-                KEYRESULT_SERVICE_URL + "/by-objectives",
+                serviceUrlsConfig.getKEYRESULT_SERVICE_URL() + "/by-objectives",
                 HttpMethod.POST,
                 new HttpEntity<>(objectiveIds),
                 new ParameterizedTypeReference<>() {
@@ -442,7 +438,6 @@ public class UserServiceImpl implements UserService {
         return countMap;
     }
 
-
     //Tasks
 
     public Map<String, List<Task>> getTasksForProjects(Long userId, String userRole) {
@@ -455,9 +450,8 @@ public class UserServiceImpl implements UserService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<List<Long>> requestEntity = new HttpEntity<>(projectIds, headers);
 
-        // Call API with userId as a query parameter
         ResponseEntity<List<Task>> taskResponse = restTemplate.exchange(
-                TASK_SERVICE_URL + "/by-projects-and-user?userId=" + userId,  // Pass userId correctly
+                serviceUrlsConfig.getTASK_SERVICE_URL() + "/by-projects-and-user?userId=" + userId,  // Pass userId correctly
                 HttpMethod.POST,
                 requestEntity,  // Send only projectIds in the body
                 new ParameterizedTypeReference<>() {}
@@ -516,7 +510,7 @@ public class UserServiceImpl implements UserService {
         HttpEntity<Map<String, List<Long>>> requestEntity = new HttpEntity<>(requestBody, headers);
 
         ResponseEntity<List<Task>> taskResponse = restTemplate.exchange(
-                TASK_SERVICE_URL + "/tasks-by-ids-and-projects",
+                serviceUrlsConfig.getTASK_SERVICE_URL() + "/tasks-by-ids-and-projects",
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<List<Task>>() {}
@@ -538,7 +532,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
         ResponseEntity<List<Task>> taskResponse = restTemplate.exchange(
-                TASK_SERVICE_URL + "/project/" + projectId + "/user/" + userId + "/all-tasks",
+                serviceUrlsConfig.getTASK_SERVICE_URL()+"/project/"+projectId+"/user/"+userId+"/all-tasks",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Task>>() {}
@@ -575,10 +569,9 @@ public class UserServiceImpl implements UserService {
         return new TaskStatusCountDTO(totalTasks, completedTasks, waitingForApprovalTasks, pendingTasks);
     }
 
-
     @Override
     public int getActiveTasksCountForUserInProject(Long projectId, Long userId) {
-        String url = TASK_SERVICE_URL + "/project/" + projectId + "/user/" + userId + "/active-tasks" ;
+        String url = serviceUrlsConfig.getTASK_SERVICE_URL() + "/project/" + projectId + "/user/" + userId + "/active-tasks" ;
 
         ResponseEntity<Integer> response = restTemplate.exchange(
                 url,
@@ -588,12 +581,11 @@ public class UserServiceImpl implements UserService {
                 projectId,
                 userId
         );
-
         return response.getBody();
     }
 
     public Map<String, Integer> getAllAndActiveTasksCountForUserInProject(Long projectId, Long userId) {
-        String url = TASK_SERVICE_URL + "/project/" + projectId + "/user/" + userId + "/all-tasks-count";
+        String url = serviceUrlsConfig.getTASK_SERVICE_URL() + "/project/" + projectId + "/user/" + userId + "/all-tasks-count";
 
         try {
             ResponseEntity<Map<String, Integer>> response = restTemplate.exchange(
@@ -643,11 +635,9 @@ public class UserServiceImpl implements UserService {
         Long assignedProject = ((Number) request.get("assignedProject")).longValue();
         Long teamLead = ((Number) request.get("teamLead")).longValue();
 
-        // Fetch the team leader once
         User teamLeader = userRepository.findById(teamLead)
                 .orElseThrow(() -> new UserNotFoundException("Team leader not found with id: " + teamLead));
 
-        // Ensure the team leader's teams list is initialized
         List<Long> teamLeadersTeam = teamLeader.getUserInvolvedTeamsId();
         if (teamLeadersTeam == null) {
             teamLeadersTeam = new ArrayList<>();
@@ -655,12 +645,10 @@ public class UserServiceImpl implements UserService {
         if (!teamLeadersTeam.contains(teamId)) {
             teamLeadersTeam.add(teamId);
         }
-        teamLeader.setUserInvolvedTeamsId(teamLeadersTeam); // ✅ Set updated list back to the entity
+        teamLeader.setUserInvolvedTeamsId(teamLeadersTeam);
 
-        // Fetch all team members
         List<User> users = userRepository.findAllById(teamMemberIds);
         for (User user : users) {
-            // Update teams involved for all users including the team lead
             List<Long> userTeams = user.getUserInvolvedTeamsId();
             if (userTeams == null) {
                 userTeams = new ArrayList<>();
@@ -670,7 +658,6 @@ public class UserServiceImpl implements UserService {
             }
             user.setUserInvolvedTeamsId(userTeams);
 
-            // Assign project if the user is NOT the team lead
             if (!user.getUserId().equals(teamLead)) {
                 List<Long> memberProjects = user.getUserTeamMemberProjectId();
                 if (memberProjects == null) {
@@ -683,7 +670,6 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        // Update the team leader's projects
         List<Long> leaderProjects = teamLeader.getUserTeamLeaderProjectId();
         if (leaderProjects == null) {
             leaderProjects = new ArrayList<>();
@@ -693,8 +679,7 @@ public class UserServiceImpl implements UserService {
         }
         teamLeader.setUserTeamLeaderProjectId(leaderProjects);
 
-        // Save all updated users (including the team leader)
-        users.add(teamLeader); // ✅ Ensure team leader is saved with all updates
+        users.add(teamLeader);
         userRepository.saveAll(users);
     }
 
@@ -720,10 +705,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
 
-        List<Long> teamIds = user.getUserInvolvedTeamsId(); // Assuming `User` entity has a list of team IDs
+        List<Long> teamIds = user.getUserInvolvedTeamsId();
 
         for (Long teamId : teamIds) {
-            String url = TEAM_SERVICE_URL + "/is-mapped-to-project" +"?teamId=" + teamId + "&projectId=" + projectId;
+            String url = serviceUrlsConfig.getTEAM_SERVICE_URL() + "/is-mapped-to-project" +"?teamId=" + teamId + "&projectId=" + projectId;
             ResponseEntity<Boolean> response = restTemplate.getForEntity(url, Boolean.class);
 
             if (Boolean.TRUE.equals(response.getBody())) {
@@ -750,5 +735,4 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
-
 }
