@@ -9,6 +9,7 @@ import lombok.*;
 @Setter
 public class KeyResultUnitDTO {
     private Long keyResultId;
+    private String keyResultName;
     private int keyResultCurrentVal;
     private int getKeyResultTargetVal;
     private String keyResultUnit;

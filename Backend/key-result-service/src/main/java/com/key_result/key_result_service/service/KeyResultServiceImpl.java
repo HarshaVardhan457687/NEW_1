@@ -351,6 +351,7 @@ public class KeyResultServiceImpl implements KeyResultService {
 
         return new KeyResultUnitDTO(
                 keyResult.getKeyResultId(),
+                keyResult.getKeyResultName(),
                 keyResult.getKeyResultcurrentVal(),
                 keyResult.getKeyResultTargetVal(),
                 keyResult.getKeyResultunit()
