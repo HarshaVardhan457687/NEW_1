@@ -69,4 +69,21 @@ export class MyTaskCardComponent {
         return status;
     }
   }
+
+  get getButtonText(): string {
+    switch (this.task.taskStatus) {
+      case TaskStatus.COMPLETED:
+        return 'Completed';
+      case TaskStatus.WAITING_FOR_APPROVAL:
+        return 'Submitted';
+      default:
+        return 'Submit';
+    }
+  }
+
+  get isDisabled(): boolean {
+    return this.task.taskStatus === TaskStatus.COMPLETED || 
+    this.task.taskStatus === TaskStatus.WAITING_FOR_APPROVAL;
+  }
+
 }

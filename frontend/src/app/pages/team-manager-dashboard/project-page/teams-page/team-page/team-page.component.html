@@ -9,13 +9,15 @@
       <div class="team-content-grid">
         <!-- First Column: Team Info -->
         <div class="team-info-column">
-          <h3>Team Info</h3>
+          <!-- <h3>Team Info</h3> -->
           <div class="team-info-section">
             <!-- Team Leader Card -->
             <div class="team-leader-section">
               <app-team-leader-card
+                [id]="teamDetails.teamLeaderId"
                 [name]="teamDetails.teamLeaderName"
-                [profilePhoto]="teamDetails.teamLeaderProfile">
+                [profilePhoto]="teamDetails.teamLeaderProfile"
+                [projectId]="projectId">
               </app-team-leader-card>
             </div>
   
@@ -51,7 +53,7 @@
   
         <!-- Second Column: Team Members Section -->
         <div class="team-members-column">
-          <h3>Team Members</h3>
+          <!-- <h3>Team Members</h3> -->
           <app-team-member-section [members]="teamMembers" [projectId]="projectId"></app-team-member-section>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 export interface TeamResponse {
+  teamLeaderId: number;
   teamName: string;
   totalKeyResults: { [key: string]: number };
   totalMembers: number;
