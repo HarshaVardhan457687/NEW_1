@@ -1,38 +1,102 @@
 .team-leader-card {
   background: white;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
+  border-radius: 8px;
+  padding: 16px;
   border: 1px solid #E5E7EB;
-}
-
-.leader-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  position: relative;
   
+  .menu-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+
+    &:hover {
+      background: #F3F4F6;
+    }
+
+    .more-icon {
+      width: calc(4px * 0.76); /* Reduced by 20% from 0.95 */
+      height: calc(18px * 0.76);
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 16"><circle cx="2" cy="2" r="2" fill="%239CA3AF"/><circle cx="2" cy="8" r="2" fill="%239CA3AF"/><circle cx="2" cy="14" r="2" fill="%239CA3AF"/></svg>');
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+
+  .popup-menu {
+    position: absolute;
+    top: 40px;
+    right: 12px;
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    z-index: 3;
+    
+    button {
+      display: block;
+      width: 100%;
+      padding: 8px 16px;
+      text-align: left;
+      background: none;
+      border: none;
+      font-size: 14px;
+      color: #374151;
+      cursor: pointer;
+      white-space: nowrap;
+
+      &:hover {
+        background: #F3F4F6;
+      }
+
+      &:first-child {
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+      }
+
+      &:last-child {
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+      }
+    }
+  }
+
+  .leader-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .leader-image {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .leader-details {
+      .leader-name {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 500;
+        color: #111827;
+      }
+
+      .leader-role {
+        margin: 4px 0 0;
+        font-size: 14px;
+        color: #6B7280;
+      }
+    }
+  }
 }
 
-.leader-image {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.leader-details {
-  flex: 1;
-}
-
-.leader-name {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #111827;
-  margin: 0 0 0.25rem 0;
-}
-
-.leader-role {
-  font-size: 0.875rem;
-  color: #6B7280;
-  margin: 0;
-}
 

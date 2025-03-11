@@ -175,8 +175,8 @@
       app-team-member-section {
         flex: 1;
         overflow-y: auto;
-        height: 100%;
-        overflow-y: overlay; // Hides scrollbar when not needed
+        height: fit-content;
+       
       }
     }
   }

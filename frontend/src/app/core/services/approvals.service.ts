@@ -74,7 +74,7 @@ export class ApprovalsService {
     // Log the request details
     console.log(`[ApprovalsService] Fetching approvals for project ${projectId}`);
 
-    return this.http.get<TaskApprovalResponseDTO[]>(`${this.APPROVAL_API_URL}/project/`, {
+    return this.http.get<TaskApprovalResponseDTO[]>(`${this.APPROVAL_API_URL}/project`, {
       params: new HttpParams().set('projectId', projectId.toString())
     }).pipe(
       tap(approvals => console.log('[ApprovalsService] Manager approvals:', approvals)),

@@ -17,8 +17,8 @@
       class="submit-button"
       [class.submitted]="isSubmitted"
       (click)="onSubmit()"
-      [disabled]="isSubmitted">
-      {{ isSubmitted ? 'Submitted' : 'Submit' }}
+      [disabled]="isDisabled">
+      {{ getButtonText }}
     </button>
   </div>
 

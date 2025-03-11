@@ -1,9 +1,23 @@
 <div class="team-leader-card">
+  <button class="menu-button" (click)="toggleMenu($event)">
+    <i class="more-icon"></i>
+  </button>
+
+  <div *ngIf="showMenu" class="popup-menu">
+    <button (click)="onAssignTask()">Assign Task</button>
+  </div>
+
   <div class="leader-info">
     <img [src]="profilePhoto || 'assets/default_profile.png'" [alt]="name" class="leader-image">
     <div class="leader-details">
       <h3 class="leader-name">{{ name }}</h3>
-      <p class="leader-role"> Team Leader</p>
+      <p class="leader-role">Team Leader</p>
     </div>
   </div>
+
+  <app-assign-task-card
+    #assignTaskModal
+    [projectId]="projectId"
+    [userId]="id">
+  </app-assign-task-card>
 </div>
