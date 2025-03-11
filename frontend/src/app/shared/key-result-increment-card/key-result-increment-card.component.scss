@@ -1,0 +1,119 @@
+.card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  width: 400px;
+  z-index: 1000;
+
+  .card-header {
+    padding: 16px;
+    border-bottom: 1px solid #E5E7EB;
+
+    h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    p {
+      margin: 4px 0 0;
+      font-size: 14px;
+      color: #6B7280;
+    }
+  }
+
+  .card-body {
+    padding: 16px;
+
+    .error-message {
+      background-color: #FEE2E2;
+      color: #991B1B;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .value-container {
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+
+      .value-box {
+        flex: 1;
+        
+        label {
+          display: block;
+          font-size: 14px;
+          color: #374151;
+          margin-bottom: 8px;
+        }
+
+        input {
+          width: 100%;
+          padding: 8px;
+          border: 1px solid #E5E7EB;
+          border-radius: 4px;
+          font-size: 16px;
+          color: #111827;
+          
+          &:focus {
+            outline: none;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+          }
+        }
+
+        .static-value {
+          padding: 8px;
+          background: #F3F4F6;
+          border-radius: 4px;
+          font-size: 16px;
+          color: #374151;
+        }
+      }
+    }
+  }
+
+  .card-footer {
+    padding: 16px;
+    border-top: 1px solid #E5E7EB;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+
+    button {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &.btn-secondary {
+        background: white;
+        border: 1px solid #E5E7EB;
+        color: #374151;
+
+        &:hover {
+          background: #F3F4F6;
+        }
+      }
+
+      &.btn-primary {
+        background: #3B82F6;
+        border: 1px solid transparent;
+        color: white;
+
+        &:hover {
+          background: #2563EB;
+        }
+      }
+    }
+  }
+}
