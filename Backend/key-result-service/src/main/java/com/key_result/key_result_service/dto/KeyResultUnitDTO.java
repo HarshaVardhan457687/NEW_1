@@ -11,6 +11,6 @@ public class KeyResultUnitDTO {
     private Long keyResultId;
     private String keyResultName;
     private int keyResultCurrentVal;
-    private int getKeyResultTargetVal;
+    private int keyResultTargetVal;
     private String keyResultUnit;
 }
