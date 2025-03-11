@@ -14,6 +14,7 @@ import java.util.Date;
 public class TaskApprovalResponseDTO {
 
     private Long taskApprovalId;
+    private Long taskId;
     private String taskName;
     private String taskTag;
     private String ownerName;
@@ -21,5 +22,6 @@ public class TaskApprovalResponseDTO {
     private String taskDescription;
     private Date taskDueDate;
     private Date submittedDate;
+    private Date approvalDate;
     private ApprovalStatus approvalStatus;
 }

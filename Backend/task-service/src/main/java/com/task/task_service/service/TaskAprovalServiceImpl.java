@@ -88,12 +88,14 @@ public class TaskAprovalServiceImpl implements TaskApprovalService{
 
             TaskApprovalResponseDTO currTaskApprovalResponseDTO = new TaskApprovalResponseDTO();
             currTaskApprovalResponseDTO.setTaskApprovalId(taskApproval.getApprovalId());
+            currTaskApprovalResponseDTO.setTaskId(taskApproval.getTaskId());
             currTaskApprovalResponseDTO.setTaskName(task.getTaskHeading());
             currTaskApprovalResponseDTO.setTaskTag(task.getTaskTag());
             currTaskApprovalResponseDTO.setTaskPriority(task.getTaskPriority());
             currTaskApprovalResponseDTO.setTaskDescription(task.getTaskDescription());
             currTaskApprovalResponseDTO.setTaskDueDate(task.getTaskDueDate());
             currTaskApprovalResponseDTO.setSubmittedDate(taskApproval.getSubmittedDate());
+            currTaskApprovalResponseDTO.setApprovalDate(taskApproval.getApprovedDate());
             currTaskApprovalResponseDTO.setApprovalStatus(taskApproval.getStatus());
 
             String userServiceUrl = "http://localhost:8086/api/users/by-name/" + task.getTaskOwner();
@@ -118,12 +120,14 @@ public class TaskAprovalServiceImpl implements TaskApprovalService{
 
             TaskApprovalResponseDTO currTaskApprovalResponseDTO = new TaskApprovalResponseDTO();
             currTaskApprovalResponseDTO.setTaskApprovalId(taskApproval.getApprovalId());
+            currTaskApprovalResponseDTO.setTaskId(taskApproval.getTaskId());
             currTaskApprovalResponseDTO.setTaskName(task.getTaskHeading());
             currTaskApprovalResponseDTO.setTaskTag(task.getTaskTag());
             currTaskApprovalResponseDTO.setTaskPriority(task.getTaskPriority());
             currTaskApprovalResponseDTO.setTaskDescription(task.getTaskDescription());
             currTaskApprovalResponseDTO.setTaskDueDate(task.getTaskDueDate());
             currTaskApprovalResponseDTO.setSubmittedDate(taskApproval.getSubmittedDate());
+            currTaskApprovalResponseDTO.setApprovalDate(taskApproval.getApprovedDate());
             currTaskApprovalResponseDTO.setApprovalStatus(taskApproval.getStatus());
             String userServiceUrl = "http://localhost:8086/api/users/by-name/" + task.getTaskOwner();
             String ownerName = restTemplate.getForObject(userServiceUrl, String.class);
