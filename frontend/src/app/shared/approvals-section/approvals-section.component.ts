@@ -58,7 +58,6 @@ export class ApprovalsSectionComponent implements OnInit {
   }
 
   onStatusChanged() {
-    // Re-sort approvals when status changes
-    this.approvals = this.sortApprovals(this.approvals);
+    this.ngOnInit();
   }
 }
