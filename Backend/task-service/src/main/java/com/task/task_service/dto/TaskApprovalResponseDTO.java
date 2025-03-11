@@ -20,5 +20,6 @@ public class TaskApprovalResponseDTO {
     private TaskPriority taskPriority;
     private String taskDescription;
     private Date taskDueDate;
+    private Date submittedDate;
     private ApprovalStatus approvalStatus;
 }

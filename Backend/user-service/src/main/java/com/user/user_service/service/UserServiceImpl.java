@@ -106,6 +106,11 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
     }
 
+    public String getUserNameById(Long id){
+        User user = userRepository.findById(id).orElseThrow(()-> new UserNotFoundException("user not found"));
+        return user.getUserName();
+    }
+
     public String getProfilePicture(Long userId){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));

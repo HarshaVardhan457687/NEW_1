@@ -8,19 +8,23 @@ import com.task.task_service.entity.TaskApproval;
 import com.task.task_service.repository.TaskApprovalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Service
-public class TaskAprrovalServiceImpl implements TaskApprovalService{
+public class TaskAprovalServiceImpl implements TaskApprovalService{
 
     @Autowired
     private TaskApprovalRepository taskApprovalRepository;
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public TaskApproval requestApproval(Long taskId, String role, Long id) {
@@ -84,7 +88,13 @@ public class TaskAprrovalServiceImpl implements TaskApprovalService{
             currTaskApprovalResponseDTO.setTaskPriority(task.getTaskPriority());
             currTaskApprovalResponseDTO.setTaskDescription(task.getTaskDescription());
             currTaskApprovalResponseDTO.setTaskDueDate(task.getTaskDueDate());
+            currTaskApprovalResponseDTO.setSubmittedDate(taskApproval.getSubmittedDate());
             currTaskApprovalResponseDTO.setApprovalStatus(taskApproval.getStatus());
+
+            String userServiceUrl = "http://localhost:8086/api/users/by-name/" + task.getTaskOwner();
+            String ownerName = restTemplate.getForObject(userServiceUrl, String.class);
+
+            currTaskApprovalResponseDTO.setOwnerName(ownerName);
 
             allTaskApprovalResponseList.add(currTaskApprovalResponseDTO);
         }
@@ -108,8 +118,12 @@ public class TaskAprrovalServiceImpl implements TaskApprovalService{
             currTaskApprovalResponseDTO.setTaskPriority(task.getTaskPriority());
             currTaskApprovalResponseDTO.setTaskDescription(task.getTaskDescription());
             currTaskApprovalResponseDTO.setTaskDueDate(task.getTaskDueDate());
+            currTaskApprovalResponseDTO.setSubmittedDate(taskApproval.getSubmittedDate());
             currTaskApprovalResponseDTO.setApprovalStatus(taskApproval.getStatus());
+            String userServiceUrl = "http://localhost:8086/api/users/by-name/" + task.getTaskOwner();
+            String ownerName = restTemplate.getForObject(userServiceUrl, String.class);
 
+            currTaskApprovalResponseDTO.setOwnerName(ownerName);
             allTaskApprovalResponseList.add(currTaskApprovalResponseDTO);
         }
 

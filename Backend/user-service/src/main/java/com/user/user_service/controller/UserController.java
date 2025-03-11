@@ -7,6 +7,7 @@ import com.user.user_service.entity.*;
 import com.user.user_service.exception.UserNotFoundException;
 import com.user.user_service.repository.UserRepository;
 import com.user.user_service.service.UserServiceImpl;
+import jakarta.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +71,11 @@ public class UserController {
     public User getUserById(@PathVariable String userEmail) {
         User user = userServiceImpl.getUserByEmail(userEmail);
         return userServiceImpl.getUserById(user.getUserId());
+    }
+
+    @GetMapping("/by-name/{userId}")
+    public String getUserNameById(@PathVariable Long userId){
+        return userServiceImpl.getUserNameById(userId);
     }
 
     /**
