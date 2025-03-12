@@ -399,7 +399,43 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         };
     }
 
+    @Override
+    public Map<String, Integer> calculateObjectivePerformance(Long projectId) {
+        List<Objective> allObjectives = objectiveRepository.findByMappedProject(projectId);
 
+        int atRiskCount = 0;
+        int onTrackCount = 0;
+        int completedCount = 0;
+
+        for (Objective objective : allObjectives) {
+            switch (objective.getObjectiveStatus()) {
+                case AT_RISK:
+                    atRiskCount++;
+                    break;
+                case ON_TRACK:
+                    onTrackCount++;
+                    break;
+                case COMPLETED:
+                    completedCount++;
+                    break;
+            }
+        }
+        int totalObjectives = allObjectives.size();
+
+        Map<String, Integer> statusPercentage = new HashMap<>();
+
+        if (totalObjectives > 0) {
+            statusPercentage.put("AT_RISK", (int) ((double) atRiskCount / totalObjectives * 100));
+            statusPercentage.put("ON_TRACK", (int) ((double) onTrackCount / totalObjectives * 100));
+            statusPercentage.put("COMPLETED", (int) ((double) completedCount / totalObjectives * 100));
+        } else {
+            statusPercentage.put("AT_RISK", 0);
+            statusPercentage.put("ON_TRACK", 0);
+            statusPercentage.put("COMPLETED", 0);
+        }
+
+        return statusPercentage;
+    }
 
     @Override
     public double calculateProjectProgress(Long projectId) {

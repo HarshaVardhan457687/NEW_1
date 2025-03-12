@@ -18,4 +18,5 @@ public interface ObjectiveService {
     public double calculateObjectiveProgress(Long objectiveId);
     public double calculateProjectProgress(Long projectId);
     public String addKeyResultToObjective(Long objectiveId, List<Long> request);
+    public Map<String, Integer> calculateObjectivePerformance(Long projectId);
 }

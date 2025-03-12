@@ -138,6 +138,12 @@ public class ObjectiveController {
         return ResponseEntity.ok(projectProgress);
     }
 
+    @GetMapping("/objective-performance/{projectId}")
+    public ResponseEntity<Map<String, Integer>> getObjectivePerformance(@PathVariable Long projectId) {
+        Map<String, Integer> performance = objectiveService.calculateObjectivePerformance(projectId);
+        return ResponseEntity.ok(performance);
+    }
+
     @PatchMapping("/{objectiveId}/add-key-result")
     public ResponseEntity<String> addKeyResultToObjective(
             @PathVariable Long objectiveId, @RequestBody List<Long> request) {
