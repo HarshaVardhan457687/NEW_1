@@ -3,11 +3,13 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../core/services/modal.service';
 import { NavbarService } from '../../core/services/navbar.service';
+import { NotificationService } from '../../core/services/notification.service';
+import { NotificationComponentComponent } from '../notification-component/notification-component.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, NotificationComponentComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
   host: { 'id': 'navbar-component' }
@@ -17,16 +19,20 @@ export class NavbarComponent implements OnInit {
   @Input() dashboardType: 'team-leader' | 'team-member' | 'team-manager' = 'team-member';
   currentTab: 'dashboard' | 'projects' = 'dashboard';
   profilePicUrl: string = 'assets/default_profile.png';
+  showNotifications: boolean = false;
+  unreadNotificationCount: number = 0;
 
   constructor(
     private router: Router,
     private modalService: ModalService,
-    private navbarService: NavbarService
+    private navbarService: NavbarService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
     this.setInitialTab();
     this.loadProfilePicture();
+    this.loadNotificationCount();
   }
 
   private setInitialTab() {
@@ -48,6 +54,13 @@ export class NavbarComponent implements OnInit {
           // Keep default profile picture on error
           console.error('Failed to load profile picture');
         }
+      });
+  }
+
+  private loadNotificationCount() {
+    this.notificationService.getUnreadCountObservable()
+      .subscribe(count => {
+        this.unreadNotificationCount = count;
       });
   }
 
@@ -79,6 +92,13 @@ export class NavbarComponent implements OnInit {
     this.modalService.openProfileModal();
   }
 
+  toggleNotifications(): void {
+    this.showNotifications = !this.showNotifications;
+  }
+
+  closeNotifications(): void {
+    this.showNotifications = false;
+  }
 
   navigateToUnderConstruction(): void {
     this.router.navigate(['/construction']);

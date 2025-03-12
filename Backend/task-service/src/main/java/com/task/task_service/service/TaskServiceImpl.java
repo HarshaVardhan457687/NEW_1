@@ -47,7 +47,7 @@ public class TaskServiceImpl implements TaskService {
 
     private static final String KEYRESULT_SERVICE_URL = "http://localhost:8082/api/keyresults/";
     private static final String USER_SERVICE_URL = "http://localhost:8086/api/users/";
-    private static final String NOTIFICATION_SERVICE_URL = "http://localhost:8087/api/notifications/";
+    private static final String NOTIFICATION_SERVICE_URL = "http://localhost:8087/api/notifications";
     /**
      * Adds a new task to the database.
      *

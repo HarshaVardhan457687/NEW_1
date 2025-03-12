@@ -8,7 +8,14 @@
     </div>
 
     <div class="nav-icons">
-      <img src="assets/bell_icon.png" alt="Notifications" class="notification-icon" (click)="navigateToUnderConstruction()">
+      <div class="notification-container">
+        <img src="assets/bell_icon.png" alt="Notifications" class="notification-icon" (click)="toggleNotifications()">
+        <span *ngIf="unreadNotificationCount > 0" class="notification-badge">{{ unreadNotificationCount }}</span>
+        <app-notification-component 
+          *ngIf="showNotifications" 
+          (close)="closeNotifications()">
+        </app-notification-component>
+      </div>
       <img 
         [src]="profilePicUrl || 'assets/default_profile.png'"
         [alt]="profilePicUrl ? 'Profile photo' : 'Default profile photo'" 

@@ -1,0 +1,7 @@
+<div class="notification-item" [class.unread]="!read">
+  <div class="notification-content">
+    <div class="notification-message">{{ message }}</div>
+    <div class="notification-time">{{ getTimeAgo() }}</div>
+  </div>
+  <div *ngIf="!read" class="unread-indicator"></div>
+</div>

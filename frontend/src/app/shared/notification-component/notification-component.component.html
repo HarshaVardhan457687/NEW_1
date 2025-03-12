@@ -1,0 +1,38 @@
+<div class="notification-panel">
+  <div class="notification-header">
+    <h3>Notifications</h3>
+    <div class="notification-actions">
+      <button class="mark-read-btn" (click)="markAllAsRead()" [disabled]="unreadCount === 0">
+        Mark all as read
+      </button>
+      <button class="close-btn" (click)="closeNotifications()">×</button>
+    </div>
+  </div>
+  
+  <div class="notification-list" [class.expanded]="showAllNotifications">
+    <ng-container *ngIf="notifications.length > 0; else noNotifications">
+      <div *ngFor="let notification of getDisplayedNotifications(); let i = index" 
+           class="notification-item-wrapper"
+           [style.animation-delay]="i * 50 + 'ms'"
+           (click)="markAsRead(notification.id)">
+        <app-notification-item 
+          [message]="notification.message"
+          [timestamp]="notification.timestamp"
+          [read]="notification.read">
+        </app-notification-item>
+      </div>
+    </ng-container>
+    
+    <ng-template #noNotifications>
+      <div class="no-notifications">
+        <p>No notifications to display</p>
+      </div>
+    </ng-template>
+  </div>
+  
+  <div class="notification-footer" *ngIf="notifications.length > 3">
+    <button class="view-all-btn" (click)="toggleShowAll()">
+      {{ showAllNotifications ? 'Show less' : 'View all' }}
+    </button>
+  </div>
+</div>
