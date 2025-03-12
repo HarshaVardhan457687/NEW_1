@@ -1,8 +1,10 @@
 package com.objective.objective_service.service;
 
+import com.objective.objective_service.constants.ObjectiveStatus;
 import com.objective.objective_service.dto.ObjectiveSummaryDTO;
 import com.objective.objective_service.entity.Objective;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ public interface ObjectiveService {
     public List<Objective> getAllObjectiveByProjectIds(List<Long> projectIds);
     public double calculateObjectiveProgress(Long objectiveId);
     public double calculateProjectProgress(Long projectId);
+    public ObjectiveStatus calculateObjectiveStatus(Date startDate, Date dueDate, double actualProgress);
     public String addKeyResultToObjective(Long objectiveId, List<Long> request);
     public Map<String, Integer> calculateObjectivePerformance(Long projectId);
 }

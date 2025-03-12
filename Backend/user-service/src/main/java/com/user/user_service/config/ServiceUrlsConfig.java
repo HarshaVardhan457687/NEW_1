@@ -23,25 +23,4 @@ public class ServiceUrlsConfig {
     @Value("${TEAM_SERVICE_URL}")
     private String TEAM_SERVICE_URL;
 
-    // Getters for each service URL
-
-//    public String getPROJECT_SERVICE_URL() {
-//        return PROJECT_SERVICE_URL;
-//    }
-//
-//    public String getOBJECTIVE_SERVICE_URL() {
-//        return OBJECTIVE_SERVICE_URL;
-//    }
-//
-//    public String getKEYRESULT_SERVICE_URL() {
-//        return KEYRESULT_SERVICE_URL;
-//    }
-//
-//    public String getTASK_SERVICE_URL() {
-//        return TASK_SERVICE_URL;
-//    }
-//
-//    public String getTEAM_SERVICE_URL() {
-//        return TEAM_SERVICE_URL;
-//    }
 }

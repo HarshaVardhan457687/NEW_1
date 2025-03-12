@@ -11,7 +11,6 @@ import com.objective.objective_service.repository.ObjectiveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,12 +37,12 @@ public class ObjectiveServiceImpl implements ObjectiveService {
     private static final String TEAM_SERVICE_URL = "http://localhost:8084/api/teams/";
     private static final String PROJECT_SERVICE_URL = "http://localhost:8085/api/projects/";
     // Constructor injection for ObjectiveRepository, allows dependency injection
+
     @Autowired
     public ObjectiveServiceImpl(ObjectiveRepository objectiveRepository){
         this.objectiveRepository = objectiveRepository;
     }
 
-    // RestTemplate to interact with external services (KeyResult & Task services)
     @Autowired
     private RestTemplate restTemplate;
 
@@ -77,9 +76,6 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         return objective;
     }
 
-
-
-
     /**
      * Creates a new objective and saves it to the database.
      * @param objective Objective object to be created.
@@ -94,13 +90,18 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         return savedObjective;
     }
 
+    /**
+     * Updates the given project by adding the objective ID.
+     *
+     * @param projectId The ID of the project to update.
+     * @param objectiveId The ID of the objective to add.
+     */
     private void updateProjectWithObjective(Long projectId, Long objectiveId) {
         if (projectId == null || objectiveId == null) {
             LOGGER.warn("Project ID or Objective ID is null. Skipping update.");
             return;
         }
 
-        // Prepare request (We send a single objectiveId in a List)
         List<Long> requestBody = Collections.singletonList(objectiveId);
 
         HttpHeaders headers = new HttpHeaders();
@@ -108,22 +109,18 @@ public class ObjectiveServiceImpl implements ObjectiveService {
 
         HttpEntity<List<Long>> requestEntity = new HttpEntity<>(requestBody, headers);
 
-        // Define API Endpoint
         String updateUrl = PROJECT_SERVICE_URL  + projectId + "/add-objective";
 
         try {
             ResponseEntity<String> response = restTemplate.exchange(
                     updateUrl, HttpMethod.PATCH, requestEntity, String.class);
-
             LOGGER.info("Updated Project {} with new Objective {} via API. Response: {}",
                     projectId, objectiveId, response.getBody());
-
         } catch (Exception e) {
             LOGGER.error("Failed to update Project {} with Objective {}. Error: {}",
                     projectId, objectiveId, e.getMessage(), e);
         }
     }
-
 
     /**
      * Updates an existing objective with new data.
@@ -135,11 +132,9 @@ public class ObjectiveServiceImpl implements ObjectiveService {
     public Objective updateObjective(Objective objectiveToUpdate, Long objectiveId) {
         LOGGER.info("Updating objective with ID: " + objectiveId);
 
-        // Fetch the existing objective to update
         Objective existingObjective = objectiveRepository.findById(objectiveId)
                 .orElseThrow(() -> new ObjectiveNotFoundException("Objective with ID " + objectiveId + " not found."));
 
-        // Update the existing objective's fields with the new values
         existingObjective.setObjectiveName(objectiveToUpdate.getObjectiveName());
         existingObjective.setMappedProject(objectiveToUpdate.getMappedProject());
         existingObjective.setKeyResultIds(objectiveToUpdate.getKeyResultIds());
@@ -149,7 +144,6 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         existingObjective.setObjectiveStatus(objectiveToUpdate.getObjectiveStatus());
         existingObjective.setObjectiveIsActive(objectiveToUpdate.isObjectiveIsActive());
 
-        // Save the updated objective and return it
         Objective updatedObjective = objectiveRepository.save(existingObjective);
         LOGGER.info("Objective with ID: " + objectiveId + " updated successfully.");
 
@@ -164,7 +158,6 @@ public class ObjectiveServiceImpl implements ObjectiveService {
     public void removeObjective(Long objectiveId) {
         LOGGER.info("Removing objective with ID: " + objectiveId);
 
-        // Retrieve the objective before deleting it to ensure it exists
         Objective objectiveToDelete = getObjective(objectiveId);
         objectiveRepository.deleteById(objectiveId);
     }
@@ -180,26 +173,16 @@ public class ObjectiveServiceImpl implements ObjectiveService {
 
         try{
             List<Objective> objectives = objectiveRepository.findByMappedProject(projectId);
-            LOGGER.info("line 1 ", projectId);
 
-            LOGGER.info("line 2 " + objectives.size());
             List<ObjectiveSummaryDTO> objectiveSummaries = new ArrayList<>();
 
             for (Objective objective : objectives) {
                 Long objectiveId = objective.getObjectiveId();
-                LOGGER.info("line 3 " + objectiveId);
-                // Calculate objective progress and status
                 double progress = calculateObjectiveProgress(objectiveId);
-                LOGGER.info("line 4 " + progress);
-//                ObjectiveStatus newStatus = calculateObjectiveStatus(objective.getObjectiveCreatedAt(), objective.getObjectiveDueDate(), progress);
-//                objective.setObjectiveStatus(newStatus);
 
                 List<KeyResultSummaryDto> keyResultSummaries = new ArrayList<>();
-                LOGGER.info("line 5 " + keyResultSummaries.size());
 
-                // Fetch all KeyResults for the given objective
                 List<KeyResult> keyResults = fetchKeyResultsByObjectiveId(objectiveId);
-                LOGGER.info("line 6 " + keyResults.size());
                 for (KeyResult keyResult : keyResults) {
                     KeyResultSummaryDto keyResultSummary = new KeyResultSummaryDto();
                     keyResultSummary.setKeyResultId(keyResult.getKeyResultId());
@@ -213,17 +196,12 @@ public class ObjectiveServiceImpl implements ObjectiveService {
                     keyResultSummary.setTeamName(fetchTeamName(keyResult.getTeamId()));
 
                     Long teamLeaderId = fetchTeamLeaderId(keyResult.getTeamId());
-                    LOGGER.info("line 7 " + teamLeaderId);
 
                     if (teamLeaderId != null) {
                         UserSummaryDTO userDetails = fetchUserDetails(teamLeaderId);
-                        LOGGER.info("line 8 " + userDetails.getUserName());
                         keyResultSummary.setTeamLeaderProfilePic(userDetails.getUserProfilePhoto());
-                        LOGGER.info("line 9 " + userDetails.getUserProfilePhoto());
                     }
-
                     keyResultSummaries.add(keyResultSummary);
-                    LOGGER.info("line 10 " + keyResultSummaries.size());
                 }
 
                 ObjectiveSummaryDTO summaryDto = new ObjectiveSummaryDTO();
@@ -235,7 +213,6 @@ public class ObjectiveServiceImpl implements ObjectiveService {
 
                 objectiveSummaries.add(summaryDto);
             }
-            LOGGER.info("line 9 ");
             return objectiveSummaries;
         }catch (Exception e){
             LOGGER.info("Error fetching key results for all objective ");
@@ -243,7 +220,12 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         }
     }
 
-
+    /**
+     * Fetches key results related to a specific objective.
+     *
+     * @param objectiveId The ID of the objective.
+     * @return A list of KeyResult entities associated with the objective.
+     */
     private List<KeyResult> fetchKeyResultsByObjectiveId(Long objectiveId) {
         try {
             String url = KEYRESULT_SERVICE_URL + "objective/" + objectiveId;
@@ -256,25 +238,32 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         }
     }
 
+    /**
+     * Retrieves the progress of a specific key result.
+     *
+     * @param keyResultId The ID of the key result.
+     * @return The progress as a percentage (0 to 100).
+     */
     private Float getKeyResultProgress(Long keyResultId) {
         try {
             String url = KEYRESULT_SERVICE_URL + "progress/" + keyResultId; // Ensure correct URL formatting
             LOGGER.info("Fetching KeyResult Progress for KeyResultId: {}", keyResultId);
 
-            // Make the HTTP request and get the progress
             Float progress = restTemplate.getForObject(url, Float.class);
             LOGGER.info("Received progress for KeyResultId {}: {}", keyResultId, progress);
 
             return progress;
         } catch (Exception e) {
-            // Corrected to log keyResultId instead of teamId
             LOGGER.error("Error fetching progress for KeyResultId: {}", keyResultId, e);
-            // You can return null instead of 0 if you want to signify an error more clearly
             return 0.0f;
         }
     }
 
-
+    /**
+     * Fetches the team leader's ID for a given team.
+     * @param teamId The ID of the team whose leader's ID needs to be fetched.
+     * @return The ID of the team leader, or null if an error occurs.
+     */
     private Long fetchTeamLeaderId(Long teamId) {
         try {
             String url = TEAM_SERVICE_URL + "get-team-lead/" + teamId;
@@ -290,6 +279,14 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         }
     }
 
+    /**
+     * Fetches the name of the team associated with the given team ID.
+     * This method interacts with the Team service to retrieve the team name.
+     * If an error occurs, it logs the error and returns null.
+     *
+     * @param teamId The ID of the team whose name is to be fetched.
+     * @return The name of the team, or null if an error occurs.
+     */
     private String fetchTeamName(Long teamId) {
         try {
             String url = TEAM_SERVICE_URL + "get-team-name/" + teamId;
@@ -305,18 +302,23 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         }
     }
 
-
+    /**
+     * Fetches the user details for a given user ID.
+     * This method interacts with the User service to retrieve the user's details.
+     * If an error occurs during the communication, it logs the error and returns null.
+     *
+     * @param userId The ID of the user whose details need to be fetched.
+     * @return A UserSummaryDTO object containing the user details, or null if an error occurs.
+     */
     private UserSummaryDTO fetchUserDetails(Long userId) {
         try {
             String url = USER_SERVICE_URL + "user-summary/" + userId;
             return restTemplate.getForObject(url, UserSummaryDTO.class);
         } catch (Exception e) {
             LOGGER.info("Error fetching user details for userId: {}" + userId);
-            return null; // Return null or handle with a default object if needed
+            return null;
         }
     }
-
-
 
     /**
      * Take all the objectives of given project along with active projects.
@@ -347,9 +349,6 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         return allObjectives;
     }
 
-
-
-
     /**
      * Take the objectiveId of the objectives and give progress of it
      * @param objectiveId ID of the objective
@@ -364,10 +363,7 @@ public class ObjectiveServiceImpl implements ObjectiveService {
                 null,
                 new ParameterizedTypeReference<>() {}
         );
-
         List<KeyResult> keyResults = response.getBody();
-
-        // No KeyResults, progress is 0%
         if (keyResults == null || keyResults.isEmpty()) {
             return 0.0;
         }
@@ -379,17 +375,13 @@ public class ObjectiveServiceImpl implements ObjectiveService {
             if (keyResult.getKeyResultTargetVal() > 0) { // Avoid division by zero
                 double progress = (double) keyResult.getKeyResultcurrentVal() / keyResult.getKeyResultTargetVal();
                 double weight = getPriorityWeight(keyResult.getKeyResultPriority().name());
-
                 weightedSum += progress * weight;
                 totalWeight += weight;
             }
         }
-
-        // Avoid division by zero if all weights are zero
         return (totalWeight > 0) ? (weightedSum / totalWeight) * 100 : 0.0;
     }
 
-    // Helper method to get the weight for a given priority
     private double getPriorityWeight(String priority) {
         return switch (priority.toUpperCase()) {
             case "HIGH" -> 1.5;
@@ -399,6 +391,16 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         };
     }
 
+    /**
+     * Calculates the performance of objectives within a given project, categorizing them into different statuses.
+     * This method iterates over all objectives mapped to a specific project, counting the number of objectives
+     * that are 'At Risk', 'On Track', or 'Completed'. It then calculates the percentage of objectives in each status
+     * relative to the total number of objectives.
+     *
+     * @param projectId The ID of the project whose objectives' performance needs to be calculated.
+     * @return A map containing the percentage of objectives in each status: "AT_RISK", "ON_TRACK", "COMPLETED".
+     *         Returns 0% if no objectives are found.
+     */
     @Override
     public Map<String, Integer> calculateObjectivePerformance(Long projectId) {
         List<Objective> allObjectives = objectiveRepository.findByMappedProject(projectId);
@@ -433,35 +435,46 @@ public class ObjectiveServiceImpl implements ObjectiveService {
             statusPercentage.put("ON_TRACK", 0);
             statusPercentage.put("COMPLETED", 0);
         }
-
         return statusPercentage;
     }
 
+    /**
+     * Calculates the overall progress of a project based on the progress of its objectives.
+     * The project progress is calculated as a weighted average of the progress of each objective,
+     * where the weight is determined by the priority of each objective.
+     *
+     * @param projectId The ID of the project whose progress needs to be calculated.
+     * @return A double value representing the project's progress as a percentage (0.0 to 100.0).
+     */
     @Override
     public double calculateProjectProgress(Long projectId) {
         List<Objective> objectives = objectiveRepository.findByMappedProject(projectId);
-
         if (objectives.isEmpty()) {
-            return 0.0; // No objectives, progress is 0%
+            return 0.0;
         }
-
         double weightedSum = 0.0;
         double totalWeight = 0.0;
-
         for (Objective objective : objectives) {
             double objectiveProgress = calculateObjectiveProgress(objective.getObjectiveId());
             double weight = getPriorityWeight(objective.getObjectivePriority().name()); // Convert Enum to String
-
             weightedSum += objectiveProgress * weight;
             totalWeight += weight;
         }
-
-
         return (totalWeight > 0) ? (weightedSum / totalWeight) : 0.0;
     }
 
-
-
+    /**
+     * Determines the status of an objective based on its start date, due date, and actual progress.
+     * The objective's progress is compared to the expected progress based on the days passed.
+     * If the actual progress is at or above the expected progress, the status is 'ON_TRACK'.
+     * Otherwise, the status is 'AT_RISK'.
+     *
+     * @param startDate The start date of the objective.
+     * @param dueDate The due date of the objective.
+     * @param actualProgress The actual progress made towards the objective (0-100%).
+     * @return The calculated objective status: 'ON_TRACK' or 'AT_RISK'.
+     */
+    @Override
     public ObjectiveStatus calculateObjectiveStatus(Date startDate, Date dueDate, double actualProgress) {
         if (startDate == null || dueDate == null) return ObjectiveStatus.ON_TRACK;
 
@@ -472,27 +485,31 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         if (totalDays <= 0) return ObjectiveStatus.ON_TRACK;
 
         double expectedProgress = (100.0 / totalDays) * daysPassed;
-
         if (daysPassed == 0) return ObjectiveStatus.ON_TRACK;
         return actualProgress >= expectedProgress ? ObjectiveStatus.ON_TRACK : ObjectiveStatus.AT_RISK;
     }
 
+    /**
+     * Adds a Key Result to an Objective. This method checks if the request contains a valid Key Result ID,
+     * and if the objective is found, it adds the Key Result to the list of Key Results for that objective.
+     * If the Key Result is already present, it returns a message indicating so.
+     *
+     * @param objectiveId The ID of the objective to which the Key Result should be added.
+     * @param request A list containing the Key Result ID to be added to the objective.
+     * @return A message indicating whether the Key Result was successfully added or if there was an issue.
+     */
     @Override
     public String addKeyResultToObjective(Long objectiveId, List<Long> request) {
         if (request == null || request.isEmpty()) {
             return "Invalid request body";
         }
-
-        Long keyResultId = request.get(0); // ✅ Fix: Get the first key result ID from the list
-
+        Long keyResultId = request.get(0);
         Optional<Objective> optionalObjective = objectiveRepository.findById(objectiveId);
         if (optionalObjective.isPresent()) {
             Objective objective = optionalObjective.get();
-
             if (objective.getKeyResultIds() == null) {
                 objective.setKeyResultIds(new ArrayList<>());
             }
-
             if (!objective.getKeyResultIds().contains(keyResultId)) {
                 objective.getKeyResultIds().add(keyResultId);
                 objectiveRepository.save(objective);
@@ -502,7 +519,6 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         }
         return "Objective not found";
     }
-
 
 }
 

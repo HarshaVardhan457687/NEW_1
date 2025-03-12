@@ -56,6 +56,7 @@ public class ProjectServiceImpl implements ProjectService{
         project.setProjectPriority(newProject.getProjectPriority());
         project.setProjectManagerId(getProjectManagerId(newProject.getProjectManagerEmail()));
         Project savedProject = projectRepository.save(project);
+        project.setProjectProgress((double)getProjectProgressById(savedProject.getProjectId()));
         updateProjectManagerList(savedProject.getProjectManagerId(), savedProject.getProjectId());
         updateTimeLine(savedProject.getProjectId());
         return savedProject;
@@ -112,6 +113,7 @@ public class ProjectServiceImpl implements ProjectService{
             });
     }
 
+
     /**
      * Helper method to get the progress of a project.
      * It calls an external service to fetch the progress.
@@ -149,7 +151,7 @@ public class ProjectServiceImpl implements ProjectService{
         project.setProjectDescription(projectDetails.getProjectDescription());
         project.setProjectPriority(projectDetails.getProjectPriority());
         project.setProjectStatus(projectDetails.getProjectStatus());
-        project.setActive(projectDetails.getActive());
+        project.setIsActive(projectDetails.getIsActive());
         project.setTeamsInvolvedId(projectDetails.getTeamsInvolvedId());
         project.setObjectiveId(projectDetails.getObjectiveId());
         project.setKeyResultIds(projectDetails.getKeyResultIds());
@@ -176,7 +178,7 @@ public class ProjectServiceImpl implements ProjectService{
         if (projectDetails.getProjectDescription() != null) project.setProjectDescription(projectDetails.getProjectDescription());
         if (projectDetails.getProjectPriority() != null) project.setProjectPriority(projectDetails.getProjectPriority());
         if (projectDetails.getProjectStatus() != null) project.setProjectStatus(projectDetails.getProjectStatus());
-        if (projectDetails.getActive() != null) project.setActive(projectDetails.getActive());
+        if (projectDetails.getIsActive() != null) project.setIsActive(projectDetails.getIsActive());
         if (projectDetails.getTeamsInvolvedId() != null) project.setTeamsInvolvedId(projectDetails.getTeamsInvolvedId());
         if (projectDetails.getObjectiveId() != null) project.setObjectiveId(projectDetails.getObjectiveId());
         if (projectDetails.getKeyResultIds() != null) project.setKeyResultIds(projectDetails.getKeyResultIds());
@@ -348,15 +350,12 @@ public class ProjectServiceImpl implements ProjectService{
                 .orElseThrow(() -> new RuntimeException("Project not found"));
 
         List<Long> teamIds = project.getTeamsInvolvedId();
-
         List<TeamDetailsDTO> teamDetailsList = new ArrayList<>();
-
         for (Long teamId : teamIds) {
             TeamDTO team = restTemplate.getForObject(TEAM_SERVICE_URL + teamId, TeamDTO.class);
 
             Long teamLeadId = team.getTeamLead();
             UserDTO teamLeader = restTemplate.getForObject(USER_SERVICE_URL + teamLeadId, UserDTO.class);
-
             TeamDetailsDTO teamDetails = new TeamDetailsDTO();
             teamDetails.setTeamName(team.getTeamName());
             teamDetails.setTeamLeaderName(teamLeader.getUserName());
@@ -367,22 +366,18 @@ public class ProjectServiceImpl implements ProjectService{
         return teamDetailsList;
     }
 
-
     @Override
     public List<SelectTeamDTO> getProjectTeamsSelection(Long projectId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
 
         List<Long> teamIds = project.getTeamsInvolvedId();
-
         List<SelectTeamDTO> allTeams = new ArrayList<>();
 
         for (Long teamId : teamIds) {
             TeamDTO team = restTemplate.getForObject(TEAM_SERVICE_URL + teamId, TeamDTO.class);
-
             Long teamLeadId = team.getTeamLead();
             UserDTO teamLeader = restTemplate.getForObject(USER_SERVICE_URL + teamLeadId, UserDTO.class);
-
             SelectTeamDTO currTeam = new SelectTeamDTO();
             currTeam.setTeamId(teamId);
             currTeam.setTeamName(team.getTeamName());
@@ -394,12 +389,6 @@ public class ProjectServiceImpl implements ProjectService{
     /**
      * Retrieves all teams associated with a specific project.
      *
-     * This method queries the project repository to get all team IDs associated with the given project.
-     * It then fetches detailed team information (such as team name and team leader) for each team from
-     * the external team service using the team ID.
-     *
-     * If the service call fails for any team, that particular team’s details will be skipped.
-     *
      * @param projectId the ID of the project whose team details are to be fetched
      * @return a list of TeamResponseDTO containing the detailed team information
      */
@@ -409,9 +398,7 @@ public class ProjectServiceImpl implements ProjectService{
         Project project = projectRepository.findById(projectId).orElseThrow(()-> new RuntimeException("Project not found"));
         List<Long> teamIds = project.getTeamsInvolvedId();
         for (Long teamId : teamIds) {
-
             String url = TEAM_SERVICE_URL + "details?teamId=" + teamId;
-
             try {
                 ResponseEntity<TeamResponseDTO> response = restTemplate.exchange(
                         url,
@@ -432,10 +419,6 @@ public class ProjectServiceImpl implements ProjectService{
 
     /**
      * Retrieves details for a specific team by projectId and teamId.
-     *
-     * This method fetches the project first to ensure that the project exists. Then it fetches the
-     * details of a specific team associated with the project, using the teamId.
-     *
      * @param projectId the ID of the project
      * @param teamId the ID of the team whose details are to be fetched
      * @return a TeamResponseDTO containing the detailed team information if found, or null if not found
@@ -459,18 +442,11 @@ public class ProjectServiceImpl implements ProjectService{
         } catch (Exception e) {
             System.err.println("Failed to fetch details for team ID " + teamId + ": " + e.getMessage());
         }
-
         return null;
     }
 
     /**
      * Retrieves all key results associated with the objectives of a project.
-     *
-     * This method first retrieves the project using its projectId and extracts the list of objectives
-     * associated with it. It then calls an external service to fetch key results based on the objectiveIds.
-     *
-     * The method ensures that the response is valid and contains key results before returning the list.
-     * If any error occurs or no key results are found, an empty list is returned.
      *
      * @param projectId the ID of the project for which key results are being fetched
      * @return a list of KeyResult objects related to the project’s objectives
@@ -507,11 +483,6 @@ public class ProjectServiceImpl implements ProjectService{
     /**
      * Adds a team to a project if the team is not already associated with it.
      *
-     * This method first checks whether the team is already part of the project by checking
-     * the project's list of involved teams. If the team is not part of the project, it is added,
-     * and the project is saved back to the repository. Logging is done to track the addition of teams.
-     * If the team is already part of the project, a warning is logged to indicate this.
-     *
      * @param projectId the ID of the project to which the team is being added
      * @param teamId the ID of the team being added to the project
      */
@@ -531,11 +502,6 @@ public class ProjectServiceImpl implements ProjectService{
 
     /**
      * Adds an objective to a project if it is not already associated with it.
-     *
-     * This method checks if the objective is already associated with the project. If the objective
-     * is not already part of the project, it is added to the project’s list of objectives and the
-     * project is saved. A success or failure message is returned based on the result.
-     *
      * @param projectId the ID of the project to which the objective is being added
      * @param request a list of objective IDs to be added to the project
      * @return a string message indicating the result of the operation (success or failure)
@@ -567,58 +533,46 @@ public class ProjectServiceImpl implements ProjectService{
     }
 
     public Map<String, Integer> getKeyResultsCounts(Long projectId) {
-        // Fetch the project from the repository by projectId
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
 
-        // Retrieve the list of objective IDs associated with the project
         List<Long> objectiveIds = project.getObjectiveId();
         System.out.println("Objective IDs retrieved: " + objectiveIds);
 
-        // URL for the external service to fetch key results based on objective IDs
         String url = KEYRESULT_URL + "all/by-objectives";
 
-        // Initialize counters for completed and total key results
         int totalKeyResultsCount = 0;
         int completedKeyResultsCount = 0;
 
         try {
-            // Make a POST request to the external service to fetch key results for the given objective IDs
             ResponseEntity<List<KeyResultActiveDTO>> responseEntity = restTemplate.exchange(
-                    url,                         // URL to fetch key results
-                    HttpMethod.POST,              // HTTP POST request
-                    new HttpEntity<>(objectiveIds), // Request body containing the objective IDs
-                    new ParameterizedTypeReference<List<KeyResultActiveDTO>>() {} // Expected response type (List of KeyResultActiveDTOs)
+                    url,
+                    HttpMethod.POST,
+                    new HttpEntity<>(objectiveIds),
+                    new ParameterizedTypeReference<List<KeyResultActiveDTO>>() {}
             );
 
-            // If the response is successful, process the key results
             if (responseEntity.getStatusCode().is2xxSuccessful()) {
                 List<KeyResultActiveDTO> keyResults = responseEntity.getBody();
 
-                // Check if the response body is not null
                 if (keyResults != null) {
-                    // Loop through each KeyResultActiveDTO
                     for (KeyResultActiveDTO keyResult : keyResults) {
-                        totalKeyResultsCount++; // Increment the total key results count for every key result
+                        totalKeyResultsCount++;
 
-                        // Compare current value and target value to determine if the key result is completed
                         if (keyResult.getKeyResultcurrentVal() == keyResult.getKeyResultTargetVal()) {
-                            completedKeyResultsCount++; // Increment the count for completed key results
+                            completedKeyResultsCount++;
                         }
                     }
                 }
             }
         } catch (Exception e) {
-            // Log and handle any errors that occur during the request
             e.printStackTrace();
         }
 
-        // Prepare the result as a map with both counts
         Map<String, Integer> resultCounts = new HashMap<>();
-        resultCounts.put("totalKeyResults", totalKeyResultsCount); // Total key results count
-        resultCounts.put("completedKeyResults", completedKeyResultsCount); // Completed key results count
+        resultCounts.put("totalKeyResults", totalKeyResultsCount);
+        resultCounts.put("completedKeyResults", completedKeyResultsCount);
 
-        // Return the map containing both counts
         return resultCounts;
     }
 
