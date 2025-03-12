@@ -1,13 +1,14 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TaskPriority } from '../../core/services/my-tasks.service';
 import { ApprovalStatus } from '../../core/services/approvals.service';
 import { ApprovalsService } from '../../core/services/approvals.service';
+import { KeyResultIncrementCardComponent } from '../key-result-increment-card/key-result-increment-card.component';
 
 @Component({
   selector: 'app-approval-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, KeyResultIncrementCardComponent],
   templateUrl: './approval-card.component.html',
   styleUrls: ['./approval-card.component.scss']
 })
@@ -20,19 +21,28 @@ export class ApprovalCardComponent {
   @Input() dueDate!: Date;
   @Input() owner: string = '';
   @Input() status: ApprovalStatus = ApprovalStatus.PENDING;
+  @Input() taskId!: number;
   @Output() statusChanged = new EventEmitter<void>();
+
+  @ViewChild('incrementCard') incrementCard!: KeyResultIncrementCardComponent;
 
   error: string | null = null;
   isProcessing = false;
+  showIncrementCard = false;
 
   constructor(private approvalsService: ApprovalsService) {}
 
   onApprove() {
     if (this.isProcessing) return;
+    this.showIncrementCard = true;
+  }
+
+  onIncrementSubmit(newValue: number) {
+    this.showIncrementCard = false;
     this.isProcessing = true;
     this.error = null;
 
-    this.approvalsService.approveTask(this.taskApprovalId).subscribe({
+    this.approvalsService.approveTask(this.taskApprovalId, newValue).subscribe({
       next: () => {
         this.status = ApprovalStatus.APPROVED;
         this.isProcessing = false;
@@ -43,6 +53,10 @@ export class ApprovalCardComponent {
         this.isProcessing = false;
       }
     });
+  }
+
+  onIncrementCancel() {
+    this.showIncrementCard = false;
   }
 
   onReject() {

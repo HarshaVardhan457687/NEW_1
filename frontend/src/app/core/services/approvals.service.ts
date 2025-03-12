@@ -22,11 +22,14 @@ export interface TaskApprovalResponseDTO {
   taskApprovalId: number;
   taskName: string;
   taskTag: string;
+  taskId: number;
   ownerName: string;
   taskPriority: TaskPriority;
   taskDescription: string;
   taskDueDate: Date;
   approvalStatus: ApprovalStatus;
+  approvalDate: Date;
+  submittedDate: Date;
 }
 
 @Injectable({
@@ -142,17 +145,20 @@ export class ApprovalsService {
   /**
    * Approves a task approval request
    * @param approvalId The ID of the approval to approve
+   * @param increment The increment value
    * @returns Observable of the updated TaskApproval
    */
-  approveTask(approvalId: number): Observable<TaskApproval> {
+  approveTask(approvalId: number, increment: number): Observable<TaskApproval> {
     if (!approvalId) {
       return throwError(() => new Error('Approval ID is required'));
     }
 
-    console.log(`[ApprovalsService] Approving task approval ${approvalId}`);
+    console.log(`[ApprovalsService] Approving task approval ${approvalId} with increment ${increment}`);
     
     return this.http.post<TaskApproval>(`${this.APPROVAL_API_URL}/approve`, null, {
-      params: new HttpParams().set('approvalId', approvalId.toString())
+      params: new HttpParams()
+        .set('approvalId', approvalId.toString())
+        .set('increment', increment.toString())
     }).pipe(
       tap(response => console.log('[ApprovalsService] Task approval successful:', response)),
       catchError(error => {

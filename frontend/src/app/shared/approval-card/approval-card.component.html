@@ -51,4 +51,12 @@
   <div *ngIf="error" class="error-message">
     {{ error }}
   </div>
+
+  <app-key-result-increment-card
+    #incrementCard
+    [show]="showIncrementCard"
+    [taskId]="taskId"
+    (onSubmit)="onIncrementSubmit($event)"
+    (onCancel)="onIncrementCancel()">
+  </app-key-result-increment-card>
 </div>
