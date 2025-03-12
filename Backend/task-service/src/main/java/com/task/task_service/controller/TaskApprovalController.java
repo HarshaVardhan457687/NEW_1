@@ -1,5 +1,6 @@
 package com.task.task_service.controller;
 
+import com.task.task_service.dto.MonthlyTaskApprovalDTO;
 import com.task.task_service.dto.TaskApprovalRequestDTO;
 import com.task.task_service.dto.TaskApprovalResponseDTO;
 import com.task.task_service.entity.TaskApproval;
@@ -24,6 +25,10 @@ public class TaskApprovalController {
         return ResponseEntity.status(HttpStatus.CREATED).body(approval);
     }
 
+    @GetMapping
+    public ResponseEntity<List<TaskApproval>> allApprovals(){
+        return ResponseEntity.ok(taskApprovalService.getAllTaskApproval());
+    }
 
     @PostMapping("/approve")
     public ResponseEntity<TaskApproval> approveTask(@RequestParam Long approvalId, @RequestParam Double increment) {
@@ -45,6 +50,11 @@ public class TaskApprovalController {
     @GetMapping("/team")
     public ResponseEntity<List<TaskApprovalResponseDTO>> getAllTaskApprovalForTeamLeader(@RequestParam Long teamId){
         return ResponseEntity.ok(taskApprovalService.getAllTaskApprovalOfTeam(teamId));
+    }
 
+    @GetMapping("/approvedTasksByMonth/{projectId}")
+    public ResponseEntity<List<MonthlyTaskApprovalDTO>> getApprovedTasksByMonth(@PathVariable Long projectId) {
+        List<MonthlyTaskApprovalDTO> result = taskApprovalService.getApprovedTasksByMonth(projectId);
+        return ResponseEntity.ok(result);
     }
 }

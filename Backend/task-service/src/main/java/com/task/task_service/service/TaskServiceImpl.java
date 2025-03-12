@@ -6,6 +6,7 @@ import com.task.task_service.entity.Notification;
 import com.task.task_service.entity.Task;
 import com.task.task_service.exception.ResourceNotFoundException;
 import com.task.task_service.repository.TaskRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class TaskServiceImpl implements TaskService {
 
     private static final String KEYRESULT_SERVICE_URL = "http://localhost:8082/api/keyresults/";
     private static final String USER_SERVICE_URL = "http://localhost:8086/api/users/";
-    private static final String NOTIFICATION_SERVICE_URL = "http://localhost:8087/api/notifications/";
+    private static final String NOTIFICATION_SERVICE_URL = "http://localhost:8087/api/notifications";
     /**
      * Adds a new task to the database.
      *
@@ -55,6 +56,7 @@ public class TaskServiceImpl implements TaskService {
      * @return The saved Task object.
      */
     @Override
+    @Transactional
     public Task addTask(Task task) {
         LOGGER.info("Adding new task with heading: {}", task.getTaskHeading());
         Task savedTask = taskRepository.save(task);
