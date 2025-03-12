@@ -20,6 +20,5 @@ public class Notification {
     private String type;
     private Long targetUser;
     private LocalDateTime createdAt;
-
-
+    private boolean isRead = false;
 }

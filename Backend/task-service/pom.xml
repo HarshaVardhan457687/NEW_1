@@ -93,6 +93,9 @@
 					</annotationProcessorPaths>
                     <source>6</source>
                     <target>6</target>
+					<compilerArgs>
+						<arg>-parameters</arg>
+					</compilerArgs>
                 </configuration>
 			</plugin>
 			<plugin>

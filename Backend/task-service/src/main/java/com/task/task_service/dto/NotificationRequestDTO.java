@@ -15,5 +15,4 @@ public class NotificationRequestDTO {
     private Long targetUser;
     private Long taskId;
     private LocalDateTime createdTime;
-
 }

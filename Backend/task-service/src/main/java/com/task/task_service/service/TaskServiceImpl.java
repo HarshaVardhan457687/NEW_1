@@ -6,6 +6,7 @@ import com.task.task_service.entity.Notification;
 import com.task.task_service.entity.Task;
 import com.task.task_service.exception.ResourceNotFoundException;
 import com.task.task_service.repository.TaskRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,7 @@ public class TaskServiceImpl implements TaskService {
      * @return The saved Task object.
      */
     @Override
+    @Transactional
     public Task addTask(Task task) {
         LOGGER.info("Adding new task with heading: {}", task.getTaskHeading());
         Task savedTask = taskRepository.save(task);
