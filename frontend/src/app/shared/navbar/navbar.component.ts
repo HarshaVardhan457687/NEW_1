@@ -5,11 +5,12 @@ import { ModalService } from '../../core/services/modal.service';
 import { NavbarService } from '../../core/services/navbar.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { NotificationComponentComponent } from '../notification-component/notification-component.component';
+import { NavOptionsComponent } from '../nav-options/nav-options.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule, NotificationComponentComponent],
+  imports: [CommonModule, RouterModule, NotificationComponentComponent, NavOptionsComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
   host: { 'id': 'navbar-component' }
@@ -20,6 +21,7 @@ export class NavbarComponent implements OnInit {
   currentTab: 'dashboard' | 'projects' = 'dashboard';
   profilePicUrl: string = 'assets/default_profile.png';
   showNotifications: boolean = false;
+  showNavOptions: boolean = false;
   unreadNotificationCount: number = 0;
 
   constructor(
@@ -94,10 +96,27 @@ export class NavbarComponent implements OnInit {
 
   toggleNotifications(): void {
     this.showNotifications = !this.showNotifications;
+    if (this.showNotifications) {
+      this.showNavOptions = false;
+    }
   }
 
   closeNotifications(): void {
     this.showNotifications = false;
+  }
+
+  toggleNavOptions(event: MouseEvent): void {
+    // Stop propagation to prevent immediate closing
+    event.stopPropagation();
+    
+    this.showNavOptions = !this.showNavOptions;
+    if (this.showNavOptions) {
+      this.showNotifications = false;
+    }
+  }
+
+  closeNavOptions(): void {
+    this.showNavOptions = false;
   }
 
   navigateToUnderConstruction(): void {

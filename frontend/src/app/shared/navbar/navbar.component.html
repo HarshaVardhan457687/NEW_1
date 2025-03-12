@@ -16,10 +16,17 @@
           (close)="closeNotifications()">
         </app-notification-component>
       </div>
-      <img 
-        [src]="profilePicUrl || 'assets/default_profile.png'"
-        [alt]="profilePicUrl ? 'Profile photo' : 'Default profile photo'" 
-        class="profile-icon" (click)="navigateToProfile()">
+      <div class="profile-container">
+        <img 
+          [src]="profilePicUrl || 'assets/default_profile.png'"
+          [alt]="profilePicUrl ? 'Profile photo' : 'Default profile photo'" 
+          class="profile-icon" (click)="toggleNavOptions($event)">
+        <app-nav-options
+          *ngIf="showNavOptions"
+          (close)="closeNavOptions()"
+          (profileClick)="navigateToProfile()">
+        </app-nav-options>
+      </div>
     </div>
   </div>
 </nav>

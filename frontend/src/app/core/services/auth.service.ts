@@ -44,7 +44,10 @@ export class AuthService {
   logout(): void {
     localStorage.clear();
     sessionStorage.clear();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login']).then(() => {
+      // Refresh the browser after navigation
+      window.location.reload();
+    });
   }
 
   isLoggedIn(): boolean {
