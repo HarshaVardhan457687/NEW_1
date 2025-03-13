@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NotificationService, Notification } from '../../core/services/notification.service';
 import { NotificationItemComponent } from '../notification-item/notification-item.component';
@@ -16,8 +16,12 @@ export class NotificationComponentComponent implements OnInit {
   notifications: Notification[] = [];
   showAllNotifications: boolean = false;
   unreadCount: number = 0;
+  private isInitialized = false;
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(
+    private notificationService: NotificationService,
+    private elementRef: ElementRef
+  ) {}
 
   ngOnInit(): void {
     this.notificationService.getNotifications().subscribe(notifications => {
@@ -27,6 +31,27 @@ export class NotificationComponentComponent implements OnInit {
     this.notificationService.getUnreadCountObservable().subscribe(count => {
       this.unreadCount = count;
     });
+  }
+
+  ngAfterViewInit() {
+    // Delay setting the initialized flag to prevent immediate closing
+    setTimeout(() => {
+      this.isInitialized = true;
+    }, 100);
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: Event) {
+    // Only process click outside events after initialization
+    if (this.isInitialized && !this.elementRef.nativeElement.contains(event.target)) {
+      this.close.emit();
+    }
+  }
+
+  @HostListener('click', ['$event'])
+  onClick(event: Event) {
+    // Prevent clicks within the component from bubbling up
+    event.stopPropagation();
   }
 
   toggleShowAll(): void {
