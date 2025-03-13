@@ -23,7 +23,12 @@ public class NotificationController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<Notification>> createNotification(@RequestParam Long userId) {
+    public ResponseEntity<List<Notification>> getNotificationForUSer(@RequestParam Long userId) {
         return ResponseEntity.ok(notificationService.getNotificationForUser(userId));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Notification>> getAllNotification() {
+        return ResponseEntity.ok(notificationService.getAllnotification());
     }
 }
