@@ -47,4 +47,9 @@ public class NotificationServiceImpl implements NotificationService {
     public List<Notification> getNotificationForUser(Long userId){
         return notificationRepository.findByTargetUser(userId);
     }
+
+    @Override
+    public List<Notification> getAllnotification(){
+        return notificationRepository.findAll();
+    }
 }

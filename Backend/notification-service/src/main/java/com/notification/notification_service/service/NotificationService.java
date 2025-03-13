@@ -9,4 +9,5 @@ public interface NotificationService {
     public void createAndSendNotification(NotificationRequestDTO request);
     public void readNotification(Long notificationId);
     public List<Notification> getNotificationForUser(Long userId);
+    public List<Notification> getAllnotification();
 }
