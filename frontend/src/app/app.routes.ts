@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
+import { LoginGuard } from './core/guards/login.guard';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RoleSelectionPageComponent } from './pages/role-selection-page/role-selection-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
@@ -8,7 +9,7 @@ import { UnderConstructionComponent } from './pages/under-construction/under-con
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginPageComponent },
+  { path: 'login', component: LoginPageComponent, canActivate: [LoginGuard] },
   { path: 'role-selection', component: RoleSelectionPageComponent, canActivate: [AuthGuard] },
   {
     path: 'team-member-dashboard',
@@ -28,7 +29,9 @@ export const routes: Routes = [
     loadChildren: () => import('./pages/team-manager-dashboard/team-manager-dashboard.module')
       .then(m => m.TeamManagerDashboardModule)
   },
-  { path: 'profile', component: ProfilePageComponent },
-  { path: 'change-password', component: ChangePasswordComponent },
-  { path: 'construction', component: UnderConstructionComponent }
+  { path: 'profile', component: ProfilePageComponent, canActivate: [AuthGuard] },
+  { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard] },
+  { path: 'construction', component: UnderConstructionComponent, canActivate: [AuthGuard] },
+  // Wildcard route to redirect to login
+  { path: '**', redirectTo: '/login' }
 ];

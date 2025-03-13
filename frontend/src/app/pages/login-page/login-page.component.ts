@@ -36,6 +36,8 @@ export class LoginPageComponent {
   
   @ViewChild('passwordInput') passwordInput!: ElementRef;
 
+
+
   focusPassword(event: Event) {
     const keyboardEvent = event as KeyboardEvent;
     keyboardEvent.preventDefault();

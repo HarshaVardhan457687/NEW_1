@@ -29,10 +29,10 @@ export class AppInitializerService {
       const roleSelected = sessionStorage.getItem('role_selected');
       const username = localStorage.getItem('username');
       const needRole = !roleSelected && !!username;
+      console.log("needRole: ",needRole);
       if (needRole) {
         this.router.navigate(['/role-selection']);
       }
-    }
-    
+    }    
   }
 } 
