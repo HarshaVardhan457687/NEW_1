@@ -1,3 +1,5 @@
+@use "sass:color";
+
 // Variables
 $primary-color: #4a6cf7;
 $primary-gradient: linear-gradient(135deg, #4a6cf7, #6a8eff);
@@ -119,7 +121,7 @@ $low-priority: #52c41a;
   }
   
   &:hover:not(.active) {
-    background-color: darken($secondary-color, 5%);
+    background-color: color.adjust($secondary-color, $lightness: -5%);
   }
 }
 
@@ -415,7 +417,9 @@ $low-priority: #52c41a;
       margin-bottom: 4px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
+      line-clamp: 2;
       -webkit-box-orient: vertical;
+      box-orient: vertical;
       overflow: hidden;
     }
     

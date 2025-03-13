@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,10 +8,16 @@ import { CommonModule } from '@angular/common';
   templateUrl: './notification-item.component.html',
   styleUrl: './notification-item.component.scss'
 })
-export class NotificationItemComponent {
+export class NotificationItemComponent implements OnChanges {
   @Input() message: string = '';
   @Input() timestamp: Date = new Date();
   @Input() read: boolean = false;
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['read']) {
+      console.log('Notification read status changed:', this.read);
+    }
+  }
   
   getTimeAgo(): string {
     const now = new Date();
