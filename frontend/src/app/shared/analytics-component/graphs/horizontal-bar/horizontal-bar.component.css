@@ -1,0 +1,173 @@
+.chart-card {
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.clickable-title {
+  font-size: medium;
+  margin: 0;
+  color: #333;
+}
+
+.chart-container {
+  flex: 1;
+  position: relative;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Prevent double scrollbars */
+}
+
+.chart-area {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Add styles for the scrollbar */
+.chart-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chart-area::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.chart-area::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.chart-area::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.loading-state {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.loading-spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #1976d2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  font-size: 14px;
+  color: #666;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.no-data {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.no-data-text {
+  font-size: 14px;
+  color: #666;
+}
+
+.retry-button {
+  padding: 6px 12px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.retry-button:hover {
+  background-color: #1565c0;
+}
+
+/* Style the default ngx-charts tooltip */
+:host ::ng-deep .ngx-charts-tooltip {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+  padding: 8px 12px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  font-size: 12px !important;
+}
+
+:host ::ng-deep .ngx-charts-tooltip-content {
+  color: #666 !important;
+}
+
+:host ::ng-deep .ngx-charts-tooltip-content .tooltip-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+:host ::ng-deep .ngx-charts-tooltip-content .tooltip-progress {
+  font-weight: 500;
+}
+
+:host ::ng-deep .ngx-charts-tooltip-content .tooltip-role {
+  color: #2196F3;
+  font-weight: 500;
+}
+
+:host ::ng-deep .ngx-charts {
+  .bar {
+    fill: #1976d2;
+    transition: fill 0.2s;
+  }
+  .bar:hover {
+    fill: #1565c0;
+  }
+  .gridline-path {
+    stroke: #eee;
+  }
+  .axis text {
+    fill: #666;
+    font-size: 12px;
+  }
+}

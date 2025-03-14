@@ -22,6 +22,7 @@
     "@angular/router": "^19.1.0",
     "@angular/ssr": "^19.1.2",
     "@ng-bootstrap/ng-bootstrap": "^18.0.0",
+    "@swimlane/ngx-charts": "^22.0.0-alpha.0",
     "@types/sockjs-client": "^1.5.4",
     "@types/stompjs": "^2.3.9",
     "bootstrap": "^5.3.3",

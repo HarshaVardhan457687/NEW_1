@@ -9,6 +9,7 @@ import { TeamsPageComponent } from './teams-page/teams-page.component';
 import { TeamPageComponent } from './teams-page/team-page/team-page.component';
 import { ApprovalsPageComponent } from './approvals-page/approvals-page.component';
 import { CalenderComponent } from '../../../shared/calender/calender.component';
+import { AnalyticsComponent } from '../../../shared/analytics-component/analytics-component.component';
 
 export const MANAGER_PROJECT_ROUTES: Routes = [
   {
@@ -29,7 +30,7 @@ export const MANAGER_PROJECT_ROUTES: Routes = [
         ]
       },
       { path: 'approvals', component: ApprovalsPageComponent },
-      { path: 'analytics', component: UnderConstructionComponent }
+      { path: 'analytics', component: AnalyticsComponent }
     ]
   }
 ];

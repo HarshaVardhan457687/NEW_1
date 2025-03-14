@@ -1,0 +1,32 @@
+<div class="chart-card">
+  <div class="header-container">
+    <h2>Project Progress</h2>
+  </div>
+  <div class="chart-container">
+    <ngx-charts-line-chart
+      [view]="view"
+      [scheme]="defaultColors"
+      [results]="currentTeamData"
+      [gradient]="gradient"
+      [xAxis]="showXAxis"
+      [yAxis]="showYAxis"
+      [legend]="showLegend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [roundDomains]="roundDomains"
+      [animations]="animations"
+      [tooltipDisabled]="tooltipDisabled"
+      [yAxisTickFormatting]="yAxisTickFormatting">
+    </ngx-charts-line-chart>
+  </div>
+  <div class="chart-controls">
+    <button class="scroll-button" [disabled]="!canScrollLeft" (click)="scrollLeft()">
+      ← Previous
+    </button>
+    <button class="scroll-button" [disabled]="!canScrollRight" (click)="scrollRight()">
+      Next →
+    </button>
+  </div>
+</div>

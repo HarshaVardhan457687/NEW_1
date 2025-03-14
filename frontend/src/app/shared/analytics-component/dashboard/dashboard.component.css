@@ -1,0 +1,44 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  }
+  
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .chart-card {
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chart-container {
+    position: relative;
+    height: 500px;
+  }
+  
+  .parent-div {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;  /* Space between the inner divs */
+    height: 10vh;  /* Set the height to 10vh */
+  }
+  
+  .sub-div {
+    flex: 1;  /* Allow each sub-div to take equal space in the row */
+    background-color: lightgray;  /* Optional: to make the sub-divs visible */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  
+
+  .graph{
+      height: 200px !important;
+  }
