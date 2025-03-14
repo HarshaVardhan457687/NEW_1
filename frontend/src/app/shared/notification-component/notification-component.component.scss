@@ -1,7 +1,7 @@
 .notification-panel {
   position: absolute;
-  top: 60px;
-  right: 20px;
+  top: 45px;
+  right: -70px;
   width: 350px;
   background-color: white;
   border-radius: 8px;
@@ -129,9 +129,26 @@
 }
 
 .no-notifications {
-  padding: 24px 16px;
+  padding: 32px 16px;
   text-align: center;
   color: #666;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  p {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  
+  .no-notifications-sub {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #999;
+    font-weight: normal;
+  }
 }
 
 .notification-footer {

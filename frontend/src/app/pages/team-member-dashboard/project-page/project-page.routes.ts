@@ -5,6 +5,7 @@ import { MyTeamComponent } from './my-team/my-team.component';
 import { UnderConstructionComponent } from '../../../pages/under-construction/under-construction.component';
 import { ObjectivesPageComponent } from './objectives-page/objectives-page.component';
 import { MyTasksComponent } from './my-tasks/my-tasks.component';
+import { CalenderComponent } from '../../../shared/calender/calender.component';
 
 export const PROJECT_ROUTES: Routes = [
   {
@@ -15,7 +16,7 @@ export const PROJECT_ROUTES: Routes = [
       { path: 'overview', component: OverviewComponent },
       { path: 'objectives', component: ObjectivesPageComponent },
       { path: 'tasks', component: MyTasksComponent },
-      { path: 'calendar', component: UnderConstructionComponent },
+      { path: 'calendar', component: CalenderComponent },
       { path: 'my-team', component: MyTeamComponent }
     ]
   }

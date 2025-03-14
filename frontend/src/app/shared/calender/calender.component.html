@@ -1,0 +1,174 @@
+<div class="calendar-container">
+  <!-- Calendar Header -->
+  <div class="calendar-header">
+    <div class="header-left">
+      <div class="calendar-navigation">
+        <button class="nav-btn" (click)="prev()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <h2 class="current-month" (click)="toggleMonthYearSelector()">{{ months[selectedDate.getMonth()] }} {{ selectedDate.getFullYear() }}</h2>
+        <button class="nav-btn" (click)="next()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="view-controls">
+        <button class="view-btn" [class.active]="currentView === 'month'" (click)="changeView('month')">Month</button>
+        <button class="view-btn" [class.active]="currentView === 'week'" (click)="changeView('week')">Week</button>
+      </div>
+      <button class="today-btn" (click)="goToToday()">Today</button>
+    </div>
+  </div>
+
+  <!-- Month/Year Selector -->
+  <div class="month-year-selector" [class.visible]="showMonthYearSelector">
+    <div class="selector-header">
+      <span class="selector-title">{{ selectorMode === 'month' ? 'Select Month' : 'Select Year' }}</span>
+      <button class="selector-close" (click)="showMonthYearSelector = false">×</button>
+    </div>
+    
+    <div class="month-grid" *ngIf="selectorMode === 'month'">
+      <div 
+        *ngFor="let month of months; let i = index" 
+        class="month-item" 
+        [class.active]="i === selectedDate.getMonth()"
+        (click)="selectMonth(i)">
+        {{ month.substring(0, 3) }}
+      </div>
+    </div>
+    
+    <div class="year-grid" *ngIf="selectorMode === 'year'">
+      <div 
+        *ngFor="let year of yearsList" 
+        class="year-item" 
+        [class.active]="year === selectedDate.getFullYear()"
+        (click)="selectYear(year)">
+        {{ year }}
+      </div>
+    </div>
+  </div>
+
+  <div class="calendar-content">
+    <!-- Filters Section -->
+    <div class="filters-section">
+      <div class="filter-group">
+        <h3>Status</h3>
+        <div class="filter-options">
+          <div class="filter-option" *ngFor="let filter of statusFilters; let i = index">
+            <label class="checkbox-container">
+              <input type="checkbox" [checked]="filter.checked" (change)="toggleFilter('status', i)">
+              <span class="checkmark" [style.background-color]="filter.checked ? getStatusColor(filter.value) : ''"></span>
+              {{ filter.label }}
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <div class="filter-group">
+        <h3>Priority</h3>
+        <div class="filter-options">
+          <div class="filter-option" *ngFor="let filter of priorityFilters; let i = index">
+            <label class="checkbox-container">
+              <input type="checkbox" [checked]="filter.checked" (change)="toggleFilter('priority', i)">
+              <span class="checkmark" [style.background-color]="filter.checked ? getPriorityColor(filter.value) : ''"></span>
+              {{ filter.label }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar Grid -->
+    <div class="calendar-main">
+      <!-- Days of week header -->
+      <div class="weekdays-row">
+        <div class="weekday" *ngFor="let day of weekDays">{{ day }}</div>
+      </div>
+      
+      <!-- Calendar dates grid -->
+      <div class="dates-grid">
+        <!-- Generate dates in the correct order, one per grid cell -->
+        <ng-container *ngFor="let week of [0, 1, 2, 3, 4, 5]">
+          <ng-container *ngFor="let dayIndex of [0, 1, 2, 3, 4, 5, 6]">
+            <div 
+              *ngIf="(week * 7 + dayIndex) < calendarDays.length"
+              class="calendar-day" 
+              [class.current-month]="calendarDays[week * 7 + dayIndex].isCurrentMonth"
+              [class.other-month]="!calendarDays[week * 7 + dayIndex].isCurrentMonth"
+              [class.today]="calendarDays[week * 7 + dayIndex].isToday"
+              [class.selected]="selectedDate.getDate() === calendarDays[week * 7 + dayIndex].dayNumber && 
+                            selectedDate.getMonth() === calendarDays[week * 7 + dayIndex].date.getMonth() && 
+                            selectedDate.getFullYear() === calendarDays[week * 7 + dayIndex].date.getFullYear()"
+              (click)="selectDate(calendarDays[week * 7 + dayIndex])">
+              <div class="day-header">
+                <span class="day-number">{{ calendarDays[week * 7 + dayIndex].dayNumber }}</span>
+              </div>
+              <div class="day-content">
+                <div class="task-indicators">
+                  <div 
+                    *ngFor="let task of calendarDays[week * 7 + dayIndex].tasks.slice(0, 3)" 
+                    class="task-indicator"
+                    [style.background-color]="getPriorityColor(task.taskPriority)"
+                    [title]="task.taskName">
+                  </div>
+                  <div class="more-indicator" *ngIf="calendarDays[week * 7 + dayIndex].tasks.length > 3">
+                    +{{ calendarDays[week * 7 + dayIndex].tasks.length - 3 }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Upcoming Tasks Section -->
+    <div class="upcoming-tasks">
+      <h3>Upcoming Tasks</h3>
+      <div class="task-list">
+        <div class="task-item" *ngFor="let task of getUpcomingTasks().slice(0, 5)">
+          <div class="task-priority" [style.background-color]="getPriorityColor(task.taskPriority)"></div>
+          <div class="task-details">
+            <div class="task-name">{{ task.taskName }}</div>
+            <div class="task-date">{{ task.dueDate | date:'MMM d' }}</div>
+          </div>
+          <div class="task-status" [style.background-color]="getStatusColor(task.taskStatus)">
+            {{ task.taskStatus === 'WAITING_FOR_APPROVAL' ? 'WAITING' : task.taskStatus }}
+          </div>
+        </div>
+        <div class="no-tasks" *ngIf="getUpcomingTasks().length === 0">
+          No upcoming tasks
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Task Details Modal -->
+  <div class="task-details-modal" *ngIf="showTaskDetails">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Tasks for {{ formatDate(selectedDate) }}</h3>
+        <button class="close-btn" (click)="showTaskDetails = false">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="task-list">
+          <div class="task-item" *ngFor="let task of selectedDayTasks">
+            <div class="task-priority" [style.background-color]="getPriorityColor(task.taskPriority)"></div>
+            <div class="task-details">
+              <div class="task-name">{{ task.taskName }}</div>
+              <div class="task-description">{{ task.taskDescription }}</div>
+              <div class="task-tag">{{ task.taskTag }}</div>
+            </div>
+            <div class="task-status" [style.background-color]="getStatusColor(task.taskStatus)">
+              {{ task.taskStatus === 'WAITING_FOR_APPROVAL' ? 'WAITING' : task.taskStatus }}
+            </div>
+          </div>
+          <div class="no-tasks" *ngIf="selectedDayTasks.length === 0">
+            No tasks for this day
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
