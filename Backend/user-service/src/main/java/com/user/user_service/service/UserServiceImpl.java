@@ -129,6 +129,51 @@ public class UserServiceImpl implements UserService {
         return new UserSummaryDTO(user.getUserId(), user.getUserName(), user.getUserProfilePhoto());
     }
 
+    @Override
+    public List<UserSummaryDTO> findAllUsersExceptProjectManager(Long projectId) {
+        String projectServiceUrl = serviceUrlsConfig.getPROJECT_SERVICE_URL() + "/" + projectId;
+        Project project = restTemplate.getForObject(projectServiceUrl, Project.class);
+
+        if (project == null || project.getProjectManagerId() == null) {
+            throw new RuntimeException("Project or Project Manager not found");
+        }
+
+        Long projectManagerId = project.getProjectManagerId();
+
+        return userRepository.findAllUsersWithProfile().stream()
+                .filter(user -> !user.getUserId().equals(projectManagerId))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserSummaryDTO> findUsersNotInProjectTeams(Long projectId) {
+        // Fetch project details
+        String projectUrl = serviceUrlsConfig.getPROJECT_SERVICE_URL() + "/" + projectId;
+        Project project = restTemplate.getForObject(projectUrl, Project.class);
+
+        if (project == null || project.getTeamsInvolvedId() == null) {
+            throw new RuntimeException("Project or teams not found");
+        }
+
+        Set<Long> usersInTeams = new HashSet<>();
+
+        usersInTeams.add(project.getProjectManagerId());
+
+        for (Long teamId : project.getTeamsInvolvedId()) {
+            String teamUrl = serviceUrlsConfig.getTEAM_SERVICE_URL() + "/" + teamId;
+            Team team = restTemplate.getForObject(teamUrl, Team.class);
+
+            if (team != null) {
+                usersInTeams.add(team.getTeamLead());
+                usersInTeams.addAll(team.getTeamMembers());
+            }
+        }
+
+        return userRepository.findAllUsersWithProfile().stream()
+                .filter(user -> !usersInTeams.contains(user.getUserId()))
+                .collect(Collectors.toList());
+    }
+
     /**
      * Updates a user's information either partially (PATCH) or completely (PUT).
      *
