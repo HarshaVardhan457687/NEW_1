@@ -165,6 +165,7 @@ public class UserController {
         return ResponseEntity.ok(userServiceImpl.getProfilePicture(userId));
     }
 
+    //NOT USIGN UPDATED 
     /**
      * Retrieves a summary of all users including their profile information.
      * This endpoint is useful for displaying user listings with key information.
@@ -176,6 +177,19 @@ public class UserController {
         List<UserSummaryDTO> users = userServiceImpl.findAllUsersWithProfile();
         return ResponseEntity.ok(users);
     }
+
+    @GetMapping("/summary/exclude-manager")
+    public ResponseEntity<List<UserSummaryDTO>> getAllUsersExceptProjectManager(@RequestParam Long projectId) {
+        List<UserSummaryDTO> users = userServiceImpl.findAllUsersExceptProjectManager(projectId);
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/available-users")
+    public ResponseEntity<List<UserSummaryDTO>> getUsersNotInProjectTeams(@RequestParam Long projectId) {
+        List<UserSummaryDTO> users = userServiceImpl.findUsersNotInProjectTeams(projectId);
+        return ResponseEntity.ok(users);
+    }
+
 
     /**
      * Deletes a user from the system.

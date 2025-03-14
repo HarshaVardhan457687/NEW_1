@@ -21,4 +21,6 @@ public interface UserService {
     public boolean updateProjectMangerProject(Long userId, Long projectId);
     public List<TaskDetailsDTO> getTasksForUser(Long userId, Long projectId);
     public TaskStatusCountDTO getTaskStatusCounts(String userEmail, Long projectId);
+    public List<UserSummaryDTO> findAllUsersExceptProjectManager(Long projectId);
+    public List<UserSummaryDTO> findUsersNotInProjectTeams(Long projectId);
 }

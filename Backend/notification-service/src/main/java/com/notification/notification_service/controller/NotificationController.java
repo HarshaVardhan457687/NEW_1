@@ -22,6 +22,12 @@ public class NotificationController {
         return ResponseEntity.ok().build();
     }
 
+    @PatchMapping("/{notificationId}/read")
+    public ResponseEntity<Void> markNotificationAsRead(@PathVariable Long notificationId) {
+        notificationService.readNotification(notificationId);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/user")
     public ResponseEntity<List<Notification>> getNotificationForUSer(@RequestParam Long userId) {
         return ResponseEntity.ok(notificationService.getNotificationForUser(userId));
