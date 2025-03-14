@@ -8,6 +8,7 @@ import { MyTasksComponent } from './my-tasks/my-tasks.component';
 import { TeamsPageComponent } from './teams-page/teams-page.component';
 import { TeamPageComponent } from './teams-page/team-page/team-page.component';
 import { ApprovalsPageComponent } from './approvals-page/approvals-page.component';
+import { CalenderComponent } from '../../../shared/calender/calender.component';
 
 export const MANAGER_PROJECT_ROUTES: Routes = [
   {
@@ -18,7 +19,7 @@ export const MANAGER_PROJECT_ROUTES: Routes = [
       { path: 'overview', component: OverviewComponent },
       { path: 'objectives', component: ObjectivesPageComponent },
       { path: 'tasks', component: MyTasksComponent },
-      { path: 'calendar', component: UnderConstructionComponent },
+      { path: 'calendar', component: CalenderComponent },
       //{ path: 'my-team', component: MyTeamComponent },
       {
         path: 'teams',
