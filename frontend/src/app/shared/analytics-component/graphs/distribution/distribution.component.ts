@@ -19,7 +19,7 @@ export class DistributionComponent implements OnInit {
 
   pieChartData: any[] = [];
 
-  view: [number, number] = [300, 170];
+  view: [number, number] = [200, 200];
   gradient = false;
   showLegend = false;
   showLabels = false;

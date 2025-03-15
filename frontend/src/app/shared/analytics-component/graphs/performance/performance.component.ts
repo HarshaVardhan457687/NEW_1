@@ -32,7 +32,7 @@ export class PerformanceComponent implements OnInit, OnDestroy {
 
   currentTeamData: TeamData[] = [];
   
-  view: [number, number] = [500, 200];
+  view: [number, number] = [300, 150];
   gradient = false;
   showLegend = false;
   showLabels = true;

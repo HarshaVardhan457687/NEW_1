@@ -1,39 +1,31 @@
-<div class="chart-card">
-  <div class="header-container">
-    <h2 class="clickable-title">Team Members Progress</h2>
+<div class="chart-container">
+  <div class="header-section">
+    <h2>Team Members Progress</h2>
+    <div class="team-selector">
+      <select [(ngModel)]="selectedTeamId" (change)="onTeamChange($event)">
+        <option *ngFor="let team of teams" [value]="team.id">
+          {{ team.name }}
+        </option>
+      </select>
+    </div>
   </div>
-  <div class="chart-container">
+  <div class="scrollable-wrapper">
     <div class="chart-area">
       <ngx-charts-bar-horizontal
-        *ngIf="chartData && chartData.length > 0"
         [view]="view"
         [scheme]="colorScheme"
         [results]="chartData"
         [xAxis]="showXAxis"
         [yAxis]="showYAxis"
-        [xAxisLabel]="xAxisLabel"
-        [yAxisLabel]="yAxisLabel"
         [showXAxisLabel]="showXAxisLabel"
         [showYAxisLabel]="showYAxisLabel"
-        [barPadding]="8"
-        [showGridLines]="true"
+        [xAxisTicks]="xAxisTicks"
+        [showGridLines]="showGridLines"
+        [xAxisTickFormatting]="xAxisTickFormatting"
         [xScaleMin]="xScaleMin"
         [xScaleMax]="xScaleMax"
-        [roundDomains]="true"
         (select)="onSelect($event)">
       </ngx-charts-bar-horizontal>
-    </div>
-    <div *ngIf="!chartData || chartData.length === 0" class="no-data">
-      <div class="no-data-text">
-        <ng-container *ngIf="!isBackendAvailable">
-          <div class="error-message">{{ errorMessage }}</div>
-          <div class="retry-instructions">Please start the backend server and try again.</div>
-        </ng-container>
-        <ng-container *ngIf="isBackendAvailable">
-          {{ errorMessage || 'No data available' }}
-        </ng-container>
-      </div>
-      <button class="retry-button" (click)="loadTeamMembersProgress()">Retry</button>
     </div>
   </div>
 </div>

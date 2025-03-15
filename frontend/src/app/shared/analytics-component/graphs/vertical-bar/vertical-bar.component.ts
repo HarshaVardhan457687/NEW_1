@@ -43,7 +43,7 @@ export class VerticalBarComponent implements OnInit {
     { id: 29759564189, name: 'Team 3' }
   ];
 
-  view: [number, number] = [500, 250];
+  view: [number, number] = [400, 150];
   errorMessage: string | null = null;
 
   gradient = false;
