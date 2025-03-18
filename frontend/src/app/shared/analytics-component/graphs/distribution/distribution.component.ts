@@ -1,8 +1,10 @@
 import { NgxChartsModule, Color, ScaleType } from '@swimlane/ngx-charts';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ApiService } from '../../../../core/services/analytics.service';
+import { ProjectSelectionService } from '../../../../core/services/project-selection.service';
 import { HttpClientModule } from '@angular/common/http';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-distribution',
@@ -12,17 +14,17 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrl: './distribution.component.css',
   standalone: true
 })
-export class DistributionComponent implements OnInit {
+export class DistributionComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   showDropdown = false;
   headerTitle: string = 'Objective Performance';
-  currentProject = 1; // Default project ID
-
+  currentProject: number | null = null;
   pieChartData: any[] = [];
 
-  view: [number, number] = [200, 200];
+  view: [number, number] = [400, 300];
   gradient = false;
   showLegend = false;
-  showLabels = false;
+  showLabels = true;
   isDoughnut = true;
   
   pieChartColors: Color = {
@@ -32,35 +34,70 @@ export class DistributionComponent implements OnInit {
     domain: ['#32CD32', '#FFD700', '#2196F3']
   };
 
-  constructor(private apiService: ApiService) {
-    this.resetChartData(); // Initialize with zero values
+  constructor(
+    private apiService: ApiService,
+    private projectService: ProjectSelectionService
+  ) {
+    // Initialize with default empty data
+    this.resetChartData();
   }
 
   ngOnInit(): void {
-    this.loadObjectivePerformance();
+    // Get initial project ID
+    this.currentProject = this.projectService.getSelectedProject();
+    if (this.currentProject !== null) {
+      this.loadObjectivePerformance();
+    }
+
+    // Subscribe to project changes
+    this.projectService.selectedProject$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(projectId => {
+        console.log('Project ID changed:', projectId);
+        this.currentProject = projectId;
+        if (projectId !== null) {
+          this.loadObjectivePerformance();
+        } else {
+          this.resetChartData();
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadObjectivePerformance(): void {
+    console.log('Loading objective performance for project:', this.currentProject);
+    if (!this.currentProject) {
+      console.log('No project selected, resetting chart data');
+      this.resetChartData();
+      return;
+    }
+
     this.apiService.getObjectivePerformance(this.currentProject)
       .subscribe({
         next: (data) => {
+          console.log('Received objective performance data:', data);
           if (data && data.length > 0) {
             this.pieChartData = data.map(item => ({
-              ...item,
-              value: item.value || 0 // Ensure value is 0 if null/undefined
+              name: item.name,
+              value: Number(item.value)
             }));
           } else {
+            console.log('No data received, resetting chart');
             this.resetChartData();
           }
         },
-        error: () => {
+        error: (error) => {
+          console.error('Error loading objective performance:', error);
           this.resetChartData();
         }
       });
   }
 
   resetChartData(): void {
-    // Initialize with zero values
     this.pieChartData = [
       { name: 'On Track', value: 0 },
       { name: 'At Risk', value: 0 },

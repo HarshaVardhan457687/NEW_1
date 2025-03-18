@@ -4,6 +4,7 @@ import { ProjectCardComponent } from '../../../shared/project-card/project-card.
 import { NavbarComponent } from '../../../shared/navbar/navbar.component';
 import { AddProjectCardComponent } from '../../../shared/add-project-card/add-project-card.component';
 import { ProjectsPageService, ProjectData } from '../../../core/services/projects-page.service';
+import { ProjectSelectionService } from '../../../core/services/project-selection.service';
 
 @Component({
   selector: 'app-projects',
@@ -17,19 +18,29 @@ export class ProjectsComponent implements OnInit {
   showAddProjectModal = false;
   isLoading = true;
 
-  constructor(private projectsPageService: ProjectsPageService) {}
+  constructor(
+    private projectsPageService: ProjectsPageService,
+    private projectSelectionService: ProjectSelectionService
+  ) {}
 
   ngOnInit() {
     this.loadProjects();
   }
 
   private loadProjects() {
+    if (!this.projectsPageService) {
+      console.error('ProjectsPageService not available');
+      this.isLoading = false;
+      return;
+    }
+
     this.projectsPageService.getProjects().subscribe({
       next: (projects) => {
         this.projects = projects;
         this.isLoading = false;
       },
-      error: () => {
+      error: (error) => {
+        console.error('Error loading projects:', error);
         this.isLoading = false;
       }
     });

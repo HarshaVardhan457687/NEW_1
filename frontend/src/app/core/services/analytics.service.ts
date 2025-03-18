@@ -43,7 +43,7 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   getObjectivePerformance(projectId: number): Observable<{name: string, value: number}[]> {
-    return this.http.get<ObjectivePerformance>(`${this.baseUrl}/objective/objective-performance/888290452986`)
+    return this.http.get<ObjectivePerformance>(`${this.baseUrl}/objective/objective-performance/${projectId}`)
       .pipe(
         map(data => [
           { name: 'On Track', value: data.ON_TRACK || 0 },

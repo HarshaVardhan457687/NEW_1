@@ -34,7 +34,9 @@ export class HorizontalBarComponent implements OnInit, OnDestroy {
   
   private destroy$ = new Subject<void>();
   chartData: ChartData[] = [];
-  view: [number, number] = [400, 150];
+  view: [number, number] = [400, 250];
+  isBackendAvailable: boolean = false;
+  errorMessage: string | null = null;
   
   // Add these properties for x-axis configuration
   xAxisTicks = [0, 25, 50, 75, 100]; // Fixed ticks for x-axis

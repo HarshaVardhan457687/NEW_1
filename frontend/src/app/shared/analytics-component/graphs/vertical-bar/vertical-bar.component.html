@@ -2,7 +2,7 @@
 <div class="chart-card">
   <h2>Teams Progress</h2>
   <div class="chart-container">
-    <div class="chart-area" *ngIf="!errorMessage; else errorTemplate">
+    <div class="chart-area" *ngIf="isBrowser && !errorMessage; else errorTemplate">
       <ngx-charts-bar-vertical
         [view]="view"
         [scheme]="defaultColors"

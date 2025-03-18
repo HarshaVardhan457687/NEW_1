@@ -15,17 +15,22 @@
         [view]="view"
         [scheme]="colorScheme"
         [results]="chartData"
-        [xAxis]="showXAxis"
+        [xAxis]="false"
         [yAxis]="showYAxis"
         [showXAxisLabel]="showXAxisLabel"
         [showYAxisLabel]="showYAxisLabel"
-        [xAxisTicks]="xAxisTicks"
         [showGridLines]="showGridLines"
-        [xAxisTickFormatting]="xAxisTickFormatting"
         [xScaleMin]="xScaleMin"
         [xScaleMax]="xScaleMax"
         (select)="onSelect($event)">
       </ngx-charts-bar-horizontal>
     </div>
+  </div>
+  <div class="x-axis-indicators">
+    <span class="x-axis-tick">0</span>
+    <span class="x-axis-tick">25</span>
+    <span class="x-axis-tick">50</span>
+    <span class="x-axis-tick">75</span>
+    <span class="x-axis-tick">100</span>
   </div>
 </div>
